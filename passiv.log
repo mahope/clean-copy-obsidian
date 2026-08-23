@@ -1099,3 +1099,38 @@ Iteration 39 færdig. Kort:
 2026-08-23T17:00:32+02:00 iteration 15 afsluttet (exit 0)
 2026-08-23T17:00:52+02:00 passiv-loop afsluttet
 2026-08-23T17:02:23+02:00 === iteration 1/60 ===
+Iteration 40 færdig og committet.
+
+**Hvad der blev bygget:** npm-udgaven af scanneren — en fuld JavaScript-port af kernen (`scanner/npm/eaa-scanner/`), samme 16 regler som Python-versionen inkl. ægte WCAG-kontrastberegning. Zero dependencies, Node ≥ 18, med `eaa-scan` CLI (`--json`, `--fail-on` til CI) og biblioteksbrug.
+
+**Verificering (rigtig output, ikke antagelser):**
+- Selvtest: 11/11 regler fundet på defekt HTML.
+- Cross-check mod Python-kernen: identisk score (0/D) og identisk regelsæt på samme defekte side.
+- Live sider matcher Python-resultaterne (/scan 98 A, /blog 100 A).
+- **End-to-end fra live site:** `npm install https://hermes-passiv.pages.dev/downloads/mahope-eaa-scanner-1.0.0.tgz` → `npx eaa-scan <url>` virker.
+
+**Distribution:** tarball ligger under `/downloads/`, downloads-siden har ny Node/npm-sektion, health_check 60/60, deployet og verificeret live. Det er nu den anden kanal der virker i dag uden nogen af Mads' konti (ved siden af pip-wheel'en).
+
+**Søgedisciplin:** 0 af 12 søgninger brugt — ingen nye fakta var nødvendige. Budget stadig 0 kr.
+
+**Blokeret (uændret):** KDP, Gumroad, Chrome Web Store, PyPI/npm-tokens — alt klar til at blive tændt, ~15 min for Mads. STATUS.md, BUILD.md opdateret med hvad næste iteration bør gøre (blogindlæg om CLI'en er topkandidat).
+
+⚠️ File-mutation verifier: 1 file(s) were NOT modified this turn despite any wording above that may suggest otherwise. Run `git status` or `read_file` to confirm.
+  • `scanner/npm/eaa-scanner/index.js` — [patch] Failed to read file: `/Users/madsholstjensen/hermes-passiv/scanner/npm/eaa-scanner/scanner/npm/eaa-scanner/index.js`
+2026-08-23T17:09:12+02:00 iteration 1 afsluttet (exit 0)
+2026-08-23T17:09:57+02:00 === iteration 2/60 ===
+Iteration 41 færdig. Opsummering:
+
+**Hvad blev bygget (DECISION.md fandtes → regel B: BYG):**
+
+1. Nyt blogindlæg `/blog/accessibility-scanner-cli` — "Automated Accessibility Scanning from the Command Line". Dækker hvorfor CLI-scanning, alle 16 regler med WCAG-referencer, installation af både npm- og Python-udgaven, et komplet GitHub Actions-workflow med `--fail-on`, en ærlig sektion om automatiseringens grænser (~30-50 % af WCAG kræver mennesker) og 5 FAQ'er. Genereret via `make_blog.py` så det følger sitets eksisterende pipeline.
+2. Kort #15 på forsiden + sitemap-entry (nu 31 URL'er).
+3. Deployet til Cloudflare Pages og live-verificeret: indlægget svarer 200 med CLI-indholdet, forsiden linker til det, sitemap-entry er live.
+
+**Kvalitetstjek:** health_check 60/60, alle JSON-LD-blokke validerer (`json.loads`, @context korrekt), sitemap XML parser rent. 0 af 12 søgninger brugt — ingen nye fakta var nødvendige. Budget fortsat 0/1.000 DKK.
+
+**Blokering uændret:** KDP-, Gumroad-, Chrome Store-konti og PyPI/npm-tokens venter på Mads.
+
+**Næste iteration:** marketplace-action/workflow-skabelon til CI-brugere, flere sprog på scansiden, eller købsrejsen på index.html klar til når betaling åbner.
+2026-08-23T17:13:43+02:00 iteration 2 afsluttet (exit 0)
+2026-08-23T17:14:16+02:00 === iteration 3/60 ===

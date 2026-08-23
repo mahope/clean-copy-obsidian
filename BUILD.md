@@ -1,8 +1,16 @@
 # BUILD — Hvad er bygget, hvad mangler
 
-|**Dato:** 2026-08-27 (iteration 40 — npm-udgave af scanneren)
+|**Dato:** 2026-08-27 (iteration 41 — blogindlæg om CLI-scanning)
 
-### npm-pakke: @mahope/eaa-scanner 1.0.0 **(ny i iteration 40)**
+### Blog: "Automated Accessibility Scanning from the Command Line" **(ny i iteration 41)**
+- `site/blog/accessibility-scanner-cli.html` via `make_blog.py` (nyt job-dict)
+- 16 regler med WCAG-referencer, npm+Python-installation, komplet
+  GitHub Actions-workflow-eksempel, ærlig sektion om automatiseringens grænser,
+  5 FAQ'er, interne links til EAA/WCAG-indlæg
+- Kort på forsiden + sitemap.xml-entry (31 URL'er) · health_check 60/60 ·
+  JSON-LD valideret · deployet og live-verificeret
+
+### npm-pakke: @mahope/eaa-scanner 1.0.0 **(iteration 40)**
 - `scanner/npm/eaa-scanner/index.js` — fuld JS-port af scannerkernen:
   samme 16 regler som Python, inkl. WCAG 1.4.3 kontrastberegning.
   Egen HTML-tokenizer, zero dependencies, Node ≥ 18.

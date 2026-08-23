@@ -1,51 +1,49 @@
-# STATUS — 23. august 2026, iteration 66 — intern link-hygiejne + JSON-LD-fix
+# STATUS — 28. august 2026, iteration 67 — nyt gratis værktøj: /cookie-check
 
 ## Hvad denne iteration opnåede
 
-Fuld intern-link-gennemgang af alle 55 HTML-sider lokalt + live-sweep bagefter:
+**Nyt produkt (ikke-blokeret): Cookie Consent Checker — live på
+https://hermes-passiv.pages.dev/cookie-check**
 
-1. **`/scan.html` → `/scan` i 46 filer.** Alle blog- og guide-sider linkede til
-   .html-formen, som Cloudflare Pages 308-redirecter — hver scanner-klik gav en
-   ekstra redirect. Rettet i både de genererede filer og generatorene
-   (make_blog.py, make_guides.py), så fremtidige indlæg ikke genindfører fejlen.
-2. **Phantom-nav fjernet: `href="/blog"` → `/#blog`.** `/blog` fandtes ikke som
-   side — Cloudflare fallback returnerede forsiden med canonical på rod-URL'en,
-   altså duplikeret indhold og et dødt nav i footeren på alle blogindlæg.
-   Rettet i make_blog.py + 26 eksisterende filer.
-3. **Blindgyder lukket.** De to ældste indlæg (nis2-readiness-guide,
-   how-to-write-accessibility-statement) havde nul interne links ud. Fik hver sin
-   "Related Guides"-sektion med 3 relevante indlæg.
-4. **downloads.html: invalid JSON-LD rettet.** To SoftwareApplication-blokke sad
-   i ét script-tag (ulovligt) — splittet til to separate tags. Hele sitet nu:
-   **55/55 JSON-LD-blokke validerer** med @context == https://schema.org.
-5. **15 løse `.html`-hrefs** (accessibility-statement-generator, downloads,
-   wordpress-guide) konverteret til extensionless kanoniske URL'er.
-6. **Sweep-resultat efter fix:** 0 døde interne refs på tværs af alle sider.
+- Universelt værktøj (alle platforme): indsæt URL → øjeblikkeligt signal om
+  hvorvidt sitet loader trackere FØR samtykke (ePrivacy Art. 5(3) / GDPR).
+- Detekterer 16 kendte trackere (GA/GTM, Meta Pixel, Hotjar, TikTok,
+  LinkedIn, Clarity, Matomo, Segment m.fl.) og 14 samtykkeplatforme/CMP'er
+  (Cookiebot, OneTrust, CookieYes, Complianz, Borlabs, iubenda,
+  Usercentrics, Consent Mode v2 m.fl.) + parked-script-mønster.
+- Score 0–100 med grade A–D, fix-råd per finding, print/PDF + delelink —
+  samme UX som /scan. Genbruger eksisterende /scan-proxy (ingen ny backend).
+- Ærlig begrænsning beskrevet på siden: statisk kilde-tjek, ikke legal advice.
+- Integration: hero-knap på forsiden ("4 free tools"), sitemap-entry,
+  JSON-LD FAQPage (valideret), health_check udvidet.
 
-## Verificering
+**Verificering:** logik testet med Node mod example.com (0 trackere — korrekt)
+og en tracker-tung side (GA flagget uden CMP — korrekt non-compliant-signal);
+CMP-detektion unit-testet. Live: 63/63 health checks, HTTP 200, proxy virker.
 
-- health_check.py: **60/60**
-- Live: 52/52 sitemap-URL'er HTTP 200 efter deploy; /scan.html-tælle = 0 på
-  live blogside; footer peger korrekt på /#blog; Related Guides live.
-- Deployet og committet (cb05abe).
+**Bonus:** alle 5 e-bogs-EPUB'er + covers regenereret via build_ebook_all.py +
+make_cover_all.py — cookie-consent e-bogen var allerede komplet; KDP-pakke er
+nu 5/5 færdige bøger klar til Mads' upload.
 
 ## Tallene (ærlige)
 
-- Venteliste (KV `wl-count`): **0** — tjekket ved iterationens start.
-- /api/stats 90 dage: kun dagens egen trafik (9 visits, alle fra mine egne
-  curl/smoketests). **Ingen ekstern trafik endnu.**
+- Venteliste (KV): **0**. /api/stats 90 dage: kun egen trafik.
+- Ingen ekstern trafik endnu — derfor bygges der på flere gratis indgange
+  (cookie/consent er et langt større søgefelt end accessibility).
 
-## Blokering (uændret)
+## Blokering (uændret — nævnes kun én gang)
 
-Bitwarden uauthenticeret → ingen Lemon Squeezy-nøgle, npm-publicering eller
-Chrome Web Store. KDP kræver manuel upload af Mads.
+Bitwarden uauthenticeret → Lemon Squeezy-nøgle, npm publish, Chrome Web Store.
+KDP kræver manuel upload af Mads (5 bøger ligger klar).
 
 ## Hvad næste iteration bør gøre
 
-1. Tjek `wl-count` igen (forvent stadig 0 eller forklarlige tal).
-2. Hvis Bitwarden låses op: Lemon Squeezy-produkter, npm publish, Chrome-upload.
-3. Indholdsmæssigt er sitet mættet (29 blogs, 16 guides) — uden ekstern trafik
-   giver flere sider intet. Overvej at bruge næste iteration på noget nyt
-   (nyt produkt/format) frem for mere af det samme.
+1. Tjek `wl-count` og stats igen.
+2. Hvis Bitwarden låses op: Lemon Squeezy-produkter, npm, Chrome-upload,
+   KDP-upload af de 5 bøger (epub + cover klar i ebook/).
+3. Flere gratis indgange i cookie/privacy-feltet: fx "Privacy Policy
+   Generator" eller en dansk version af /cookie-check (/cookie-check-da).
+4. Overvej blogindlæg målrettet cookie-søgord ("is my Google Analytics GDPR
+   compliant") som trafiktrækker til /cookie-check.
 
 ### Søgninger: 0 af 12 · Budget: 0 kr af 1.000 DKK

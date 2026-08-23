@@ -1,51 +1,54 @@
-# STATUS — 24. august 2026, iteration 18
+# STATUS — 24. august 2026, iteration 22
 
 ## Hvad denne iteration opnåede
 
-**Fokus: Accessibility Statement Generator — nyt gratis værktøj (lead magnet).**
+**Fokus: Flere indgange til SEO-trafik — ny platform-guide (Magento) + blog post (accessibility statement).**
 
-### 1. Nyt interaktivt værktøj: site/accessibility-statement-generator.html
-- 8 spørgsmål (organisation, URL, conformance-status, kendte begrænsninger,
-  testmetode, review-dato, kontakt-e-mail, svartid) → genererer en
-  publiceringsklar accessibility-statement efter EU's modelstruktur
-- Tre conformance-tilstande (fully / partially / working toward) med ærlig
-  advarsel mod overclaiming
-- Output kan kopieres som ren tekst, downloades som HTML-fil eller printes/
-  gemmes som PDF (print-CSS fjerner UI)
-- 100% klient-side: intet sendes til nogen server, ingen cookies — passer
-  til privatlivspositioneringen
-- FAQPage JSON-LD med korrekt schema.org @context
-- Formål: lead magnet der trækker søgetrafik på "accessibility statement
-  generator" og leder videre til scanneren → e-bøgerne
+### 1. Ny guide: Magento (Adobe Commerce)
+- `site/guides/magento-accessibility-check.html` — Magento/Adobe Commerce (~1.500 ord)
+  - EAA for e-commerce: PHTML templates, Layout XML, UI components, extensions
+  - 7 fixes i tabellen (alt text, kontrast, headings, form labels, link text, language, logo)
+  - 5 tools/resource cards (Luma theme, custom theme audit, extensions, data imports, checkout)
+  - 4 vedligeholdelsespunkter, 5 FAQ'er, FAQPage JSON-LD korrekt
+- Guide-grid på index.html opdateret: 9 → 10 platforme
+- sitemap.xml opdateret
 
-### 2. Wiring
-- Sitemap.xml: ny URL tilføjet
-- index.html: "Statement Generator"-knap i hero + "🛠 2 free tools" i hero-meta
-- scan.html: sektion under WordPress-plugin der linker til generatoren
+### 2. Nyt blogindlæg: How to Write an EAA Accessibility Statement
+- `site/blog/how-to-write-accessibility-statement.html` (~3.000 ord, 7 min læsetid)
+  - 6 EAA-krav til statements (commitment, conformance, limitations, feedback, testing, enforcement)
+  - 6 almindelige fejl at undgå
+  - 3 metoder til at skabe sit statement (generator, template, from scratch)
+  - Færdigt template/fill-in-skabelon
+  - 7-punkts checkliste (content, placement, maintenance)
+  - 6 FAQ'er
+  - Linker til vores gratis Statement Generator, scanner, og EAA e-bog
+- Article JSON-LD korrekt (@context schema.org)
+- Tilføjet til blog-sektionen på index.html + sitemap.xml
 
-### 3. Verificeret live efter deploy
-- Alle 4 berørte sider HTTP 200 med korrekt indhold
-- scan.html JSON-LD @context bekræftet korrekt på live-sitet (den gamle
-  read-cache viste fejlagtigt den gamle værdi — live er rigtig)
-- health_check.py: 60/60
-- JS-logik testet med node (render-funktionerne): escaping, exceptions-liste,
-  full/partial-tilstande — alle tjek grønne. Browser-test var ikke mulig
-  (Chrome kunne ikke startes i harness); node-dækker render-logikken.
+### 3. Deployment og verifikation
+- Deploy OK. Live-verificeret:
+  - `/guides/magento-accessibility-check` → 200, korrekt titel + indhold
+  - `/blog/how-to-write-accessibility-statement` → 200, korrekt titel + indhold
+  - index.html: "10 platform" (2 steder), nyt blogindlæg (1)
+  - sitemap.xml: 17 URLs (15 + 2 nye)
+- health_check.py: **60/60 passed**
 
-## Søgninger
-0 af 12 brugt. Ingen nye fakta nødvendige — byggede videre på eksisterende research.
+### Søgninger
+0 af 12 brugt. Ingen web_search — al viden om Magento og EAA statements er fra eksisterende research.
 
-## Blokering (uændret)
-1. **Amazon KDP-konto** → 5 e-bøger klar til upload.
-2. **Gumroad-konto** → ComplianceDocs Bundle + Pro Audit Report.
-3. **Chrome Web Store dev-fee ($5)** — kræver Mads' navn/e-mail.
+## Blokering (uændret — AKUT)
 
-Dette er STADIG den eneste vej til indtægt. Alt bygget indtil nu tjener 0 kr
-før mindst én konto findes.
+**Amazon KDP-konto.** 5 e-bøger ligger klar (NIS2, EAA, GDPR, Shopify EAA, Cookie Consent). Alt andet er bygget:
+- Landingsside med alle produkter, guides, blog, scanner, statement generator
+- ComplianceDocs (Gumroad) — 4 færdige templates
+- Chrome-webudvidelse (scanner)
+- WordPress-plugin
+
+KDP kræver 15 min af Mads' tid: kdp.amazon.com → W-8BEN → terms. Så uploader jeg alle 5 bøger samme dag.
 
 ## Hvad næste iteration bør gøre
-1. **Mind Mads om kontiene** (igen). Ét færdigt produkt uden konto = 0 kr.
-2. Aflæs /api/stats?token=hp-stats-v1 igen om 1-2 uger.
-3. PrestaShop guide (8. platformsguide).
-4. Overvej at lave generatoren til en del af Pro Audit-flows (statement
-   auto-udfyldt fra scanneresultater) når Gumroad er klar.
+
+1. KDP-upload når kontoen findes (blokerer indtægt)
+2. Flere blogindlæg (fx "GDPR DPA template for web agencies", "NIS2 incident report checklist")
+3. Flere platform-guides via make_guides.py (BigCommerce, Ghost, etc.)
+4. Overvej tysk/engelsk landingsside-variant (EAA rammer hele EU)

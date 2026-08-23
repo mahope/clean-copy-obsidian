@@ -135,7 +135,13 @@
 - 5 eksisterende guide-sider udvidet med platformsspecifikke fix-sektioner
   - Hver side har en "Common fixes in [Platform]" tabel med 6-7 issues
 - Index opdateret: hero-meta til "5 complete e-books", 2 nye produktkort
-- Deployet og verificeret live (alle covers HTTP 200, alle guides viser fix-sektioner)
+- All deployet og verificeret live (alle covers HTTP 200, alle guides viser fix-sektioner)
+## Iteration 20 (24/8)
+- 2 SEO-blogindlæg: `site/blog/nis2-readiness-guide.html` (NIS2 for web agencies, ~2500 ord) + `site/blog/eaa-accessibility-checklist.html` (EAA/WCAG checkliste, ~3500 ord)
+- Begge med fuld OG/Twitter-meta, JSON-LD Article, canonical URLs
+- Index.html opdateret med "From the Blog"-sektion der linker til begge indlæg
+- Sitemap.xml repareret (malformed scan+statement entry) og udvidet med blog-pages + extensionless URLs
+- Deployet og verificeret: alle nye sider 200 med korrekt indhold
 ## Iteration 12 (24/8)
 - WordPress-plugin `eaa-compliance-scanner` bygget (scanner/wp-plugin/):
   PHP-port af scanner_core.py — samme 15 regler, samme rule-IDs og scoring

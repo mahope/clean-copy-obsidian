@@ -758,3 +758,102 @@ STATUS.md og BUILD.md opdateret. Blokering uændret: KDP-konto, Gumroad-konto og
 2026-08-23T13:32:44+02:00 iteration 11 afsluttet (exit 0)
 2026-08-23T13:34:34+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
 2026-08-23T13:39:37+02:00 === iteration 12/15 ===
+Iteration 18 færdig.
+
+**Bygget: Accessibility Statement Generator** (site/accessibility-statement-generator.html)
+- 8 spørgsmål → publiceringsklar EAA/WCAG-statement efter EU's modelstruktur
+- Tre ærlige conformance-tilstande, kendte begrænsninger med workaround-liste
+- Copy som tekst / download HTML / print-PDF — alt 100% klient-side, ingen server, ingen cookies
+- Lead magnet der feeder scanneren → e-bøgerne
+
+**Wiring:** sitemap, hero-knap på forsiden ("2 free tools"), sektion på /scan. Rettede også scan.html's JSON-LD `@context` (live-sitet bekræftet korrekt).
+
+**Verificeret:** deployet til Cloudflare Pages, alle sider 200 med rigtigt indhold, health_check 60/60, render-logik testet med node (browser-harness kunne ikke starte Chrome). Committed som 955fd2f + STATUS-opfølgning.
+
+**Søgninger: 0/12 brugt** — ingen nye fakta var nødvendige.
+
+**Vigtigst at sige klart:** stadig 0 kr i indtægt. Blokeringen er uændret og er den eneste vej til penge — KDP-konto (5 e-bøger klar), Gumroad-konto (bundle + Pro Audit), Chrome Web Store dev-fee ($5). Alt andet er bygget; næste iteration bør primært mind Mads om kontiene.
+2026-08-23T13:46:49+02:00 iteration 12 afsluttet (exit 0)
+2026-08-23T13:47:13+02:00 === iteration 13/15 ===
+Iteration 19 afsluttet. Her er hvad der blev gjort:
+
+## Iteration 19 — OG meta + statement-gen links
+
+**Bygget:**
+- **OG/Twitter meta-tags** på alle 12 HTML-sider — delte links viser nu titel og beskrivelse på LinkedIn, X, Slack, Messenger
+- **Statement Generator-knap** i alle 7 guides' "Go deeper"-sektion — lead magnet feeder trafik fra guides
+- 2 deploys til Cloudflare Pages
+- health_check 60/60 — bekræftet live
+
+**Afklaret:** Den langvarige `***@type` vs `schema.org`-forvirring var en **terminal-output redaction** — alle filer var og er korrekte med `schema.org`. Ingen reelle korruptioner.
+
+**Søgninger:** 0 af 12 brugt
+**Budget:** 0 kr af 1.000
+**Commit:** `0735360` (lokalt, ingen remote)
+
+**Blokering — stadig uændret:** KDP-konto, Gumroad-konto, Chrome Web Store dev-fee ($5). 5 e-bøger, 4 templates + audit, scanner-udvidelse, 7 guides, statement generator — alt bygget. 0 kr tjent. Den eneste vej til indtægt går gennem konti.
+2026-08-23T13:58:11+02:00 iteration 13 afsluttet (exit 0)
+2026-08-23T13:58:47+02:00 === iteration 14/15 ===
+Her er iteration 20 færdig.
+
+**Hvad jeg gjorde:**
+- Skrev 2 SEO-blogindlæg (~2500 + ~3500 ord) målrettet "NIS2 compliance for web agencies" og "EAA accessibility checklist WordPress" — så der er indhold på Google når kontiet kommer
+- Tilføjede blog-sektion på forsiden
+- Reparerede sitemap.xml (den havde en malformed entry der kunne blokere Google-indeksering)
+- Deployet og verificeret live: 4 filer, alle sider 200, health check 60/60
+
+**Blokeringen er stadig den samme:** KDP-konto. 5 e-bøger klar, site klar, blogindlæg på plads. Der kommer 0 kr ind før du opretter den.
+
+**Præcis hvad du skal gøre (15 min):**
+1. Gå til https://kdp.amazon.com
+2. Log ind (eller opret konto som Mahope)
+3. Udfyld W-8BEN skatteinfo
+4. Godkend terms
+5. Sig klar — så uploader jeg alle 5 bøger + opdaterer landingssiden
+
+Alt andet er bygget. Der er intet tilbage på min side før du siger ja.
+2026-08-23T14:06:07+02:00 iteration 14 afsluttet (exit 0)
+2026-08-23T14:06:32+02:00 === iteration 15/15 ===
+Iteration 21 færdig. Resumé:
+
+**Bygget (0 søgninger brugt af 12):**
+
+1. **To nye platformsguides (7 → 9)** — `site/guides/prestashop-accessibility-check.html` og `site/guides/weebly-accessibility-check.html`, hver ~1.500 ord med FAQ-schema, fixtabeller og vedligeholdelsesplan. Genereret via nyt genbrugeligt script `make_guides.py` — fremtidige guider (Magento, Ghost, BigCommerce) er nu en job-dict væk.
+
+2. **Reel bug fundet og rettet:** `site/wordpress-plugin.html` havde to JSON-LD-objekter i ét `<script>`-tag — ugyldigt og blev ignoreret af Google. Nu to tags, verificeret live at FAQPage + SoftwareApplication parser. Fuld schema-audit af alle 12 sider: alt gyldigt nu. (Den gamle "***@type"-note viste sig at være et terminal-visningsartefakt, ikke en reel fejl — rå bytes var rene.)
+
+3. **index.html + sitemap.xml** opdateret (15 URLs), deployet og **verificeret live**: begge nye guider svarer 200 med korrekt canonical, forsiden linker dem, sitemap live = 15 URLs, health_check 60/60.
+
+**STATUS.md opdateret**, herunder den uændrede akutte blokering: **KDP-kontoen**. Alt andet arbejde udskyder bare indtægten — 15 minutter på kdp.amazon.com (W-8BEN + terms), så uploader jeg alle 5 bøger fra det klar-liggende `kdp-upload-kit.md`.
+
+Næste iteration: KDP-upload når kontoen findes; ellers flere blogindlæg og flere guider via make_guides.py.
+2026-08-23T14:24:58+02:00 iteration 15 afsluttet (exit 0)
+2026-08-23T14:25:19+02:00 passiv-loop afsluttet
+2026-08-23T14:54:18+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+2026-08-23T15:00:27+02:00 === iteration 1/15 ===
+## Iteration 22 — færdig
+
+**Hvad blev bygget:**
+
+### 1. Magento (Adobe Commerce) guide — `site/guides/magento-accessibility-check.html`
+Ny platform-guide #10. Dækker Magento Open Source + Adobe Commerce: PHTML templates, Layout XML, UI components, third-party extensions, product data imports. 5 FAQ'er, fix-tabel med 7 issues, 5 tools/resource cards. FAQPage JSON-LD korrekt.
+
+### 2. Blog: How to Write an EAA Accessibility Statement — `site/blog/how-to-write-accessibility-statement.html`
+~3.000 ord guide der binder vores Statement Generator, scanner og e-bog sammen. Dækker:
+- Alle 6 EAA-krav til et statement
+- 6 almindelige fejl (med konkrete eksempler)
+- Færdig fill-in skabelon
+- 7-punkts checkliste
+- Linker til /accessibility-statement-generator, /scan, og /#products
+
+### 3. Opdateringer
+- Index side: "10 platform-specific guides", Magento-kort i guide-grid, nyt blog-indlæg i blog-sektion
+- Sitemap: 17 URLs (15 → 17)
+- Health check: 60/60 passed
+- Deployet og live-verificeret — alle sider 200 med korrekt indhold
+
+**Budget:** 0/1000 DKK. **Søgninger:** 0/12.
+
+**Stadig blokeret på:** Amazon KDP-konto (Mads skal oprette). 5 e-bøger, site, guides, scanner, blog — alt er bygget og venter.
+2026-08-23T15:05:12+02:00 iteration 1 afsluttet (exit 0)
+2026-08-23T15:05:35+02:00 === iteration 2/15 ===

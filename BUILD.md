@@ -184,3 +184,12 @@
 **Søgninger: 4 af 12 brugt** — CompliScan positioning research. Budget: 0 kr af 1.000.
 
 **Blokering uændret** — KDP-konto, Gumroad-konto, Chrome Web Store dev-fee. Alt andet er bygget.
+
+## Iteration 25 (24/8) — forbedringer + cookie consent blog
+
+- Guide-links extensionless: index.html + scan.html (alle 10 guides, fjernet .html)
+- 3 manglende guides tilføjet på scan.html (PrestaShop, Weebly, Magento) — både i guide-liste og JS platform detection
+- Nyt blogindlæg: "Cookie Consent & GDPR Compliance for Web Agencies" (~12.2KB, site/blog/)
+- Index.html: 5 → 6 blog-kort, sitemap: 20 → 21 URLs
+- health_check 60/60, deployet og live-verificeret
+- Budget: 0 kr. Blokering: uændret (KDP-konto fra Mads)

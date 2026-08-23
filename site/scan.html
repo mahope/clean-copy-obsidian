@@ -122,13 +122,16 @@
   <p>Scan flagged something on your site? These free guides show exactly where
   to fix the most common issues in each platform's admin:</p>
   <ul class="findings">
-    <li><a href="/guides/wordpress-accessibility-check.html">WordPress accessibility check</a> — or use the free <a href="/wordpress-plugin">scanner plugin</a></li>
-    <li><a href="/guides/shopify-accessibility-check.html">Shopify accessibility check</a></li>
-    <li><a href="/guides/webflow-accessibility-check.html">Webflow accessibility check</a></li>
-    <li><a href="/guides/wix-accessibility-check.html">Wix accessibility check</a></li>
-    <li><a href="/guides/squarespace-accessibility-check.html">Squarespace accessibility check</a></li>
-    <li><a href="/guides/drupal-accessibility-check.html">Drupal accessibility check</a></li>
-    <li><a href="/guides/joomla-accessibility-check.html">Joomla accessibility check</a></li>
+    <li><a href="/guides/wordpress-accessibility-check">WordPress accessibility check</a> — or use the free <a href="/wordpress-plugin">scanner plugin</a></li>
+    <li><a href="/guides/shopify-accessibility-check">Shopify accessibility check</a></li>
+    <li><a href="/guides/webflow-accessibility-check">Webflow accessibility check</a></li>
+    <li><a href="/guides/wix-accessibility-check">Wix accessibility check</a></li>
+    <li><a href="/guides/squarespace-accessibility-check">Squarespace accessibility check</a></li>
+    <li><a href="/guides/drupal-accessibility-check">Drupal accessibility check</a></li>
+    <li><a href="/guides/joomla-accessibility-check">Joomla accessibility check</a></li>
+    <li><a href="/guides/prestashop-accessibility-check">PrestaShop accessibility check</a></li>
+    <li><a href="/guides/weebly-accessibility-check">Weebly accessibility check</a></li>
+    <li><a href="/guides/magento-accessibility-check">Magento / Adobe Commerce accessibility check</a></li>
   </ul>
 </section>
 </main>
@@ -267,13 +270,15 @@ async function scan(url){
     ARIA_HIDDEN_FOCUS:'Fix: remove aria-hidden from focusable elements, or add tabindex="-1".',
     CONTRAST:'Fix: darken the text colour or lighten the background until the contrast ratio is at least 4.5:1 (3:1 for large text). Check it at webaim.org/resources/contrastchecker.'};
   const PLATFORM_GUIDES={
-    'WordPress':'/guides/wordpress-accessibility-check.html',
-    'Shopify':'/guides/shopify-accessibility-check.html',
-    'Webflow':'/guides/webflow-accessibility-check.html',
-    'Wix':'/guides/wix-accessibility-check.html',
-    'Squarespace':'/guides/squarespace-accessibility-check.html',
-    'Drupal':'/guides/drupal-accessibility-check.html',
-    'Joomla':'/guides/joomla-accessibility-check.html'};
+    'WordPress':'/guides/wordpress-accessibility-check',
+    'Shopify':'/guides/shopify-accessibility-check',
+    'Webflow':'/guides/webflow-accessibility-check',
+    'Wix':'/guides/wix-accessibility-check',
+    'Squarespace':'/guides/squarespace-accessibility-check',
+    'Drupal':'/guides/drupal-accessibility-check',
+    'Joomla':'/guides/joomla-accessibility-check',
+    'PrestaShop':'/guides/prestashop-accessibility-check',
+    'Magento':'/guides/magento-accessibility-check'};
   const gen=((doc.querySelector('meta[name="generator"]')||{}).content||'');
   let plat=null;
   for(const p of Object.keys(PLATFORM_GUIDES)){

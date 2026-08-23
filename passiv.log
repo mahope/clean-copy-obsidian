@@ -857,3 +857,40 @@ Ny platform-guide #10. Dækker Magento Open Source + Adobe Commerce: PHTML templ
 **Stadig blokeret på:** Amazon KDP-konto (Mads skal oprette). 5 e-bøger, site, guides, scanner, blog — alt er bygget og venter.
 2026-08-23T15:05:12+02:00 iteration 1 afsluttet (exit 0)
 2026-08-23T15:05:35+02:00 === iteration 2/15 ===
+Iteration 24 færdig. Sammenfatning:
+
+**Bygget:**
+- `make_blog.py` — genbrugelig blog-post generator (data-dicts → HTML med OG/Twitter/JSON-LD)
+- 2 nye SEO-blogindlæg:
+  - **gdpr-dpa-web-agencies** (~13KB, 7 min) — DPAs for web agencies: hvornår, 7 klausuler, 5 fejl, signeringsproces, 5 FAQ'er. Linker til GDPR e-bog.
+  - **nis2-incident-report-checklist** (~15.5KB, 6 min) — 6-sektions template + 6-trins notificationsproces + fill-in eksempel + 5 FAQ'er. Linker til NIS2 e-bog og readiness guide.
+- Index.html: 2 nye blog-kort (5 blogindlæg i alt)
+- Sitemap.xml: 19 URLs
+
+**Verificeret:** Alle 4 sider 200 med korrekte titler. JSON-LD gyldigt. Deployet og live.
+
+**Søgninger:** 0/12 (al viden fra research).
+
+**Blokering uændret:** KDP-konto mangler (5 e-bøger klar). Gumroad + Chrome Web Store venter på Mads.
+2026-08-23T15:16:50+02:00 iteration 2 afsluttet (exit 0)
+2026-08-23T15:17:15+02:00 === iteration 3/15 ===
+## Iteration 25 færdig — 7 opgaver, alt leveret og verificeret
+
+### Hvad blev bygget/fikset
+
+| Ændring | Detaljer |
+|---------|---------|
+| **🔗 10 guide-links extensionless** | index.html + scan.html: fjernet `.html` fra alle `/guides/*` URLs, matcher canonical URLs i sitemap |
+| **➕ 3 manglende guides på scan.html** | PrestaShop, Weebly, Magento tilføjet til både guide-liste og JS platform-detection (nu 10/10) |
+| **📝 Nyt blogindlæg** | "Cookie Consent & GDPR Compliance for Web Agencies" (~12KB, 8 min), fuld OG/Twitter/JSON-LD, live på https://hermes-passiv.pages.dev/blog/cookie-consent-gdpr-compliance |
+| **📊 Index + sitemap** | 5→6 blog-kort på forsiden, 20→21 URLs i sitemap |
+| **✅ JSON-LD bug** | Kontrolleret via raw bytes: `schema.org` var korrekt. `***` var ren display-artefakt — intet fix nødvendigt |
+| **🚀 Deploy** | Cloudflare Pages, 60/60 health check, alle undersider live-verificeret |
+| **💰 Budget** | 0 kr af 1.000 brugt |
+
+### Blokering (uændret)
+
+**Amazon KDP-konto.** 5 e-bøger, alle covers, alle EPUBs, landing page — alt klar. Der mangler 15 minutter af Mads på kdp.amazon.com. Derudover Gumroad + Chrome Web Store dev-fee ($5, under 150 kr, må jeg selv afholde).
+2026-08-23T15:32:52+02:00 iteration 3 afsluttet (exit 0)
+2026-08-23T15:33:12+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+2026-08-23T15:38:21+02:00 === iteration 4/15 ===

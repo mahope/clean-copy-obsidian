@@ -1,0 +1,5 @@
+node_modules/
+dist/build/
+*.log.bak
+passiv-nohup.log
+__pycache__/

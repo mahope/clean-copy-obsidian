@@ -1847,3 +1847,34 @@ Iteration 83 færdig og live.
 STATUS.md og BUILD.md opdateret. Nøglepointe til næste gang: stats viser fortsat 0 ekstern trafik — hvis de to templatesider heller ikke får besøg, bør næste iteration gå efter et spor med indbygget distribution (markedsplads med egen søgetrafik) frem for flere sider på sitet.
 2026-08-23T22:08:47+02:00 iteration 44 afsluttet (exit 0)
 2026-08-23T22:09:10+02:00 === iteration 45/60 ===
+Iteration 84 færdig og commitet (6d74aa2).
+
+**Hvad jeg lavede:**
+
+1. **Fuld audit først** — sitemap 68 = disk 68, JSON-LD rent i alle filer, track.js overalt, alle downloads 200, health_check 71/71, AI-assistent svarer live. Ingen fejl at rette.
+2. **Byggede `/llms.txt`** — maskinlæsbart katalog med alle 11 værktøjer, templates, npm-install-kommandoen og verificerbare nøglefakta (NIS2 24h/72h-frister, EAA-datoer, GDPR-bødegrænser) som ChatGPT/Perplexity kan citere. Linket fra robots.txt, forsiden og /free-tools.
+3. **Deployet og live-verificeret**: alle fire ændrede flader returnerer det nye indhold, IndexNow pinget (68 URLs → 200).
+
+**Ærlig konklusion:** Sitet er ikke indekseret nogen steder endnu (0 søgeresultater), og det er derfor trafikken er 0. Alt der kan bygges uden konti er bygget. De reelle blokeringer står sig: Bitwarden → Lemon Squeezy/npm/Chrome-nøgler, KDP-upload kræver Mads.
+
+**Anbefaling til næste iteration** (skrevet i STATUS.md): tjek indeksering én gang; hvis stadig 0, så stop med sitet og byg et nyt spor med indbygget distribution — eller gør desktop/npm-artefakterne klar så udgivelsen er et 10-minutters job når nøglerne ligger klar.
+
+Søgninger: 2 af 12 · Budget: 0 af 1.000 DKK.
+2026-08-23T22:17:58+02:00 iteration 45 afsluttet (exit 0)
+2026-08-23T22:18:20+02:00 === iteration 46/60 ===
+Iteration 85 færdig. Resumé:
+
+**Konklusion først:** Sitet er stadig ikke indekseret nogen steder (tjekket med 4 søgninger — 0 resultater). Efter min egen regel fra iteration 84 pillede jeg ikke ved sitet. I stedet gjorde jeg udgivelsessporet 100 % klar.
+
+**Gjort:**
+- **npm-pakke @mahope/eaa-scanner 1.2.0** verificeret: self-test OK (11 regler), syntaks OK, metadata korrekt.
+- **Python-pakke eaa-scanner 1.2.0** bygget (sdist + wheel), `twine check` PASSED, og — vigtigt — faktisk installeret og kørt lokalt: `eaa-scan` finder de forventede fejl på defekt HTML med korrekt exit-kode til CI. Gamle 1.0.0-artefakter fjernet fra dist/.
+- **Ny fil PUBLISH_CHECKLIST.md**: præcise kommandoer for npm publish, PyPI upload, Lemon Squeezy, Chrome Web Store og KDP — klar til at køre samme minut nøglerne ligger i Bitwarden.
+- STATUS.md opdateret med ærlige tal (stadig 0/0/0).
+
+**Fundet undervejs:** pakken kan ikke køres som `python -m eaa_scanner` (mangler `__main__`) — CLI'en er `eaa-scan`, README er korrekt, så intet at rette før udgivelse.
+
+**Næste iteration:** tjek indeksering (1-2 søgninger); hvis nøgler nu findes → kør PUBLISH_CHECKLIST.md; ellers start et helt nyt produktspor med indbygget distribution frem for mere polering. Søgninger brugt: 4 af 12 · Budget: 0 kr af 1.000 DKK.
+2026-08-23T22:24:14+02:00 iteration 46 afsluttet (exit 0)
+2026-08-23T22:24:34+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+2026-08-23T22:29:48+02:00 === iteration 47/60 ===

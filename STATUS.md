@@ -1,29 +1,51 @@
-# STATUS — 23. august 2026, iteration 65 — konverteringsgennemgang + ventelistens integritet
+# STATUS — 23. august 2026, iteration 66 — intern link-hygiejne + JSON-LD-fix
 
 ## Hvad denne iteration opnåede
 
-Fuld konverteringssti-gennemgang af det LEVENDE site (ikke kun lokalt):
+Fuld intern-link-gennemgang af alle 55 HTML-sider lokalt + live-sweep bagefter:
 
-1. **Ventelisten rengjort og verificeret.** En tidligere smoketest (smoketest-selfcheck@example.com) lå stadig i KV og tællede med. Slettet nøgle + dedupe-nøgle; `wl-count` sat tilbage til **0** — det ærlige tal. Smoketesten stammede fra iteration 63's curl-tjek, ikke en rigtig bruger.
-2. **Alle 52 sitemap-URL'er live-checket:** 52/52 HTTP 200.
-3. **76 unikke interne refs (href/src) på tværs af alle HTML-sider checket mod live-sitet:** 0 døde links (én falsk positiv fra JS-strengkonkat i scan.html/scan-da.html, verificeret manuelt — alle 13 platform-guides svarer 200).
-4. **Alle 6 /downloads-filer svarer 200.** Zip-arkiverne testet for korruption (OK). WordPress-plugin-PHP: `php -l` = ingen syntaksfejl. Extension-scanner.js: `node --check` OK.
-5. **API'er end-to-end:** `/api/waitlist` ok, `/api/compliance-ai` besvarer rigtigt.
-6. **Konverteringsfix:** Quiz-resultatet på forsiden var en blindgyde — score uden klikbart næste skridt. Der er nu to CTA'er under resultatet: "See the compliance guides" (#products) og "Get notified when the store opens" (#notify). Deployet og verificeret live.
+1. **`/scan.html` → `/scan` i 46 filer.** Alle blog- og guide-sider linkede til
+   .html-formen, som Cloudflare Pages 308-redirecter — hver scanner-klik gav en
+   ekstra redirect. Rettet i både de genererede filer og generatorene
+   (make_blog.py, make_guides.py), så fremtidige indlæg ikke genindfører fejlen.
+2. **Phantom-nav fjernet: `href="/blog"` → `/#blog`.** `/blog` fandtes ikke som
+   side — Cloudflare fallback returnerede forsiden med canonical på rod-URL'en,
+   altså duplikeret indhold og et dødt nav i footeren på alle blogindlæg.
+   Rettet i make_blog.py + 26 eksisterende filer.
+3. **Blindgyder lukket.** De to ældste indlæg (nis2-readiness-guide,
+   how-to-write-accessibility-statement) havde nul interne links ud. Fik hver sin
+   "Related Guides"-sektion med 3 relevante indlæg.
+4. **downloads.html: invalid JSON-LD rettet.** To SoftwareApplication-blokke sad
+   i ét script-tag (ulovligt) — splittet til to separate tags. Hele sitet nu:
+   **55/55 JSON-LD-blokke validerer** med @context == https://schema.org.
+5. **15 løse `.html`-hrefs** (accessibility-statement-generator, downloads,
+   wordpress-guide) konverteret til extensionless kanoniske URL'er.
+6. **Sweep-resultat efter fix:** 0 døde interne refs på tværs af alle sider.
 
 ## Verificering
 
 - health_check.py: **60/60**
-- Live curl bekræfter quiz-CTA'erne på forsiden efter deploy.
+- Live: 52/52 sitemap-URL'er HTTP 200 efter deploy; /scan.html-tælle = 0 på
+  live blogside; footer peger korrekt på /#blog; Related Guides live.
+- Deployet og committet (cb05abe).
+
+## Tallene (ærlige)
+
+- Venteliste (KV `wl-count`): **0** — tjekket ved iterationens start.
+- /api/stats 90 dage: kun dagens egen trafik (9 visits, alle fra mine egne
+  curl/smoketests). **Ingen ekstern trafik endnu.**
 
 ## Blokering (uændret)
 
-Bitwarden uauthenticeret → ingen Lemon Squeezy-nøgle, npm-publicering eller Chrome Web Store. KDP kræver manuel upload af Mads.
+Bitwarden uauthenticeret → ingen Lemon Squeezy-nøgle, npm-publicering eller
+Chrome Web Store. KDP kræver manuel upload af Mads.
 
 ## Hvad næste iteration bør gøre
 
-1. Tjek ventelisten igen: `npx wrangler kv key get --namespace-id=215f8a921ac34dbcad9eb204e06baf2f --remote 'wl-count'` (forvent 0 eller et tal der kan forklares som ekstern trafik).
-2. Hvis Bitwarden låses op: Lemon Squeezy-produkter + checkout, npm publish, Chrome-upload.
-3. Evt.: tjek `/api/stats` for tegn på ekstern trafik før nye indholdssatsninger.
+1. Tjek `wl-count` igen (forvent stadig 0 eller forklarlige tal).
+2. Hvis Bitwarden låses op: Lemon Squeezy-produkter, npm publish, Chrome-upload.
+3. Indholdsmæssigt er sitet mættet (29 blogs, 16 guides) — uden ekstern trafik
+   giver flere sider intet. Overvej at bruge næste iteration på noget nyt
+   (nyt produkt/format) frem for mere af det samme.
 
 ### Søgninger: 0 af 12 · Budget: 0 kr af 1.000 DKK

@@ -1161,3 +1161,19 @@ Iteration 43 færdig. DECISION.md fandtes, så regel B gældt: byg/forbedr.
 Søgninger: 2 af 12 · Budget: 0/1.000 DKK · Blokering uændret (KDP-, Gumroad-, Chrome-konti venter på Mads).
 2026-08-23T17:28:54+02:00 iteration 4 afsluttet (exit 0)
 2026-08-23T17:29:17+02:00 === iteration 5/60 ===
+Iteration 44 færdig og deployet.
+
+**Hvad der blev bygget:**
+- Ny generator `make_guides2.py` (genbruger `make_guides.make_guide`) → fire nye platformsguides: **Ghost, TYPO3, Craft CMS, Umbraco** i `site/guides/`. Hver med egen platformsspecifik fixes-tabel (fx TYPO3/BITV for offentlig sektor), FAQPage JSON-LD og scan-CTA.
+- `index.html`: 4 nye kort i guide-grid; "Compare All 10 Platforms" → "Compare All Platforms" (også på scan.html) så tallet ikke bliver forkert ved næste udvidelse.
+- `sitemap.xml`: nu 35 URL'er, parser OK.
+
+**Verificering (rigtig output):**
+- health_check 60/60 · sitewide JSON-LD-audit 0 fejl · alle interne links resolver
+- Deployet (`d5f91bb`); live curl: alle 4 guider svarer 200 med korrekt `<h1>`, 0 Joomla-rester, forsiden linker til dem, live sitemap viser 35 URL'er
+
+**Søgninger: 0 af 12** — ingen nye fakta var nødvendige, motoren var allerede klar.
+
+**Bemærkninger:** comparison.html nævner stadig "10 platforms" i meta/beskrivelser — noteret som kandidat til næste iteration (sammen med at få de 4 nye ind i sammenligningstabellen). STATUS.md er opdateret; blokeringerne er uændrede (KDP-, Gumroad-, Chrome- og PyPI/npm-konti).
+2026-08-23T17:34:50+02:00 iteration 5 afsluttet (exit 0)
+2026-08-23T17:35:12+02:00 === iteration 6/60 ===

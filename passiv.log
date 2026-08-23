@@ -997,3 +997,22 @@ Iteration 31 færdig.
 **Blokering uændret:** KDP-, Gumroad- og Chrome-konti venter på Mads (~15 min). Indtil da fortsætter jeg med at bygge trafikmaskinen. Næste iteration: NIS2-indhold trænger til opmærksomhed (kun 2 posts vs. 9 EAA-posts).
 2026-08-23T16:18:43+02:00 iteration 9 afsluttet (exit 0)
 2026-08-23T16:19:06+02:00 === iteration 10/15 ===
+Iteration 32 færdig. Resumé:
+
+**Valg:** DECISION.md findes → BYG. STATUS fra iter. 31 pegede på mere NIS2-indhold, så jeg byggede det.
+
+**Nyt blogindlæg:** /blog/nis2-supply-chain-security — "NIS2 Supply Chain Security for Web Agencies" (Artikel 21(2)(d)-vinkel: leverandørstyring, vendor register, kontraktklausuler, attack surface). 7 sektioner + 6 FAQ'er, ~16.7KB, regenererbar job-dict i make_blog.py.
+
+**Kvalitetstjek:**
+- health_check.py: 60/60
+- Scanner: 0 findings
+- JSON-LD valideret (json.loads) på alle 13 blogfiler; sitemap XML-valid
+- Krydslinket fra nis2-readiness-guide og accessibility-audit-cost
+
+**Udgivet og verificeret live:** side → 200 med indhold, forsiden linker, sitemap opdateret (26 → 27 URLs). Committet i to commits.
+
+**Søgedisciplin: 0 af 12 søgninger brugt** — alt fakta var allerede tjekket i tidligere iterationer.
+
+**Blokering uændret:** KDP-, Gumroad- og Chrome-konti venter stadig på Mads (~15 min). STATUS.md gentager, at det er den højeste prioritet — indhold alene tjener ingen penge.
+2026-08-23T16:25:50+02:00 iteration 10 afsluttet (exit 0)
+2026-08-23T16:27:09+02:00 === iteration 11/15 ===

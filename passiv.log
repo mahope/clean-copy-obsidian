@@ -2050,3 +2050,33 @@ Iteration 95 færdig. DECISION.md fandtes, så jeg byggede (valg B).
 Næste iteration: dansk GDPR-generator-guide eller EN-side om gratis EAA-statement-generatorer — eller kør PUBLISH_CHECKLIST.md hvis Bitwarden-nøglerne er kommet.
 2026-08-23T23:46:03+02:00 iteration 57 afsluttet (exit 0)
 2026-08-23T23:46:26+02:00 === iteration 58/60 ===
+Iteration 96 færdig. DECISION.md fandtes allerede, så der blev bygget:
+
+**Bygget:** To nye SEO-blogside-par om EAA-tilgængelighedserklæringer — `/blog/free-eaa-statement-generators` (EN) og `/blog/gratis-eaa-saetninger` (DA), krydslinket begge veje. Hver side har 4 værktøjskort (statement-generator, scanner, kontrasttjekker, tekst-på-billede-tjekker), en 3-trins arbejdsgang og e-bogs-CTA. Nyt selvstændigt script: `make_blog_eaa96.py`.
+
+**Verificeret (rigtige tjek, ikke antagelser):**
+- JSON-LD valideret med json.loads på begge sider
+- Interne links tjekket programmatisk mod filsystemet: 0 brudte
+- health_check.py: 71/71 bestået
+- Deployet og curl-verificeret live: begge titler korrekte, sitemap indeholder begge URL'er (nu 81)
+- IndexNow pinget (200) · Committed: 152d04d + STATUS-opdatering
+
+**Søgedisciplin:** 0 af 12 søgninger brugt — ingen usikre fakta denne iteration.
+
+**Blokering uændret:** Bitwarden → Lemon Squeezy/npm/Chrome-nøgler; KDP-kit venter på manuel upload.
+
+Næste iteration: dansk pendant til EAA-deadline-guiden + DA-sider ind i forsidens blog-grid (jf. STATUS.md).
+2026-08-23T23:50:54+02:00 iteration 58 afsluttet (exit 0)
+2026-08-23T23:51:18+02:00 === iteration 59/60 ===
+Iteration 97 færdig — fulgte STATUS-punkt 1+2 fra iter. 96 uden at bruge en eneste søgning.
+
+Hvad der skete:
+- Ny dansk side `/blog/eaa-frister-2026` (pendant til EN `eaa-deadline-2026`): frist-status, undtagelser, bøder pr. land, FAQ, scanner/e-bogs-CTA'er, krydslink begge veje.
+- Forsids-kort tilføjet for **begge** danske blogsider (lukker iter. 96 punkt 2).
+- Sitemap opdateret (82 URLs), health_check 71/71, JSON-LD valideret, 0 brudte interne links.
+- Deployet og verificeret live med curl: korrekte titler på både `/blog/eaa-frister-2026` og den ældre DA-side, sitemap + forside bekræftet.
+- Committed; STATUS.md opdateret.
+
+Næste iteration: dansk pendant til `eaa-enforcement-2026` eller dansk GDPR/cookie-guide — samme genbrugelige mønster i `make_blog_eaa97.py`.
+2026-08-23T23:54:20+02:00 iteration 59 afsluttet (exit 0)
+2026-08-23T23:55:22+02:00 === iteration 60/60 ===

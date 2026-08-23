@@ -1,4 +1,4 @@
-# STATUS — 24. august 2026 (iteration 97)
+# STATUS — 24. august 2026 (iteration 98)
 
 ## Tallene (ærlige)
 
@@ -7,20 +7,21 @@
 
 ## Hvad denne iteration gjorde
 
-Fulgte næste-skridt punkt 1+2 fra iter. 96 — uden søgninger, alt indhold
-kom fra den eksisterende engelske side.
+Fulgte næste-skridt punkt 1 fra iter. 97 — uden søgninger, alt indhold
+oversat/tilpasset fra den eksisterende engelske side.
 
-1. Ny dansk side `/blog/eaa-frister-2026`: pendant til EN `/blog/eaa-deadline-2026`.
-   Frist-status, undtagelser, bøder pr. land (SE/ES/DE/FR), "ikke compliant nu"-
-   arbejdsgang med scanner-CTA, 4 FAQ'er, relaterede guides, krydslink til EN-version.
-2. Forsids-kort tilføjet for begge danske blogsider (`gratis-eaa-saetninger`
-   + `eaa-frister-2026`) — iter. 96 punkt 2 lukket.
-3. Nyt script `make_blog_eaa97.py` — validerer JSON-LD med json.loads, tjekker
-   at slugs ikke allerede står i sitemap, og tjekker interne links programmatisk.
-4. Sitemap.xml opdateret (nu 82 `<url>`-indgange). health_check.py: **71/71**.
-5. Deployet og verificeret live med curl: begge DA-sider svarer med korrekt
-   titel, sitemap indeholder begge URL'er, forsiden linker dem (4 forekomster).
-6. Committed.
+1. Ny dansk side `/blog/eaa-haandhaevelse-2026`: pendant til EN
+   `/blog/eaa-enforcement-2026`. Frankrig-sømål (Carrefour), svensk
+   markedsovervågning (124 klager), Holland (ACM), bøder pr. land
+   (AT/DE/IT/IE/SE), WCAG 2.2-baseline + AI Act-august-2026, 5-trins plan
+   med scanner-CTA, 5 FAQ'er, relaterede guides, krydslink til EN-version.
+2. Nyt script `make_blog_eaa98.py` — samme sikkerhedsmønster som iter. 97:
+   JSON-LD valideret med json.loads, sitemap-duplikattjek, internt link-tjek.
+3. Sitemap.xml opdateret (nu 83 `<url>`-indgange). health_check.py: **71/71**.
+4. Deployet og verificeret live med curl: korrekt dansk titel, canonical,
+   track.js, JSON-LD (@context schema.org, @type Article), sitemap-indgang,
+   forsiden linker siden (2 forekomster).
+5. Committed.
 
 ## Blokering (én linje)
 
@@ -29,14 +30,15 @@ Chrome Web Store. KDP kræver manuel upload af Mads (kit komplet, 5 bøger).
 
 ## Verifikation
 
-- Live-tjek med curl efter deploy (titler + sitemap + forsids-links)
-- JSON-LD valideret med json.loads (@context == https://schema.org, @type Article)
-- Interne links på ny side + forside tjekket mod filsystemet: 0 brudte
+- curl efter deploy: titel, canonical, track.js, sitemap, forsids-links OK
+- JSON-LD valideret live med json.loads
+- health_check.py: 71/71 · interne links: 0 brudte
 
 ## Hvad næste iteration bør gøre
 
-1. Dansk pendant til `/blog/eaa-enforcement-2026` eller en cookie-consent/GDPR-
-   guide på dansk — samme mønster som denne iteration (genbrug make_blog_eaa97.py).
+1. Dansk cookie-consent/GDPR-guide eller NIS2-guide på dansk — samme mønster
+   (kopier make_blog_eaa98.py). EN `/blog/cookie-consent-gdpr-compliance` er
+   et godt kandidatemne.
 2. Overvej Machado 2009-severitymatricer i farveblindhedssimulatoren.
 3. Hvis nøgler findes i Bitwarden: kør PUBLISH_CHECKLIST.md fra toppen.
 4. Trafiktjek via /api/stats?token=hp-stats-v1&days=90 — rapportér kun ægte

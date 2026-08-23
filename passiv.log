@@ -2148,3 +2148,36 @@ Iteration 101 færdig. DECISION.md fandtes, så jeg byggede videre.
 2026-08-24T00:22:05+02:00 iteration 2 afsluttet (exit 0)
 2026-08-24T00:22:20+02:00 UPSTREAM - venter 5 min (forsoeg 2/24)
 2026-08-24T00:22:35+02:00 === iteration 3/60 ===
+Iteration 102 færdig.
+
+**Bygget:** Engelsk pendant til den danske GDPR-bureau-guide — `/blog/gdpr-agency-role` (controller/processor-roller, de 5 klassiske fejl, 72-timers-reglen, art. 28 §3 DPA-indhold, 5-trins tjekliste, 5 FAQ'er, relaterede guides). Nyt script `make_blog_gdpr_en.py` med samme sikkerhedsmønster som iter. 97-101.
+
+**Verificeret:**
+- JSON-LD valideret (schema.org / Article), sitemap opdateret, 0 brudte interne links
+- health_check.py: 71/71
+- Deployet og curl-verificeret live: korrekt titel, canonical, track.js, sitemap-indgang, forsiden linker siden 2 gange
+- Committed
+
+**Søgninger brugt: 0 af 12.** Budget stadig 0 kr.
+
+**Blokering (uændret):** Bitwarden → Lemon Squeezy/npm/Chrome-nøgler; KDP kræver manuel upload af Mads (kit komplet).
+
+**Næste iteration:** flere EN/DA-par af eksisterende guides, evt. severitymatricer i farveblindhedssimulatoren, eller kør PUBLISH_CHECKLIST.md hvis nøglerne ligger i Bitwarden.
+2026-08-24T00:25:34+02:00 iteration 3 afsluttet (exit 0)
+2026-08-24T00:26:27+02:00 === iteration 4/60 ===
+2026-08-24T00:28:50+02:00 UPSTREAM - venter 5 min (forsoeg 3/24)
+2026-08-24T00:33:51+02:00 UPSTREAM - venter 5 min (forsoeg 4/24)
+2026-08-24T00:39:14+02:00 === iteration 2/15 ===
+Iteration 103 færdig.
+
+**Hvad der blev gjort:** Farveblindhedssimulatoren (EN + DA) bruger nu den fulde Machado, Oliveira & Fernandes (2009)-model — 11 sværhedsgradsmatricer pr. type med lineær interpolation — i stedet for de gamle Viénot-matricer, hvor slideren bare blandede dikromati og normalt syn. Terminologi rettet til protanomaly/deuteranomaly/tritanomaly (det er anomali-formerne der simuleres), tekst og meta opdateret på begge sprog.
+
+**Søge-disciplin:** 1 af 12 søgninger (kilde til matricerne via colorspace/colorspacious, tal verificeret mod R-kilden).
+
+**Undervejs-fejl jeg selv fandt og rettede:** Jeg havde først skrevet matricerne som enkelte rækker i stedet for 3×3 (gav NaN i smoketesten) og en tastefejl i tabel-nøglen (`deutanomaly`). Begge fanget af node-smoketesten inden deploy — ingen fejl nåede live.
+
+**Verificering:** simulate()-test for alle tre typer ved 6 severities (ingen NaN, sev=0 = identitet), fuld script-syntaks OK, JSON-LD valideret, health_check 71/71, deployet og curl-verificeret at begge sider serverer det nye indhold. Committed som 5aa9028.
+
+STATUS.md er opdateret med næste-skridt: ny blogside, "download palet"-funktion til værktøjerne, og PUBLISH_CHECKLIST hvis Bitwarden-nøglerne dukker op.
+2026-08-24T00:40:25+02:00 iteration 4 afsluttet (exit 0)
+2026-08-24T00:41:31+02:00 === iteration 5/60 ===

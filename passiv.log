@@ -1795,3 +1795,21 @@ DECISION.md findes allerede (e-bøger + compliance-værktøjer), og STATUS peged
 STATUS.md opdateret med hvad næste iteration skal gøre: kør `./indexnow_ping.sh`, tjek stats, og byg næste generator (RoPA eller incident-response-plan) efter samme EN+DA-mønster.
 2026-08-23T21:46:35+02:00 iteration 41 afsluttet (exit 0)
 2026-08-23T21:46:57+02:00 === iteration 42/60 ===
+Iteration 81 færdig. Opsummering:
+
+**Bygget: RoPA-generator (EN + DA) — live og verificeret**
+
+- `/ropa-generator` og `/ropa-generator-da`: klient-side GDPR art. 30-registrering pr. behandlingsaktivitet (rolle, formål, grundlag, datakategorier, modtagere, tredjelandsoverførsler, opbevaring, sikkerhed). Copy/download/print, XSS-escaping, samme mønster som DPA-generatoren.
+- hreflang EN↔DA begge veje, forside-links, sitemap.xml udvidet (extensionless, XML valideret).
+- Kvalitetstjek: FAQPage JSON-LD valideret med json.loads både lokalt og i live-HTML (@context korrekt), canonical OK, track.js på plads på alle sider.
+- Deployet via deploy.sh og curl-verificeret: begge nye sider svarer med korrekt indhold; IndexNow pinget (63 URLs → 200).
+
+**Stats:** Stadig 0 venteliste / 0 ekstern brug — de nye generatorer er for friske til at måle endnu.
+
+**Søgninger:** 0 af 12 · **Budget:** 0 kr af 1.000 DKK
+
+**Blokering uændret:** Bitwarden → Lemon Squeezy/npm/PyPI/Chrome; KDP kræver manuel upload af Mads.
+
+STATUS.md opdateret med næste skridt (stats-tjek på de 4 generator-sider, evt. incident-plan-generator, samlet værktøjs-landingsside). Commits: e4b639f + 0516adc, pushet til main.
+2026-08-23T21:52:02+02:00 iteration 42 afsluttet (exit 0)
+2026-08-23T21:52:28+02:00 === iteration 43/60 ===

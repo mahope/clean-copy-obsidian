@@ -1743,3 +1743,35 @@ Iteration 77 færdig. DECISION.md eksisterede, så der blev bygget.
 Næste iteration: tjek stats, og hvis stadig blokeret — overvej et nyt produkt frem for mere polering. Alle fire scanner-indgange er nu komplette og ens.
 2026-08-23T21:27:21+02:00 iteration 38 afsluttet (exit 0)
 2026-08-23T21:27:46+02:00 === iteration 39/60 ===
+Iteration 78 færdig. Kort:
+
+**Fandt og rettede to reelle problemer:**
+
+1. **KDP Upload Kit var ufuldstændigt.** Kun 2 af de 5 færdige e-bøger havde metadata-ark — GDPR, Shopify og Cookie Consent manglede helt. Tilføjede alle tre med fulde felter (title, subtitle, keywords, kategorier, pris) + copy-paste klar salgstekst. Kit'et er nu komplet til Mads' ca. 30 minutters upload.
+
+2. **Prisfejl:** KDP betaler kun 70 % royalty for priser op til $9.99 — $12.99 faldt til 35 % og gav kun $4.54 pr. salg. Sat NIS2- og GDPR-bogen ned til $9.99 ($6.99 pr. salg) i kdp-upload-kit.md, site/index.html og DECISION.md.
+
+**Verificeret:** deployet, live-siden viser 7 × $9.99 og 0 × $12.99, health_check 71/71 grønne. Commit dfcc4ff + ac1f1ba.
+
+**Søgninger: 0/12 · Budget: 0 kr af 1.000 DKK · Tallene stadig ærlige: 0 tilmeldinger, 0 ekstern trafik.**
+
+STATUS.md er opdateret med anbefalingen til næste iteration: alt produktarbejde er komplet og synkroniseret — den eneste flaskehals er distribution, som venter på Mads' Bitwarden/KDP. Næste iteration bør overveje et nyt produkt der kan udgives via Cloudflare Pages alene, uden konto Mads skal oprette.
+2026-08-23T21:33:12+02:00 iteration 39 afsluttet (exit 0)
+2026-08-23T21:33:37+02:00 === iteration 40/60 ===
+Iteration 79 færdig. Resumé:
+
+**Stats:** kun egen trafik (9 visits på /), venteliste 0 — som forventet.
+
+**Bygget: nyt gratis værktøj, live nu** — `/dpa-generator` (GDPR Data Processing Agreement Generator):
+- Klient-side: 10 spørgsmål → færdig Art. 28(3)-komplet DPA med signaturblok, copy/download/print
+- Intet forlader browseren; FAQPage JSON-LD valideret; JS tjekket med `node --check`; health_check 71/71
+- Linket på forsiden + sitemap.xml, deployet og verificeret live via curl (200 + indhold + sitemap-entry)
+- Commits: `1a955d5` (værktøjet), `94d5fcf` (STATUS)
+
+**Hvorfor:** sidste iterations eget råd var et nyt produkt der ikke kræver en konto Mads skal oprette. En DPA er det første dokument enterprise-kunder beder om i vendor assessments — høj søgeintention og direkte komplementær til GDPR-e-bogen.
+
+**Blokering uændret:** Bitwarden → Lemon Squeezy/npm/Chrome-nøgler; KDP venter på Mads' manuelle upload (kit komplet).
+
+Søgninger brugt: **0 af 12** · Budget: **0 kr af 1.000 DKK**
+2026-08-23T21:42:35+02:00 iteration 40 afsluttet (exit 0)
+2026-08-23T21:42:57+02:00 === iteration 41/60 ===

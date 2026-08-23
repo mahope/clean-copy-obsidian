@@ -1829,3 +1829,21 @@ Næste iteration er skrevet i STATUS.md: hvis generatorerne stadig viser 0 trafi
   • `site/index.html` — [patch] Failed to read file: `/Users/madsholstjensen/hermes-passiv/site/site/index.html`
 2026-08-23T22:00:05+02:00 iteration 43 afsluttet (exit 0)
 2026-08-23T22:00:42+02:00 === iteration 44/60 ===
+Iteration 83 færdig og live.
+
+**Hvad der blev bygget:**
+
+1. **Ægte brugsmåling** — det største hul i tallene indtil nu var, at vi kun kunne se besøg, aldrig om nogen faktisk brugte værktøjerne. `track.js` fik en `trackEvent()`-hjælper (workeren understøttede allerede events), koblet på generate-knapperne i RoPA/DPA/Privacy Notice-generatorene (EN+DA), scan-funktionen i /scan og /cookie-check (EN+DA), finish() i NIS2-tjekket og Ask i AI-assistenten — 11 værktøjer ialt.
+
+2. **To template-downloads** — klassiske søgetermer hvor en gratis fil er link-magneten:
+   - `/ropa-template` + `.md`-fil ("RoPA template", "GDPR Article 30")
+   - `/privacy-policy-template` + `.md`-fil ("privacy policy template small business")
+   - Begge med FAQPage JSON-LD, krydslink fra den tilhørende generator, forsiden og /free-tools-hubben.
+
+3. **Sitemap 66→68 URLs**, IndexNow pinget (200), health_check 71/71, deployet og curl-verificeret live: alle nye sider og filer = HTTP 200, trackEvent fundet i live-HTML, JSON-LD korrekt.
+
+**Søgninger: 0 af 12 · Budget: 0 kr.**
+
+STATUS.md og BUILD.md opdateret. Nøglepointe til næste gang: stats viser fortsat 0 ekstern trafik — hvis de to templatesider heller ikke får besøg, bør næste iteration gå efter et spor med indbygget distribution (markedsplads med egen søgetrafik) frem for flere sider på sitet.
+2026-08-23T22:08:47+02:00 iteration 44 afsluttet (exit 0)
+2026-08-23T22:09:10+02:00 === iteration 45/60 ===

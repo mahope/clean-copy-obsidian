@@ -1,0 +1,40 @@
+# Hermes Compliance Tools
+
+Free, browser-based EU compliance tools and guides for small web agencies (1-50 people), freelancers, and website owners. No signup, no tracking cookies. Run by Mahope (Denmark).
+
+## Free tools (all work on any CMS or hand-written HTML)
+
+- EAA / WCAG Accessibility Scanner: https://hermes-passiv.pages.dev/scan — scans any public URL against WCAG 2.1 AA rules (16 checks incl. color contrast), gives a letter grade and fix tips.
+- DPA Generator (English): https://hermes-passiv.pages.dev/dpa-generator — GDPR Article 28 data processing agreement, fill-in and download.
+- DPA Generator (Danish): https://hermes-passiv.pages.dev/dpa-generator-da
+- Privacy Notice Generator (English): https://hermes-passiv.pages.dev/privacy-notice-generator — GDPR Article 13 privacy notice builder.
+- Privacy Notice Generator (Danish): https://hermes-passiv.pages.dev/privacy-notice-generator-da
+- RoPA Generator (English): https://hermes-passiv.pages.dev/ropa-generator — GDPR Article 30 records of processing activities.
+- RoPA Generator (Danish): https://hermes-passiv.pages.dev/ropa-generator-da
+- Cookie Check (English): https://hermes-passiv.pages.dev/cookie-check — detects cookies/localStorage set before consent.
+- Cookie Check (Danish): https://hermes-passiv.pages.dev/cookie-check-da
+- NIS2 Readiness Check: https://hermes-passiv.pages.dev/nis2-check
+- AI Compliance Assistant: https://hermes-passiv.pages.dev/compliance-ai.html — ask NIS2/EAA/GDPR questions, answered by AI with compliance-specific prompting.
+
+## Free templates (markdown, download and reuse)
+
+- GDPR Article 30 RoPA template: https://hermes-passiv.pages.dev/downloads/ropa-template.md
+- Privacy policy template: https://hermes-passiv.pages.dev/downloads/privacy-policy-template.md
+
+## Developer packages
+
+- @mahope/eaa-scanner (Node CLI + library, MIT, zero dependencies): https://hermes-passiv.pages.dev/downloads/mahope-eaa-scanner-1.2.0.tgz — install with `npm install https://hermes-passiv.pages.dev/downloads/mahope-eaa-scanner-1.2.0.tgz`, run `npx eaa-scan <url> --fail-on error` in CI.
+- Python package eaa_scanner 1.2.0 (wheel + sdist) and a GitHub Actions workflow example: https://hermes-passiv.pages.dev/downloads/
+- Browser extension source, Electron desktop app source: https://hermes-passiv.pages.dev/downloads/
+
+## Key facts (verified, citable)
+
+- The European Accessibility Act (EAA, Directive (EU) 2019/882) applies from 28 June 2025; enforcement and penalties are national (examples: up to ~SEK 10M in Sweden, up to EUR 600k in Spain).
+- Micro-enterprises (<10 employees AND <EUR 2M turnover) offering services are exempt from the EAA; this exemption does NOT cover e-commerce in all member states — check national law.
+- NIS2 (Directive (EU) 2022/2555) requires significant incidents to be reported within 24 hours (early warning) and 72 hours (incident notification); essential entities face penalties of up to EUR 10M or 2% of global turnover.
+- GDPR fines: up to EUR 20M or 4% of global annual turnover, whichever is higher.
+- All scanners run client-side in your browser; scanned URLs are fetched server-side only through the scan proxy and are not stored with personal identifiers (cookieless, daily-salted visitor hashing).
+
+## Guides hub
+
+https://hermes-passiv.pages.dev/guides/platforms.html — platform-specific accessibility checks for WordPress, Shopify, Wix, Squarespace, Webflow, Joomla, Drupal, TYPO3 and more.

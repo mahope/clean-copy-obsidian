@@ -2212,3 +2212,58 @@ Iteration 104 færdig. DECISION.md findes allerede, så jeg byggede videre på n
 
 0 søgninger brugt (bygge-opgave, ingen fakta at tjekke). Budget stadig 0 kr. STATUS.md er opdateret — blokeringen er uændret (Bitwarden → Lemon Squeezy/npm/Chrome-nøgler; KDP kræver Mads' manuelle upload). Næste iteration: ny blog/guide-side og intern linkning til eksport-funktionen.
 2026-08-24T00:48:17+02:00 iteration 5 afsluttet (exit 0)
+Iteration 104 færdig. DECISION.md fandtes, så der blev bygget.
+
+Hvad denne iteration gjorde:
+
+- **Ny dansk blogside** `/blog/pris-tilgaengelighedsgennemgang` — pendant til den engelske pris-guide `accessibility-audit-cost` (iter. 103's næste-skridt). Dansk vinkel: DKK-prisintervaller (gratis scan → hybrid 10-25k kr → fuld manuel audit 35-110k+ kr), danske timelønningsniveauer, offentlige udbud som efterspørgselsdriver, 5-trins guide til selv at prissætte audits, gratis-værktøjssektion med CTA til scanneren og CLI'en, 5 FAQ'er, relaterede guides.
+- Nyt script `make_blog_audit_pris_da.py`, samme sikkerhedsmønster: JSON-LD valideret med json.loads, sitemap-duplikattjek, internt link-tjek, forsids-kort.
+- health_check.py: **71/71**, 0 brudte interne links.
+- Deployet med `./deploy.sh` og verificeret live med curl: korrekt dansk titel, canonical, track.js, Article JSON-LD, sitemap-indgang, forsiden linker siden (2 forekomster).
+- Committed som dad8fda. STATUS.md opdateret.
+
+Søgedisciplin: 0 af 12 søgninger brugt — ingen nye faktaspørgsmål var nødvendige. Blokering uændret: Bitwarden-nøgler (Lemon Squeezy, npm, Chrome) mangler stadig; KDP venter på Mads' manuelle upload (kit klar, 5 bøger).
+
+Næste iteration foreslås: DA-pendant til `accessibility-overlays-eaa` eller `nis2-supply-chain-security`.
+2026-08-24T00:48:36+02:00 iteration 3 afsluttet (exit 0)
+2026-08-24T00:48:37+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+2026-08-24T00:48:57+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+2026-08-24T00:53:38+02:00 UPSTREAM - venter 5 min (forsoeg 2/24)
+2026-08-24T00:53:57+02:00 UPSTREAM - venter 5 min (forsoeg 2/24)
+2026-08-24T00:58:39+02:00 UPSTREAM - venter 5 min (forsoeg 3/24)
+2026-08-24T01:00:28+02:00 UPSTREAM - venter 5 min (forsoeg 3/24)
+2026-08-24T01:03:39+02:00 UPSTREAM - venter 5 min (forsoeg 4/24)
+2026-08-24T01:06:54+02:00 === iteration 4/15 ===
+2026-08-24T01:08:40+02:00 UPSTREAM - venter 5 min (forsoeg 5/24)
+## Iteration 105 — udvidelse af dansk blogsektion
+
+**Søgninger brugt: 0 af 12** (alt bygget på eksisterende research og kode)
+
+### Hvad blev bygget
+
+| Handling | Status |
+|----------|--------|
+| JSON-LD bugfix i `color-blindness-simulator-da.html` (`***@type` → `schema.org`) | ✅ |
+| Ny blog `/blog/tilgaengeligheds-overlays-eaa` — FTC, overlays & EAA | ✅ |
+| Ny blog `/blog/wcag-22-aendringer` — de 9 nye WCAG 2.2-kriterier | ✅ |
+| Ny blog `/blog/nis2-leverandoerkaede-sikkerhed` — leverandørkæde-art. 21 | ✅ |
+| Machado 2009 — tjek: allerede implementeret | ✅ |
+| Sitemap + forsids-kort + deploy + live-verifikation | ✅ |
+
+### Live-verifikation
+
+- `https://hermes-passiv.pages.dev/blog/tilgaengeligheds-overlays-eaa` — HTTP 200, dansk, JSON-LD OK
+- `https://hermes-passiv.pages.dev/blog/wcag-22-aendringer` — HTTP 200, dansk, JSON-LD OK
+- `https://hermes-passiv.pages.dev/blog/nis2-leverandoerkaede-sikkerhed` — HTTP 200, dansk, JSON-LD OK
+- Sitemap: alle 3 slugs til stede
+- Forsiden: alle 3 kort synlige
+- health_check: 71/71, 0 brudte links
+
+### Status
+
+Budget: 0 kr. Blokering uændret (Bitwarden). 11 danske blogs nu på sitet.
+2026-08-24T01:12:13+02:00 iteration 4 afsluttet (exit 0)
+2026-08-24T01:12:34+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+2026-08-24T01:13:40+02:00 UPSTREAM - venter 5 min (forsoeg 6/24)
+2026-08-24T01:18:20+02:00 === iteration 5/15 ===
+2026-08-24T01:19:01+02:00 === iteration 6/60 ===

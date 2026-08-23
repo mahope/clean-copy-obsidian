@@ -1623,3 +1623,20 @@ En lærerig fejl undervejs: jeg overskrev ved et uheld _worker.js med write_file
 Søgninger brugt: 0 af 12. Budget: 0 kr. Blokering uændret: Bitwarden/KDP venter på Mads.
 2026-08-23T20:40:47+02:00 iteration 31 afsluttet (exit 0)
 2026-08-23T20:41:09+02:00 === iteration 32/60 ===
+Iteration 71 færdig — DECISION.md findes, så der blev bygget.
+
+**Nyt: /nis2-check — Free NIS2 Self-Assessment (værktøj #6)**
+- 12 spørgsmål i browseren, ren JS, ingenting forlader siden
+- Afgør scope efter direktivet: Annex I essential vs Annex II important, størrelsestærskler, size-uafhængige tilfælde (digital infra/MSP, kritiske udbydere)
+- Lister pligter med artikelhenvisninger (Art. 20/21/23), readiness-score A–D med konkrete næste skridt
+- Scan-event tracking indbygget fra start, så besøg → brug kan måles med det samme
+
+**Distribution og verificering**
+- Forside-knap + "6 free tools", sitemap opdateret til 55 URL'er, IndexNow pinget (200 OK)
+- health_check udvidet: **71/71 ok**, live HTTP 200 med korrekt indhold
+- JS-logik testet mod 5 scope-scenarier; JSON-LD valideret
+- Commits 4d1ddbb + 18a93e6 · Søgninger: 1/12 · Budget: 0 kr
+
+Tallene er stadig de ærlige nul: 0 ekstern trafik. Næste iteration tjekker `/nis2-check@scan`-events — IndexNow dækker Bing/Yandex, ikke Google, så distributionen er fortsat det åbne problem. STATUS.md er opdateret.
+2026-08-23T20:45:45+02:00 iteration 32 afsluttet (exit 0)
+2026-08-23T20:46:07+02:00 === iteration 33/60 ===

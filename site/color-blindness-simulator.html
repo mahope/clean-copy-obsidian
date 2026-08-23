@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Color Blindness Simulator — Protanopia, Deuteranopia, Tritanopia | Hermes Compliance</title>
+<meta name="description" content="See your brand colors through the eyes of someone with red-green or blue-yellow color blindness. Free browser-based simulator for protanopia, deuteranopia and tritanopia with adjustable severity and live text preview.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Free Color Blindness Simulator">
+<meta property="og:description" content="Simulate protanopia, deuteranopia and tritanopia on any colors — right in your browser, nothing uploaded.">
+<meta property="og:url" content="https://hermes-passiv.pages.dev/color-blindness-simulator">
+<link rel="canonical" href="https://hermes-passiv.pages.dev/color-blindness-simulator">
+<link rel="alternate" hreflang="en" href="https://hermes-passiv.pages.dev/color-blindness-simulator">
+<link rel="alternate" hreflang="da" href="https://hermes-passiv.pages.dev/color-blindness-simulator-da">
+<link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+<link rel="stylesheet" href="/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Color Blindness Simulator","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://hermes-passiv.pages.dev/color-blindness-simulator","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"description":"Free browser-based simulator that shows how colors appear to people with protanopia, deuteranopia and tritanopia."}
+</script>
+<script defer src="/track.js"></script>
+<style>
+  .cb-card { border:1px solid var(--color-border); border-radius:var(--radius); padding:24px; background:var(--color-surface); margin-top:20px; }
+  .cb-row { display:flex; flex-wrap:wrap; gap:16px; align-items:end; }
+  .cb-field { display:flex; flex-direction:column; gap:6px; }
+  .cb-field label { font-size:.85rem; color:var(--color-text-muted); font-weight:600; }
+  .cb-swatch-input { display:flex; gap:8px; align-items:center; }
+  .cb-swatch-input input[type=color] { width:52px; height:44px; border:1px solid var(--color-border); border-radius:8px; background:none; padding:2px; cursor:pointer; }
+  .cb-swatch-input input[type=text] { width:110px; padding:10px 12px; border:1px solid var(--color-border); border-radius:8px; background:var(--color-surface-2); color:var(--color-text); font-family:ui-monospace,monospace; font-size:.95rem; }
+  .cb-add { padding:10px 16px; border-radius:8px; border:1px solid var(--color-accent); background:transparent; color:var(--color-accent); cursor:pointer; font-weight:600; }
+  .cb-grid { width:100%; border-collapse:collapse; margin-top:18px; }
+  .cb-grid th, .cb-grid td { padding:10px; border-bottom:1px solid var(--color-border); text-align:left; font-size:.92rem; }
+  .cb-grid th { color:var(--color-text-muted); font-size:.8rem; text-transform:uppercase; letter-spacing:.04em; }
+  .cb-chip { display:inline-block; width:64px; height:40px; border-radius:8px; vertical-align:middle; border:1px solid rgba(128,128,128,.4); }
+  code.cb-hex { font-family:ui-monospace,monospace; font-size:.82rem; display:block; margin-top:4px; color:var(--color-text-muted); }
+  .cb-remove { background:none; border:none; color:var(--color-red); cursor:pointer; font-size:1rem; }
+  .cb-preview { margin-top:22px; border-radius:var(--radius); border:1px solid var(--color-border); overflow:hidden; }
+  .cb-preview-bar { padding:14px 18px; }
+  .cb-preview-body { padding:24px 22px; line-height:1.55; }
+  .cb-note { margin-top:18px; font-size:.88rem; color:var(--color-text-muted); }
+  .cb-error { color:var(--color-red); font-size:.9rem; margin-top:10px; min-height:1.2em; }
+  input[type=range].cb-sev { width:180px; accent-color: var(--color-accent); }
+  @media (max-width:640px){ .cb-chip{width:44px;height:30px} .cb-grid td,.cb-grid th{padding:7px;font-size:.85rem} }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="container">
+    <div class="badge">FREE TOOL</div>
+    <h1>Color Blindness Simulator</h1>
+    <p class="tagline">About 8% of men and 0.5% of women have a color vision deficiency.
+    Simulate how your palette looks to someone with <strong>protanopia</strong>,
+    <strong>deuteranopia</strong> or <strong>tritanopia</strong> — with an adjustable
+    severity slider and a live text preview. Everything runs in your browser.</p>
+  </div>
+</header>
+
+<main class="container">
+
+<section class="cb-card" aria-labelledby="sim-heading">
+  <h2 id="sim-heading">Simulate your colors</h2>
+  <div class="cb-row" style="margin-top:14px">
+    <div class="cb-field">
+      <label for="new-color">Add a color</label>
+      <div class="cb-swatch-input">
+        <input type="color" id="new-color" value="#2563eb" aria-describedby="new-hex-label">
+        <label class="sr-only" for="new-hex" id="new-hex-label">New color as hex code</label>
+        <input type="text" id="new-hex" value="#2563eb" aria-label="New color as hex code" spellcheck="false">
+      </div>
+    </div>
+    <button type="button" class="cb-add" id="add-btn">+ Add color</button>
+    <div class="cb-field">
+      <label for="severity">Severity: <span id="sev-label">100%</span></label>
+      <input type="range" class="cb-sev" id="severity" min="0" max="100" value="100" aria-describedby="sev-help">
+      <span id="sev-help" style="font-size:.8rem;color:var(--color-text-muted)">0% = normal vision, 100% = full dichromacy</span>
+    </div>
+  </div>
+  <p class="cb-error" id="cb-error" role="alert"></p>
+
+  <div style="overflow-x:auto">
+  <table class="cb-grid">
+    <caption style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">Your colors as seen with normal vision and under the three main types of color blindness</caption>
+    <thead>
+      <tr><th scope="col">Original</th><th scope="col">Protanopia<br>(red-weak)</th><th scope="col">Deuteranopia<br>(green-weak)</th><th scope="col">Tritanopia<br>(blue-weak)</th><th scope="col"><span class="sr-only">Remove</span></th></tr>
+    </thead>
+    <tbody id="grid-body"></tbody>
+  </table>
+  </div>
+
+  <h3 style="margin-top:28px">Live text preview</h3>
+  <div class="cb-row" style="margin-bottom:12px">
+    <div class="cb-field">
+      <label for="fg-select">Text color</label>
+      <select id="fg-select" class="cb-select" style="padding:10px 12px;border-radius:8px;border:1px solid var(--color-border);background:var(--color-surface-2);color:var(--color-text)" aria-label="Text color used in the preview"></select>
+    </div>
+    <div class="cb-field">
+      <label for="bg-select2">Background color</label>
+      <select id="bg-select2" class="cb-select" style="padding:10px 12px;border-radius:8px;border:1px solid var(--color-border);background:var(--color-surface-2);color:var(--color-text)" aria-label="Background color used in the preview"></select>
+    </div>
+  </div>
+  <div class="cb-preview" role="presentation">
+    <div class="cb-preview-bar" id="pv-bar">
+      <strong>YourBrand — navigation looks like this</strong>
+    </div>
+    <div class="cb-preview-body" id="pv-body">
+      <p>This is body text rendered with your chosen foreground and background colors,
+      simulated for the selected vision type. If the text becomes hard to read here,
+      it will be hard to read for roughly one in twelve male visitors.</p>
+    </div>
+  </div>
+
+  <p class="cb-note">Simulation uses color-vision-deficiency transforms applied in
+  linear RGB space (based on Viénot, Brettel &amp; Mollon, 1999), blended with normal
+  vision according to the severity slider. For hard WCAG numbers on a specific pair,
+  use our <a href="/contrast-checker">contrast checker</a>; for a full accessible
+  palette, try the <a href="/palette-generator">palette generator</a>. To check an
+  entire live page, run the free <a href="/scan">Accessibility Scanner</a>.</p>
+</section>
+
+<section class="cb-card">
+  <h2>What the three types mean</h2>
+  <ul style="margin-top:10px;line-height:1.7">
+    <li><strong>Protanopia</strong> — reduced sensitivity to red light. Reds look darker and can vanish against green or grey.</li>
+    <li><strong>Deuteranopia</strong> — reduced sensitivity to green light. The most common form; red and green become nearly indistinguishable.</li>
+    <li><strong>Tritanopia</strong> — reduced sensitivity to blue light. Very rare (~0.01%); blue and yellow merge together.</li>
+  </ul>
+  <p style="margin-top:12px">Practical rule: never rely on hue alone to convey meaning.
+  Pair color with icons, labels or patterns — that is also what
+  <a href="https://www.w3.org/WAI/WCAG21/Understanding/use-of-color.html" rel="noopener">WCAG SC&nbsp;1.4.1</a> requires.</p>
+</section>
+
+<p style="margin-top:26px"><a href="/free-tools">&larr; All free tools</a> ·
+<a href="/palette-generator">Palette generator</a> ·
+<a href="/contrast-checker">Contrast checker</a> ·
+<a href="/color-blindness-simulator-da">Dansk version</a></p>
+</main>
+<footer class="container" style="padding:40px 24px;color:var(--color-text-muted);font-size:.85rem">
+  Hermes Compliance · Free GDPR &amp; accessibility tools that run in your browser
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+
+  function parseHex(v) {
+    v = v.trim().replace(/^#/, '');
+    if (/^[0-9a-fA-F]{3}$/.test(v)) return [parseInt(v[0]+v[0],16), parseInt(v[1]+v[1],16), parseInt(v[2]+v[2],16)];
+    if (/^[0-9a-fA-F]{6}$/.test(v)) return [parseInt(v.slice(0,2),16), parseInt(v.slice(2,4),16), parseInt(v.slice(4,6),16)];
+    return null;
+  }
+  function toHex(rgb) {
+    return '#' + rgb.map(function (c) {
+      var h = Math.max(0, Math.min(255, Math.round(c))).toString(16);
+      return h.length === 1 ? '0' + h : h;
+    }).join('');
+  }
+  // sRGB -> linear
+  function toLinear(rgb) {
+    return rgb.map(function (c) {
+      c /= 255;
+      return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+    });
+  }
+  function fromLinear(lin) {
+    return lin.map(function (c) {
+      c = c <= 0.0031308 ? c * 12.92 : 1.055 * Math.pow(c, 1/2.4) - 0.055;
+      return c * 255;
+    });
+  }
+
+  // Viénot/Brettel/Mollon dichromacy matrices in LINEAR RGB
+  var CVD = {
+    protanopia:   [ [0.11238, 0.88762, 0],
+                    [0.11238, 0.88762, 0],
+                    [0.00401,-0.00401, 1] ],
+    deuteranopia: [ [0.29275, 0.70725, 0],
+                    [0.29275, 0.70725, 0],
+                    [-0.02234,0.02234, 1] ],
+    tritanopia:   [ [1, 0.14461,-0.14461],
+                    [0, 0.85924, 0.14076],
+                    [0, 0.85924, 0.14076] ]
+  };
+
+  function simulate(rgb, type, sev) {
+    var lin = toLinear(rgb);
+    if (sev <= 0) return rgb.slice();
+    var m = CVD[type];
+    var out = [0,1,2].map(function (i) {
+      return m[i][0]*lin[0] + m[i][1]*lin[1] + m[i][2]*lin[2];
+    });
+    var mixed = [0,1,2].map(function (i) {
+      return lin[i]*(1-sev) + Math.max(0, Math.min(1, out[i]))*sev;
+    });
+    return fromLinear(mixed);
+  }
+
+  // state: array of {hex}
+  var colors = [
+    {hex:'#dc2626'}, {hex:'#16a34a'}, {hex:'#2563eb'},
+    {hex:'#f59e0b'}, {hex:'#7c3aed'}, {hex:'#111827'}
+  ];
+  function hasColor(hex) {
+    return colors.some(function (c) { return c.hex.toLowerCase() === hex.toLowerCase(); });
+  }
+
+  function renderGrid() {
+    var tb = $('grid-body');
+    tb.innerHTML = '';
+    var sev = $('severity').value / 100;
+    colors.forEach(function (item, idx) {
+      var rgb = parseHex(item.hex);
+      var tr = document.createElement('tr');
+      function simTd(hex) {
+        var d = document.createElement('td');
+        var chip = document.createElement('span');
+        chip.className = 'cb-chip';
+        chip.style.background = hex;
+        chip.title = hex;
+        d.appendChild(chip);
+        var code = document.createElement('code');
+        code.className = 'cb-hex';
+        code.textContent = hex;
+        d.appendChild(code);
+        return d;
+      }
+      var orig = toHex(rgb);
+      tr.appendChild(simTd(orig));
+      ['protanopia','deuteranopia','tritanopia'].forEach(function (t) {
+        tr.appendChild(simTd(toHex(simulate(rgb, t, sev))));
+      });
+      var rmTd = document.createElement('td');
+      var rm = document.createElement('button');
+      rm.type = 'button'; rm.className = 'cb-remove';
+      rm.textContent = '✕';
+      rm.setAttribute('aria-label', 'Remove color ' + orig);
+      rm.addEventListener('click', function () {
+        colors.splice(idx, 1); renderGrid(); renderSelects();
+      });
+      rmTd.appendChild(rm);
+      tr.appendChild(rmTd);
+      tb.appendChild(tr);
+    });
+  }
+
+  function fillSelect(sel, def) {
+    sel.innerHTML = '';
+    colors.forEach(function (c) {
+      var o = document.createElement('option');
+      o.value = c.hex; o.textContent = c.hex.toUpperCase();
+      sel.appendChild(o);
+    });
+    if (def && !hasColor(def)) def = colors[colors.length-1].hex;
+    if (def) sel.value = def;
+    if (!sel.value && sel.options.length) sel.selectedIndex = sel.selectedIndex;
+  }
+
+  function renderSelects() {
+    var fg = $('fg-select').value || '#111827';
+    var bg = $('bg-select2').value || '#ffffff';
+    fillSelect($('fg-select'), hasColor(fg) ? fg : '#111827');
+    fillSelect($('bg-select2'), hasColor(bg) ? bg : '#ffffff');
+  }
+
+  function updatePreview() {
+    var sev = $('severity').value / 100;
+    var fg = parseHex($('fg-select').value) || [17,24,39];
+    var bg = parseHex($('bg-select2').value) || [255,255,255];
+    var bar = $('pv-bar'), body = $('pv-body');
+    bar.style.background = toHex(simulate(bg, 'deuteranopia', sev));
+    bar.style.color = toHex(simulate(fg, 'deuteranopia', sev));
+    body.style.background = toHex(simulate(bg, 'protanopia', sev));
+    body.style.color = toHex(simulate(fg, 'protanopia', sev));
+  }
+
+  function updateAll() {
+    $('sev-label').textContent = $('severity').value + '%';
+    renderGrid();
+    updatePreview();
+  }
+
+  function addColor() {
+    var errEl = $('cb-error');
+    errEl.textContent = '';
+    var rgb = parseHex($('new-hex').value);
+    if (!rgb) { errEl.textContent = 'Enter a valid hex color, e.g. #2563eb or 36f.'; return; }
+    var hex = toHex(rgb);
+    if (hasColor(hex)) { errEl.textContent = 'That color is already in the table.'; return; }
+    if (colors.length >= 10) { errEl.textContent = 'Maximum 10 colors.'; return; }
+    colors.push({hex: hex});
+    $('new-color').value = hex;
+    renderGrid(); renderSelects();
+  }
+
+  $('add-btn').addEventListener('click', addColor);
+  $('new-hex').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); addColor(); } });
+  $('new-color').addEventListener('input', function () { $('new-hex').value = $('new-color').value; });
+  $('severity').addEventListener('input', updateAll);
+  $('fg-select').addEventListener('change', updatePreview);
+  $('bg-select2').addEventListener('change', updatePreview);
+
+  renderGrid();
+  renderSelects();
+  updateAll();
+})();
+</script>
+</body>
+</html>

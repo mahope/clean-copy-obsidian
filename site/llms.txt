@@ -13,6 +13,12 @@ Free, browser-based EU compliance tools and guides for small web agencies (1-50 
 - RoPA Generator (Danish): https://hermes-passiv.pages.dev/ropa-generator-da
 - Cookie Check (English): https://hermes-passiv.pages.dev/cookie-check — detects cookies/localStorage set before consent.
 - Cookie Check (Danish): https://hermes-passiv.pages.dev/cookie-check-da
+- WCAG Color Contrast Checker (English): https://hermes-passiv.pages.dev/contrast-checker — check any color pair against WCAG 2.1 AA/AAA thresholds instantly.
+- WCAG Kontrast-Checker (Danish): https://hermes-passiv.pages.dev/contrast-checker-da
+- Accessible Color Palette Generator (English): https://hermes-passiv.pages.dev/palette-generator — build a full WCAG AA-safe palette from one base color.
+- Farvepalet-Generator (Danish): https://hermes-passiv.pages.dev/palette-generator-da
+- Color Blindness Simulator (English): https://hermes-passiv.pages.dev/color-blindness-simulator — see your palette as someone with protanopia, deuteranopia or tritanopia sees it.
+- Farveblindhedssimulator (Danish): https://hermes-passiv.pages.dev/color-blindness-simulator-da
 - NIS2 Readiness Check: https://hermes-passiv.pages.dev/nis2-check
 - AI Compliance Assistant: https://hermes-passiv.pages.dev/compliance-ai.html — ask NIS2/EAA/GDPR questions, answered by AI with compliance-specific prompting.
 

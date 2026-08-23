@@ -1,21 +1,21 @@
 <!doctype html>
-<html lang="en">
+<html lang="da">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>WCAG Color Contrast Checker — Free, No Signup | Hermes Compliance</title>
-<meta name="description" content="Check color contrast against WCAG 2.1 AA and AAA thresholds instantly. Enter any two colors, see the ratio, pass/fail for normal and large text, and a live preview. Runs entirely in your browser.">
+<title>WCAG Kontrast-Checker — Gratis, Ingen Tilmelding | Hermes Compliance</title>
+<meta name="description" content="Tjek farvekontrast mod WCAG 2.1 AA og AAA med det samme. Indtast to farver, se ratio, bestået/dumpet for normal og stor tekst samt en live forhåndsvisning. Kører helt i din browser.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Free WCAG Color Contrast Checker">
-<meta property="og:description" content="Instant WCAG 2.1 AA/AAA contrast ratios for any color pair. No signup — nothing leaves your browser.">
-<meta property="og:url" content="https://hermes-passiv.pages.dev/contrast-checker">
-<link rel="canonical" href="https://hermes-passiv.pages.dev/contrast-checker">
+<meta property="og:title" content="Gratis WCAG Kontrast-Checker">
+<meta property="og:description" content="Øjeblikkelige WCAG 2.1 AA/AAA kontrast-ratios for ethvert farvepar. Ingen tilmelding — intet forlader din browser.">
+<meta property="og:url" content="https://hermes-passiv.pages.dev/contrast-checker-da">
+<link rel="canonical" href="https://hermes-passiv.pages.dev/contrast-checker-da">
 <link rel="alternate" hreflang="da" href="https://hermes-passiv.pages.dev/contrast-checker-da">
 <link rel="alternate" hreflang="en" href="https://hermes-passiv.pages.dev/contrast-checker">
 <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
 <link rel="stylesheet" href="style.css">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"WCAG Color Contrast Checker","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://hermes-passiv.pages.dev/contrast-checker","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"description":"Free browser-based WCAG 2.1 AA/AAA color contrast checker with live preview."}
+{"@context":"https://schema.org","@type":"WebApplication","name":"WCAG Kontrast-Checker (dansk)","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://hermes-passiv.pages.dev/contrast-checker-da","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"description":"Gratis WCAG 2.1 AA/AAA kontrast-checker i browseren med live forhåndsvisning."}
 </script>
 <script defer src="/track.js"></script>
 <style>
@@ -45,31 +45,31 @@
 <header class="hero">
   <div class="container">
     <div class="badge">FREE TOOL</div>
-    <h1>WCAG Color Contrast Checker</h1>
-    <p class="tagline">Pick any two colors and get the exact WCAG&nbsp;2.1 contrast ratio
-    with instant pass/fail for <strong>AA</strong> and <strong>AAA</strong>. Everything
-    runs in your browser — nothing is uploaded.</p>
+    <h1>WCAG Kontrast-Checker</h1>
+    <p class="tagline">Vælg to farver og få den præcise WCAG&nbsp;2.1 kontrast-ratio
+    med straks svar på <strong>AA</strong> og <strong>AAA</strong>. Alt kører
+    i din browser — intet bliver uploadet.</p>
   </div>
 </header>
 
 <main class="container">
 
 <section class="cc-card" aria-labelledby="checker-heading">
-  <h2 id="checker-heading">Check a color pair</h2>
+  <h2 id="checker-heading">Tjek et farvepar</h2>
   <div class="cc-row" style="margin-top:14px">
     <div class="cc-field">
-      <label for="fg-color">Text / foreground</label>
+      <label for="fg-color">Tekst / forgrund</label>
       <div class="cc-swatch-input">
         <input type="color" id="fg-color" value="#1a1e21" aria-describedby="fg-hex-label">
-        <input type="text" id="fg-text" value="#1a1e21" aria-label="Foreground color as hex code" spellcheck="false">
+        <input type="text" id="fg-text" value="#1a1e21" aria-label="Forgrundsfarve som hex-kode" spellcheck="false">
       </div>
     </div>
-    <button type="button" class="cc-swap" id="swap-btn" title="Swap foreground and background">&#8645; Swap</button>
+    <button type="button" class="cc-swap" id="swap-btn" title="Byt om på forgrund og baggrund">&#8645; Swap</button>
     <div class="cc-field">
-      <label for="bg-color">Background</label>
+      <label for="bg-color">Baggrund</label>
       <div class="cc-swatch-input">
         <input type="color" id="bg-color" value="#ffffff" aria-describedby="bg-hex-label">
-        <input type="text" id="bg-text" value="#ffffff" aria-label="Background color as hex code" spellcheck="false">
+        <input type="text" id="bg-text" value="#ffffff" aria-label="Baggrundsfarve as hex-kode" spellcheck="false">
       </div>
     </div>
   </div>
@@ -79,44 +79,44 @@
   <p class="cc-verdict" id="verdict-out" aria-live="polite"></p>
 
   <table class="cc-table">
-    <caption style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">WCAG contrast requirements by text size</caption>
+    <caption style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">WCAG-krav til kontrast efter tekststørrelse</caption>
     <thead>
-      <tr><th scope="col">Content</th><th scope="col">Required ratio</th><th scope="col">AA</th><th scope="col">AAA</th></tr>
+      <tr><th scope="col">Indhold</th><th scope="col">Krævet ratio</th><th scope="col">AA</th><th scope="col">AAA</th></tr>
     </thead>
     <tbody>
-      <tr><td>Normal text (&lt; 18pt / &lt; 14pt bold)</td><td>4.5 : 1</td><td id="aa-normal">—</td><td id="aaa-normal">—</td></tr>
-      <tr><td>Large text (&ge; 18pt or &ge; 14pt bold)</td><td>3 : 1</td><td id="aa-large">—</td><td id="aaa-large">—</td></tr>
-      <tr><td>UI components &amp; graphical objects</td><td>3 : 1</td><td id="aa-ui">—</td><td colspan="2" id="aaa-ui">n/a</td></tr>
+      <tr><td>Normal tekst (&lt; 18pt / &lt; 14pt fed)</td><td>4.5 : 1</td><td id="aa-normal">—</td><td id="aaa-normal">—</td></tr>
+      <tr><td>Stor tekst (&ge; 18pt eller &ge; 14pt fed)</td><td>3 : 1</td><td id="aa-large">—</td><td id="aaa-large">—</td></tr>
+      <tr><td>UI-komponenter &amp; grafik</td><td>3 : 1</td><td id="aa-ui">—</td><td colspan="2" id="aaa-ui">n/a</td></tr>
     </tbody>
   </table>
 
   <div class="cc-preview" id="preview" role="presentation">
-    <p class="large" id="pv-large">Large heading preview</p>
-    <p>This is how normal body text looks in your chosen combination.
-       Readable at length? Your readers will decide in seconds.</p>
+    <p class="large" id="pv-large">Eksempel på stor overskrift</p>
+    <p>Sådan ser almindelig brødtekst ud i din valgte kombination.
+       Læselig i længden? Dine læsere afgør det på få sekunder.</p>
   </div>
 
-  <p class="cc-note">Ratios follow WCAG 2.1 success criteria
+  <p class="cc-note">Ratioerne følger WCAG 2.1 success-kriterierne
   <a href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html" rel="noopener">1.4.3 (Contrast Minimum)</a>,
   <a href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-enhanced.html" rel="noopener">1.4.6 (Contrast Enhanced)</a> and
   <a href="https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html" rel="noopener">1.4.11 (Non-text Contrast)</a>.
-  Fixing failures site-wide? The free <a href="/scan">Accessibility Scanner</a> finds low-contrast text on a whole page.</p>
+  Skal fejl rettes på hele sitet? Den gratis <a href="/scan-da">Accessibility Scanner</a> finder lavkontrast-tekst på en hel side.</p>
 </section>
 
 <section class="cc-card">
-  <h2>How the ratio is calculated</h2>
-  <p style="margin-top:10px">Each color is converted to sRGB relative luminance
-  (L = 0.2126·R + 0.7152·G + 0.0722·B after gamma expansion). The contrast ratio is
-  (L1 + 0.05) / (L2 + 0.05), where L1 is the lighter color. A ratio of 1:1 means
-  identical colors; 21:1 is the maximum (black on white). This matches the formula
-  in the WCAG specification exactly.</p>
+  <h2>Sådan beregnes ratioen</h2>
+  <p style="margin-top:10px">Hver farve konverteres til sRGB relativ luminans
+  (L = 0.2126·R + 0.7152·G + 0.0722·B efter gamma-ekspansion). Kontrast-ratioen er
+  (L1 + 0,05) / (L2 + 0,05), hvor L1 er den lyseste farve. En ratio på 1:1 betyder
+  identiske farver; 21:1 er maksimum (sort på hvidt). Det matcher formlen i
+  WCAG-specifikationen nøjagtigt.</p>
 </section>
 
-<p style="margin-top:26px"><a href="/free-tools">&larr; All free tools</a> ·
-<a href="/scan">Full-page accessibility scanner</a> · <a href="/palette-generator">Palette generator</a> · <a href="/contrast-checker-da">Dansk version</a></p>
+<p style="margin-top:26px"><a href="/free-tools">&larr; Alle gratis værktøjer</a> ·
+<a href="/scan">Hele-siden-scanner</a> · <a href="/palette-generator-da">Palette generator</a> · <a href="/contrast-checker">English version</a></p>
 </main>
 <footer class="container" style="padding:40px 24px;color:var(--color-text-muted);font-size:.85rem">
-  Hermes Compliance · Free browser-based GDPR &amp; accessibility tooling
+  Hermes Compliance · Gratis GDPR- &amp; tilgængelighedsværktøj i browseren
 </footer>
 
 <script>
@@ -166,7 +166,7 @@
     errEl.textContent = '';
     var fg = parseHex(fgText.value), bg = parseHex(bgText.value);
     if (!fg || !bg) {
-      errEl.textContent = 'Enter valid hex colors, e.g. #1a1e21 or fff.';
+      errEl.textContent = 'Indtast gyldige hex-farver, fx #1a1e21 eller fff.';
       return;
     }
     fgColor.value = toHex(fg);
@@ -179,17 +179,17 @@
     var aaLarge = r >= 3, aaaLarge = r >= 4.5;
     var aaUi = r >= 3;
 
-    mark('aa-normal', aaNormal, aaNormal ? 'Pass' : 'Fail');
-    mark('aaa-normal', aaaNormal, aaaNormal ? 'Pass' : 'Fail');
-    mark('aa-large', aaLarge, aaLarge ? 'Pass' : 'Fail');
-    mark('aaa-large', aaaLarge, aaaLarge ? 'Pass' : 'Fail');
-    mark('aa-ui', aaUi, aaUi ? 'Pass' : 'Fail');
+    mark('aa-normal', aaNormal, aaNormal ? 'Bestået' : 'Dumpet');
+    mark('aaa-normal', aaaNormal, aaaNormal ? 'Bestået' : 'Dumpet');
+    mark('aa-large', aaLarge, aaLarge ? 'Bestået' : 'Dumpet');
+    mark('aaa-large', aaaLarge, aaaLarge ? 'Bestået' : 'Dumpet');
+    mark('aa-ui', aaUi, aaUi ? 'Bestået' : 'Dumpet');
 
     var v = $('verdict-out');
-    if (r >= 7)      { v.textContent = 'Excellent — passes AAA for all text.'; v.className = 'cc-verdict pass'; }
-    else if (r >= 4.5){ v.textContent = 'Good — passes AA for all text.'; v.className = 'cc-verdict pass'; }
-    else if (r >= 3) { v.textContent = 'Limited — passes only for large text and UI components.'; v.className = 'cc-verdict fail'; }
-    else             { v.textContent = 'Fails WCAG — not enough contrast even for large text.'; v.className = 'cc-verdict fail'; }
+    if (r >= 7)      { v.textContent = 'Fremragende — består AAA for al tekst.'; v.className = 'cc-verdict pass'; }
+    else if (r >= 4.5){ v.textContent = 'Godt — består AA for al tekst.'; v.className = 'cc-verdict pass'; }
+    else if (r >= 3) { v.textContent = 'Begrænset — består kun for stor tekst og UI-komponenter.'; v.className = 'cc-verdict fail'; }
+    else             { v.textContent = 'Dumpet i WCAG — ikke nok kontrast selv til stor tekst.'; v.className = 'cc-verdict fail'; }
 
     var pv = $('preview');
     pv.style.background = toHex(bg);

@@ -1893,3 +1893,64 @@ Iteration 86 færdig. Kort rapport:
 **Næste iteration** (skrevet i STATUS.md): én indekseringskontrol; hvis nøgler nu findes → kør PUBLISH_CHECKLIST.md fra toppen; hvis ikke → konkret vurdér et nyt produktspor på en markedsplads med egen søgetrafik, der ikke kræver Mads' konto først.
 2026-08-23T22:32:13+02:00 iteration 47 afsluttet (exit 0)
 2026-08-23T22:33:12+02:00 === iteration 48/60 ===
+Iteration 87 færdig. DECISION.md fandtes → jeg byggede.
+
+**Hvad der blev bygget: WCAG Color Contrast Checker** på https://hermes-passiv.pages.dev/contrast-checker — den "crawl-bait"-URL STATUS pegede på. Et værktøj folk aktivt søger efter (kontrast-check), rent client-side (ingen server, ingen nøgler, ingen Mads-indsats) og i selve produktets niche.
+
+- WCAG 2.1-formlen implementeret eksakt; AA/AAA pass/fail for normal tekst, stor tekst og UI-komponenter; live preview, farvevælger + hex-felter, swap-knap, fejlbeskeder
+- Integreret: kort på /free-tools (inkl. JSON-LD hasPart), knap på forsiden, sitemap → 69 URLs
+- **Testet for alvor:** logikken kørt med jsdom mod siden (#767676/hvid → 4.54:1, AA Pass ✓, swap ✓, ugyldig hex ✓); matematikken krydstjekket i Python (21.0 for sort/hvid ✓)
+- Deployet og live-verificeret (200 + indhold på alle berørte sider), IndexNow re-pinget (69 URLs → 200), committed som `6f38cd7`
+
+Søgedisciplin holdt: 3 af 12 søgninger. Budget stadig 0 kr. Blokering uændret: Bitwarden-nøgler til npm/PyPI/Lemon Squeezy + KDP-upload hos Mads.
+2026-08-23T22:37:10+02:00 iteration 48 afsluttet (exit 0)
+2026-08-23T22:38:02+02:00 === iteration 49/60 ===
+Iteration 88 færdig.
+
+Hvad der skete:
+- DECISION.md findes, men udgivelsen er blokeret på Mads (Bitwarden/KDP), så jeg arbejdede videre på distributionssporet fra iteration 87.
+- Tilføjede interne links til /contrast-checker fra de tre blogposts om kontrast/testing-tools (free-accessibility-testing-tools, accessibility-scanner-cli, eaa-accessibility-checklist) — styrker det nye crawl-bait-værktøj.
+- Deployet og verificeret live: alle tre sider 200 med linket, /contrast-checker 200.
+- IndexNow re-ping af 69 URLs → HTTP 200. (Et først manuel ping-forsøg brugte en forkert nøgle — noteret i STATUS; det korrekte script blev kørt.)
+- Søgninger: 2 af 12. Budget urørt: 0 kr. Tallene stadig ærlige nul: venteliste 0, ekstern trafik 0.
+
+STATUS.md er opdateret med næste skridt (indekseringskontrol, evt. dansk version af kontrast-checkeren hvis indeksering udebliver).
+2026-08-23T22:40:25+02:00 iteration 49 afsluttet (exit 0)
+2026-08-23T22:40:56+02:00 === iteration 50/60 ===
+Iteration 89 færdig. Resumé:
+
+**Reel fejl fundet og rettet:** `/contrast-checker` havde aldrig loadet `style.css` — siden har ligget ustilet siden udgivelsen i iteration 87. Stylesheet-link, sitemap-link og hreflang er nu på plads.
+
+**Bygget:** `/contrast-checker-da` — fuld dansk version (UI, tabel, fejlbeskeder, JSON-LD) som det crawl-bait-target iteration 88 pegede på.
+
+**Indkobling:** sitemap.xml 69→70 URLs, llms.txt, free-tools.html med "Dansk version →", krydslinks EN↔DA.
+
+**Verificeret live (ikke kun 200):**
+- Begge sider returnerer indhold med stylesheet
+- Kontrastformlen node-testet: 16.78 og 4.48 — korrekte WCAG-værdier
+- Sitemap live med 70 URLs, IndexNow re-ping → HTTP 200
+
+0 af 12 søgninger brugt. Budget stadig 0 kr. STATUS.md opdateret.
+2026-08-23T22:45:55+02:00 iteration 50 afsluttet (exit 0)
+2026-08-23T22:46:48+02:00 === iteration 51/60 ===
+Iteration 90 færdig.
+
+**Bygget og live:**
+- `/palette-generator` + `/palette-generator-da` — Accessible Color Palette Generator: én basisfarve ind, fuld WCAG AA-sikker palet ud (brødtekst/overskrift/sekundærtekst/link/kant/overflade), tunet binært i HSL mod 5 valgte baggrunde. Live preview, klik-og-kopiér hexkoder, ren statisk HTML+JS.
+- Indkoblet: sitemap (72 URLs), free-tools-kort, llms.txt, krydslinks fra contrast-checker-siderne, hreflang EN↔DA.
+
+**Verificeret med rigtige resultater:**
+- Node-test af algoritmen: 56/56 farve/baggrund/target-kombinationer opfylder target-ratio
+- JSON-LD valideret på begge sider, track.js til stede
+- Deployet; alle tjekkede URLs → HTTP 200 med nyt indhold; IndexNow re-pinget (72 URLs → 200)
+
+**Indeksering:** stadig ikke bekræftet — søgning på domænet gav ingen treff på vores sider (2 af 12 søgninger brugt).
+
+**Blokering uændret:** Bitwarden → Lemon Squeezy/npm/Chrome-nøgler; KDP kræver manuel upload af Mads.
+
+STATUS.md er opdateret med næste skridt (indekseringskontrol, evt. color blindness-simulator som næste værktøj).
+2026-08-23T22:53:34+02:00 iteration 51 afsluttet (exit 0)
+2026-08-23T22:53:55+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+2026-08-23T22:58:55+02:00 UPSTREAM - venter 5 min (forsoeg 2/24)
+2026-08-23T23:03:56+02:00 UPSTREAM - venter 5 min (forsoeg 3/24)
+2026-08-23T23:10:08+02:00 === iteration 52/60 ===

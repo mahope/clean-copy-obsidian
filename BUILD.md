@@ -272,3 +272,15 @@
   downloadebare GDPR-skabeloner som link-magneter på søgte termer.
 - Sitemap 68 URLs, IndexNow pinget (200), health_check 71/71,
   deployet og live-verificeret.
+
+## Iteration 91 (28/8) — Color Blindness Simulator
+
+- `/color-blindness-simulator` (EN) + `/color-blindness-simulator-da` (DA):
+  simuler protanopi, deuteranopi og tritanopi på op til 10 farver.
+  Viénot/Brettel/Mollon-matricer i lineær RGB, severity-slider (0-100 %),
+  live tekst-preview, aria-labels, fejlbeskeder, track.js, JSON-LD WebApplication.
+- Node-test: gyldige outputs, severity=0 = identitet, protanopisk rød → (88,88,41).
+- Indkobling: sitemap (74 URLs), free-tools.html-kort, llms.txt,
+  krydslinks fra palette-generator-siderne, hreflang EN↔DA.
+- health_check.py 71/71 · deployet + curl-verificeret live · IndexNow pinget
+  (74 URLs → 200). Indeksering: stadig ingen treff i søgemaskinen bag backenden.

@@ -1032,3 +1032,45 @@ Iteration 33 færdig. DECISION.md fandtes, så der blev BYGGET — ingen søgnin
 STATUS.md er opdateret med hvad der virkede, og hvad næste iteration bør gøre.
 2026-08-23T16:34:38+02:00 iteration 11 afsluttet (exit 0)
 2026-08-23T16:35:00+02:00 === iteration 12/15 ===
+Iteration 34 færdig og commitet (59171ab).
+
+**Hvad der blev bygget:**
+- Nyt blogindlæg `/blog/gdpr-vs-nis2-overlap` — binder de to største indholdsklynger (GDPR + NIS2) sammen: hvor Art. 32 GDPR og Art. 21 NIS2 overlapper, én leverandørregister/én incident-plan til begge, side-by-side sammenligning, 6 FAQ'er. Tilføjet som job i make_blog.py så det vedligeholdes med scriptet.
+- Blog-kort på forsiden (nu 14) + sitemap opdateret til 28 URLs.
+
+**Verificeret:** health check 60/60, JSON-LD 0 fejl på alle filer, 0 døde interne links, deployet og curl-verificeret live (korrekt title, "Related Guides" til stede, forsiden viser kortet, sitemap 28 URLs).
+
+**Søgninger: 0 af 12 brugt. Budget: stadig 0 kr af 1.000.**
+
+Blokeringen er uændret og vigtigst af alt: intet kan tjene penge før Mads opretter KDP-, Gumroad- og Chrome Web Store-konti (~15 min samlet). STATUS.md har påmindelsen øverst, samt næste iterations fokus: kvalitetsgennemgang med friske øjne frem for mere maskinel indholdsudbygning — biblioteket er nu 14 blogs + 10 guides, og kvalitet slår kvantitet herfra.
+2026-08-23T16:39:45+02:00 iteration 12 afsluttet (exit 0)
+2026-08-23T16:40:07+02:00 === iteration 13/15 ===
+Færdig. Her er hvad iteration 37 leverede:
+
+## 1. Kritisk JSON-LD bug fixet på 11 sider (12 blokke)
+
+Opdagede at **alle 10 guidesider + scan.html + accessibility-statement-generator + wordpress-plugin.html** havde invalid JSON-LD: `@context` var `"https://***@type":"FAQPage"` i stedet for `"https://schema.org","@type":"FAQPage"`. Det betød Google kunne ikke læse det strukturerede data på de sider — SEO-indsatsen på guides var spildt indtil nu.
+
+Nu: **32/32 HTML-filer** har valid JSON-LD med korrekt `https://schema.org`.
+
+## 2. Ny side: 10-Platform Comparison Guide
+
+`site/guides/comparison.html` — en SEO-landingsside der samler alle 10 platforme i ét view:
+- Sammenligningstabel (market share, base accessibility, typiske issues, fix-complexity)
+- 10 deep-dive cards med platformspecifikke anbefalinger
+- CTA til scanneren
+- Linket fra **både** index.html og scan.html
+
+## 3. Deployet og verificeret
+
+Alle ændringer er live på https://hermes-passiv.pages.dev:
+- `/guides/comparison` → 200, korrekt indhold ✅
+- `schema.org` til stede på alle sider ✅
+- sitemap: 29 URLs ✅
+- 0 søgninger brugt, 0 kr af budgettet
+
+## Blokering
+
+**Uændret.** 5 e-bøger, ComplianceDocs, Chrome extension — alt bygget, klar til upload. Mangler kun Mads' konti (KDP + Gumroad + CWS dev-fee $5). Det er fortsat dét der adskiller os fra første krone.
+2026-08-23T16:47:59+02:00 iteration 13 afsluttet (exit 0)
+2026-08-23T16:48:22+02:00 === iteration 14/15 ===

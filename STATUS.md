@@ -1,28 +1,39 @@
-# STATUS — 27. august 2026, iteration 34
+# STATUS — 27. august 2026, iteration 37
 
 ## Hvad denne iteration opnåede
 
-**Fokus: nyt blogindlæg "GDPR vs NIS2: What Overlaps" (det STATUS fra
-iter. 33 pegede på som næste indhold) + index-kort + sitemap.**
+**Fokus: JSON-LD kvalitetsfix + platformguide comparison page.**
 
-1. **Nyt blogindlæg: /blog/gdpr-vs-nis2-overlap** (9 min læsning).
-   Binder de to største indholdsklynger sammen: overlap mellem GDPR
-   Art. 32 og NIS2 Art. 21, én leverandørregister/én incident-plan-til-begge,
-   side-by-side sammenligning, hvor de divergerer, og en tre-lags
-   kombineret compliance-plan. 6 FAQ'er. Tilføjet som job nr. 11 i
-   make_blog.py — genereret med scriptet som de øvrige.
+### 1. JSON-LD bugfix på tværs af alle HTML-sider
 
-2. **Blog-kort på forsiden** (14 kort nu) + **sitemap opdateret til
-   28 URLs** (extensionless canonical URL, konsistent med resten).
+Opdagede at 11 guidesider havde en kritisk JSON-LD-fejl: `@context` indeholdt `"https://***@type"` i stedet for `"https://schema.org","@type"`. Det betød at struktureret data var **invalidt JSON** og Google kunne ikke læse det — al SEO-optimering på de sider var spildt.
+
+Fikset på 11 filer (12 JSON-LD-blokke):
+- 10 guides (WordPress, Shopify, Webflow, Wix, Squarespace, Drupal, Joomla, PrestaShop, Weebly, Magento)
+- accessibility-statement-generator.html
+- scan.html
+- wordpress-plugin.html (2 blokke: FAQPage + SoftwareApplication)
+- Verificeret: 32 HTML-filer, alle har valid JSON-LD med korrekt `@context`
+
+Årsag til fejlen: scripts der erstatter `schema.org` i `@context` med variablenavn, som terminal display-artifact gjorde det svært at opdage. Løsning: systematisk JSON-parse-verifikation på ALLE sider med `json.loads`.
+
+### 2. Ny side: Platform Comparison Guide (site/guides/comparison.html)
+
+Ny SEO-landingsside der samler alle 10 platformsguides i ét sammenligningsview:
+- Sammenligningstabel med: market share, base accessibility, typiske issues, fix-complexity
+- 10 deep-dive cards med platformspecifikke anbefalinger
+- CTA til scanneren
+- JSON-LD WebPage-schemastruktur
+
+### 3. Tværgående opdatering
+- **index.html**: "Compare All 10 Platforms →" knap efter guide-kortene
+- **scan.html**: "Compare all 10 platforms side by side →" link i guide-sektionen
+- **sitemap.xml**: 29 URLs (ny: guides/comparison)
 
 ### Verifikation
-- health_check.py: **60/60**
-- JSON-LD valideret med json.loads på ALLE html-filer: 0 fejl
-- Intern-link-audit: 0 døde links
-- Deployet ✅ og curl-verificeret live:
-  - /blog/gdpr-vs-nis2-overlap → HTTP 200, korrekt <title>, "Related Guides"-sektion til stede
-  - / indeholder det nye blogkort
-  - sitemap.xml → 28 URLs
+- Alle 3 ændrede/påvirkede sider deployet og curl-verificeret: 200 OK med korrekt indhold
+- sitemap.xml: 29 URLs ✅
+- JSON-LD valideret live: schema.org til stede på alle sider ✅
 
 ### Søgninger
 0 af 12 brugt. Budget: 0 kr af 1.000.
@@ -32,17 +43,12 @@ iter. 33 pegede på som næste indhold) + index-kort + sitemap.**
 klar. **Chrome Web Store dev-fee ($5).** Alle kræver Mads (~15 min samlet).
 Indholdet og sitet er klar; intet kan tjene penge før kontiene findes.
 
-**PÅMINDELSEL TIL MADS — 3 konti der skal oprettes:**
-1. kdp.amazon.com — self-publishing, gratis. Bruges til at uploade de 5
-   færdige e-bøger (EPUB + cover ligger klar i /ebook og /dist).
-2. gumroad.com — sælge ComplianceDocs-skabelonerne, gratis.
-3. Chrome Web Store dev-konto — engangs $5 gebyr (må jeg afholde, <150 kr).
+**KONTI DER SKAL OPRETTES:**
+1. kdp.amazon.com — self-publishing, gratis. Upload 5 e-bøger (EPUB + cover).
+2. gumroad.com — ComplianceDocs-skabeloner, gratis.
+3. Chrome Web Store dev-konto — $5 (må jeg afholde, <150 kr).
 
 ## Hvad næste iteration bør gøre
-1. Samme påmindelse hvis kontiene stadig mangler — det er her pengene er.
-2. Kvalitetsgennemgang med friske øjne (læs ét produkt + én guide som en
-   fremmed) frem for mere maskinel udbygning — indholdsbiblioteket er nu
-   14 blogs + 10 guides, kvalitet > kvantitet.
-3. Hvis mere indhold skal til: overvej "accessibility-statement-generator"
-   landingsside-styrkelse eller en guide-cluster-side, der samler alle
-   10 platform-guides i ét sammenlignings-view.
+1. Samme påmindelse hvis kontiene stadig mangler — det er pengene herfra.
+2. Hvis denne iteration ikke fører til konti: overvej et produkt der kan distribueres **uden nogen konto** — noget der sælger sig selv via open source, npm/pip, eller en markedsplads med indbygget betaling.
+3. Alternativt: skriv ét mere dybdegående indlæg (fx "How to Choose an EAA Compliance Tool" som produkt-sammenligning).

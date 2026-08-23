@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Download eaa-scanner — EAA / WCAG Compliance Scanner</title>
+<meta name="description" content="Download eaa-scanner: a free, zero-dependency command-line scanner for EAA / WCAG 2.1 AA issues. Works on any CMS. Install with pip or download the wheel directly.">
+<link rel="canonical" href="https://hermes-passiv.pages.dev/downloads">
+<link rel="stylesheet" href="/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "eaa-scanner",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any (Python 3.8+)",
+  "description": "Universal EAA / WCAG 2.1 AA compliance scanner. Zero dependencies, pure Python.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "license": "https://opensource.org/licenses/MIT"
+}
+</script>
+<style>
+  .dl-card { background: var(--color-surface-2, #16202c); border-radius: 12px; padding: 1.5rem; margin: 1rem 0; }
+  .dl-card code { display: block; background: #0b1119; padding: .8rem 1rem; border-radius: 8px; margin-top: .6rem; overflow-x: auto; font-size: .95em; }
+</style>
+</head>
+<body>
+<main class="container">
+  <nav style="margin-bottom:1.5rem"><a href="/">&larr; Back to home</a></nav>
+
+  <header class="hero">
+    <span class="badge">Free &amp; open source &middot; MIT license</span>
+    <h1>Download eaa-scanner</h1>
+    <p class="tagline">A zero-dependency command-line scanner for EAA / WCAG&nbsp;2.1&nbsp;AA issues.
+    Works on any website — WordPress, Shopify, Webflow, Next.js, Squarespace or hand-written HTML.
+    Pure Python standard library, Python&nbsp;3.8+.</p>
+  </header>
+
+  <section class="dl-card">
+    <h2>Install with pip</h2>
+    <p>Install straight from this page — no account needed:</p>
+    <code>pip install https://hermes-passiv.pages.dev/downloads/eaa_scanner-1.0.0-py3-none-any.whl</code>
+    <p>Once the package is on PyPI, simply:</p>
+    <code>pip install eaa-scanner</code>
+  </section>
+
+  <section class="dl-card">
+    <h2>Direct downloads</h2>
+    <ul>
+      <li><a href="/downloads/eaa_scanner-1.0.0-py3-none-any.whl">eaa_scanner-1.0.0-py3-none-any.whl</a> (11 KB)</li>
+      <li><a href="/downloads/eaa_scanner-1.0.0.tar.gz">eaa_scanner-1.0.0.tar.gz</a> — source distribution (11 KB)</li>
+      <li><a href="/downloads/eaa-scanner-README.md">README with full usage guide</a></li>
+    </ul>
+  </section>
+
+  <section class="dl-card">
+    <h2>Quick start</h2>
+    <code>eaa-scan https://your-site.com<br>eaa-scan --json https://your-site.com &gt; report.json<br>eaa-scan --fail-on warning https://your-site.com&nbsp;&nbsp;# CI mode: non-zero exit on warnings</code>
+    <p>Exit code is <strong>0</strong> when clean and <strong>1</strong> when findings exist at
+    the chosen severity, so it drops straight into CI pipelines.</p>
+  </section>
+
+  <section>
+    <p>Automated checks catch roughly 30&ndash;40% of accessibility issues. For full EAA
+    conformance, pair eaa-scanner with manual testing — see our
+    <a href="/scan">free online scan tool</a> and
+    <a href="/">compliance guides and checklists</a>.</p>
+  </section>
+</main>
+<footer class="site-footer">
+  <div class="container"><a href="/">&larr; hermes-passiv.pages.dev</a></div>
+</footer>
+</body>
+</html>

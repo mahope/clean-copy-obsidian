@@ -1493,3 +1493,46 @@ Iteration 62 færdig. Resumé:
 STATUS.md er opdateret med det hele. Søgninger: 0/12. Budget: 0/1000 DKK.
 2026-08-23T19:43:29+02:00 iteration 23 afsluttet (exit 0)
 2026-08-23T19:44:29+02:00 === iteration 24/60 ===
+Iteration 63 færdig og committet.
+
+**Hvad der blev gjort (byg, ikke søg — DECISION.md findes, produktet er færdigt):**
+
+Gik købsrejsen igennem med friske øjne og rettede tre ting mellem besøgende og betaling:
+
+1. **Intern jargon fjernet fra forsiden:** "70% royalty — ~$9 per sale", "Ready for Amazon KDP" og "Coming to Gumroad" stod direkte til købere. Erstattet med kundevenlig tekst.
+2. **Ægte venteliste-formular:** mailto-linket til mads@mahope.dk er erstattet med en rigtig formular + ny `/api/waitlist`-endpoint i `_worker.js` (validering, dedupe, tæller i KV). E-mails gemmes så listen kan importeres senere. End-to-end testet mod produktion — og mine egne smoketests er slettet igen, så `wl-count` står ærligt på 0.
+3. Footer fik produktnavnet tilbage → health_check **60/60**, deployet og live-verificeret.
+
+**Vigtig lærering gemt i STATUS.md:** `wrangler kv` kræver `--remote` til produktionstjek — uden den læser den en lokal cache og viser stille tomme navnerum.
+
+**Næste iteration:** tjek ventelistetælleren før alt andet; hvis Bitwarden låses op, åbn Lemon Squeezy/npm/Chrome. Søgninger brugt: 0 af 12 · Budget: 0/1.000 DKK.
+2026-08-23T19:55:21+02:00 iteration 24 afsluttet (exit 0)
+2026-08-23T19:55:46+02:00 === iteration 25/60 ===
+Iteration 64 færdig.
+
+**Fundet og rettet:** Alle 52 sider på sitet manglede `og:image` og `twitter:image` — delinger på LinkedIn/X/Facebook viste et nøgent link. Nu har hver side et emne-matcherende share-billede (EAA-cover til scanner/WordPress, GDPR/NIS2-covers til deres blogs osv.).
+
+**Verificeret:**
+- health_check 60/60
+- Deployet; live curl bekræfter `og:image` på /, /scan, blog- og guide-sider
+- Billedfilerne svarer HTTP 200 live
+
+**Ærlige tal:** Venteliste via KV `--remote`: **0 rigtige tilmeldinger**. Søgninger brugt: 0 af 12. Budget: stadig 0 kr.
+
+STATUS.md er opdateret. Næste iteration: tjek ventelisten igen; resten venter på Bitwarden/Lemon Squeezy/KDP.
+2026-08-23T20:04:03+02:00 iteration 25 afsluttet (exit 0)
+2026-08-23T20:04:26+02:00 === iteration 26/60 ===
+Iteration 65 færdig. Resumé:
+
+**Vigtigste fund — ventelisten var forurenet igen.** En smoketest fra iteration 63 (`smoketest-selfcheck@example.com`) lå stadig i KV. Jeg slettede nøglen og dedupe-posten og satte `wl-count` tilbage til **0** — det ærlige tal.
+
+**Konverteringssti-gennemgang af live-sitet:**
+- 52/52 sitemap-URL'er svarer 200; 76 interne links checket, 0 døde (én falsk positiv verificeret manuelt)
+- Alle 6 downloads 200; zip-filerne integritetstestet; plugin-PHP `php -l` rent; extension-JS `node --check` OK
+- Begge API'er virker end-to-end
+
+**Ét reelt fix:** Quiz-resultatet på forsiden var en blindgyde — brugeren fik sin score uden noget klikbart næste skridt. Tilføjede to CTA'er ("See the compliance guides" → #products, "Get notified when the store opens" → #notify). Deployet og verificeret live. Health check 60/60.
+
+**Blokering uændret:** Bitwarden → Lemon Squeezy/npm/Chrome; KDP venter på Mads' manuelle upload. STATUS.md er opdateret. Søgninger: 0/12 · Budget: 0/1000 kr.
+2026-08-23T20:10:47+02:00 iteration 26 afsluttet (exit 0)
+2026-08-23T20:11:09+02:00 === iteration 27/60 ===

@@ -65,7 +65,7 @@ SECTION_BOTTOM = '''  </div>
 
 FOOTER = '''<footer class="site-footer">
   <div class="container">
-    <p><a href="/">← Home</a> · <a href="/scan.html">Free Scanner</a> · <a href="/#products">E-Books</a> · <a href="/blog">Blog</a></p>
+    <p><a href="/">← Home</a> · <a href="/scan">Free Scanner</a> · <a href="/#products">E-Books</a> · <a href="/#blog">Blog</a></p>
     <p>Mahope © 2026 · Practical EU compliance for small web agencies</p>
   </div>
 </footer>
@@ -1157,7 +1157,7 @@ def main():
             h1='TYPO3 Accessibility:<br>Meeting BITV 2.0 and EN 301 549',
             subtitle='A practical compliance workflow for agencies running TYPO3 sites for German public-sector clients and EU businesses covered by the EAA.',
             reading_time='7 minutes',
-            cta_product=('Scan Your TYPO3 Site Free →', '/scan.html'),
+            cta_product=('Scan Your TYPO3 Site Free →', '/scan'),
             cta_secondary=('EAA Checklist Blog →', '/blog/eaa-accessibility-checklist',
                            'Run the free scanner on your TYPO3 site first — it catches the mechanical WCAG issues (contrast, lang, headings, labels) in seconds so you can spend expert time on the judgement calls.'),
             sections=[
@@ -1230,7 +1230,7 @@ def main():
             h1='Ghost Accessibility:<br>Making Publications EAA-Compliant',
             subtitle='Theme fixes, content habits, and membership-flow checks that bring a Ghost site up to WCAG 2.2 AA — without rebuilding it.',
             reading_time='6 minutes',
-            cta_product=('Scan Your Ghost Site Free →', '/scan.html'),
+            cta_product=('Scan Your Ghost Site Free →', '/scan'),
             cta_secondary=('WCAG 2.2 Guide →', '/blog/wcag-22-what-changes',
                            'Start with a free automated scan of your Ghost site — it finds the mechanical WCAG failures (contrast, missing alt, heading order, unlabelled buttons) across all your key pages in one run.'),
             sections=[
@@ -1299,7 +1299,7 @@ def main():
             h1='Shopify Accessibility:<br>Getting Your Store EAA-Compliant',
             subtitle='A practical compliance guide for Shopify merchants and agencies — what the EAA requires, where Shopify stores typically fail, and which fixes you can do without touching code.',
             reading_time='7 minutes',
-            cta_product=('Scan Your Shopify Store Free →', '/scan.html'),
+            cta_product=('Scan Your Shopify Store Free →', '/scan'),
             cta_secondary=('EAA Checklist Blog →', '/blog/eaa-accessibility-checklist',
                            'Run the free scanner on your storefront first — it catches contrast, alt-text, label and heading issues in seconds, so your expert time goes on the judgement calls.'),
             sections=[
@@ -1387,7 +1387,7 @@ def main():
             h1='Drupal Accessibility:<br>Meeting WCAG 2.1 AA and the EAA',
             subtitle='A practical guide for agencies building Drupal sites for EU clients — what core already does well, where contributed modules break compliance, and how to verify before the EAA bites.',
             reading_time='7 minutes',
-            cta_product=('Scan Your Drupal Site Free →', '/scan.html'),
+            cta_product=('Scan Your Drupal Site Free →', '/scan'),
             cta_secondary=('Drupal Guide →', '/guides/drupal-accessibility-check',
                            'Run the free scanner on your front-end first — it catches contrast, alt-text, label and heading issues in seconds, so your expert time goes on judgement calls like keyboard flows and ARIA.'),
             sections=[
@@ -1449,7 +1449,7 @@ def main():
             h1='Squarespace Accessibility:<br>An EAA Compliance Guide',
             subtitle='What you can and cannot fix inside Squarespace — and the practical workflow that brings a template-based site up to WCAG 2.1 AA before the EAA becomes a client problem.',
             reading_time='6 minutes',
-            cta_product=('Scan Your Squarespace Site Free →', '/scan.html'),
+            cta_product=('Scan Your Squarespace Site Free →', '/scan'),
             cta_secondary=('Squarespace Guide →', '/guides/squarespace-accessibility-check',
                            'Run the free scanner on your site first — it catches contrast, alt-text, label and heading issues in seconds, so your remaining effort goes on keyboard flows and content quality.'),
             sections=[
@@ -1513,7 +1513,7 @@ def main():
             h1='Webflow Accessibility:<br>A Practical EAA Audit Guide',
             subtitle='Where Webflow sites actually fail WCAG checks — and how agencies can fix them inside the Designer before the EAA becomes a client problem.',
             reading_time='6 minutes',
-            cta_product=('Scan Your Webflow Site Free →', '/scan.html'),
+            cta_product=('Scan Your Webflow Site Free →', '/scan'),
             cta_secondary=('EAA Checklist Blog →', '/blog/eaa-accessibility-checklist',
                            'Run the free scanner on your Webflow site first — it catches contrast, alt-text, heading and label issues instantly so you know where to start in the Designer.'),
             sections=[
@@ -1592,7 +1592,7 @@ def main():
             h1='Wix Accessibility:<br>An EAA Compliance Guide',
             subtitle='What you can fix inside the Wix Editor, what the platform decides for you — and how agencies audit Wix builds against WCAG 2.1 AA before clients ask.',
             reading_time='6 minutes',
-            cta_product=('Scan Your Wix Site Free →', '/scan.html'),
+            cta_product=('Scan Your Wix Site Free →', '/scan'),
             cta_secondary=('Wix Guide →', '/guides/wix-accessibility-check',
                            'Run the free scanner on your Wix site first — it flags contrast, alt-text, heading and label issues instantly so your Editor session has a concrete worklist.'),
             sections=[
@@ -1672,7 +1672,7 @@ def main():
             h1='Magento Accessibility:<br>EAA Compliance for Your Store',
             subtitle='Where Magento and Adobe Commerce stores fail WCAG 2.1 AA — themes, extensions, checkout — and the remediation workflow that gets EU shops EAA-ready.',
             reading_time='7 minutes',
-            cta_product=('Scan Your Magento Store Free →', '/scan.html'),
+            cta_product=('Scan Your Magento Store Free →', '/scan'),
             cta_secondary=('Magento Guide →', '/guides/magento-accessibility-check',
                            'Run the free scanner across your storefront first — product grids, layered navigation and forms are where automated findings cluster.'),
             sections=[

@@ -12,6 +12,9 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Wix Accessibility Check — Free WCAG/EAA Scan">
 <meta name="twitter:description" content="Scan your Wix site for WCAG 2.1 AA failures. Free instant results, platform-specific fixes.">
+<meta property="og:image" content="https://hermes-passiv.pages.dev/cover.jpg">
+<meta property="og:image:alt" content="Wix Accessibility Check — Free WCAG/EAA Site Scan">
+<meta name="twitter:image" content="https://hermes-passiv.pages.dev/cover.jpg">
 <link rel="canonical" href="https://hermes-passiv.pages.dev/guides/wix-accessibility-check">
 <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
 <link rel="stylesheet" href="/style.css">
@@ -64,7 +67,7 @@
       <li><strong>It does not catch colour contrast issues</strong> that depend on runtime background images or layered elements.</li>
       <li><strong>It ignores third-party app content.</strong> If an app injects unstyled HTML, the wizard won't flag it.</li>
     </ul>
-    <p>The bottom line: the Accessibility Wizard helps you find the low-hanging fruit, but a <a href="/scan.html" style="color:var(--color-accent);">third-party automated scan</a> covers every page on your site in seconds and catches the gaps the wizard leaves open.</p>
+    <p>The bottom line: the Accessibility Wizard helps you find the low-hanging fruit, but a <a href="/scan" style="color:var(--color-accent);">third-party automated scan</a> covers every page on your site in seconds and catches the gaps the wizard leaves open.</p>
   </div>
 </section>
 
@@ -72,14 +75,14 @@
   <div class="container">
     <h2>How to check your Wix site</h2>
     <ol style="line-height:2;">
-      <li><strong>Open the <a href="/scan.html" style="color:var(--color-accent);">free EAA/WCAG scanner</a>.</strong></li>
+      <li><strong>Open the <a href="/scan" style="color:var(--color-accent);">free EAA/WCAG scanner</a>.</strong></li>
       <li><strong>Paste your Wix URL</strong> — any published page: home, a product page, or a collection page.</li>
       <li><strong>Read your grade.</strong> Each finding shows the exact element and why it matters, so fixes are concrete, not vague advice.</li>
       <li><strong>Fix and re-scan.</strong> In Wix, most image-alt and contrast issues are fixed right in the editor or theme settings. Re-run the scan to confirm.</li>
       <li><strong>Copy the shareable link</strong> from the result page — useful when a client or colleague needs to see the findings.</li>
     </ol>
     <div style="margin-top:32px;text-align:center;">
-      <a href="/scan.html" class="btn-primary" style="display:inline-block;">Scan Your Wix Site Now — Free</a>
+      <a href="/scan" class="btn-primary" style="display:inline-block;">Scan Your Wix Site Now — Free</a>
     </div>
   </div>
 </section>
@@ -124,7 +127,7 @@
     <p>Wix themes and templates ship with preset colour palettes that look modern but can fail WCAG 2.1 AA contrast ratio standards (4.5:1 for normal text, 3:1 for large text). The <strong>Site Design</strong> panel (Editor → Site Design → Colours) lets you customise every palette colour. After changing a colour, re-scan the page — our scanner measures contrast on the rendered output, catching overlay and transparency combinations that a design tool alone would miss. Pay special attention to footer text, mobile menu text, and button text on gradient or image backgrounds.</p>
 
     <h3 style="margin-top:28px;">Velo by Wix custom code accessibility</h3>
-    <p>If you use <strong>Velo by Wix</strong> (the development environment) to add custom interactions, API requests, or dynamic content, you are responsible for that code's accessibility. Velo lets you inject HTML, CSS, and JavaScript into Wix pages. Common Velo-induced issues include: dynamically generated images without alt text, custom buttons with no ARIA role or accessible name, modal popups that trap keyboard focus, and AJAX-loaded content that doesn't announce updates to screen readers. Review any Velo code with the <a href="/scan.html" style="color:var(--color-accent);">scanner</a> and test manually with a screen reader before publishing.</p>
+    <p>If you use <strong>Velo by Wix</strong> (the development environment) to add custom interactions, API requests, or dynamic content, you are responsible for that code's accessibility. Velo lets you inject HTML, CSS, and JavaScript into Wix pages. Common Velo-induced issues include: dynamically generated images without alt text, custom buttons with no ARIA role or accessible name, modal popups that trap keyboard focus, and AJAX-loaded content that doesn't announce updates to screen readers. Review any Velo code with the <a href="/scan" style="color:var(--color-accent);">scanner</a> and test manually with a screen reader before publishing.</p>
 
     <h3 style="margin-top:28px;">Third-party app ecosystem risks</h3>
     <p>The <strong>Wix App Market</strong> offers hundreds of apps — booking widgets, reviews, chat, analytics, cookie consent — that inject their own markup. Each app can introduce accessibility failures that Wix's own tools cannot fix. Before installing any app:</p>
@@ -180,7 +183,7 @@
       <li><strong>Quarterly compliance review</strong> — even without changes, re-scan to catch anything that was missed or regressed.</li>
     </ul>
     <div style="margin-top:24px;text-align:center;">
-      <a href="/scan.html" class="btn-primary" style="display:inline-block;">Scan Your Wix Site — It Takes 30 Seconds</a>
+      <a href="/scan" class="btn-primary" style="display:inline-block;">Scan Your Wix Site — It Takes 30 Seconds</a>
     </div>
   </div>
 </section>
@@ -206,7 +209,7 @@
     <ul style="line-height:2;margin-top:8px;">
       <li><a href="/" style="color:var(--color-accent);">All EAA Compliance Guides</a> — compare Wix against Shopify, Squarespace, and WordPress approaches.</li>
       <li><a href="/wordpress-plugin" style="color:var(--color-accent);">Free WordPress Plugin</a> — automated scanning built into your WP admin dashboard.</li>
-      <li><a href="/scan.html" style="color:var(--color-accent);">Free WCAG/EAA Scanner</a> — 16 automated checks, no signup, results in seconds.</li>
+      <li><a href="/scan" style="color:var(--color-accent);">Free WCAG/EAA Scanner</a> — 16 automated checks, no signup, results in seconds.</li>
       <li><a href="https://support.wix.com/en/article/accessibility-wizard" style="color:var(--color-accent);" rel="noopener noreferrer">Wix Accessibility Wizard Documentation</a> — official guide from Wix.</li>
       <li><a href="https://www.w3.org/WAI/WCAG22/quickref/" style="color:var(--color-accent);" rel="noopener noreferrer">WCAG 2.2 Quick Reference</a> — the official success criteria from W3C.</li>
     </ul>
@@ -223,10 +226,10 @@
       <dd>At least monthly, and after every template change, app installation, theme update, or content publication. Each change is a compliance risk point.</dd>
     </dl>
     <div style="margin-top:24px;display:flex;gap:16px;flex-wrap:wrap;justify-content:center;">
-      <a href="/accessibility-statement-generator.html" class="btn-secondary" style="display:inline-block;">Free Statement Generator</a>
+      <a href="/accessibility-statement-generator" class="btn-secondary" style="display:inline-block;">Free Statement Generator</a>
       <a href="/" class="btn-secondary" style="display:inline-block;">All Compliance Guides</a>
       <a href="/wordpress-plugin" class="btn-secondary" style="display:inline-block;">Free WordPress Plugin</a>
-      <a href="/scan.html" class="btn-primary" style="display:inline-block;">Free Scanner</a>
+      <a href="/scan" class="btn-primary" style="display:inline-block;">Free Scanner</a>
     </div>
   </div>
 </section>

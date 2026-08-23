@@ -34,7 +34,7 @@ def make_guide(slug, name, title_tag, meta_desc, hero_sub, why_html,
     s = s.replace('<h1>Joomla Accessibility Check</h1>', f'<h1>{name} Accessibility Check</h1>')
     s = s.replace('Scan any Joomla site against 16 WCAG 2.1 AA rules in seconds — no extension '
                   'install, no signup. Built for EU compliance.', hero_sub)
-    s = s.replace('/scan.html#url=https%3A%2F%2Fwww.joomla.org', '/scan.html')
+    s = s.replace('/scan#url=https%3A%2F%2Fwww.joomla.org', '/scan')
     s = s.replace('Run a Free Scan on joomla.org', f'Run a Free Scan on {cta}')
 
     # --- Why section ---

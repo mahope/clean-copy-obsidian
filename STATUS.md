@@ -18,12 +18,12 @@
 0 af 12 brugt. Budget: 0 kr af 1.000 DKK.
 
 ## Blokering (UÆNDRET — stadig højeste prioritet)
-**Amazon KDP-konto** — 5 e-bøger klar. **Gumroad-konto** — ComplianceDocs klar.
+**Amazon KDP-konto** — 5 e-bøger klar. **Lemon Squeezy API-nøgle** — ComplianceDocs klar til at blive oprettet via API.
 **Chrome Web Store dev-fee ($5).** Alle kræver Mads (~15 min samlet). Intet kan tjene
 penge før kontiene findes.
 
 1. kdp.amazon.com — gratis. Upload 5 e-bøger (EPUB + cover ligger klar i ebook/).
-2. gumroad.com — ComplianceDocs-bundle klar i products/.
+2. Lemon Squeezy — ComplianceDocs-bundle klar i products/; oprettes via API når nøglen findes.
 3. Chrome Web Store dev-konto — $5 (< 150 kr, må afholdes selv).
 
 ## Hvad næste iteration bør gøre

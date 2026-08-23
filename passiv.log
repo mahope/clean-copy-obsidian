@@ -1074,3 +1074,13 @@ Alle ændringer er live på https://hermes-passiv.pages.dev:
 **Uændret.** 5 e-bøger, ComplianceDocs, Chrome extension — alt bygget, klar til upload. Mangler kun Mads' konti (KDP + Gumroad + CWS dev-fee $5). Det er fortsat dét der adskiller os fra første krone.
 2026-08-23T16:47:59+02:00 iteration 13 afsluttet (exit 0)
 2026-08-23T16:48:22+02:00 === iteration 14/15 ===
+Iteration 38 færdig. Kort:
+
+- **Committede iteration 37** (lå ukommitteret: comparison-guide + JSON-LD-fixes).
+- **Kvalitetsaudit af hele sitet**: JSON-LD parset på alle sider (0 fejl), fuld intern link-audit (0 døde links — de 284 hits var falske positiver fra min første rod-relativ opløsning), health_check 60/60.
+- **Deployet og verificeret live**: `/`, `/guides/comparison`, `/blog`, `/scan` → 200 med korrekt indhold.
+- STATUS.md opdateret. 0 søgninger brugt, budget stadig 0/1000 kr.
+
+Sitets tekniske kvalitet er nu verificeret top-til-bund. Den reelle blokering er uændret: KDP-, Gumroad- og Chrome-kontiene hos dig — indhold og filer ligger klar til upload. Næste iteration bør enten minde dig igen eller byg distribution der ikke kræver konto (fx scanneren som pip/npm-pakke).
+2026-08-23T16:51:19+02:00 iteration 14 afsluttet (exit 0)
+2026-08-23T16:51:41+02:00 === iteration 15/15 ===

@@ -1134,3 +1134,16 @@ Iteration 41 færdig. Opsummering:
 **Næste iteration:** marketplace-action/workflow-skabelon til CI-brugere, flere sprog på scansiden, eller købsrejsen på index.html klar til når betaling åbner.
 2026-08-23T17:13:43+02:00 iteration 2 afsluttet (exit 0)
 2026-08-23T17:14:16+02:00 === iteration 3/60 ===
+Iteration 42 færdig. DECISION.md fandtes, så der blev bygget:
+
+**Bygget: GitHub Actions-workflow-skabelon til eaa-scanner** (punkt 2 fra sidst)
+
+- `site/downloads/eaa-scan-github-action.yml` — klar-til-kopi CI-workflow: installerer scanneren direkte fra tarball'en på sitet (ingen konto eller token), scanner en liste af URL'er med `--fail-on`, weekly cron + push/PR-triggere + step summary.
+- Verificeret: YAML validerer med `yaml.safe_load`, og `--fail-on warning`-adfærden testet mod defekt HTML (exit 1 ved findings, exit 0 på rene sider — matcher CI-dokumentationen).
+- Downloads-siden udvidet med en CI-sektion + fil-link. health_check 60/60, deployet, live curl-check: /downloads = 200, workflow-filen = 200 med korrekt indhold.
+
+Søgninger: 0 af 12 · Budget: 0 kr af 1.000 DKK · Commits `143f5a8`, `03c60e1`.
+
+Blokeringer er uændrede (KDP-, Gumroad-, Chrome dev-fee-konti hos Mads). STATUS.md er opdateret; næste iteration: forbedre købsrejsen på index.html eller flere sprog/guides.
+2026-08-23T17:20:32+02:00 iteration 3 afsluttet (exit 0)
+2026-08-23T17:20:57+02:00 === iteration 4/60 ===

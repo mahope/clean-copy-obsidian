@@ -23,7 +23,7 @@ Research (20 kandidater) + web-faktatjek (10 søgninger) viser:
    - Praktiske kontraktklausuler
    - Incident reporting templates
    - Compliance tjekliste
-   - Pris: $12.99 (70% royalty ~$9,09 pr. salg)
+   - Pris: $9.99 (70% royalty = $6,99 pr. salg — KDP's 70% sats gælder kun op til $9.99)
 
 2. **"EAA Compliance Checklist for WordPress Sites"** (~25 sider)
    - 10-point EAA/WCAG compliance checklist
@@ -37,7 +37,7 @@ Research (20 kandidater) + web-faktatjek (10 søgninger) viser:
    - De tre dokumenter der betyder noget (DPA, RoPA, incident plan)
    - 14-dages handlingsplan fra nul til dokumenteret compliance
    - Klar-til-brug DPA-klausuler
-   - Pris: $12.99 (70% royalty ~$9,09 pr. salg)
+   - Pris: $9.99 (70% royalty = $6,99 pr. salg — KDP's 70% sats gælder kun op til $9.99)
 
 **Distribution:** Amazon KDP organisk søgning (alle tre bøger)
 
@@ -51,7 +51,7 @@ Research (20 kandidater) + web-faktatjek (10 søgninger) viser:
 ## Hvem betaler, hvor meget, hvor ofte
 
 - **Køber:** Små webbureauer (1-50 ansatte) i EU der skal dokumentere NIS2-compliance
-- **Beløb:** $12.99 pr. e-bog (70% royalty = $9.09)
+- **Beløb:** $9.99 pr. e-bog (70% royalty = $6.99)
 - **Frekvens:** Engangskøb pr. kunde, men katalog på 3-5 bøger øger gennemsnit
 - **Hvorfor bliver de ved:** NIS2 er et løbende compliance-krav. Nye bureauer søger hver dag.
 - **Realistisk estimat:** 1-10 salg/md = $9-90/md første 6 måneder. 10-30/md = $90-270/md efter katalog på 3+ bøger.

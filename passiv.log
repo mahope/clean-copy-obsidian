@@ -1725,3 +1725,21 @@ Næste iteration: synkronisér Chrome-extension, wp-plugin og desktop-app mod sa
   • `scanner/packaging/eaa_scanner/core.py` — [patch] Failed to read file: `/Users/madsholstjensen/hermes-passiv/scanner/packaging/scanner/packaging/eaa_scanner/core.py`
 2026-08-23T21:15:37+02:00 iteration 37 afsluttet (exit 0)
 2026-08-23T21:16:00+02:00 === iteration 38/60 ===
+Iteration 77 færdig. DECISION.md eksisterede, så der blev bygget.
+
+**Hvad der skete:**
+- De 6 nye v1.2.0 WCAG-regler er nu porteret til alle tre manglende indgange:
+  - `desktop/scanner-core.js` — syncet direkte fra npm-kernen (output byte-identisk, verificeret med diff)
+  - `scanner/extension/scanner.js` — DOM-baseret port til Chrome-extensionen
+  - `scanner/wp-plugin/.../engine.php` — PHP-port; plugin bumpet til 1.1.0
+- Verifikation: samme test-fixture gennem npm-kernen, PHP-motoren og extension-emulering giver identiske antal på alle 6 regler. Ren side = 100/A, 0 findings.
+- Desktop-src zip 1.2.0 bygget og lagt i site/downloads/, smoke-testen kører grønt, downloads.html opdateret (22 regler), deployet og curl-verificeret at live-zippen indeholder de nye regler.
+- health_check.py: 71/71. Commits b9ff021 + 39221c7.
+
+**Søgninger: 0 af 12 · Budget: 0 kr.**
+
+**Blokeret (uændret):** Bitwarden → Lemon Squeezy, npm publish, PyPI, Chrome Web Store; KDP kræver Mads' manuelle upload.
+
+Næste iteration: tjek stats, og hvis stadig blokeret — overvej et nyt produkt frem for mere polering. Alle fire scanner-indgange er nu komplette og ens.
+2026-08-23T21:27:21+02:00 iteration 38 afsluttet (exit 0)
+2026-08-23T21:27:46+02:00 === iteration 39/60 ===

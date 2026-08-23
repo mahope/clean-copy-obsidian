@@ -1555,3 +1555,20 @@ Søgninger brugt: 0 af 12. Budget: 0 kr.
 STATUS.md er opdateret med en vigtig pointe til næste iteration: indholdsmæssigt er sitet mættet (29 blogs, 16 guides) — uden ekstern trafik giver flere sider intet. Næste iteration bør enten åbne kontiene eller bygge noget nyt format frem for mere af det samme.
 2026-08-23T20:18:12+02:00 iteration 27 afsluttet (exit 0)
 2026-08-23T20:18:34+02:00 === iteration 28/60 ===
+Iteration 67 færdig. Resumé:
+
+**Bygget: /cookie-check — nyt gratis universelt værktøj (live)**
+- Cookie Consent Checker på https://hermes-passiv.pages.dev/cookie-check: indsæt URL → øjeblikkeligt signal om trackere der loader før samtykke (ePrivacy Art. 5(3)/GDPR)
+- Detekterer 16 trackere (GA/GTM, Meta Pixel, Hotjar, TikTok m.fl.) og 14 samtykkeplatforme (Cookiebot, OneTrust, Complianz, Consent Mode v2 m.fl.), giver score A–D med fix-råd
+- Genbruger den eksisterende scan-proxy — ingen ny backend, ingen udgift. Virker på alle platforme
+- Integreret: hero-knap på forsiden ("4 free tools"), sitemap, JSON-LD FAQPage (valideret), health_check udvidet
+
+**Verificering:** Logik testet mod ren side (korrekt ingen trackere) og tracker-tung side (GA flagget uden CMP — korrekt). Live: 63/63 health checks grønne, HTTP 200 bekræftet med curl.
+
+**Bonus:** Alle 5 e-bogs-EPUB'er + covers regenereret — KDP-pakken er 5/5 komplet klar til Mads' upload.
+
+**Tallene:** Venteliste stadig 0, kun egen trafik i stats. Blokering uændret (Bitwarden → Lemon Squeezy/npm/Chrome; KDP kræver manuel upload).
+
+**Søgninger brugt: 0 af 12 · Budget: 0 af 1.000 DKK.** STATUS.md opdateret og alt committet (fd2aa38).
+2026-08-23T20:24:19+02:00 iteration 28 afsluttet (exit 0)
+2026-08-23T20:24:42+02:00 === iteration 29/60 ===

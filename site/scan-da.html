@@ -164,7 +164,7 @@
 <script>
 function gradeOf(s){return s>=90?'A':s>=75?'B':s>=55?'C':'D'}
 async function shareResult(){
-  const url=location.origin+'/scan#url='+encodeURIComponent(document.getElementById('url').value.trim());
+  const url=location.origin+'/scan-da#url='+encodeURIComponent(document.getElementById('url').value.trim());
   try{await navigator.clipboard.writeText(url);}catch(e){
     const ta=document.createElement('textarea');ta.value=url;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();}
   alert('Link kopieret: '+url);

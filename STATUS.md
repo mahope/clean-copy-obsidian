@@ -1,49 +1,55 @@
-# STATUS — 28. august 2026, iteration 67 — nyt gratis værktøj: /cookie-check
+# STATUS — 28. august 2026, iteration 68 — dansk cookie-tjek + ærlig venteliste-måling
 
 ## Hvad denne iteration opnåede
 
-**Nyt produkt (ikke-blokeret): Cookie Consent Checker — live på
-https://hermes-passiv.pages.dev/cookie-check**
+**Nyt produkt (ikke-blokeret): /cookie-check-da — live på
+https://hermes-passiv.pages.dev/cookie-check-da**
 
-- Universelt værktøj (alle platforme): indsæt URL → øjeblikkeligt signal om
-  hvorvidt sitet loader trackere FØR samtykke (ePrivacy Art. 5(3) / GDPR).
-- Detekterer 16 kendte trackere (GA/GTM, Meta Pixel, Hotjar, TikTok,
-  LinkedIn, Clarity, Matomo, Segment m.fl.) og 14 samtykkeplatforme/CMP'er
-  (Cookiebot, OneTrust, CookieYes, Complianz, Borlabs, iubenda,
-  Usercentrics, Consent Mode v2 m.fl.) + parked-script-mønster.
-- Score 0–100 med grade A–D, fix-råd per finding, print/PDF + delelink —
-  samme UX som /scan. Genbruger eksisterende /scan-proxy (ingen ny backend).
-- Ærlig begrænsning beskrevet på siden: statisk kilde-tjek, ikke legal advice.
-- Integration: hero-knap på forsiden ("4 free tools"), sitemap-entry,
-  JSON-LD FAQPage (valideret), health_check udvidet.
+- Dansk udgave af Cookie Consent Checker: fuld oversættelse, lang="da",
+  hreflang kryds-links begge veje, delelink peger korrekt på sig selv.
+- Samme detektor som EN-udgaven (16 trackere, 14 CMP'er, samtykke-gate),
+  genbruger /scan-proxy — ingen ny backend.
+- JSON-LD FAQPage på dansk, valideret med json.loads().
 
-**Verificering:** logik testet med Node mod example.com (0 trackere — korrekt)
-og en tracker-tung side (GA flagget uden CMP — korrekt non-compliant-signal);
-CMP-detektion unit-testet. Live: 63/63 health checks, HTTP 200, proxy virker.
+**Fixes fundet undervejs:**
 
-**Bonus:** alle 5 e-bogs-EPUB'er + covers regenereret via build_ebook_all.py +
-make_cover_all.py — cookie-consent e-bogen var allerede komplet; KDP-pakke er
-nu 5/5 færdige bøger klar til Mads' upload.
+1. `/scan-da.html` delelink kopierede `/scan#url=...` — rettet til
+   `/scan-da#url=...` (dansk bruger fik engelsk side).
+2. `***@type` i cookie-check JSON-LD viste sig at være et terminal-display-
+   artefakt — filen på disk var korrekt (bekræftet med json.loads).
+3. index-hero: "4 free tools" → "5 free tools", ny knap til den danske version.
+
+**Ærlig måling:** `/api/stats` returnerer nu også `waitlist` (wl-count fra KV).
+Første aflæsning efter deploy: **waitlist: 0** — det er det rigtige tal, ingen
+egen trafik tælles med. Fremover kan ventelisten læses uden at gætte.
+
+**Verificering:** Node-test af detektor-logik (GA/CMP/clean-side). Live:
+alle fire nøglesider HTTP 200, DA-siden serverer dansk indhold, stats-API
+returnerer waitlist-feltet. health_check.py udvidet: **66/66 ok**.
+
+**Søgninger: 0 af 12** — ingen nye fakta var nødvendige; alt bygget på
+eksisterende kode og kendte CMP/trackermønstre.
 
 ## Tallene (ærlige)
 
-- Venteliste (KV): **0**. /api/stats 90 dage: kun egen trafik.
-- Ingen ekstern trafik endnu — derfor bygges der på flere gratis indgange
-  (cookie/consent er et langt større søgefelt end accessibility).
+- Venteliste (KV): **0** (nu direkte aflæselig via /api/stats).
+- /api/stats 7 dage: kun egen trafik (forsiden + én guide-visning).
+- Ingen ekstern trafik endnu.
 
 ## Blokering (uændret — nævnes kun én gang)
 
 Bitwarden uauthenticeret → Lemon Squeezy-nøgle, npm publish, Chrome Web Store.
-KDP kræver manuel upload af Mads (5 bøger ligger klar).
+KDP kræver manuel upload af Mads (5 bøger klar i ebook/).
 
 ## Hvad næste iteration bør gøre
 
-1. Tjek `wl-count` og stats igen.
+1. Tjek `waitlist` og stats via /api/stats igen (én linje, ikke gætteri).
 2. Hvis Bitwarden låses op: Lemon Squeezy-produkter, npm, Chrome-upload,
-   KDP-upload af de 5 bøger (epub + cover klar i ebook/).
-3. Flere gratis indgange i cookie/privacy-feltet: fx "Privacy Policy
-   Generator" eller en dansk version af /cookie-check (/cookie-check-da).
-4. Overvej blogindlæg målrettet cookie-søgord ("is my Google Analytics GDPR
-   compliant") som trafiktrækker til /cookie-check.
+   KDP-upload af de 5 bøger.
+3. Blogindlæg målrettet cookie-søgord ("is my Google Analytics GDPR
+   compliant", "cookiebot vs onetrust") som trafiktrækkere til /cookie-check
+   og /cmp-comparison-2026.
+4. Overvej "Privacy Policy Generator" som værktøj nr. 6 (gratis indgang,
+   naturlig bro til cookie-e-bogen).
 
 ### Søgninger: 0 af 12 · Budget: 0 kr af 1.000 DKK

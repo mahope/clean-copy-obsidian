@@ -406,5 +406,9 @@ async function handleStats(url, env) {
   for (const day of Object.keys(out).sort().reverse()) {
     if (day >= cutoff) filtered[day] = out[day];
   }
-  return jsonResp({ ok: true, days, stats: filtered });
+  // waitlist count (honest metric)
+  let waitlist = null;
+  try { waitlist = parseInt((await env.VISITS.get('wl-count')) || '0', 10); } catch {}
+
+  return jsonResp({ ok: true, days, stats: filtered, waitlist });
 }

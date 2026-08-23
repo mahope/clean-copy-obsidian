@@ -140,6 +140,20 @@ def main():
             ok("Cookie checker JSON-LD valid") if all_ok else fail("Cookie checker JSON-LD", f"{len(blocks)} blocks")
         except Exception as e:
             fail("/cookie-check reachable", str(e))
+
+        # Dansk cookie-tjek live
+        try:
+            ccd = urllib.request.urlopen(urllib.request.Request(
+                SITE_URL + "/cookie-check-da", headers={"User-Agent": "HermesHealthCheck/2.0"}), timeout=15)
+            cdbody = ccd.read().decode()
+            ok("HTTP 200 /cookie-check-da") if ccd.status == 200 else fail("/cookie-check-da status", f"got {ccd.status}")
+            ok("Dansk cookie-tjek indhold") if "samtykke" in cdbody.lower() and "scan-proxy" in cdbody else fail("Dansk cookie-tjek", "indhold mangler")
+            import json as _json2, re as _re2
+            blocks2 = _re2.findall(r'<script type="application/ld\+json">(.*?)</script>', cdbody, _re2.DOTALL)
+            all_ok2 = all(_json2.loads(b).get("@context") == "https://schema.org" for b in blocks2) and blocks2
+            ok("Dansk cookie-tjek JSON-LD valid") if all_ok2 else fail("Dansk cookie-tjek JSON-LD", f"{len(blocks2)} blocks")
+        except Exception as e:
+            fail("/cookie-check-da reachable", str(e))
     except urllib.error.HTTPError as e:
         fail("HTTP status", f"HTTP {e.code}")
         for kw in ["NIS2", "EAA", "GDPR", "ComplianceDocs", "schema.org"]:

@@ -36,6 +36,20 @@ EBOOKS = [
         "subtitle_prefix": "A Practical Guide",
         "uuid": "urn:uuid:2f7a9c45-5d81-4b3a-9e62-gdpragencies01",
     },
+    {
+        "slug": "eaa-shopify",
+        "title": "EAA Compliance for Shopify Stores",
+        "subtitle": "A Practical Guide to Meeting EU Accessibility Requirements Under the European Accessibility Act",
+        "subtitle_prefix": "A Practical Guide",
+        "uuid": "urn:uuid:8d4e7b21-3c6a-4f95-b2e0-eaashopify01",
+    },
+    {
+        "slug": "cookie-consent-guide",
+        "title": "Cookie Consent & Privacy Compliance for Small Websites",
+        "subtitle": "A Practical Guide to Meeting GDPR, ePrivacy, and Cookie Requirements Without a Legal Team",
+        "subtitle_prefix": "A Practical Guide",
+        "uuid": "urn:uuid:2f7a9c45-5d81-4b3a-9e62-cookieconsent01",
+    },
 ]
 
 AUTHOR = "Mahope"

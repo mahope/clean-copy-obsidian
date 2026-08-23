@@ -6,6 +6,9 @@
 <title>Free EAA Compliance Scanner — Check Any Website | Hermes Compliance</title>
 <meta name="description" content="Paste a URL and get an instant automated EAA / WCAG 2.1 AA check. Works on any website — WordPress, Shopify, Webflow, Next.js, and hand-written HTML. No signup required.">
 <link rel="stylesheet" href="style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does the scanner check?","acceptedAnswer":{"@type":"Answer","text":"16 automated WCAG 2.1 AA rules: image alt text, form labels, link and button text, page title, language attribute, viewport meta, heading structure, iframe titles, table headers, duplicate IDs, ARIA hidden elements still focusable, text colour contrast, and links opening in new windows without warning."}},{"@type":"Question","name":"Is the scanner free?","acceptedAnswer":{"@type":"Answer","text":"Yes. No signup, no account, no email required. Paste any public URL and get an instant grade with detailed findings."}},{"@type":"Question","name":"How accurate is the automated check?","acceptedAnswer":{"@type":"Answer","text":"Automated checks catch roughly 30-40% of accessibility issues. The remaining 60-70% require human judgement: keyboard navigation testing, screen reader flow, and content review."}},{"@type":"Question","name":"Does the scanner store the pages I check?","acceptedAnswer":{"@type":"Answer","text":"No. The page is fetched server-side through our Cloudflare proxy, analysed in your browser, and immediately discarded. No logs, no storage, no cookies."}},{"@type":"Question","name":"Which platforms does it work on?","acceptedAnswer":{"@type":"Answer","text":"Any website \u2014 WordPress, Shopify, Webflow, Wix, Squarespace, Drupal, Joomla, Next.js, hand-written HTML."}},{"@type":"Question","name":"Can I scan a password-protected or local site?","acceptedAnswer":{"@type":"Answer","text":"No \u2014 the scanner fetches pages over the public internet. For staging or local sites, use the browser extension or WordPress plugin."}}]}
+</script>
 <style>
   .scanbox { max-width: 640px; margin: 0 auto; display: flex; gap: 10px; }
   .scanbox input { flex: 1; padding: 12px 14px; border: 1px solid #b9cdd8;
@@ -27,6 +30,7 @@
   .sr-only { position:absolute; width:1px; height:1px; overflow:hidden;
              clip:rect(0 0 0 0); white-space:nowrap; }
 </style>
+<script defer src="/track.js"></script>
 </head>
 <body>
 <header class="hero" style="padding:48px 0 40px">
@@ -83,6 +87,41 @@
   rule set — download the zip and load it unpacked in Chrome/Edge:</p>
   <p><a href="eaa-scanner-extension.zip" class="btn"
         download>Download extension (Chrome/Edge)</a></p>
+</section>
+
+<section aria-labelledby="wp-heading">
+<section aria-labelledby="gen-heading" style="margin-top:36px">
+  <h2 id="gen-heading">Accessibility Statement Generator</h2>
+  <p>After you fix what the scanner finds, publish an
+  <a href="/accessibility-statement-generator">EAA / WCAG accessibility statement</a> —
+  answer 8 questions and get a ready-to-publish statement. Free, runs in your browser.</p>
+</section>
+
+  <h2 id="wp-heading">WordPress plugin</h2>
+  <p>Run the same 15-rule scan from your WordPress dashboard —
+  <strong>Tools → EAA Scanner</strong>. Works with any theme, scans any URL,
+  and everything runs on your own server: no data is sent to third parties.</p>
+  <p><a href="eaa-compliance-scanner.zip" class="btn"
+        download>Download WordPress plugin</a>
+  <span style="font-size:13px;color:#667;margin-left:8px">Install via
+  Plugins → Add New → Upload Plugin. Free, MIT licensed.</span></p>
+  <p style="font-size:14px;color:#445">After the automated check, the manual
+  review steps are what make you actually compliant — they're all in our
+  <a href="/#products">EAA Compliance e-books</a>.</p>
+</section>
+<section aria-labelledby="guides-heading">
+  <h2 id="guides-heading">Platform-specific fix guides</h2>
+  <p>Scan flagged something on your site? These free guides show exactly where
+  to fix the most common issues in each platform's admin:</p>
+  <ul class="findings">
+    <li><a href="/guides/wordpress-accessibility-check.html">WordPress accessibility check</a> — or use the free <a href="/wordpress-plugin">scanner plugin</a></li>
+    <li><a href="/guides/shopify-accessibility-check.html">Shopify accessibility check</a></li>
+    <li><a href="/guides/webflow-accessibility-check.html">Webflow accessibility check</a></li>
+    <li><a href="/guides/wix-accessibility-check.html">Wix accessibility check</a></li>
+    <li><a href="/guides/squarespace-accessibility-check.html">Squarespace accessibility check</a></li>
+    <li><a href="/guides/drupal-accessibility-check.html">Drupal accessibility check</a></li>
+    <li><a href="/guides/joomla-accessibility-check.html">Joomla accessibility check</a></li>
+  </ul>
 </section>
 </main>
 
@@ -219,9 +258,27 @@ async function scan(url){
     TABLE_HEADER:'Fix: use <th> for header cells in data tables.',
     ARIA_HIDDEN_FOCUS:'Fix: remove aria-hidden from focusable elements, or add tabindex="-1".',
     CONTRAST:'Fix: darken the text colour or lighten the background until the contrast ratio is at least 4.5:1 (3:1 for large text). Check it at webaim.org/resources/contrastchecker.'};
+  const PLATFORM_GUIDES={
+    'WordPress':'/guides/wordpress-accessibility-check.html',
+    'Shopify':'/guides/shopify-accessibility-check.html',
+    'Webflow':'/guides/webflow-accessibility-check.html',
+    'Wix':'/guides/wix-accessibility-check.html',
+    'Squarespace':'/guides/squarespace-accessibility-check.html',
+    'Drupal':'/guides/drupal-accessibility-check.html',
+    'Joomla':'/guides/joomla-accessibility-check.html'};
+  const gen=((doc.querySelector('meta[name="generator"]')||{}).content||'');
+  let plat=null;
+  for(const p of Object.keys(PLATFORM_GUIDES)){
+    if(new RegExp(p,'i').test(gen)){plat=p;break;}}
+  const platHtml = plat
+    ? '<div style="margin-top:18px;padding:14px;border:1px solid var(--color-border);border-radius:10px;background:var(--color-surface-2)">'
+      +'<strong>Detected platform: '+plat+'</strong> — most fixes are done right in '
+      +plat+'\'s admin. Step-by-step: <a href="'+PLATFORM_GUIDES[plat]+'">the free '
+      +plat+' accessibility fix guide</a>.</div>'
+    : '';
   out.innerHTML =
     '<div class="scorecard"><div class="score grade-'+g+'">'+score+'/100 — Grade '+g+'</div>'+
-    '<div>'+errors+' error(s), '+warnings+' warning(s)</div></div>'+
+    '<div>'+errors+' error(s), '+warnings+' warning(s)</div></div>'+platHtml+
     (findings.length?'<ul class="findings">'+findings.map(f=>
       '<li><span class="sev-'+f.sev+'">'+f.msg+'</span><br><small>'+(FIX[f.id]||'')+'</small></li>').join('')+'</ul>'
      :'<p>No issues found by automated checks.</p>')+

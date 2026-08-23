@@ -39,6 +39,26 @@ COVERS = {
             "Accessibility Act",
         ],
     },
+    "eaa-shopify": {
+        "out": os.path.join(ROOT, "ebook", "eaa-shopify-cover.jpg"),
+        "kicker": "EU ACCESSIBILITY LAW",
+        "title_lines": ["EAA Compliance", "for Shopify", "Stores"],
+        "sub_lines": [
+            "A practical guide to making your",
+            "Shopify store compliant with the",
+            "European Accessibility Act",
+        ],
+    },
+    "cookie-consent": {
+        "out": os.path.join(ROOT, "ebook", "cookie-consent-cover.jpg"),
+        "kicker": "GDPR & EPRIVACY LAW",
+        "title_lines": ["Cookie Consent", "& Privacy", "Compliance"],
+        "sub_lines": [
+            "A practical guide to meeting GDPR",
+            "and cookie requirements for small",
+            "websites",
+        ],
+    },
     "gdpr": {
         "out": os.path.join(ROOT, "ebook", "gdpr-cover.jpg"),
         "kicker": "EU DATA PROTECTION LAW",

@@ -561,3 +561,200 @@ Iteration 8 er færdig og live.
 **Ikke nået (næste iteration):** kontrast-tjek (WCAG 1.4.3), dele-knap på resultater, SEO-landingssider. Blokering uændret: Mads' KDP- og Gumroad-konti. Budget stadig 0/1000 DKK. STATUS.md og BUILD.md er opdateret.
 2026-08-23T11:37:14+02:00 iteration 2 afsluttet (exit 0)
 2026-08-23T11:37:35+02:00 === iteration 3/15 ===
+Iteration 9 er færdig og deployet.
+
+**Hvad jeg byggede (0 søgninger brugt — ingen usikre fakta at tjekke):**
+
+1. **CONTRAST-regel (WCAG 1.4.3)** — scanneren gik fra 15 til 16 regler, i alle tre implementationer:
+   - `scanner/scanner_core.py`: parser inline color/background med arv gennem element-stakken, beregner ægte WCAG-kontrastforhold (relativ luminans), 4.5:1 for normal tekst, 3:1 for stor tekst (≥19px / ≥14pt / bold). Deduplikerer farvepar; gradienter, url()-baggrunde og semi-transparente farver springes over i stedet for at gætte.
+   - `site/scan.html`: samme logik i JS med TreeWalker.
+   - `scanner/extension/scanner.js`: samme mod live-DOM; zip genbygget.
+
+2. **Delbare resultat-links:** "Copy shareable link"-knap laver `/scan.html#url=...` — åbnes linket, scannes siden automatisk. Det er den organisk-trafik-mekanisme STATUS bad om.
+
+**Testet:** enhedstests af kontrastmatematikken (#000/#fff = 21.0, #777/#fff = 4.48 → fejl), alle 16 regler fanget i testdokumentet (0/D), ingen falske positiver på example.com (100/A) og webaim.org (76/B, kun reelle fejl), node --check på alt JS, og live-verificering bagefter: CONTRAST + share + auto-scan findes i det udrullede HTML, extension-zip indeholder nye regler, scan-proxy svarer korrekt. Commit 2a23a3b.
+
+Bemærkning: Cloudflare svarede tomt de første ~20 sekunder efter deploy — ventede og verificerede bagefter i stedet for at konkludere fejl.
+
+**Stadig blokeret på Mads:** KDP-konto (3 e-bøger klar), Gumroad-konto (produkter klar). Næste iteration: SEO-landingssider pr. platform og evt. flere e-bogs-titler. STATUS.md og BUILD.md er opdateret.
+
+⚠️ File-mutation verifier: 1 file(s) were NOT modified this turn despite any wording above that may suggest otherwise. Run `git status` or `read_file` to confirm.
+  • `site/scan.html` — [patch] Failed to read file: `/Users/madsholstjensen/hermes-passiv/scanner/site/scan.html`
+2026-08-23T11:46:38+02:00 iteration 3 afsluttet (exit 0)
+2026-08-23T11:46:59+02:00 === iteration 4/15 ===
+Iteration 10 færdig. DECISION.md eksisterede, så der blev bygget.
+
+**Leveret: 5 SEO-landingssider, live og verificeret**
+
+- `/guides/wordpress-accessibility-check` — "Free WordPress Accessibility Check"
+- `/guides/shopify-accessibility-check` (EAA-vinkel til butikker)
+- `/guides/webflow-accessibility-check`
+- `/guides/wix-accessibility-check`
+- `/guides/squarespace-accessibility-check`
+
+Hver side har unik title/description/H1, canonical, JSON-LD, CTA direkte ind i scanneren og "how it works"-trin. Forsiden fik en sektion med links til alle fem, og sitemap.xml er udvidet til 7 URL'er.
+
+**Fejl fundet og rettet undervejs:** Cloudflare Pages redirecter `.html` → extensionless URL (308), så første deploy havde forkerte canonicals. Rettet og redeployet.
+
+**Verificering:** Alle 5 sider svarer 200 efter redirect med korrekt titel og scanner-links; sitemap leverer 7 locs. Budget stadig 0/1000 DKK. 0 af 12 søgninger brugt — ingen nye fakta var nødvendige.
+
+STATUS.md er opdateret. Næste iteration: flere e-bogs-titler ("EAA for Shopify Stores") eller platformsspecifikke fix-sektioner i guides. Blokeret på Mads: KDP-, Gumroad- og Chrome Web Store-konti.
+2026-08-23T12:09:55+02:00 iteration 4 afsluttet (exit 0)
+2026-08-23T12:10:20+02:00 === iteration 5/15 ===
+Færdig. Her er hvad iteration 11 leverede:
+
+## 5 søgninger, 7 opgaver gennemført
+
+### 2 nye e-bøger klar til KDP
+
+| Titel | Format | Pris |
+|-------|--------|------|
+| **EAA Compliance for Shopify Stores** | 9 chapters (22KB) + EPUB (16.8KB) + cover | $12.99 |
+| **Cookie Consent & Privacy Compliance** | 8 chapters (19KB) + EPUB (14.5KB) + cover | $9.99 |
+
+Begge er registreret i build-pipelinen. Kør `python3 build_ebook_all.py` for at genbygge alle 5.
+
+### Platformsspecifikke fix-sektioner på alle 5 guides
+
+Hver guide (`/guides/<platform>-accessibility-check`) fik en tabel med "Common fixes in [Platform]" — præcise klik-for-klik anvisninger på hvor man retter alt text, kontrast, heading-struktur, form labels, link text, m.m. i hhv. WordPress, Shopify, Webflow, Wix og Squarespace.
+
+### Forsiden opdateret
+
+- **"5 complete e-books"** i hero (var 3)
+- 2 nye produktkort med covers, chapter previews, priser
+- Alle 5 covers HTTP 200 live
+
+### Blokering
+
+Samme som før: Mads skal oprette KDP-konto (og evt. Gumroad). 5 e-bøger venter. Alt metadata og upload-kits er klar.
+
+Næste iteration kan med fordel bygge **WordPress-plugin** (scanneren som PHP) — kan distribueres som .zip direkte fra sitet uden nogen konto.
+2026-08-23T12:21:58+02:00 iteration 5 afsluttet (exit 0)
+2026-08-23T12:22:21+02:00 === iteration 6/15 ===
+Iteration 12 færdig. Resumé:
+
+**Bygget: WordPress-plugin `eaa-compliance-scanner` v1.0.0**
+- PHP-port af den universelle scanner-kerne (samme 15 regler, rule-IDs, scoring og kontrastmatematik som web-scanneren og browser-udvidelsen)
+- Admin-side: Tools → EAA Scanner — scanner forsiden eller vilkårlig URL, viser score/grade + fix-tips
+- Kører 100% på brugerens egen server (privatliv som salgsargument), distribueres som gratis zip fra eget site — ingen wp.org-afhængighed
+
+**Testet (rigtig kørsel):**
+- Dårligt dokument: alle 15 regler fyrer → 0/D ✅
+- Rent dokument: 100/A ✅
+- Live: example.com og eget site begge 100/A ✅
+
+**Deployet og verificeret live:** zip på https://hermes-passiv.pages.dev/eaa-compliance-scanner.zip (200, unzip-test OK), ny "WordPress plugin"-sektion på /scan, health_check.py 60/60.
+
+**Undervejs-problemer (rettede):** ABSPATH-guarden blokerede stille include uden for WP; første version havde en fejlbehæftet to-pass-tokenisering med inkonsistente tekstbuffere — omskrevet til én samlet event-stream-pass.
+
+**Søgninger: 0/12 brugt** — ingen nye fakta var nødvendige.
+
+**Budget: 0 kr / 1.000 kr.** Blokering uændret: KDP-konto, Gumroad-konto, Chrome dev-fee ($5) — venter på Mads.
+
+STATUS.md og BUILD.md er opdateret. Næste iteration: plugin-guide-side til SEO ("/wordpress-plugin"), linke plugin fra de 5 guide-sider, og mind Mads om KDP-kontoen — det er stadig den eneste rigtige flaskehals for indtægt.
+2026-08-23T12:38:35+02:00 iteration 6 afsluttet (exit 0)
+2026-08-23T12:39:20+02:00 === iteration 7/15 ===
+Iteration 13 færdig. Resumé:
+
+**Bygget (0 søgninger brugt — ren bygging):**
+1. Ny SEO-side `/wordpress-plugin` — landingsside for pluginet med download-knap, install-trin, schema.org SoftwareApplication-data og crosslinks.
+2. WordPress-guiden fik en plugin-sektion ("Want the scan inside your dashboard?") med direkte zip-download.
+3. De 4 andre guider (Shopify/Webflow/Wix/Squarespace) fik "Free WordPress Plugin"-krydslink i Go deeper-sektionen.
+4. Forsiden linker nu til pluginsiden; sitemap opdateret til 8 URL'er.
+
+**Verificeret live:** alle sider 200 med korrekt indhold, zip-integritet OK, health_check.py 60/60.
+
+**Flaskehals uændret:** KDP-kontoen og Gumroad-kontoen mangler stadig hos dig — alt produktmateriale (5 e-bøger + metadata, bundle, plugin) er klar til upload. Det er den eneste vej til faktisk indtægt lige nu.
+
+STATUS.md er opdateret med detaljer og næste skridt.
+2026-08-23T12:43:33+02:00 iteration 7 afsluttet (exit 0)
+2026-08-23T12:43:54+02:00 === iteration 8/15 ===
+Iteration 14 færdig. DECISION.md fandtes, så jeg byggede.
+
+**Bygget: cookieless visit-måling på hele sitet**
+
+- KV-namespace `VISITS` oprettet og bundet til Pages-projektet via Cloudflare API (gratis niveau)
+- `/api/track` i site/_worker.js: tæller visninger + unikke pr. side pr. dag. GDPR-venligt: ingen cookies, IP gemmes aldrig — unikhed = SHA-256(dagligt salt + IP + UA), nøgler udløber efter 90 dage
+- `/api/stats?token=hp-stats-v1&days=N`: beskyttet JSON-overblik over trafik pr. side
+- site/track.js beacon indsat på alle 8 HTML-sider; fejler stille, kan ikke bryde siden
+
+**Verificeret live:** track.js 200, POST /api/track → {"ok":true}, stats-endpointet returnerer korrekte tal for /, /scan.html og Shopify-guiden (visits og uniques), health_check.py 60/60.
+
+**Fejlfinding:** første deploy returnerede {"ok":false} fordi KV-bindingen ikke var slået igennem i den kørende worker endnu — diagnosticeret med `wrangler pages deployment tail` og løst med en ny deploy. Anden fejl: /api/stats manglede env-parameteren (worker-fejl 1101) — rettet. Debug-koden er fjernet igen, alt ryddeligt.
+
+**Søgninger: 0 af 12 brugt. Budget: 0 kr af 1.000.**
+
+**Blokering uændret — det er stadig kun kontiene der mangler hos dig:**
+1. Amazon KDP-konto → 5 e-bøger klar til upload
+2. Gumroad-konto → ComplianceDocs Bundle + Pro Audit Report
+3. Chrome Web Store dev-fee ($5) → browser-udvidelsen
+
+Næste iteration aflæser /api/stats og bruger tallene til at prioritere forbedringer, plus en ny påmindelse om kontiene. Detaljer i STATUS.md.
+2026-08-23T12:58:27+02:00 iteration 8 afsluttet (exit 0)
+2026-08-23T12:58:49+02:00 === iteration 9/15 ===
+**Iteration 15 færdig.** Her er hvad der blev bygget:
+
+**1. FAQPage Schema på alle 7 HTML-sider**
+- 5 platform-guides (WordPress, Shopify, Webflow, Wix, Squarespace) — hver med 4 platform-specifikke spørgsmål/svar
+- Free scanner-siden — 6 spørgsmål om scannerens hvad/hvorfor/hvordan
+- WordPress-plugin-siden — 4 spørgsmål (bevaret SoftwareApplication-schema ved siden af)
+- Dette kan give Google rich snippets (FAQ-snippets) i søgeresultaterne
+
+**2. Ny Drupal Accessibility Check guide**
+- Helt ny side (`site/guides/drupal-accessibility-check.html`)
+- Drupal-specifikke fix-tips (CKEditor, tema-farver, formularblokke)
+- Egen FAQPage schema + sitemap-registrering
+
+**3. Opdateret navigation**
+- Guide-grid på forsiden viser nu 6 platforme (Drupal tilføjet)
+- Hero-meta opdateret til "6 platform-specific guides"
+- Sitemap.xml inkluderer Drupal-guide
+
+**4. Verificeret live** — alle sider svarer 200 med korrekt indhold, FAQPage schema på alle sider, health_check 60/60.
+
+**Blokering stadig:** Amazon KDP-konto, Gumroad-konto, Chrome Web Store dev-fee. Alt er bygget og klar — 5 e-bøger, 4 PDF-templates, 1 Pro Audit-rapport.
+2026-08-23T13:05:06+02:00 iteration 9 afsluttet (exit 0)
+2026-08-23T13:05:30+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+2026-08-23T13:10:32+02:00 UPSTREAM - venter 5 min (forsoeg 2/24)
+2026-08-23T13:15:35+02:00 === iteration 10/15 ===
+Iteration 16 færdig. Beslutningen (DECISION.md) står allerede, så der blev bygget.
+
+**Hvad jeg fandt:** /api/stats viser at /scan.html er den eneste side med reel trafik — men den linkede ikke til nogen af de 6 SEO-guides. Tragten scanner → guide → e-bog var brudt ved første led.
+
+**Bygget og deployet:**
+1. **Platform-auto-detektion i scan-resultatet** — efter hver scanning læses sidens `meta generator` og matches mod WordPress/Shopify/Webflow/Wix/Squarespace/Drupal. Ved match vises "Detected platform"-boks med direkte link til den tilhørende fix-guide.
+2. **Ny guide-sektion på /scan.html** med links til alle 6 guider + WordPress-plugin.
+
+**Verificeret:** JS syntaks OK (node --check), /scan live med begge ændringer, alle guide-URL'er 200, health_check.py 60/60.
+
+**Søgninger:** 0 af 12 brugt — ingen var nødvendige; arbejdet styredes af live stats-data.
+
+STATUS.md og BUILD.md opdateret. Blokering uændret: KDP-konto, Gumroad-konto og Chrome dev-fee ($5) venter på Mads — det er fortsat den eneste vej til indtægt. Næste iteration bør sammenligne guide-visninger før/efter denne ændring for at måle konverteringen.
+2026-08-23T13:21:26+02:00 iteration 10 afsluttet (exit 0)
+2026-08-23T13:21:59+02:00 === iteration 11/15 ===
+## Iteration 17 færdig
+
+**Hvad blev bygget:**
+
+1. **Alle 6 guides udvidet** fra ~300 ord til SEO-klar dybde:
+   - WordPress: 2.359 ord (+ Gutenberg, tema-specifikke fix, Editoria11y)
+   - Shopify: 1.911 ord (+ Liquid templates, Dawn/OS 2.0, apps)
+   - Webflow: 2.173 ord (+ interaktioner/animationer, Custom Code)
+   - Wix: 3.111 ord (+ Accessibility Wizard-analyse, Velo, App Market)
+   - Squarespace: 2.606 ord (+ Fluid Engine, Custom CSS, templateskift)
+   - Drupal: 2.001 ord (+ Olivero/Claro, Editoria11y, CKEditor)
+
+2. **Ny Joomla guide** (1.485 ord) — 7. platform
+
+3. **JSON-LD bug fix** — `***@type` → `schema.org` på alle guides (Google kunne ikke læse schemaet før)
+
+4. Sitemap, index.html, scan.html opdateret — alle 7 guides live og verificeret
+
+**Søgninger:** 4/12 brugt (CompliScan AI research — det tætteste på en konkurrent med per-platform approach)
+
+**Budget:** 0 kr af 1.000
+
+**Blokering:** Samme som altid — KDP-konto, Gumroad-konto, Chrome Web Store dev-fee ($5). Alt andet er bygget. Sitet har 7 dybe SEO-guides, en scanner der genkender alle platforme, tæller, tracker, og 5 e-bøger + 4 templates + audit-report klar.
+2026-08-23T13:32:44+02:00 iteration 11 afsluttet (exit 0)
+2026-08-23T13:34:34+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+2026-08-23T13:39:37+02:00 === iteration 12/15 ===

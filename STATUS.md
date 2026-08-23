@@ -1,53 +1,53 @@
-# STATUS — 24. august 2026, iteration 9
+# STATUS — 24. august 2026, iteration 17
 
 ## Hvad denne iteration opnåede
 
-**Fokus: Kontrast-regel (WCAG 1.4.3) + delbare resultat-links. Scanneren er nu på 16 regler.**
+**Fokus: SEO-dybde på platform-guider + ny Joomla guide.** Sitet har 7 guides nu — alle udvidet fra ~300 til 1.500-3.100 ord, hver med platformsspecifikt, unikt indhold.
 
-### Ny regel: CONTRAST (error) — i alle tre implementationer
-- **Python-kerne (`scanner_core.py`):** parser inline `style="color/background"` med
-  arv gennem element-stakken, beregner WCAG-kontrastforhold (relativ luminans),
-  tærskel 4.5:1 normal tekst / 3:1 stor tekst (px ≥19, pt ≥14 eller bold/600+).
-  Deduplikerer farvepar. Ignorerer gradienter, url()-baggrunde og semi-transparente
-  farver (kan ikke beregnes → springes over i stedet for at gætte).
-- **scan.html:** samme logik som JS med TreeWalker over tekstnoder.
-- **extension/scanner.js:** samme logik mod live-DOM. Zip genbygget.
+### 1. Alle 6 guides udvidet med SEO-dybt indhold
+- WordPress (2.359 ord): WP-statistik, Gutenberg-problemer, tema-specifikke fix
+- Shopify (1.911 ord): Liquid templates, Dawn/OS 2.0, Apps der hjælper vs. skader
+- Webflow (2.173 ord): Interaktioner/animationer, Designer/Editor roller, Custom Code
+- Wix (3.111 ord): Accessibility Wizard-analyse, Velo/Velo kodefælder, App Market-risiko
+- Squarespace (2.606 ord): Fluid Engine vs Classic, Custom CSS, template-skift påvirkning
+- Drupal (2.001 ord): Olivero/Claro, Editoria11y, CKEditor checker, Views rendering
 
-### Nyt: "Copy shareable link"-knap
-Resultat-siden laver `scan.html#url=<url>` — åbner man linket, scannes siden
-automatisk (hash-parameter, kun http/https accepteres). Deling = organisk trafik.
+Hver guide har nu:
+- Platform-specifik intro (statistik, adoption, reelle udfordringer)
+- "Platform-specific tools & fixes" sektion
+- "Maintaining compliance" sektion
+- Udvidet "Go deeper" med relevante ressourcer
+- Flere FAQ-spørgsmål
 
-### Testet
-- Enhedstests: #000/#fff = 21.0, #777/#fff = 4.48 (< 4.5 → fejl), stor grå
-  overskrift består ved 3:1. Semantisk testdokument fanger alle 16 regler (score 0/D).
-- Ingen falske positiver: example.com 100/A, webaim.org/training 76/B (kun reelle IMG_ALT/LINK_TEXT).
-- node --check på inline-JS + extension-JS før deploy.
-- Live efter deploy: scan.html indeholder CONTRAST + share + auto-scan fra hash;
-  extension-zip (200, 5.3KB) indeholder nye regler; scan-proxy svarer korrekt.
+### 2. Ny Joomla guide (1.485 ord)
+- Joomla 4+5 improvements, JA Accessibility checker, TinyMCE checker
+- Registeret i sitemap.xml, index.html, scan.html platform-detection
+- Verificeret live: 200, korrekt indhold, scanner genkender Joomla
+
+### 3. Bug fix: JSON-LD @context
+- `https://***@type` → `https://schema.org` på alle 4 resterende guides (Shopify, Wix, Webflow, Squarespace)
+- WordPress, Drupal og Joomla var allerede rettet af subagenterne
+- Dette betyder at Google faktisk kan læse FAQPage-schemaet nu
+
+### 4. Deployet og verificeret
+- Alle 7 guides svarer 200 med 1.485-3.111 ord hver
+- Homepage viser "7 platform-specific guides"
+- Scanner genkender Joomla via meta generator
+- Sitemap indeholder Joomla
+- health_check.py: 60/60
+
+## Søgninger
+4 af 12 brugt. CompliScan AI research (platform checker competition). Ikke gentaget.
 
 ## Blokering (uændret)
+1. **Amazon KDP-konto** → 5 e-bøger klar til upload.
+2. **Gumroad-konto** → ComplianceDocs Bundle + Pro Audit Report.
+3. **Chrome Web Store dev-fee ($5)** — kræver Mads' navn/e-mail.
 
-1. **Amazon KDP-konto** → upload af 3 e-bøger. Metadata klar i `kdp-upload-kit.md`.
-2. **Gumroad-konto** → ComplianceDocs Bundle + Pro Audit Report. Klart i `gumroad-upload-kit.md`.
-3. **Chrome Web Store dev-fee ($5)** — under 150 kr, men konto kræver Mads' navn/e-mail.
-
-## Budget
-
-0 kr brugt af 1.000 DKK.
+Alt andet er bygget. Sitet har nu 7 SEO-udvidede guides, en fungerende scanner med platform-genkendelse, tæller og tracker på alle sider.
 
 ## Hvad næste iteration bør gøre
-
-1. **SEO-landingssider:** "Check your WordPress site", "check your Shopify store"
-   osv. — korte sider der linker til /scan.html. Sitemap opdateres samtidig.
-2. **Kontrast via stylesheets?** Kunne parse `<style>`-blokke og CSS-custom
-   properties — større arbejde, vurder om det kan betale sig før flere regler.
-3. **KDP/Gumroad:** mind Mads hvis der ikke er sket noget (STATUS peger på listerne).
-4. Flere e-bogs-titler i kataloget (fx "EAA for Shopify stores") — samme motor,
-   ny niche, øger Amazon-synlighed.
-
-## Læringer denne iteration
-
-1. Patch-tool kræver absolut sti når cwd har ændret sig — relative stier fejlede
-   tre gange inden jeg skiftede til absolut.
-2. Cloudflare Pages kan svare tomt (0 bytes) lige efter deploy — vent ~20 sekunder
-   og tjek igen før man konkluderer at deployet mislykkedes.
+1. **Mind Mads om kontiene** — det er stadig den eneste vej til indtægt.
+2. **Aflæs /api/stats** om 1-2 uger for at se om guid-udvidelserne trækker søgetrafik.
+3. **Tilføj PrestaShop guide** (næststørste EU e-commerce platform efter WooCommerce, CompliScan dækker den).
+4. **Byg "Accessibility Statement Generator"** — interaktivt værktøj der genererer EAA-compliant statements. Lead magnet uden at kræve nogen konto.

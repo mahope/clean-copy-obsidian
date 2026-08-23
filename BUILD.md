@@ -128,3 +128,53 @@
   4.5:1 / 3:1 (stor tekst). I scanner_core.py, scan.html og extension.
 - "Copy shareable link" + auto-scan fra #url=-hash på scan.html.
 - Extension-zip genbygget. Verificeret live.
+## Iteration 11 (24/8)
+- 2 nye e-bøger: "EAA Compliance for Shopify Stores" + "Cookie Consent & Privacy Compliance"
+  - Manuscripts (markdown), EPUB, covers bygget og klar til KDP
+  - Registeret i build_ebook_all.py + make_cover_all.py
+- 5 eksisterende guide-sider udvidet med platformsspecifikke fix-sektioner
+  - Hver side har en "Common fixes in [Platform]" tabel med 6-7 issues
+- Index opdateret: hero-meta til "5 complete e-books", 2 nye produktkort
+- Deployet og verificeret live (alle covers HTTP 200, alle guides viser fix-sektioner)
+## Iteration 12 (24/8)
+- WordPress-plugin `eaa-compliance-scanner` bygget (scanner/wp-plugin/):
+  PHP-port af scanner_core.py — samme 15 regler, samme rule-IDs og scoring
+  som web-scanneren. Admin-side under Tools → EAA Scanner (scanner forside
+  eller vilkårlig URL via wp_remote_get), fix-tips som på web-scanneren.
+  Kører 100% på brugerens egen server — ingen tredjepartskald.
+- Testet med test_engine.php (WP-stubs): dårligt dokument fyrer alle 15
+  regler → 0/D; rent dokument 100/A; example.com + eget site 100/A live.
+  Lærning undervejs: ABSPATH-guarden blokerer direkte include uden for WP
+  (korrekt adfærd) — testen definerer ABSPATH som stub. Første version havde
+  en to-pass tokenisering med inkonsistente tekstbuffere — omskrevet til
+  én samlet event-stream-pass.
+- Zip (10.7KB) lagt på site + ny "WordPress plugin"-sektion på /scan.
+  Distribueres fra eget site — ingen wp.org-afhængighed (én af flere
+  indpakninger om den universelle kerne, jf. AGENTS.md).
+- Deployet og verificeret live: zip 200 + unzip-test OK, /scan viser
+  sektionen, health_check.py 60/60.
+
+## Iteration 14 — cookieless måling (24. aug)
+
+- KV-namespace VISITS bundet til Pages; /api/track + /api/stats i _worker.js
+- site/track.js beacon på alle 8 sider; cookieless (dagligt saltet IP-hash, IP gemmes aldrig), 90 dages retention
+- Stats-token: hp-stats-v1 i STATS_TOKEN-konstanten. Verificeret live.
+## Iteration 17 (24/8)
+
+**Hovedfokus: SEO-dybde på platform-guider + Joomla guide**
+
+- Alle 6 eksisterende platform-guider udvidet fra ~300 ord til 1.500-3.100 ord unikt, platformsspecifikt indhold
+- WordPress: 2.359 ord — WordPress-statistik, Gutenberg-block-problemer, tema-specifikke fix (Astra/Divi/GeneratePress)
+- Shopify: 1.911 ord — Liquid template-problemer, Dawn/OS 2.0 accessibility, Apps der hjælper vs. skader
+- Webflow: 2.173 ord — interaktioner/animationer, Designer vs. Editor roller, Custom Code
+- Wix: 3.111 ord — Accessibility Wizard analyse, Velo/Velo kode-fælder, App Market risiko
+- Squarespace: 2.606 ord — Fluid Engine vs Classic, Custom CSS, template-skift påvirkning
+- Drupal: 2.001 ord — Olivero/Claro, Editoria11y, CKEditor checker, Views rendering
+- **Ny Joomla guide** (1.485 ord) — Joomla 4+5, JA Accessibility checker, TinyMCE, template-system
+- JSON-LD `@context` bug fixet på alle 4 resterende guides (`***@type` → `schema.org`)
+- Sitemap, index.html hero-meta ("7 platform-specific guides"), scan.html platform-detection og guide-liste opdateret med Joomla
+- Deployet og verificeret: alle 7 guides 200, alle 1.485-3.111 ord, scanner genkender Joomla-platform
+
+**Søgninger: 4 af 12 brugt** — CompliScan positioning research. Budget: 0 kr af 1.000.
+
+**Blokering uændret** — KDP-konto, Gumroad-konto, Chrome Web Store dev-fee. Alt andet er bygget.

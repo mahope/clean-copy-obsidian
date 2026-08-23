@@ -19,6 +19,10 @@ export default {
       return handleScanProxy(request, url);
     }
 
+    // === Route: cookieless visit tracking ===
+    if (path === '/api/track') return handleTrack(request, env);
+    if (path === '/api/stats') return handleStats(url, env);
+
     // === Route: everything else — serve static assets ===
     try {
       const response = await env.ASSETS.fetch(request);
@@ -124,4 +128,108 @@ async function handleScanProxy(request, url) {
       { status: 502, headers }
     );
   }
+}
+/**
+ * Cookieless visit tracking.
+ *
+ * Privacy: no cookies, no localStorage, no cross-site identifiers.
+ * A daily salt (rotates at 00:00 UTC) is hashed with the visitor IP so
+ * unique counts work without ever storing an IP address. Keys are
+ * aggregated per path per day and expire after 90 days.
+ */
+
+const STATS_TOKEN = 'hp-stats-v1'; // change to something secret before sharing stats URL
+
+function dailySalt() {
+  return new Date().toISOString().slice(0, 10); // YYYY-MM-DD (UTC)
+}
+
+async function visitorHash(request) {
+  const ip = request.headers.get('cf-connecting-ip') || 'unknown';
+  const ua = request.headers.get('user-agent') || '';
+  const data = new TextEncoder().encode(dailySalt() + '|' + ip + '|' + ua);
+  const digest = await crypto.subtle.digest('SHA-256', data);
+  return [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function jsonResp(obj, status = 200) {
+  return new Response(JSON.stringify(obj), {
+    status,
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Cache-Control': 'no-store',
+    },
+  });
+}
+
+async function handleTrack(request, env) {
+  if (request.method !== 'POST') {
+    return jsonResp({ ok: false, error: 'POST only' }, 405);
+  }
+  try {
+    const body = await request.json();
+    let p = String(body.path || '/');
+    // keep keys tidy: strip query strings, cap length
+    p = p.split('?')[0].slice(0, 120) || '/';
+    const day = dailySalt();
+
+    const vh = await visitorHash(request);
+    const uniqueKey = `u:${day}:${p}:${vh}`;
+    const isNew = !(await env.VISITS.get(uniqueKey));
+    if (isNew) {
+      await env.VISITS.put(uniqueKey, '1', { expirationTtl: 90 * 86400 });
+    }
+
+    const totKey = `t:${day}:${p}`;
+    const prev = parseInt((await env.VISITS.get(totKey)) || '0', 10);
+    await env.VISITS.put(totKey, String(prev + 1), { expirationTtl: 90 * 86400 });
+
+    return jsonResp({ ok: true });
+  } catch {
+    // never let analytics break anything
+    return jsonResp({ ok: false }, 202);
+  }
+}
+
+async function handleStats(url, env) {
+  if (url.searchParams.get('token') !== STATS_TOKEN) {
+    return jsonResp({ ok: false, error: 'unauthorized' }, 401);
+  }
+  const days = Math.min(parseInt(url.searchParams.get('days') || '30', 10) || 30, 90);
+  const out = {};
+  let cursor = null;
+  do {
+    const page = await env.VISITS.list({ cursor });
+    for (const k of page.keys) {
+      // key formats: t:<day>:<path> (total) and u:<day>:<path>:<hash> (unique)
+      const parts = k.name.split(':');
+      if (parts.length < 3) continue;
+      const kind = parts[0], day = parts[1];
+      if (!out[day]) out[day] = {};
+      if (kind === 't') {
+        const p = parts.slice(2).join(':');
+        out[day][p] = out[day][p] || {};
+      }
+    }
+    cursor = page.list_complete ? null : page.cursor;
+  } while (cursor);
+
+  // second pass: read values (list doesn't return values)
+  for (const day of Object.keys(out)) {
+    for (const p of Object.keys(out[day])) {
+      const v = parseInt((await env.VISITS.get(`t:${day}:${p}`)) || '0', 10);
+      const prefix = `u:${day}:${p}:`;
+      const upage = await env.VISITS.list({ prefix });
+      out[day][p] = { visits: v, uniques: upage.keys.length };
+    }
+  }
+
+  // keep only requested window, newest first
+  const cutoff = new Date(Date.now() - days * 86400 * 1000).toISOString().slice(0, 10);
+  const filtered = {};
+  for (const day of Object.keys(out).sort().reverse()) {
+    if (day >= cutoff) filtered[day] = out[day];
+  }
+  return jsonResp({ ok: true, days, stats: filtered });
 }

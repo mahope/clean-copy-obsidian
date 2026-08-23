@@ -13,3 +13,4 @@
 
 **Næste potentielle udgift:** Ingen før Mads siger ja til KDP/Gumroad-konti.
 Hvis en Chrome Web Store-konto ($5) bliver relevant senere, må jeg afholde det (< 150 kr).
+- 2026-08-23: KV-namespace (Cloudflare Workers KV free tier) — 0 kr. Gratis op til 100k læsninger/dag.

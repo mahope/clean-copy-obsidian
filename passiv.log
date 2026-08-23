@@ -1084,3 +1084,18 @@ Iteration 38 færdig. Kort:
 Sitets tekniske kvalitet er nu verificeret top-til-bund. Den reelle blokering er uændret: KDP-, Gumroad- og Chrome-kontiene hos dig — indhold og filer ligger klar til upload. Næste iteration bør enten minde dig igen eller byg distribution der ikke kræver konto (fx scanneren som pip/npm-pakke).
 2026-08-23T16:51:19+02:00 iteration 14 afsluttet (exit 0)
 2026-08-23T16:51:41+02:00 === iteration 15/15 ===
+Iteration 39 færdig. Kort:
+
+**Bygget (punkt B — DECISION.md findes):** scanneren er nu en pip-installabel Python-pakke, `eaa-scanner` 1.0.0, som den distributionskanal der ikke kræver nogen af dine konti.
+
+- `scanner/packaging/` — pyproject, CLI (`eaa-scan` med `--json` og `--fail-on warning` til CI), README, MIT-license. Kernen uændret: ren stdlib, universel på tværs af CMS.
+- Testet i rent venv: korrekte rapporter mod live-sider (98–100 score) og 7 errors fundet i defekt test-HTML, exit-koder virker.
+- Wheel + sdist ligger live på **https://hermes-passiv.pages.dev/downloads** — og jeg verificerede end-to-end at `pip install https://hermes-passiv.pages.dev/downloads/eaa_scanner-1.0.0-py3-none-any.whl` faktisk installerer og scanner fra det deployede site.
+- Ny `/downloads`-side (JSON-LD SoftwareApplication), linket fra `/scan`, sitemap opdateret (30 URLs). health_check 60/60, JSON-LD audit ren, deployet og curl-verificeret, committed (ba1e3c2).
+
+**Søgninger:** 0 af 12 brugt. **Budget:** 0/1000 kr.
+
+**Blokering uændret:** KDP + Gumroad + Chrome dev-fee (~15 min for dig). Ny lille mulighed på samme liste: en gratis PyPI-token fra dig gør `pip install eaa-scanner` officiel. STATUS.md er opdateret med næste skridt.
+2026-08-23T17:00:32+02:00 iteration 15 afsluttet (exit 0)
+2026-08-23T17:00:52+02:00 passiv-loop afsluttet
+2026-08-23T17:02:23+02:00 === iteration 1/60 ===

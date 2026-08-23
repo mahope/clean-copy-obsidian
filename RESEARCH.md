@@ -1,0 +1,320 @@
+# RESEARCH — Iteration 36: Faktatjek og beslutning (10 web-søgninger)
+
+**Dato:** 2026-08-23 (tidlig aften)
+**Metode:** 10 web-søgninger for at tjekke usikre fakta fra iteration 35.
+**Resultat:** WordPress-plugin (K1, tidligere #1) droppet pga. massiv konkurrence. KDP e-bog (K8, tidligere #2) valgt som primært produkt. Se DECISION.md.
+
+## Nye fakta fra denne iteration
+
+1. **wp.org plugin review:** 1-10 dage. Kræver SVN-adgang. OK — men irrelevant da plugin alligevel ikke kan konkurrere.
+2. **EAA enforcement 2026:** I gang. Bøder op til €900K (Sverige), €600K (Spanien). Reel efterspørgsel.
+3. **WP accessibility plugins:** ALLY (tidligere One Click Accessibility) har **500K+ aktive installs**. UserWay 80K+, WP Accessibility 60K+, Accessibility Checker 10K+. Accessibility Guard (lanceret Feb 2026) har kun 20+ installs på 6 måneder. **Nyt plugin ville være usynligt.**
+4. **Gumroad Discover:** Kræver $10 i eget salg før Discover aktiveres. Første salg skal komme fra egen trafik. Discover er en belønning, ikke en kickstart.
+5. **Amazon KDP:** Første salg 3-14 dage via søgning, selv uden publikum. Amazon har indbyggede købere.
+6. **Gumroad vs KDP:** Gumroad vinder på margin (87-95%), KDP vinder på distribution (indbygget søgetrafik). De fleste succesfulde indie-forfattere bruger begge.
+7. **NIS2 e-bog konkurrence:** Der findes "NIS2 Directive Compliance Guide 2026" (113 sider, Meridian Certification Press). Men ingen målretter specifikt **små webbureauer** — min niche er åben.
+
+## Revideret top 3
+
+1. 🥇 **KDP e-bog: NIS2 for Small Web Agencies** — bedste distribution pr. indsatsenhed. $0 opsætning.
+2. 🥈 **ComplianceDocs på Gumroad** — sekundær kanal. Kan bygges når Mads har Gumroad-konto.
+3. 🥉 **WordPress EAA-plugin** — droppet indtil videre pga. konkurrence. Revurder om 90 dage.
+
+---
+
+# RESEARCH — Iteration 35: Nytænkning på distribution (ingen web_search)
+
+Dato: 2026-08-23 (eftermiddag). Metode: ren tænkning ud fra eksisterende viden.
+**Mandat:** AGENTS.md opdateret 23/8 — krav om nytænkning lempet. "Tjen så mange penge som muligt, så hurtigt som muligt."
+**Begrænsning i denne iteration:** Ingen web_search. Kun hvad jeg allerede ved.
+
+## Vurderingsnøgle
+
+Hver kandidat får tre svar:
+- (a) Hvem betaler hvor meget
+- (b) Månedligt menneskearbejde (mål: ingenting)
+- (c) Mest sandsynlige fejlårsag
+
+**Tre-måneders-testen:** Første betalende kunde inden ~90 dage via organisk/automatiseret distribution.
+Kan bestå kun med ét Mads-ja (fx opret konto, upload produkt) — men ikke med løbende Mads-arbejde.
+
+## Akilleshælen
+
+Denne analyse afslørede i iteration 34 én central sandhed: **alle kandidater fejler samme sted.** Produktet kan bygges af mig, men *distribution* kræver én konto hos en tredjepart (Gumroad, wp.org, Chrome Web Store, Amazon KDP, Stripe), og den konto skal Mads oprette. Uden den er ALT dødt.
+
+Løsningen er ikke at finde et bedre produkt — det er at finde produktet med **den bedste indbyggede distribution på den ene kanal, Mads siger ja til.** Når han først har sagt ja til at oprette én konto, skal produktet kunne sælge sig selv.
+
+---
+
+## Kandidater
+
+### K1. Freemium WordPress-plugin på wp.org — EAA Accessibility Scanner
+(a) WP-site-ejere i EU (2-50 ansatte), $49-99/år Pro-licens via EDD/WooCommerce på eget site + wp.org-plugin som lead.
+(b) Næsten ingenting: opdateringer ved WP major releases ~2-3 gange/år. Support-svar kan være sporadisk.
+(c) Kræver wp.org-konto fra Mads (5 min at oprette). Plugin review-time kan være 1-7 dage. Største risiko: at plugin'et er for simpelt til at konkurrere mod etablerede accessibility-plugins (WP Accessibility, Accessibility Helper). **Overlever tre måneder?** Ja — wp.org er den BEDSTE gratis distributionskanal. Folk søger aktivt "accessibility plugin wordpress". Hvis plugin'et har 3+ stjerner og virker, får det downloads.
+
+### K2. Freemium WordPress-plugin — WP GDPR Consent Logger
+(a) Samme målgruppe, $39-79/år. Logger consent på kommentarer/kontaktformularer.
+(b) Ingenting efter upload.
+(c) WordPress 6.7+ har indbygget privacy-værktøjer — min plugin kan blive overflødiggjort af core. **Grænsetilfælde.** Overlever hvis den gør noget core ikke gør (fx grafisk consent-log oversigt).
+
+### K3. Freemium WordPress-plugin — WP Content Freshness
+(a) Blog-ejere/indholdsansvarlige, $29-49/år. Viser "sidst opdateret" badges + sætter påmindelser om forældet indhold.
+(b) Ingenting — cron-jobs kører selv.
+(c) Lille marked. Ikke alle site-ejere gider betale for dette. **Dumpet:** betalingsvilje for lav, konkurrence fra gratis løsninger (dateret indhold-plugins).
+
+### K4. Freemium WordPress-plugin — Simple 404 Logger
+(a) WP-admins, $29-49/år. Logger 404s med henviser-URL, sender ugentlig rapport.
+(b) Ingenting (cron + email).
+(c) Redundant med Redirection-plugin (gratis, 2M+ downloads). **Dumpet:** domineret af gratis konkurrent.
+
+### K5. Freemium WordPress-plugin — Maintenance Mode Lite/Pro
+(a) WP-admins/bureauer, $19-39/år. Flot maintenance mode med countdown, email-opsamling, admin bypass.
+(b) Ingenting.
+(c) Ekstremt konkurreret marked (Coming Soon Page & Maintenance Mode har 1M+ downloads, gratis). **Dumpet:** umuligt at differentiere.
+
+### K6. Chrome-udvidelse — EAA Color Contrast Checker
+(a) Web-udviklere/designere, $3/md eller $29/år for full report (contrast ratio + recommendations).
+(b) Ingenting — udvidelsen hostes af Chrome Web Store (CWS). Betaling via Chrome Web Store Pay? Nej — CWS har ikke native paid extensions længere; de bruger Chrome Web Store Payments kun for 1-time. Subscription kræver egen backend.
+(c) Kræver CWS-konto ($5 engangsgebyr — under 150 kr, må jeg selv afholde). Største risiko: CWS har reduceret organisk synlighed for nye extensions. **Grænsetilfælde:** godt mekanik, men betaling kræver ekstra infrastruktur (Stripe), hvilket bringer os tilbage til Mads-blokeringen.
+
+### K7. Chrome-udvidelse — Cookie Consent Inspector
+(a Samme målgruppe, $0 (free) — kan ikke monetiseres direkte. Ville fungere som lead gen til compliance-ydelser, men jeg må ikke sælge ydelser. **Dumpet:** ingen indtægtsmodel.
+
+### K8. Amazon KDP-e-bog — "NIS2 Compliance for Small Web Agencies"
+(a) Bureau-ejere i EU, $9-19 pr. e-bog. Salg via Amazon organisk.
+(b) Ingenting efter udgivelse.
+(c) Kræver Amazon KDP-konto (Mads). Salg af niche-fagbøger er langsomt (typisk 1-10/md uden marketing). Beløbene små. **Grænsetilfælde:** overlever 3 måneder (Amazon har organisk trafik), men tjener sandsynligvis under $100/md. Fungerer dog som lead magnet til dyrere produkter.
+
+### K9. Amazon KDP-e-bog — "EAA Compliance Checklist for WordPress Sites"
+(a) Samme målgruppe som K8, $9-14.
+(b) Ingenting.
+(c) Samme som K8: små beløb. **Dumpet** til fordel for K8 (NIS2 har mere søgevolume end EAA-checkliste).
+
+### K10. Affiliate-drevet programmatisk SEO-site — Hetzner vs. Cloudways vs. WP Engine
+(a) Web-ejere på udkig efter hosting, affiliate-kommission $50-150/salg via Awin/Impact.
+(b) Ingenting efter programmatisk opbygning (100+ sammenligningssider).
+(c) My af grunde: (i) affiliate-programmer kræver godkendelse og afviser nye sites, (ii) nyt domæne rangerer ikke i 6-12 måneder, (iii) Google opdateringer kan dræbe programmatisk indhold. **Dumpet på tre-måneders-testen** — vil ikke tjene penge inden 90 dage.
+
+### K11. Gumroad digitalt produkt — "WordPress Emergency Kit" (7-dele recovery-pakke)
+(a) Freelance WP-udviklere, $39-79 engang (checklists, restore-scripts, kunde-kommunikation templates).
+(b) Ingenting.
+(c) Gumroad Discover giver lidt organisk trafik, men langt mindre end wp.org. **Grænsetilfælde:** bedre end ren SEO (Gumroad har indbygget marketplace), men stadig langsom start.
+
+### K12. Gumroad digitalt produkt — "Client Onboarding Pack for Web Agencies" (kontrakter, onboarding-formularer, playbook)
+(a) Bureau-ejere, $49-89 engang.
+(b) Ingenting.
+(c) Samme som K11 — distributionsproblem. **Dumpet:** for langsom start ift. K11 som er mere akut problem.
+
+### K13. Notion-skabelon på Notion Marketplace — "Compliance Operations Dashboard"
+(a) VL-medarbejdere/compliance-officers, $19-49.
+(b) Ingenting.
+(c) Notion Marketplace har begrænset trafik. Skabeloner er commodity-priser. Tusindvis af konkurrenter. **Dumpet:** lav betalingsvilje, overudbud.
+
+### K14. ThemeForest/CodeCanyon — WordPress Child Theme + Compliance Badge
+(a) WP-brugere, $19-29 engang. En child theme med indbygget "NIS2-ready"/"EAA-compliant" badge.
+(b) Ingenting.
+(c) ThemeForest review-time er 1-4 uger. Markedet er OVERSVØMMET — 10.000+ themes. Uden unik vinkel er chancen minimal. **Dumpet.**
+
+### K15. API-tjeneste via Cloudflare Workers — EU VAT Validation API
+(a) Udviklere/e-commerce platforms, $5-15/md mikroabonnement.
+(b) Ingenting (VIES er gratis, gratis Worker-hosting).
+(c) Gratis konkurrence: VIES API er allerede gratis, og Skatteforvaltningen har deres egen API. **Dumpet:** udviklere betaler ikke for tynde wrappers om offentlige data.
+
+### K16. Betalt browser-bogmærke/snippet — "EAA Quick Check" bookmarklet
+(a) QA-medarbejdere, $9-19 engang.
+(b) Ingenting.
+(c) Nul distribution — kan ikke findes. **Dumpet.**
+
+### K17. Selvbetjent compliance-rapport-generator (frikoblet SaaS-lite på Cloudflare Workers)
+(a) Bureau-ejere, upload site-URL, modtag auto-genereret compliance-rapport (EAA/GDPR-scan), $49/kvartal eller $19/md.
+(b) Ingenting: Worker scanner siden, genererer PDF, sender via email. Alt automatisk.
+(c) To blokeringer: (i) Stripe/konto til betaling, (ii) distribution — hvem finder den? Uden SEO eller outreach kommer ingen. **Grænsetilfælde:** bedre produkt-mekanik end Gumroad (tilbagevendende indtægt), men værre distribution.
+
+### K18. Open-source CLI-værktøj + GitHub Sponsors — "wp-audit" CLI (WordPress compliance-scan fra terminal)
+(a) Udviklere/DevOps, frivillige sponsors ($0-? — GitHub Sponsors er donationsbaseret).
+(b) Ingenting efter udgivelse.
+(c) GitHub Sponsors kræver populært OSS-projekt (usandsynligt uden marketing). Donations-modeller producerer sjældent nok til at leve af. **Dumpet:** donationer er ikke en forudsigelig indtægtsmodel for et nyt projekt.
+
+### K19. Git-based produkt — GitHub Action til compliance-scan
+(a) DevOps/udviklere, $0 (free) — kan ikke monetiseres som GitHub Action, da GitHub Marketplace kræver betalingsopsætning.
+(b) Ingenting.
+(c) **Dumpet:** GitHub Marketplace betaling kræver Stripe Connect-konto (Mads).
+
+### K20. Web-app — "EAA Compliance Statement Generator" (fill-in-form → automatisk accessibility statement PDF)
+(a) Freelancere/selvstændige, $19 engang per statement.
+(b) Ingenting efter build.
+(c) Betaling kræver Stripe/Mads. Distribution kræver SEO. DOBBELT blokeret. **Dumpet** i sin nuværende form, men noteret som produktidé til ComplianceDocs-porteføljen.
+
+---
+
+## Tre-måneders-testen — hvem overlever?
+
+Jeg er nådesløs. Beståelsen kræver: (i) ét Mads-ja er nok til at gå live, (ii) indbygget organisk distribution der kan give salg inden 90 dage, (iii) nul løbende menneskearbejde.
+
+| # | Kandidat | Distribution | Består? | Begrundelse |
+|---|----------|-------------|---------|-------------|
+| K1 | WP EAA Accessibility Scanner (wp.org) | wp.org repository — 5M+ daglige aktive søgninger | **Ja** | wp.org har indbygget trafik. Folk søger aktivt. Ét Mads-ja (wp.org-konto) + 1 upload = live. |
+| K2 | WP GDPR Consent Logger (wp.org) | wp.org | **Grænse** | Overflødiggøres af WP core. |
+| K3 | WP Content Freshness (wp.org) | wp.org | **Nej** | For lav betalingsvilje. |
+| K4 | WP 404 Logger (wp.org) | wp.org | **Nej** | Gratis dominans. |
+| K5 | WP Maintenance Mode (wp.org) | wp.org | **Nej** | Overmættet marked. |
+| K6 | Chrome EAA Contrast Checker | Chrome Web Store | **Grænse** | Betaling kræver egen backend = Stripe = Mads. Nu 2 ja'er. |
+| K7 | Cookie Inspector Extension | — | **Nej** | Ingen model. |
+| K8 | KDP e-bog NIS2 | Amazon organisk | **Ja** | Amazon KDP har organisk trafik. Små beløb men sikker trickle. Ét Mads-ja. |
+| K9 | KDP e-bog EAA Checklist | Amazon organisk | **Nej** | For lille søgevolume. |
+| K10 | Programmatisk affiliate SEO | Google organisk | **Nej** | 6-12 md SEO-tid. |
+| K11 | Gumroad Emergency Kit | Gumroad Discover | **Grænse** | Discover er svagere end wp.org eller Amazon. |
+| K12 | Gumroad Onboarding Pack | Gumroad Discover | **Nej** | Dårligere end K11. |
+| K13 | Notion Compliance Dashboard | Notion Marketplace | **Nej** | Overudbud. |
+| K14 | ThemeForest Child Theme | ThemeForest | **Nej** | 10K+ themes. |
+| K15 | Compliance-rapport SaaS | SEO | **Nej** | Dobbelt blokeret. |
+| K16 | Bookmarklet | Ingen | **Nej** | Ingen distribution. |
+| K17 | Self-serve compliance generator | SEO | **Grænse** | God mekanik, dårlig distribution. |
+| K18 | OSS + GitHub Sponsors | GitHub | **Nej** | Donationer. |
+| K19 | GitHub Action | GitHub Marketplace | **Nej** | Betaling kræver Stripe. |
+| K20 | EAA Statement Generator (web) | SEO | **Nej** | Do bbelt blokeret. |
+
+### Overlevere
+
+Kun **to** består testen:
+
+1. **K1 — WordPress-plugin på wp.org (EAA Accessibility Scanner)** — bedste distribution.
+2. **K8 — KDP e-bog (NIS2 for Small Agencies)** — sikker, omend lille indtægt.
+
+Og to grænsetilfælde:
+3. **K11 — Gumroad Emergency Kit** — kan bestå hvis Gumroad Discover er bedre end jeg antager (usikkerhed).
+4. **K17 — Self-serve compliance rapportgenerator** — bedste SaaS-mekanik, men distributionen svag.
+
+---
+
+## Top 5 rangering
+
+### 1. 🥇 WordPress EAA Accessibility Scanner (wp.org freemium)
+
+**Produkt:** Et WordPress-plugin der scanner en side for EAA/WCAG-compliance:
+- Tjekker farvekontrast (alle theme farver)
+- Tjekker manglende alt-tekster på billeder
+- Tjekker overskriftsstruktur (h1-h6 hierarki)
+- Tjekker om accessibility statement findes
+- Tjekker om skip-to-content link findes
+- Free: grundscan + rapport
+- Pro ($49/år): fuld scan + PDF-rapport + anbefalinger + kvartalsvis automatisk gen-scan
+
+**Hvorfor #1:**
+- wp.org er DEN distributionskanal med størst organisk trafik i WordPress-økosystemet
+- Millioner af EU-site-ejere har brug for EAA-compliance (deadline juni 2025 passeret — nu er det påbudt)
+- Lav vedligehold: PHP-koden kræver kun opdatering ved WP major releases (2-3/år)
+- Indbygget lead funnel: gratis plugin → Pro upsell → betalende kunder
+- Beløb: $49/år er lav nok til impulskøb, høj nok til at 50 kunder = $2.450/år
+
+**Indtjeningsmodel:**
+Gratis på wp.org → Pro-licens via eget site (Cloudflare Pages) → Stripe checkout
+Pro: $49/år = ~$4/md. 10 kunder = $490/år. 50 = $2.450/år. 100 = $4.900/år.
+
+**Hvad kræver Mads:**
+1. wp.org-konto (5 min at oprette)
+2. Stripe-konto (plus EU-tax, men Mads har Mahope — kan bruges)
+3. `wrangler login` til Cloudflare Pages (hvis Pro-siden skal hostes — kan stå på pages.dev)
+4. Én GitHub-upload af plugin-koden
+
+Alt dette er én-vejs: når det er sat op, kræver det intet mere.
+
+**Risici:**
+- Etableret konkurrence: "WP Accessibility" (60K+ aktive), "Accessibility Helper" (40K+). Mit plugin skal være SIMPLERE OG MERE SPECIFIKT (kun EAA-fokus, ikke generel WCAG).
+- PHP-skills: plugin'et skal skrives i PHP. Jeg kan PHP, men det kræver omhyggelighed.
+- Ingen support: hvis plugin'et har bugs og ingen svarer i forum, dør det.
+- WordPress kan indbygge EAA-tjek i core (lille risiko — de har ikke gjort det endnu).
+
+---
+
+### 2. 🥈 KDP e-bog — "NIS2 Compliance for Small Web Agencies"
+
+**Produkt:** 40-60 siders e-bog på Amazon Kindle. Hvad NIS2 betyder for et webbureau, hvilke klausuler der skal i kontrakter, hvordan man dokumenterer compliance. Praktisk, ikke teoretisk.
+
+**Hvorfor #2:**
+- Næsten nul byggetid (kan ekstraheres fra eksisterende research)
+- Amazon KDP har organisk trafik — folk søger "NIS2 compliance guide"
+- $9-19/bog, 70% royalty over $9.99
+- Fungerer som lead magnet til K1
+- Nul vedligehold efter udgivelse
+
+**Risici:**
+- Små beløb (sandsynligvis $50-200/md)
+- Skal konkurrere med gratis indhold (blogs, PDFs fra myndigheder)
+- Amazon KDP-konto kræver skatteoplysninger for dansk enkeltmandsvirksomhed
+
+---
+
+### 3. 🥉 ComplianceDocs (Gumroad) — nuværende DECISION
+
+**Produkt:** Compliance-skabeloner (DPA, NIS2-klausuler, EAA-statement, etc.) på Gumroad.
+
+**Hvorfor #3:**
+- Allerede bygget (site, 4 af 5 produkter er skrevet)
+- 0 kr investeret indtil videre
+- Gumroad Discover giver lidt organisk trafik
+- Kan leve side om side med K1 og K2
+
+**Risici:**
+- Gumroad Discover er SVAG — jeg er usikker på, hvor meget organisk trafik den sender
+- Gratis skabeloner findes (GDPR.eu, etc.)
+- Tillid på ny butik uden reviews
+
+**Næste skridt:** Færdiggør det sidste produkt, bed Mads om Gumroad-konto, og lade det køre parallelt.
+
+---
+
+### 4. Selvbetjent Compliance Rapport-generator (nedskaleret SaaS)
+
+**Produkt:** Cloudflare Worker + Stripe — kunde indtaster site URL → modtager 15-siders compliance PDF $19-49.
+
+**Hvorfor #4:**
+- Højere beløb pr. transaktion end Gumroad ($49 vs $59)
+- Tilbagevendende køb (kvartalsvis re-scan)
+- Kan bygges på dage (Cloudflare Workers + Puppeteer/Playwright til scan)
+
+**Risici:**
+- Distribution: samme problem — ingen finder den uden SEO/outreach
+- Stripe-konto stadig påkrævet
+
+---
+
+### 5. ComplianceDocs-tilvækst: To ekstra produktlinjer på Gumroad
+
+**Produkt:** To nye Gumroad-produkter:
+- "WordPress Emergency Kit" (checks lister + restore-scripts)
+- "Client Compliance Audit Checklist" (30+ punkters tjekliste til bureauer)
+
+**Hvorfor #5:**
+- Marginalomkostning = næsten nul (skriv og upload)
+- Øger synlighed på Gumroad Discover
+- Forskellige pris-point ($19-79)
+
+**Risici:** Samme som #3.
+
+---
+
+## Samlet strategi
+
+**Byg ét plugin (K1), skriv én bog (K2), behold butikken (K3).** Alle tre deler kodebase/viden: plugin'et scanner compliance, bogen forklarer compliance, butikken sælger compliance-dokumenter. Hvert produkt fodrer de to andre. Mads' totale engagement: **tre konti på én dag** (wp.org + Stripe + KDP), derefter intet.
+
+Hvis han kun siger ja til én: vælg wp.org-plugin'et, da det har den bedste distribution pr. indsatsenhed.
+
+---
+
+## Fakta jeg er usikker på (tjek i iteration 36 med web_search)
+
+**Afgørende:**
+1. **wp.org plugin review-time og krav:** Kan et nyt plugin med en simpel PHP-scanner komme igennem review på < 7 dage? Kræver det SVN-adgang, og hvordan fungerer det?
+2. **Stripe + dansk enkeltmandsvirksomhed:** Kan Mahope (Mads' virksomhed) tage imod Stripe-betalinger uden ekstra registrering? Hvad med EU-VAT?
+3. **Amazon KDP skat for danske forfattere:** Hvordan fungerer dansk skat på Amazon-royalties? Kræver det dansk momsnummer?
+
+**Vigtige:**
+4. **Gumroad Discover:** Hvor meget organisk trafik sender det til nye produkter i kategorien "templates/business"? Find anmeldelser/tal.
+5. **Chrome Web Store paid extensions:** Har CWS et fungerende paid extension-program, eller kræver det alt Stripe nu?
+6. **EAA-håndhævelse i EU 2026:** Er der bøder faldet? Er efterspørgslen på compliance-værktøjer steget efter deadline?
+7. **Hetzner affiliate program:** Findes det stadig? Hvad er kommissionen?
+
+**Nice-to-know:**
+8. **WordPress 2026 markedsandel:** Stadig faldende? Hvilke CMS'er vinder?

@@ -1147,3 +1147,17 @@ Søgninger: 0 af 12 · Budget: 0 kr af 1.000 DKK · Commits `143f5a8`, `03c60e1`
 Blokeringer er uændrede (KDP-, Gumroad-, Chrome dev-fee-konti hos Mads). STATUS.md er opdateret; næste iteration: forbedre købsrejsen på index.html eller flere sprog/guides.
 2026-08-23T17:20:32+02:00 iteration 3 afsluttet (exit 0)
 2026-08-23T17:20:57+02:00 === iteration 4/60 ===
+Iteration 43 færdig. DECISION.md fandtes, så regel B gældt: byg/forbedr.
+
+**Hvad der blev gjort — faktatjek og rensning af købsrejsen (index.html):**
+
+1. **GDPR-fejl rettet:** "Privacy policy (Article 13)" → Articles 13–14. Verificeret: Art. 14 dækker data fra tredjeparter, som bogen også omfatter.
+2. **KDP-tal korrigeret:** "$9.09/$6.99 per sale" → "~$9/~$7". KDP udvidede 1. juli 2026 70%-båndet til $12.99, men royalty trækker leveringsomkostninger (~$0,15/MB) fra — de præcise tal var ikke dokumenterbare, så nu står der omtrentlige.
+3. **Brudt FAQ fjernet:** "Use the notification link at the bottom of this page" — det link findes ikke længere; mailto-sektionen nederst dækker formålet.
+4. **Udokumentabel påstand fjernet:** "built from field experience with small web agencies" (vi har 0 kunder) → omformuleret til EU-primærkilder + offentliggjorte enforcement-beslutninger, som indholdet faktisk er bygget på.
+
+**Verificering:** health_check 60/60, alle JSON-LD-blokke validerer sitewide, sitemap parser, deployet, og live curl bekræfter at alle fire rettelser er synlige på hermes-passiv.pages.dev. Commits `5b47d34` + `f58a995`.
+
+Søgninger: 2 af 12 · Budget: 0/1.000 DKK · Blokering uændret (KDP-, Gumroad-, Chrome-konti venter på Mads).
+2026-08-23T17:28:54+02:00 iteration 4 afsluttet (exit 0)
+2026-08-23T17:29:17+02:00 === iteration 5/60 ===

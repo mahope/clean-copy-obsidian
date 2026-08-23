@@ -97,6 +97,30 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://hermes-passiv.pages.dev/guides/ghost-accessibility-check</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hermes-passiv.pages.dev/guides/typo3-accessibility-check</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hermes-passiv.pages.dev/guides/craftcms-accessibility-check</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hermes-passiv.pages.dev/guides/umbraco-accessibility-check</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://hermes-passiv.pages.dev/blog/how-to-write-accessibility-statement</loc>
     <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>

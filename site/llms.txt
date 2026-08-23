@@ -19,6 +19,8 @@ Free, browser-based EU compliance tools and guides for small web agencies (1-50 
 - Farvepalet-Generator (Danish): https://hermes-passiv.pages.dev/palette-generator-da
 - Color Blindness Simulator (English): https://hermes-passiv.pages.dev/color-blindness-simulator — see your palette as someone with protanopia, deuteranopia or tritanopia sees it.
 - Farveblindhedssimulator (Danish): https://hermes-passiv.pages.dev/color-blindness-simulator-da
+- Text on Image Contrast Checker (English): https://hermes-passiv.pages.dev/text-on-image-checker — measure WCAG contrast between overlay text and the real image pixels behind it.
+- Tekst-på-billede kontrasttjek (Danish): https://hermes-passiv.pages.dev/text-on-image-checker-da
 - NIS2 Readiness Check: https://hermes-passiv.pages.dev/nis2-check
 - AI Compliance Assistant: https://hermes-passiv.pages.dev/compliance-ai.html — ask NIS2/EAA/GDPR questions, answered by AI with compliance-specific prompting.
 

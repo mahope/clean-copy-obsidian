@@ -164,6 +164,20 @@ def main():
                     fail(f"Blog {slug}", str(e))
         except Exception as e:
             fail("/cookie-check-da reachable", str(e))
+        # NIS2 self-assessment live
+        try:
+            nis = urllib.request.urlopen(urllib.request.Request(
+                SITE_URL + "/nis2-check", headers={"User-Agent": "HermesHealthCheck/2.0"}), timeout=15)
+            nbody = nis.read().decode()
+            ok("HTTP 200 /nis2-check") if nis.status == 200 else fail("/nis2-check status", f"got {nis.status}")
+            ok("NIS2 check content") if "NIS2" in nbody and "track.js" in nbody else fail("NIS2 check", "content missing")
+            import json as _json3, re as _re3
+            blocks3 = _re3.findall(r'<script type="application/ld\+json">(.*?)</script>', nbody, _re3.DOTALL)
+            all_ok3 = all(_json3.loads(b).get("@context") == "https://schema.org" for b in blocks3) and blocks3
+            ok("NIS2 check JSON-LD valid") if all_ok3 else fail("NIS2 check JSON-LD", f"{len(blocks3)} blocks")
+        except Exception as e:
+            fail("/nis2-check reachable", str(e))
+
     except urllib.error.HTTPError as e:
         fail("HTTP status", f"HTTP {e.code}")
         for kw in ["NIS2", "EAA", "GDPR", "ComplianceDocs", "schema.org"]:

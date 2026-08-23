@@ -114,7 +114,8 @@ def faq_section(faqs):
 
 def build_post(slug, meta_desc, badge_label, h1, subtitle, reading_time,
                sections, cta_product, cta_secondary,
-               faqs, og_desc=None):
+               faqs, og_desc=None, related_posts=None):
+    """related_posts: optional list of (badge_label, title, link) for internal cross-linking"""
     """sections: list of (title, body_paragraphs|str, optional cards|None)
        faqs: list of (q, a)
        cta_product: (btn_text, btn_link)
@@ -155,6 +156,19 @@ def build_post(slug, meta_desc, badge_label, h1, subtitle, reading_time,
     body += SECTION_DIVIDER
     body += faq_section(faqs)
     body += product_cta(cta_product[0], cta_product[1], cta_secondary[0], cta_secondary[1])
+
+    if related_posts:
+        items = ''
+        for badge, title, link in related_posts:
+            items += f'''      <div class="card"><span class="badge" style="font-size:0.75em;display:inline-block;margin-bottom:6px;">{badge}</span><h3><a href="{link}" style="color:var(--color-accent);text-decoration:none;">{title}</a></h3></div>\n'''
+        body += f'''
+    <section class="products" style="border-top:1px solid var(--color-border);">
+      <div class="container">
+        <h2>Related Guides</h2>
+        <div class="problem-cards">
+{items}        </div>
+      </div>
+    </section>'''
 
     body += SECTION_BOTTOM + FOOTER
 
@@ -247,6 +261,10 @@ def main():
                  'Technically yes — Article 28 applies regardless of the client\'s size. In practice, micro-clients (e.g. a local bakery with a 3-page brochure site) rarely ask for one. But having a standard DPA ready to send shows professionalism and protects you if something goes wrong.'),
                 ('How long does a DPA remain valid?',
                  'A DPA is valid for the duration of the processing relationship. When the contract ends, the DPA obligations regarding data deletion and confidentiality survive. Review the DPA annually and whenever you change sub-processors or security measures.'),
+            ],
+            related_posts=[
+                ('GDPR ENFORCEMENT', 'GDPR Fines in 2026: What the Numbers Actually Mean', '/blog/gdpr-fines-2026'),
+                ('GDPR &amp; EPRIVACY', 'Cookie Consent & GDPR Compliance for Web Agencies', '/blog/cookie-consent-gdpr-compliance'),
             ],
         ),
         dict(
@@ -371,6 +389,9 @@ def main():
                 ('Where do I keep incident reports?',
                  'Store completed reports in an encrypted, access-controlled location separate from the systems that were affected. Keep them for at least 2 years (the NIS2 review period for enforcement). Use a naming convention that makes them easy to retrieve: IR-2026-001, IR-2026-002, etc.'),
             ],
+            related_posts=[
+                ('NIS2 COMPLIANCE', 'Is Your Small Web Agency NIS2-Ready?', '/blog/nis2-readiness-guide'),
+            ],
         ),
         dict(
             slug='cookie-consent-gdpr-compliance',
@@ -441,6 +462,10 @@ def main():
                 ('What consent records must I keep?',
                  'Unique identifier, timestamp, categories consented to, banner version, consent method, and any withdrawal. Store for cookie lifespan plus 6 months.'),
             ],
+            related_posts=[
+                ('GDPR ENFORCEMENT', 'GDPR Fines in 2026: What the Numbers Actually Mean', '/blog/gdpr-fines-2026'),
+                ('GDPR COMPLIANCE', 'GDPR Data Processing Agreement for Web Agencies', '/blog/gdpr-dpa-web-agencies'),
+            ],
         ),
         dict(
             slug='wcag-22-what-changes',
@@ -507,6 +532,9 @@ def main():
                  'Target Size (2.5.8). Icon-only buttons under 24px are everywhere — social share rows, carousel arrows, mobile menus. It is also the cheapest class of fixes.'),
                 ('Does our free scanner check WCAG 2.2?',
                  'It automates the machine-checkable subset (alt text, labels, contrast, duplicate IDs, viewport, headings and more). Some 2.2 criteria — dragging movements, redundant entry — need manual testing, and our guides walk you through those checks.'),
+            ],
+            related_posts=[
+                ('EAA', 'EAA Accessibility Checklist: 10 Steps for WordPress', '/blog/eaa-accessibility-checklist'),
             ],
         ),
         dict(
@@ -576,6 +604,87 @@ def main():
                  'It depends on your role. If you only build and hand over, you are generally not the controller. If you host, maintain, or configured the tracking yourself, you share responsibility — as processor you need a DPA, and knowingly deploying a non-compliant cookie setup exposes you alongside the client.'),
                 ('Has any GDPR fine been overturned?',
                  'Yes, notably. Amazon\'s €746 million fine was annulled by Luxembourg\'s Administrative Court in March 2026 on procedural grounds, and OpenAI\'s €15 million Italian fine was annulled the same month. Appeals succeed mainly on procedure — the underlying conduct usually remains regulated.'),
+            ],
+            related_posts=[
+                ('GDPR COMPLIANCE', 'GDPR Data Processing Agreement for Web Agencies', '/blog/gdpr-dpa-web-agencies'),
+                ('GDPR &amp; EPRIVACY', 'Cookie Consent & GDPR Compliance for Web Agencies', '/blog/cookie-consent-gdpr-compliance'),
+            ],
+        ),
+        dict(
+            slug='eaa-enforcement-2026',
+            meta_desc='European Accessibility Act enforcement one year in: real lawsuits, fines, and market surveillance across EU member states. Practical guide for small web agencies on what non-compliance actually costs. Updated August 2026.',
+            badge_label='EAA ENFORCEMENT',
+            h1='EAA Enforcement in 2026:<br>What Has Actually Happened',
+            subtitle='One year after the European Accessibility Act took effect: lawsuits filed, market surveillance launched, penalties defined — and what every small web agency needs to know.',
+            reading_time='7 minutes',
+            cta_product=('Test Any Site Free →', '/scan'),
+            cta_secondary=('WCAG 2.2 Guide →', '/blog/wcag-22-what-changes',
+                           'Our EAA Compliance e-book covers WCAG 2.1 AA criterion by criterion, with platform-specific fixes for WordPress, Shopify, Webflow and more — written for small agencies, not lawyers.'),
+
+            sections=[
+                ('one-year-in', [
+                    'The European Accessibility Act (EAA, Directive (EU) 2019/882) took effect on June 28, 2025, after all 27 Member States completed transposition into national law. One year in, enforcement is real — but it is not the storm some predicted. Three patterns have emerged: high-profile litigation in France, systematic market surveillance in Sweden and the Netherlands, and a complaint-driven approach elsewhere.',
+                    'The first EAA lawsuits anywhere in Europe were filed in France. On July 7, 2025, disability organisations sent formal legal notices to Auchan, Carrefour, E.Leclerc and Picard Surgelés. When responses were inadequate, emergency injunctions were filed in French Commercial Court on November 12, 2025 — marking the start of EAA litigation. In June 2026, the Carrefour case was heard: the Court ordered Carrefour France to make both its e-commerce site and mobile application fully accessible within six months, under penalty of a daily fine.',
+                    'Sweden\'s Post and Telecom Authority (PTS) took a different approach. It began inspecting laptops, smartphones and tablets in October 2025 using JAWS screen reader technology, and opened its first e-commerce regulatory cases. By mid-2026, PTS had received 124 public complaints — 110 related to services and 14 related to products — showing that consumers know their rights under the EAA and are not hesitant to exercise them.',
+                ], [
+                    ('🇫🇷', 'France: First EAA Lawsuits', 'Formal legal notices to four major retailers in July 2025. Emergency injunctions filed November 2025. Carrefour ordered to make site + app accessible within 6 months or face daily fines. Sets EU precedent.'),
+                    ('🇸🇪', 'Sweden: Market Surveillance', 'PTS inspected laptops/smartphones with JAWS screen reader. Opened first e-commerce regulatory cases. 124 public complaints received — consumers are using their rights.'),
+                    ('🇳🇱', 'Netherlands: Active Enforcement', 'Dutch Consumer and Market Authority (ACM) sent information requests to e-commerce operators globally, including companies headquartered outside the EU. Cross-border enforcement is a reality.'),
+                ]),
+                ('penalties', [
+                    'Financial penalties for EAA non-compliance vary significantly by member state, since the EAA is a directive (not a regulation) and each country sets its own penalty framework. Here is what small agencies face across key markets:',
+                    '<strong>Austria</strong> — up to €80,000 per violation',
+                    '<strong>Germany</strong> — up to €100,000 per violation',
+                    '<strong>Italy</strong> — up to €40,000 per violation plus up to 5% of annual turnover under the Stanca Law',
+                    '<strong>Ireland</strong> — up to €60,000 per violation',
+                    '<strong>Sweden</strong> — up to SEK 10 million (approximately €900,000) with market ban authority',
+                    'These are per-violation figures. Authorities can also order product withdrawal, ban non-compliant services from national markets, require accessibility audits, and publicly name non-compliant organisations. In some jurisdictions, competitors can pursue unfair competition claims against organisations that have not met their accessibility obligations.',
+                ], [
+                    ('⚖️', 'Per-State Penalties', 'Fines range from €40,000 (Italy) to €900,000 (Sweden) per violation. Market bans and public naming are additional enforcement tools.'),
+                    ('📋', 'Enforcement Actions', 'Beyond fines: product withdrawal, market bans, mandatory audits, and public disclosure. Competitors can also file unfair competition claims.'),
+                    ('🕊️', 'Complaint-Driven Model', 'Outside France/Sweden/Netherlands, many MS take a complaints-first approach. A single complaint from a user, competitor, or disability organisation can trigger an investigation.'),
+                ]),
+                ('technical-changes', [
+                    'Two technical developments in 2026 directly affect EAA compliance requirements:',
+                    '<strong>EN 301 549 v4.1.1 (WCAG 2.2 baseline).</strong> A new version of the European standard is expected in 2026, incorporating WCAG 2.2 as the accessibility baseline. This means the nine new success criteria from WCAG 2.2 — target size minimum, focus appearance, accessible authentication, and others — become part of the EAA standard. Sites that passed WCAG 2.1 AA may fail under 2.2. Our <a href="/blog/wcag-22-what-changes">WCAG 2.2 transition guide</a> covers every new criterion in plain language.',
+                    '<strong>EU AI Act (August 2, 2026).</strong> The EU AI Act (Regulation 2024/1689) becomes fully enforceable on August 2, 2026. Article 16(1)(l) requires providers of high-risk AI systems to comply with existing EU laws — including the EAA. If your agency builds or deploys AI-powered features like chatbots, content generators, or automated moderation tools, the accessibility requirements now apply to those systems too. Article 5(1)(b) also prohibits AI systems that exploit disability vulnerabilities.',
+                ], None),
+                ('action-plan', [
+                    'The EAA is now enforced. Here is a practical 5-step plan for small web agencies that does not require a compliance team:',
+                    '',
+                    '<strong>1. Run a baseline scan on every client site you maintain.</strong>',
+                    'Use our <a href="/scan">free WCAG 2.1 AA scanner</a> — it covers contrast, alt text, labels, headings, viewport, and more in seconds. Audit results by platform: see our <a href="/guides/">10 platform-specific guides</a> for WordPress, Shopify, Webflow, Wix, Squarespace, and others.',
+                    '',
+                    '<strong>2. Prioritise WCAG 2.2 criteria.</strong>',
+                    'Target size (2.5.8) and focus appearance (2.4.13) are the criteria most likely to break sites that passed 2.1. These are also the cheapest fixes — CSS adjustments, not architectural changes. Read our <a href="/blog/wcag-22-what-changes">WCAG 2.2 guide</a> for the complete list.',
+                    '',
+                    '<strong>3. Create or update your accessibility statement.</strong>',
+                    'Every service covered by the EAA must publish an accessibility statement listing compliance status, accessibility features, disproportionate burden claims, and an accessible feedback channel. Use our <a href="/accessibility-statement-generator">free generator</a> or see our <a href="/blog/how-to-write-accessibility-statement">writing guide</a>.',
+                    '',
+                    '<strong>4. Document proportionate measures.</strong>',
+                    'If full compliance is disproportionate to your means (micro-business exemption), document the assessment. The EAA allows this, but it must be reasoned and documented — not a blanket excuse.',
+                    '',
+                    '<strong>5. Prepare for the August 2026 AI Act intersection.</strong>',
+                    'If you use AI features on client sites (chatbots, AI-generated content, moderation tools), audit them for accessibility compliance starting now. The AI Act obligations begin August 2, and the EAA applies to those systems.',
+                ], None),
+            ],
+            faqs=[
+                ('Has any company actually been fined under the EAA?',
+                 'Not yet in the sense of a cash penalty, but enforcement actions have begun. In France, the Commercial Court ordered Carrefour to make its site and app accessible within six months — under penalty of daily fines for delay. In Sweden, PTS has opened regulatory cases against e-commerce operators. No published fines as of August 2026, but the first penalties are expected within 9-12 months as cases conclude.'),
+                ('Is every EU member state enforcing the EAA equally?',
+                 'No. France, Sweden, and the Netherlands are the most active. Many other member states operate a complaint-driven model, meaning enforcement begins when a user or competitor files a complaint. If no one complains, nothing happens — but an inaccessible client site serving EU consumers always carries complaint risk.'),
+                ('What happens if I have an EAA accessibility statement but my site fails?',
+                 'An accessibility statement does not immunise you from enforcement. It shows good faith and may reduce penalties, but if a regulator investigates and finds non-compliance, you are still liable. An inaccurate statement is also an information-obligation violation.'),
+                ('Does the EAA apply to existing client sites or only new ones?',
+                 'Sites lawfully in use before June 28, 2025 have a transitional period until June 28, 2030. Any site launched or substantially redesigned after June 28, 2025 must comply immediately. New client work you deliver now must be EAA-compliant from day one.'),
+                ('Can a small agency be exempted from EAA compliance?',
+                 'The EAA includes a disproportionate burden clause — if full compliance would fundamentally alter the service or impose an excessive cost relative to your size and revenue, you may claim exemption. The key word is "disproportionate": you must document the assessment, keep it on file, and still comply to the extent feasible. It is not a blanket exemption for small agencies.'),
+                ('What is the role of WCAG 2.2 in EAA enforcement?',
+                 'EN 301 549 (the technical standard referenced by the EAA) currently cites WCAG 2.1 AA. A version 4.1.1 incorporating WCAG 2.2 is expected in 2026. While enforcement today uses the 2.1 baseline, aligning client sites with 2.2 now avoids a second audit cycle when the standard updates. WCAG 2.2 is backwards-compatible with 2.1, so early adoption creates no compliance conflict.'),
+            ],
+            related_posts=[
+                ('EAA &amp; WCAG', 'WCAG 2.2: What Changed & What It Means for Your Clients', '/blog/wcag-22-what-changes'),
+                ('EAA', 'EAA Accessibility Checklist: 10 Steps for WordPress', '/blog/eaa-accessibility-checklist'),
             ],
         ),
     ]

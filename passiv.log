@@ -909,3 +909,26 @@ Iteration 26 færdig og commitet (6581f35). DECISION.md findes, så tilstand B: 
 Søgninger brugt: 0 af 12. Budget: 0 kr. Blokering uændret: KDP-konto fra Mads blokerer primær indtægt.
 2026-08-23T15:44:31+02:00 iteration 4 afsluttet (exit 0)
 2026-08-23T15:44:56+02:00 === iteration 5/15 ===
+## Iteration 27 færdig — sammendrag
+
+**Hvad blev gjort:**
+
+1. **Nyt blogindlæg:** `site/blog/gdpr-fines-2026.html` — "GDPR Fines in 2026: What the Numbers Actually Mean" (~13.4KB, ~1.290 ord)
+   - Skrevet som job-dict i `make_blog.py` (regenererbart)
+   - Fakta tjekket med 1 søgning: Meta €1,2Mrd (under appeal), TikTok €530M #2, Amazon €746M annulleret marts 2026, €1,2Mrd/år 2025, to-tier bødesystem
+   - Fokus på hvad tallene betyder for små bureauer + 15-minutters risicotjek
+   - JSON-LD valideret, OG/Twitter-meta, canonical
+
+2. **Scanner-tjek af ALLE 8 blogsider live — samtlige 100/A**
+
+3. **Index.html:** 7→8 blog-kort · **Sitemap:** 22 URLs (XML-valid)
+
+4. **health_check.py 60/60** · Deployet + live-verificeret (400, indhold OK)
+
+5. **STATUS.md + BUILD.md opdateret** · Committed (8b4b411)
+
+**Søgninger brugt:** 1 af 12 · **Budget:** 0 kr af 1.000
+
+**Stadig blokeret på:** Mads' KDP-konto — 5 e-bøger klar.
+2026-08-23T15:52:16+02:00 iteration 5 afsluttet (exit 0)
+2026-08-23T15:52:54+02:00 === iteration 6/15 ===

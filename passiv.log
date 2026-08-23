@@ -2117,3 +2117,19 @@ Søgninger brugt: **0 af 12** — intet behøvede faktatjek, alt indhold bygger 
 2026-08-24T00:07:29+02:00 UPSTREAM - venter 5 min (forsoeg 2/24)
 2026-08-24T00:12:24+02:00 UPSTREAM - venter 5 min (forsoeg 2/24)
 2026-08-24T00:12:57+02:00 === iteration 1/15 ===
+Iteration 100 færdig.
+
+**Hvad der blev bygget:** Ny dansk side `/blog/nis2-guide-da` — pendant til den engelske NIS2-readiness-guide. Dækker hvem NIS2 rammer, cybersikkerhedsloven, de 10 sikkerhedskrav (art. 21), 24/72-timers incident-pligten, leverandørkæde-vinklen for bureauer under tærsklen, 5-trins plan med scanner-CTA, 5 FAQ'er og krydslink til EN-versionen.
+
+**Sikkerhedsmønsteret fra iter. 97-99 er fulgt:**
+- Script `make_blog_nis2_da.py`: JSON-LD valideret med json.loads (schema.org/Article OK), sitemap-duplikattjek, internt link-tjek (0 brudte)
+- Sitemap nu 85 URL-indgange; forsids-kort tilføjet
+- health_check.py: 71/71
+- Deployet til https://hermes-passiv.pages.dev/blog/nis2-guide-da — verificeret live med curl: korrekt dansk titel, canonical, track.js, JSON-LD, sitemap-indgang og 2 links fra forsiden
+
+**Søgninger: 0 af 12 brugt. Budget stadig 0 kr.**
+
+STATUS.md opdateret og alt committet (b9676b9). Næste iteration: EN-pendant til en dansk side eller dansk GDPR-overblik — samme mønster. Blokeringen er uændret: Bitwarden → Lemon Squeezy/npm/Chrome-nøgler, KDP kræver manuel upload.
+2026-08-24T00:16:58+02:00 iteration 1 afsluttet (exit 0)
+2026-08-24T00:17:19+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+2026-08-24T00:18:12+02:00 === iteration 2/60 ===

@@ -1,26 +1,26 @@
-# STATUS — 28. august 2026, iteration 80 — Dansk DPA-generator (live)
+# STATUS — 28. august 2026, iteration 81 — RoPA-generator (EN + DA), live
 
 ## Stats
 
-Ingen ændring: venteliste 0, ekstern værktøjsbrug 0. /dpa-generator fik
-ikke målbar ekstern trafik siden iteration 79.
+Ingen ændring: venteliste 0, ekstern værktøjsbrug 0. /api/stats viser stadig
+kun 23.-24. august-trafik; de nye generator-sider er for nye til at måle.
 
 ## Hvad denne iteration byggede
 
-**Dansk version af DPA-generatoren: `/dpa-generator-da`**
-(jf. sidste iterations punkt 2 — de danske varianter er vores eneste
-ikke-egen trafik hidtil):
+**RoPA-generator i to sprog: `/ropa-generator` og `/ropa-generator-da`**
 
-- Fuld dansk oversættelse af hele flowet: formular (10 spørgsmål) OG selve
-  den genererede art. 28-aftale på dansk — ikke kun UI'et.
-- Samme kvalitetskrav som EN-versionen: klient-side, XSS-escaping,
-  copy/download/print, FAQPage JSON-LD valideret med json.loads
-  (@context korrekt), `node --check` OK.
-- hreflang-kobling begge veje mellem /dpa-generator og /dpa-generator-da.
-- Linket på forsiden ("DPA-generator (dansk)") + sitemap.xml
-  (extensionless). Deployet og verificeret live: side → 200 med indhold,
-  canonical korrekt, JSON-LD parser i live-HTML, forside + sitemap viser
-  entry.
+- Klient-side GDPR art. 30-registrering pr. behandlingsaktivitet: rolle
+  (dataansvarlig/databehandler), formål, behandlingsgrundlag, berørte personer,
+  datakategorier, art. 9-tjek, modtagere, tredjelandsoverførsler (SCC/adekvathed),
+  opbevaring, sikkerhedsforanstaltninger.
+- Output som tabel-dokument med copy/download/print. XSS-escaping overalt,
+  samme arkitektur som DPA-generatoren.
+- hreflang EN↔DA begge veje, FAQPage JSON-LD valideret med json.loads lokalt
+  OG i live-HTML (@context korrekt), track.js på plads (36→38/38 sider).
+- Link på forsiden + sitemap.xml (extensionless, XML valideret). Deployet og
+  curl-verificeret live: canonical, JSON-LD og indhold OK på alle tre
+  generator-sider.
+- IndexNow pinget efter deploy: 63 URLs → 200.
 
 Søgninger brugt: **0 af 12** · Budget: **0 kr af 1.000 DKK**
 
@@ -35,10 +35,9 @@ Chrome Web Store. KDP kræver manuel upload af Mads (kit komplet).
 
 ## Hvad næste iteration bør gøre
 
-1. Kør `./indexnow_ping.sh` efter deploy så /dpa-generator-da bliver indekseret.
-2. Tjek /api/stats for besøg på de to generator-sider (inkl. dansk).
-3. Næste klient-side generator i serien: RoPA-generator eller
-   incident-response-plan (EN + DA som mønsteret nu er).
-4. Hvis /scan-da + /dpa-generator-da fortsat er de eneste sider med ekstern
-   trafik, overvej at udvide den danske linje yderligere — det er det eneste
-   signal vi har fra rigtige brugere.
+1. Tjek /api/stats for besøg på generator-siderne (nu 4 stk: DPA EN/DA, RoPA EN/DA).
+2. Hvis RoPA-siderne får samme danske trafikmønster: næste generator i serien
+   (incident-response-plan eller privacy-notice-generator, EN + DA).
+3. Overvej en samlet "gratis værktøjer"-landingsside der krydslinker alle
+   generatorerne — styrker internt link-mønster og SEO.
+4. Fortsat blokeret på konti — intet nyt at melde til Mads udover det der står.

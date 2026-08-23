@@ -932,3 +932,46 @@ Søgninger brugt: 0 af 12. Budget: 0 kr. Blokering uændret: KDP-konto fra Mads 
 **Stadig blokeret på:** Mads' KDP-konto — 5 e-bøger klar.
 2026-08-23T15:52:16+02:00 iteration 5 afsluttet (exit 0)
 2026-08-23T15:52:54+02:00 === iteration 6/15 ===
+Alt i mål. Her er hvad iteration 28 leverede:
+
+**Nyt blogindlæg: "EAA Enforcement in 2026: What Has Actually Happened"**
+- 1 web-søgning (brugt af 12) — fakta fra Level Access, Plaintest, UserWay
+- Carrefour-dommen (juni 2026 — tvunget til at gøre site+app tilgængelig inden 6 mdr.), 124 klager i Sverige, bødeniveauer på tværs af EU (€40K-€900K)
+- 5-trins handlingsplan med link til scanner, guides, statement generator
+- ~15KB, JSON-LD Article, canonical, OG/Twitter-meta
+
+**Related Guides — intern linkning på alle 6 blogindlæg**
+- Hver make_blog-post linker nu til 1-2 andre relevante guides
+- Eksempel: gdpr-dpa-web-agencies → gdpr-fines-2026 + cookie-consent-gdpr-compliance
+- Bygger et internt linknetværk uden manuelt arbejde (regenererbart)
+
+**Deploy og verifikation**
+- 9 blogindlæg alle 200 live på hermes-passiv.pages.dev
+- Forsiden har 9 blog-kort, sitemap 23 URLs
+- 60/60 health_check bestået
+- Committed: `aa4f974`
+
+**Budget:** 0 kr / 1.000 kr. **Blokering:** KDP-konto mangler stadig.
+2026-08-23T16:02:22+02:00 iteration 6 afsluttet (exit 0)
+2026-08-23T16:02:46+02:00 === iteration 7/15 ===
+## Iteration 29 færdig
+
+**Nyt blogindlæg: CMP Comparison 2026** — 8 cookie consent platforms sammenlignet (Cookiebot, CookieYes, Iubenda, Osano, Complianz, Quantcast, Termly, Enzuzo) med pris-tabel, GCM v2-status, EAA-accessibility-vurdering, og 5 konkrete anbefalinger efter agency-type.
+
+### Hvad blev gjort
+
+1. **make_blog.py** — nyt job `cmp-comparison-2026` tilføjet (~20KB, 6 sektioner + FAQ + 16KB HTML)
+2. **index.html** — 10. blog-kort tilføjet (GDPR-badge, 8 min read, 8 platforms compared)
+3. **sitemap.xml** — 24. URL tilføjet (`/blog/cmp-comparison-2026`)
+4. **Intern linkning** — cookie-consent-gdpr-compliance blog fik CMP Comparison i Related Guides
+5. **Deployet** til Cloudflare Pages ✅
+6. **Verificeret live** — alle 10 blogindlæg 200, index viser ny post, sitemap indeholder entry, cookie-consent blog linker til CMP Comparison
+
+### Status
+- **Budget:** 0/1000 DKK
+- **Søgninger:** 1 af 12 brugt
+- **Health check:** 60/60
+- **Blokering:** KDP-konto mangler (5 e-bøger klar)
+- **Site:** 10 blogindlæg, 10 platform guides, 1 scanner, 1 statement generator, 3 e-bøger, 4 ComplianceDocs templates
+2026-08-23T16:07:18+02:00 iteration 7 afsluttet (exit 0)
+2026-08-23T16:07:41+02:00 === iteration 8/15 ===

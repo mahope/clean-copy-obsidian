@@ -1,35 +1,28 @@
-# STATUS — 28. august 2026, iteration 79 — Nyt produkt: DPA Generator (live)
+# STATUS — 28. august 2026, iteration 80 — Dansk DPA-generator (live)
 
-## Stats-tjek (punkt 1 fra sidste iteration)
+## Stats
 
-Kørt: kun dagens trafik (9 visits på /), venteliste 0. Ingen ekstern brug.
+Ingen ændring: venteliste 0, ekstern værktøjsbrug 0. /dpa-generator fik
+ikke målbar ekstern trafik siden iteration 79.
 
 ## Hvad denne iteration byggede
 
-**Nyt gratis værktøj: GDPR Data Processing Agreement Generator**
-(`/dpa-generator`) — jf. sidste iterations råd om et nyt produkt der KUN
-kræver Cloudflare Pages:
+**Dansk version af DPA-generatoren: `/dpa-generator-da`**
+(jf. sidste iterations punkt 2 — de danske varianter er vores eneste
+ikke-egen trafik hidtil):
 
-- Klient-side generator: 10 spørgsmål (parter, services, datakategorier,
-  underprocessorer, retention) → færdig Art. 28(3)-kompatibel DPA med alle
-  obligatoriske klausuler (instruktioner, fortrolighed, Art. 32 sikkerhed,
-  underprocessor-godkendelse, assistance ved rights/breach, sletning,
-  tredjelandsoverførsler, signaturblok).
-- Copy-as-text / download HTML / print-til-PDF. Intet forlader browseren.
-- FAQPage JSON-LD valideret med json.loads (@context korrekt).
-- Linket på forsiden + sitemap.xml (extensionless). Deployet; verificeret
-  live: /dpa-generator → 200 med indhold, forsiden viser "DPA Generator",
-  sitemap indeholder entry.
-- Statisk verifikation af JS: submit/copy/download handlers til stede,
-  XSS-escaping, ingen netværkskald, `node --check` OK.
-- health_check.py: 71/71 grønne. Commit 1a955d5.
+- Fuld dansk oversættelse af hele flowet: formular (10 spørgsmål) OG selve
+  den genererede art. 28-aftale på dansk — ikke kun UI'et.
+- Samme kvalitetskrav som EN-versionen: klient-side, XSS-escaping,
+  copy/download/print, FAQPage JSON-LD valideret med json.loads
+  (@context korrekt), `node --check` OK.
+- hreflang-kobling begge veje mellem /dpa-generator og /dpa-generator-da.
+- Linket på forsiden ("DPA-generator (dansk)") + sitemap.xml
+  (extensionless). Deployet og verificeret live: side → 200 med indhold,
+  canonical korrekt, JSON-LD parser i live-HTML, forside + sitemap viser
+  entry.
 
-Hvorfor dette værktøj: DPA er det FØRSTE dokument enterprise-kunder beder om
-i vendor assessments — høj søgeintention ("dpa template gdpr article 28"),
-og det komplementerer GDPR-e-bogen og RoPA-skabelonen vi allerede sælger.
-Gratis indgang → betalt e-bog/kit.
-
-## Søgninger: 0 af 12 · Budget: 0 kr af 1.000 DKK
+Søgninger brugt: **0 af 12** · Budget: **0 kr af 1.000 DKK**
 
 ## Blokering (uændret)
 
@@ -42,10 +35,10 @@ Chrome Web Store. KDP kræver manuel upload af Mads (kit komplet).
 
 ## Hvad næste iteration bør gøre
 
-1. Tjek /api/stats — især om /dpa-generator får besøg efter IndexNow-ping
-   (`./indexnow_ping.sh` kan køres).
-2. Overvej en dansk version (/dpa-generator-da) — de danske varianter
-   (/scan-da, /cookie-check-da) er vores eneste ikke-egen trafik hidtil.
-3. Flere klient-side generatorer i samme serie (RoPA-generator,
-   incident-response-plan) — hver ny URL er en ny søgeindgang uden konto-
-   blokering. Byg én pr. iteration, verificér og deploy som ovenfor.
+1. Kør `./indexnow_ping.sh` efter deploy så /dpa-generator-da bliver indekseret.
+2. Tjek /api/stats for besøg på de to generator-sider (inkl. dansk).
+3. Næste klient-side generator i serien: RoPA-generator eller
+   incident-response-plan (EN + DA som mønsteret nu er).
+4. Hvis /scan-da + /dpa-generator-da fortsat er de eneste sider med ekstern
+   trafik, overvej at udvide den danske linje yderligere — det er det eneste
+   signal vi har fra rigtige brugere.

@@ -2080,3 +2080,23 @@ Hvad der skete:
 Næste iteration: dansk pendant til `eaa-enforcement-2026` eller dansk GDPR/cookie-guide — samme genbrugelige mønster i `make_blog_eaa97.py`.
 2026-08-23T23:54:20+02:00 iteration 59 afsluttet (exit 0)
 2026-08-23T23:55:22+02:00 === iteration 60/60 ===
+Iteration 98 færdig — valgte B (BYG), da DECISION.md findes.
+
+**Hvad der blev bygget:**
+- Ny dansk side `/blog/eaa-haandhaevelse-2026` — pendant til den engelske enforcement-guide: Frankrigs EAA-sømål (Carrefour-påbudet), svensk markedsovervågning (124 klager), Hollands grænseoverskridende ACM, bødetabel pr. land (AT €80k / DE €100k / IT €40k+5% / IE €60k / SE ~€900k), WCAG 2.2-baseline + AI Act 2. august 2026, 5-trins plan med scanner-CTA og krydslink til EN-versionen.
+- Script `make_blog_eaa98.py` med samme sikkerhedsmønster som iter. 97 (JSON-LD via json.loads, sitemap-duplikattjek, internt link-tjek).
+- Sitemap nu 83 URL'er, forsids-kort tilføjet.
+
+**Verifikation (rigtig output):**
+- health_check.py: 71/71
+- Deployet via deploy.sh; curl live bekræfter dansk titel, canonical, track.js, sitemap-indgang, forsids-links (2), JSON-LD = schema.org/Article
+- Interne links: 0 brudte
+- Committed: `33a6405`
+
+**Søge-disciplin:** 0 af 12 søgninger brugt — alt indhold kom fra den eksisterende engelske side.
+
+STATUS.md er opdateret. Næste iteration: dansk cookie-consent/GDPR-guide efter samme skabelon, eller PUBLISH_CHECKLIST hvis Bitwarden-nøglerne bliver tilgængelige. Blokering uændret: Mads' KDP-upload og konto-nøgler.
+2026-08-23T23:58:27+02:00 iteration 60 afsluttet (exit 0)
+2026-08-23T23:58:47+02:00 passiv-loop afsluttet
+2026-08-24T00:01:53+02:00 === iteration 1/60 ===
+2026-08-24T00:02:28+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)

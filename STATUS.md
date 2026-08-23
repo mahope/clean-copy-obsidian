@@ -1,4 +1,4 @@
-# STATUS — 24. august 2026 (iteration 96)
+# STATUS — 24. august 2026 (iteration 97)
 
 ## Tallene (ærlige)
 
@@ -7,24 +7,20 @@
 
 ## Hvad denne iteration gjorde
 
-Fulgte næste-skridt punkt 1 fra iter. 95: EAA statement-generator-guide,
-både engelsk og dansk pendant — to nye crawl-bait-sider.
+Fulgte næste-skridt punkt 1+2 fra iter. 96 — uden søgninger, alt indhold
+kom fra den eksisterende engelske side.
 
-1. Ny side `/blog/free-eaa-statement-generators` (EN) og
-   `/blog/gratis-eaa-saetninger` (DA, krydslinket begge veje).
-   Hver side: 4 værktøjskort (statement-generator, scanner, kontrasttjekker,
-   tekst-på-billede-tjekker), 3-trins arbejdsgang, "hvor stopper gratis
-   værktøjer"-sektion med e-bogs-CTA, relaterede guides.
-2. Nyt script `make_blog_eaa96.py` — selvstændigt, validerer JSON-LD med
-   json.loads og skriver direkte i samme design som de andre blogsider.
-3. Indgange indbygget: sitemap.xml (+2 URL'er, nu 81 `<url>`-indgange),
-   interne links tjekket programmatisk (ingen brudte).
-4. health_check.py: **71/71 bestået** · IndexNow pinget (HTTP 200, 81 URLs)
-5. Deployet (`./deploy.sh`) og verificeret live med curl:
-   - begge nye sider svarer med korrekt titel ✓
-   - sitemap indeholder begge URL'er ✓
-   - /accessibility-statement-generator live ✓
-6. Committed: `152d04d`
+1. Ny dansk side `/blog/eaa-frister-2026`: pendant til EN `/blog/eaa-deadline-2026`.
+   Frist-status, undtagelser, bøder pr. land (SE/ES/DE/FR), "ikke compliant nu"-
+   arbejdsgang med scanner-CTA, 4 FAQ'er, relaterede guides, krydslink til EN-version.
+2. Forsids-kort tilføjet for begge danske blogsider (`gratis-eaa-saetninger`
+   + `eaa-frister-2026`) — iter. 96 punkt 2 lukket.
+3. Nyt script `make_blog_eaa97.py` — validerer JSON-LD med json.loads, tjekker
+   at slugs ikke allerede står i sitemap, og tjekker interne links programmatisk.
+4. Sitemap.xml opdateret (nu 82 `<url>`-indgange). health_check.py: **71/71**.
+5. Deployet og verificeret live med curl: begge DA-sider svarer med korrekt
+   titel, sitemap indeholder begge URL'er, forsiden linker dem (4 forekomster).
+6. Committed.
 
 ## Blokering (én linje)
 
@@ -33,17 +29,15 @@ Chrome Web Store. KDP kræver manuel upload af Mads (kit komplet, 5 bøger).
 
 ## Verifikation
 
-- Live-tjek med curl efter deploy (titler + sitemap-indhold, ikke kun 200)
+- Live-tjek med curl efter deploy (titler + sitemap + forsids-links)
 - JSON-LD valideret med json.loads (@context == https://schema.org, @type Article)
-- Interne links på begge nye sider tjekket mod filsystemet: 0 brudte
+- Interne links på ny side + forside tjekket mod filsystemet: 0 brudte
 
 ## Hvad næste iteration bør gøre
 
-1. Flere crawl-bait-par: dansk pendant til `/blog/eaa-deadline-2026` eller
-   en cookie-consent/GDPR-guide på dansk — hver side = flere indgange.
-2. Tjek om de nye DA-sider bør linkes fra forsiden blog-grid (kun EN-sider
-   står der pt. ud over NIS2-DA-guiden) — tilføj kort for begge DA-sider.
-3. Overvej Machado 2009-severitymatricer i farveblindhedssimulatoren.
-4. Hvis nøgler findes i Bitwarden: kør PUBLISH_CHECKLIST.md fra toppen.
-5. Trafiktjek via /api/stats?token=hp-stats-v1&days=90 — rapportér kun
-   ægte ekstern trafik, ellers 0.
+1. Dansk pendant til `/blog/eaa-enforcement-2026` eller en cookie-consent/GDPR-
+   guide på dansk — samme mønster som denne iteration (genbrug make_blog_eaa97.py).
+2. Overvej Machado 2009-severitymatricer i farveblindhedssimulatoren.
+3. Hvis nøgler findes i Bitwarden: kør PUBLISH_CHECKLIST.md fra toppen.
+4. Trafiktjek via /api/stats?token=hp-stats-v1&days=90 — rapportér kun ægte
+   ekstern trafik, ellers 0.

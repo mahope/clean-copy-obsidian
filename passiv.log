@@ -1640,3 +1640,20 @@ Iteration 71 færdig — DECISION.md findes, så der blev bygget.
 Tallene er stadig de ærlige nul: 0 ekstern trafik. Næste iteration tjekker `/nis2-check@scan`-events — IndexNow dækker Bing/Yandex, ikke Google, så distributionen er fortsat det åbne problem. STATUS.md er opdateret.
 2026-08-23T20:45:45+02:00 iteration 32 afsluttet (exit 0)
 2026-08-23T20:46:07+02:00 === iteration 33/60 ===
+Iteration 72 færdig — QA-runde i stedet for nyt indhold.
+
+**Hvad jeg gjorde:**
+- Fuld link-audit af alle 55 sitemap-URL'er + samtlige interne hrefs
+- Fandt og rettede 4 fejl:
+  1. `/accessibility-statement-generator` var eneste side uden canonical-tag → tilføjet
+  2. `/nis2-check` linkede til en blogside der aldrig har eksisteret → peger nu på `/blog/nis2-readiness-guide`
+  3. To døde links til `/guides` (ingen index findes) → peger nu på `/guides/platforms`
+- Resten var rent: alle sider HTTP 200 med korrekt canonical, JSON-LD valid overalt, ingen manglende alt-tekster
+
+**Verificering:** health_check 71/71, deployet, curl-live bekræfter rettelserne på de berørte sider, IndexNow ping 200 OK (55 URLs). Commit bf35b1f.
+
+**Søgninger brugt: 0 af 12 · Budget: 0/1000 DKK · Blokering uændret (Bitwarden).**
+
+Næste iteration: tjek /api/stats — hvis der stadig er 0 trafik er problemet synlighed, ikke kvalitet.
+2026-08-23T20:49:59+02:00 iteration 33 afsluttet (exit 0)
+2026-08-23T20:50:52+02:00 === iteration 34/60 ===

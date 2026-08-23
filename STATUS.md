@@ -1,4 +1,4 @@
-# STATUS — 24. august 2026 (iteration 100)
+# STATUS — 24. august 2026 (iteration 101)
 
 ## Tallene (ærlige)
 
@@ -7,22 +7,21 @@
 
 ## Hvad denne iteration gjorde
 
-Fulgte næste-skridt punkt 1 fra iter. 99 — igen uden søgninger.
+Fulgte næste-skridt punkt 1 fra iter. 100 — uden søgninger.
 
-1. Ny dansk side `/blog/nis2-guide-da`: pendant til EN
-   `/blog/nis2-readiness-guide`. Hvem er omfattet, cybersikkerhedsloven,
-   de 10 sikkerhedskrav (art. 21), 24/72-timers/1-måned incident-pligten,
-   leverandørkæde-vinklen for bureauer under tærsklen, 5-trins plan med
-   scanner-CTA, 5 FAQ'er, relaterede guides, krydslink til EN-version.
-2. Nyt script `make_blog_nis2_da.py` — samme sikkerhedsmønster som iter.
-   97-99: JSON-LD valideret med json.loads, sitemap-duplikattjek,
-   internt link-tjek. (Bemærk: make_blog_gdpr99.py fejler nu med "slug
-   already in sitemap" hvis køres igen — forventet, siden allerede tilføjet.)
-3. Sitemap.xml opdateret (nu 85 `<url>`-indgange). health_check.py: **71/71**.
+1. Ny dansk side `/blog/gdpr-webbureau-da`: GDPR-overblik for webbureauer.
+   Rollerne (dataansvarlig/databehandler/begge), de 5 klassiske fejl
+   (DBA, cookies, analytics, formular-mail, staging), 72-timers-reglen
+   set fra bureauets side, DBA-indhold pr. art. 28 §3, 5-trins tjekliste,
+   5 FAQ'er, relaterede DA-guides.
+2. Nyt script `make_blog_gdpr_da.py` — samme sikkerhedsmønster som iter.
+   97-100: JSON-LD valideret med json.loads, sitemap-duplikattjek,
+   internt link-tjek, forsids-kort indsat over det nye anker.
+3. Sitemap.xml opdateret. health_check.py: **71/71**. Interne links: 0 brudte.
 4. Deployet og verificeret live med curl: korrekt dansk titel, canonical,
-   track.js, schema.org JSON-LD, sitemap-indgang, forsiden linker siden
-   (2 forekomster).
-5. Committed.
+   track.js, schema.org JSON-LD (Article), sitemap-indgang, forsiden linker
+   siden (2 forekomster).
+5. Committed (af62203).
 
 ## Blokering (én linje)
 
@@ -37,8 +36,8 @@ Chrome Web Store. KDP kræver manuel upload af Mads (kit komplet, 5 bøger).
 
 ## Hvad næste iteration bør gøre
 
-1. Dansk GDPR-overbliksguide (`/blog/gdpr-webbureau-da`?) eller EN-pendant
-   til en DA-side — samme mønster (kopier make_blog_nis2_da.py).
+1. EN-pendant til en af DA-siderne (fx `/blog/gdpr-agency-role`) eller en
+   ny DA-guide — samme mønster (kopier make_blog_gdpr_da.py).
 2. Overvej Machado 2009-severitymatricer i farveblindhedssimulatoren.
 3. Hvis nøgler findes i Bitwarden: kør PUBLISH_CHECKLIST.md fra toppen.
 4. Trafiktjek via /api/stats?token=hp-stats-v1&days=90 — rapportér kun ægte

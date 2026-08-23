@@ -4,11 +4,11 @@
  *
  * Port of scanner_core.py (the platform-independent core) to PHP. Scans raw
  * HTML against a WCAG 2.1 AA subset relevant to the European Accessibility
- * Act: 15 rules, same rule IDs and scoring as the web scanner at
+ * Act: 21 rules, same rule IDs and scoring as the web scanner at
  * hermes-passiv.pages.dev/scan.
  *
  * @package eaa-compliance-scanner
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -67,6 +67,13 @@ final class EAA_Scanner_Engine {
 		$target_blank_bad = 0;
 		$aria_hidden_focus= array();
 		$fixed_px         = 0;
+		// v1.2.0 rules (same set as npm core / Python core)
+		$input_imgs_no_alt = 0;
+		$videos_no_tracks  = array();
+		$audio_no_alt      = array();
+		$autoplay_bad      = array();
+		$marquee_blink     = 0;
+		$pos_tabindex      = 0;
 		$title_present    = false;
 		$lang_attr        = null;
 		$viewport         = false;
@@ -151,7 +158,12 @@ final class EAA_Scanner_Engine {
 						break;
 					case 'input':
 						$itype = strtolower( isset( $attrs['type'] ) ? $attrs['type'] : 'text' );
-						if ( in_array( $itype, array( 'hidden', 'submit', 'button', 'reset', 'image' ), true ) ) { break; }
+						if ( 'image' === $itype ) {
+							$alt_img = isset( $attrs['alt'] ) ? trim( $attrs['alt'] ) : '';
+							if ( '' === $alt_img ) { $input_imgs_no_alt++; }
+							break;
+						}
+						if ( in_array( $itype, array( 'hidden', 'submit', 'button', 'reset' ), true ) ) { break; }
 						if ( empty( $id ) || ! isset( $labels_for[ $id ] ) ) {
 							if ( empty( $attrs['aria-label'] ) && empty( $attrs['aria-labelledby'] ) && empty( $attrs['title'] ) ) {
 								$name           = isset( $attrs['name'] ) ? $attrs['name'] : ( isset( $attrs['placeholder'] ) ? $attrs['placeholder'] : '' );
@@ -202,6 +214,32 @@ final class EAA_Scanner_Engine {
 					case 'form':
 						$form_count++;
 						break;
+					case 'video':
+						$has_data_caps = isset( $attrs['data-captions-present'] );
+						if ( ! $has_data_caps ) {
+							$videos_no_tracks[] = mb_substr( isset( $attrs['src'] ) ? $attrs['src'] : '', 0, 60 );
+						}
+						if ( isset( $attrs['autoplay'] ) && ! isset( $attrs['muted'] ) ) {
+							$autoplay_bad[] = 'video';
+						}
+						break;
+					case 'audio':
+						$lbl = mb_strtolower( ( isset( $attrs['aria-label'] ) ? $attrs['aria-label'] : '' ) . ' ' . ( isset( $attrs['title'] ) ? $attrs['title'] : '' ) );
+						if ( ! preg_match( '/transcript|captions?|subtitle/', $lbl ) ) {
+							$audio_no_alt[] = mb_substr( isset( $attrs['src'] ) ? $attrs['src'] : '', 0, 60 );
+						}
+						if ( isset( $attrs['autoplay'] ) && ! isset( $attrs['controls'] ) ) {
+							$autoplay_bad[] = 'audio';
+						}
+						break;
+					case 'track':
+						if ( isset( $attrs['kind'] ) && preg_match( '/captions?|subtitles/i', $attrs['kind'] ) && $videos_no_tracks ) {
+							array_pop( $videos_no_tracks );
+						}
+						break;
+					case 'marquee': case 'blink':
+						$marquee_blink++;
+						break;
 					case 'h1': case 'h2': case 'h3': case 'h4': case 'h5': case 'h6':
 						$h_level = (int) substr( $tag, 1 );
 						break;
@@ -219,6 +257,10 @@ final class EAA_Scanner_Engine {
 
 				// fixed px fonts
 				if ( preg_match( '/font-size\s*:\s*\d+px/i', $style ) ) { $fixed_px++; }
+
+				// v1.2.0: positive tabindex / text-decoration blink
+				if ( isset( $attrs['tabindex'] ) && preg_match( '/^\s*(\d+)\s*$/', $attrs['tabindex'], $tm ) && (int) $tm[1] > 0 ) { $pos_tabindex++; }
+				if ( preg_match( '/text-decoration\s*:\s*blink/i', $style ) ) { $marquee_blink++; }
 
 				// inline style inheritance for contrast checks
 				list( $pfg, $pbg, $plarge ) = $style_stack ? $style_stack[ count( $style_stack ) - 1 ] : array( '', '', false );
@@ -335,6 +377,22 @@ final class EAA_Scanner_Engine {
 			$findings[] = array( 'rule_id' => 'FIXED_PX_FONTS', 'severity' => 'notice', 'message' => "{$fixed_px} inline fixed px font-sizes (may block user zoom/text resize)", 'count' => $fixed_px, 'examples' => array() );
 		}
 		$add( 'ARIA_HIDDEN_FOCUS', 'error', '{n} element(s) with aria-hidden=true that are focusable', count( $aria_hidden_focus ), $aria_hidden_focus );
+
+		// v1.2.0 rules
+		$add( 'INPUT_TYPE_IMAGE_ALT', 'error', '{n} image submit button(s) (<input type=image>) without alt text (WCAG 1.1.1)', $input_imgs_no_alt );
+		$add( 'VIDEO_TRACKS', 'error', '{n} video(s) without a captions/subtitles track (WCAG 1.2.2)', count( $videos_no_tracks ), $videos_no_tracks );
+		$add( 'AUDIO_TRANSCRIPT', 'warning', '{n} audio element(s) with no indicated transcript or captions alternative (WCAG 1.2.1)', count( $audio_no_alt ), $audio_no_alt );
+		$add( 'AUTOPLAY_MEDIA', 'error', '{n} media element(s) that autoplay without visible pause controls or muting (WCAG 1.4.2)', count( $autoplay_bad ), $autoplay_bad );
+		if ( $marquee_blink > 0 ) {
+			$findings[] = array( 'rule_id' => 'MARQUEE_BLINK', 'severity' => 'error',
+				'message' => "{$marquee_blink} deprecated blinking/moving element(s) — cannot be paused by the user (WCAG 2.2.2)",
+				'count' => $marquee_blink, 'examples' => array() );
+		}
+		if ( $pos_tabindex > 0 ) {
+			$findings[] = array( 'rule_id' => 'POSITIVE_TABINDEX', 'severity' => 'warning',
+				'message' => "{$pos_tabindex} element(s) with tabindex greater than 0 — breaks natural focus order (WCAG 2.4.3)",
+				'count' => $pos_tabindex, 'examples' => array() );
+		}
 
 		if ( $low_pairs ) {
 			$findings[] = array(

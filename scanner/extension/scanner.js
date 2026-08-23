@@ -84,6 +84,53 @@ function scanPage() {
       "{n} aria-hidden element(s) that are still focusable",
       hiddenFocusable.length);
 
+  // --- v1.2.0 rules (same set as npm core / Python core) ---
+
+  const inputImgsNoAlt = [...document.querySelectorAll('input[type="image"]')]
+    .filter(el => !el.hasAttribute("alt") || el.alt.trim() === "");
+  add("INPUT_TYPE_IMAGE_ALT", "error",
+      "{n} image submit button(s) (<input type=image>) without alt text (WCAG 1.1.1)",
+      inputImgsNoAlt.length);
+
+  const videosNoTracks = [...document.querySelectorAll("video")].filter(v =>
+    ![...v.querySelectorAll("track")].some(t =>
+      /captions?|subtitles/.test((t.kind || "").toLowerCase())));
+  add("VIDEO_TRACKS", "error",
+      "{n} video(s) without a captions/subtitles track (WCAG 1.2.2)",
+      videosNoTracks.length);
+
+  const audioNoAlt = [...document.querySelectorAll("audio")].filter(a => {
+    const label = ((a.getAttribute("aria-label") || "") + " " +
+                   (a.title || "")).toLowerCase();
+    return !/transcript|captions?|subtitle/.test(label);
+  });
+  add("AUDIO_TRANSCRIPT", "warning",
+      "{n} audio element(s) with no indicated transcript or captions alternative (WCAG 1.2.1)",
+      audioNoAlt.length);
+
+  const autoplayBad = [
+    ...document.querySelectorAll("video[autoplay]:not([muted])"),
+    ...document.querySelectorAll("audio[autoplay]:not([controls])"),
+  ];
+  add("AUTOPLAY_MEDIA", "error",
+      "{n} media element(s) that autoplay without visible pause controls or muting (WCAG 1.4.2)",
+      autoplayBad.length);
+
+  const marqueeBlinkCount =
+    document.querySelectorAll("marquee,blink").length +
+    [...document.querySelectorAll('[style*="blink"]')].filter(
+      el => /text-decoration\s*:\s*blink/i.test(el.getAttribute("style"))).length;
+  add("MARQUEE_BLINK", "error",
+      "{n} deprecated blinking/moving element(s) — cannot be paused by the user (WCAG 2.2.2)",
+      marqueeBlinkCount);
+
+  const posTabindex = [...document.querySelectorAll("[tabindex]")].filter(
+    el => { const t = parseInt(el.getAttribute("tabindex"), 10);
+            return Number.isFinite(t) && t > 0; }).length;
+  add("POSITIVE_TABINDEX", "warning",
+      "{n} element(s) with tabindex greater than 0 — breaks natural focus order (WCAG 2.4.3)",
+      posTabindex);
+
   // WCAG 1.4.3 contrast on inline-styled text
   function parseCol(s) {
     s = (s || "").trim().toLowerCase();

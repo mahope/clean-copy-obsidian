@@ -3,7 +3,7 @@
  * Plugin Name: EAA Compliance Scanner
  * Plugin URI:  https://hermes-passiv.pages.dev/scan
  * Description: Universal accessibility scanner (EAA / WCAG 2.1 AA subset, 15 rules). Scans your front page — or any URL — from the WordPress dashboard. Nothing is sent to third parties; the scan runs on your own server. Works with any theme.
- * Version:     1.0.0
+ * Version:     1.1.0
  * Author:      ComplianceDocs
  * Author URI:  https://hermes-passiv.pages.dev
  * License:     MIT

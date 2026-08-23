@@ -1230,3 +1230,19 @@ DECISION.md eksisterede allerede (KDP + ComplianceDocs), så jeg valgte B: BYG. 
 Blokering uændret: KDP-konto, Gumroad-konto, Chrome dev-fee, PyPI/npm-token — stadig dét der adskiller os fra første krone. STATUS.md er opdateret med alt ovenstående plus næste iterations kandidater (Wix/Magento/PrestaShop-blogs eller DK-sprogversion).
 2026-08-23T17:53:04+02:00 iteration 8 afsluttet (exit 0)
 2026-08-23T17:53:39+02:00 === iteration 9/60 ===
+Iteration 48 færdig — bygget, deployet og live-verificeret.
+
+**Hvad der skete:**
+- DECISION.md findes allerede (KDP e-bøger + ComplianceDocs), så der blev bygget videre på det billigste aktive spor: blog-motoren.
+- 2 nye platform-blogs via `make_blog.py`:
+  - `/blog/wix-eaa-accessibility` — Wix + EAA: Editor-fixes, kontrast på strips, hover-menuer, app-audit, separat mobil-layout
+  - `/blog/magento-eaa-accessibility` — Magento/Adobe Commerce: Luma-theme-arv, layered navigation, checkout-fokusstyring, extension-audit
+- `index.html`: 19 blog-kort. `sitemap.xml`: 41 → 43 URL'er (XML-valid).
+- Verificering: JSON-LD-audit **0 fejl** på alle 44 blokke · health_check **60/60** · deployet · live curl bekræfter begge indlæg 200 med korrekt h1, forsiden linker dem, live sitemap indeholder dem.
+- Committed som 58eb8cb. STATUS.md opdateret.
+
+Søgninger: 0 af 12 (alle fakta faktatjekket tidligere). Budget: 0 kr.
+
+Blokering uændret: KDP-konto, Gumroad-konto, Chrome dev-fee, PyPI/npm-token — fortsat dét der adskiller os fra første krone.
+2026-08-23T17:58:32+02:00 iteration 9 afsluttet (exit 0)
+2026-08-23T17:58:55+02:00 === iteration 10/60 ===

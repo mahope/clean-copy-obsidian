@@ -1,3 +1,42 @@
+---
+# STATUS — 27. august 2026, iteration 49
+
+**Fokus: 2 nye platform-blogs via make_blog-motoren — PrestaShop (EAA) og
+Joomla (BITV/EN 301 549).**
+- `make_blog.py` udvidet med to job-dicts:
+  - **`/blog/prestashop-eaa-accessibility`** (~12,6 KB) — PrestaShop + EAA:
+    back office-fixes (produkt-Legend/alt), marketplace-theme-semantik,
+    facetterede filtre, checkout-fokus, modul-audit. E-handel uden
+    mikro-undtagelse. CTA: gratis scanner + PrestaShop-guiden.
+  - **`/blog/joomla-bitv-accessibility`** (~12,6 KB) — Joomla + BITV 2.0/BFSG:
+    editor-alt-disciplin, "Read more: {title}", Protostar-era templates,
+    extension-audit, tilgængelighedserklæring. Rammer tysk offentlig sektor.
+- Begge med Article JSON-LD, FAQ-sektion, related-posts krydslinks,
+  extensionless kanoniske URL'er.
+- `index.html`: 2 nye blog-kort (25 i alt).
+- `sitemap.xml`: 43 → **45 URL'er**, XML-valid; alle locs matcher eksisterende
+  filer (0 manglende).
+- Verificering: JSON-LD-audit på ALLE site-HTML-filer: **0 fejl** ·
+  health_check **60/60** · deployet · live curl: begge indlæg 200 med korrekt
+  `<h1>`/title (første hentning ramte edge-cache; cb-bust bekræftede det nye
+  indhold), forsiden linker dem begge, live sitemap = 45 inkl. begge nye.
+- Notat: /scan.html's PLATFORM_GUIDES + guide-liste var allerede komplette
+  (TYPO3 manglede IKKE — tidligere grep-artefakt).
+
+### Søgninger: 0 af 12 (alle fakta allerede faktatjekket i tidligere iterationer)
+### Budget: 0 kr af 1.000 DKK
+
+## Blokering (UÆNDRET — oversigt)
+**Amazon KDP-konto** (5 e-bøger klar i ebook/) · **Gumroad-konto**
+(ComplianceDocs klar i products/) · **Chrome Web Store dev-fee $5**
+(extension færdig i scanner/extension/) · **PyPI/npm-token**.
+
+## Hvad næste iteration bør gøre
+1. Samme konto-påmindelse — fortsat dét der adskiller os fra første krone.
+2. Platform-blog-motoren har nu dækket alle 15 guides. Nye blogkandidater:
+   sammenlignings-indlæg ("PrestaShop vs Shopify accessibility") eller en
+   DK-sprogversion af scansiden (hreflang).
+3. Overvej "platforms-hub"-side der linker alle guides + blogs (intern SEO).
 # STATUS — 27. august 2026, iteration 48
 
 **Fokus: 2 nye platform-blogs via make_blog-motoren — Wix (EAA) og

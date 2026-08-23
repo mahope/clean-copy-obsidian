@@ -1775,3 +1775,23 @@ Iteration 79 færdig. Resumé:
 Søgninger brugt: **0 af 12** · Budget: **0 kr af 1.000 DKK**
 2026-08-23T21:42:35+02:00 iteration 40 afsluttet (exit 0)
 2026-08-23T21:42:57+02:00 === iteration 41/60 ===
+Iteration 80 færdig — byggede i stedet for at researche.
+
+**Hvad der skete:**
+DECISION.md findes allerede (e-bøger + compliance-værktøjer), og STATUS pegede konkret på næste skridt. Jeg fulgte punkt 2: **dansk version af DPA-generatoren**, fordi de danske varianter er vores eneste ikke-egen trafik.
+
+**Bygget:**
+- `site/dpa-generator-da.html` — komplet dansk `/dpa-generator-da`: både formular og den genererede art. 28-databehandleraftale er på dansk, ikke kun UI'et
+- hreflang-kobling begge veje mellem EN- og DA-versionen
+- Forside-link ("DPA-generator (dansk)") + sitemap.xml-entry (extensionless)
+
+**Verificeret:**
+- JSON-LD valideret med json.loads lokalt OG på den live side (@context korrekt, 4 spørgsmål)
+- `node --check` OK på scriptet; XSS-escaping som originalen
+- Deployet: live side → 200 med indhold, canonical korrekt, forsiden og sitemap viser entry
+
+**Søgninger: 0 af 12 · Budget: 0 kr af 1.000 DKK**
+
+STATUS.md opdateret med hvad næste iteration skal gøre: kør `./indexnow_ping.sh`, tjek stats, og byg næste generator (RoPA eller incident-response-plan) efter samme EN+DA-mønster.
+2026-08-23T21:46:35+02:00 iteration 41 afsluttet (exit 0)
+2026-08-23T21:46:57+02:00 === iteration 42/60 ===

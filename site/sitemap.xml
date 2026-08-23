@@ -266,4 +266,6 @@
     <priority>0.8</priority>
   </url>
   <url><loc>https://hermes-passiv.pages.dev/dpa-generator-da</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hermes-passiv.pages.dev/ropa-generator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hermes-passiv.pages.dev/ropa-generator-da</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>

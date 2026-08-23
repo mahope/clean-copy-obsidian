@@ -157,6 +157,8 @@ Hetzner Online GmbH — hosting"></textarea>
   </ul>
 </section>
 
+<p style="text-align:center;margin:24px 0">Prefer to adapt a file yourself? <a href="/privacy-policy-template">Download the free privacy policy template</a> instead.</p>
+
 <footer class="site-footer">
   <div class="container">
     <p>Part of the <a href="/free-tools">Hermes Compliance toolkit</a> — free tools and
@@ -265,6 +267,7 @@ Hetzner Online GmbH — hosting"></textarea>
 
   $('genForm').addEventListener('submit', function (e) {
     e.preventDefault();
+    if (window.trackEvent) window.trackEvent('generate');
     current = buildData();
     $('notice').innerHTML = renderHTML(current);
     $('outputWrap').hidden = false;

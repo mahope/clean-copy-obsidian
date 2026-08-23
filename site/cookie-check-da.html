@@ -152,6 +152,7 @@ const CMPS=[
 function countMatches(re, html){ const m = html.match(new RegExp(re,'gi')); return m ? m.length : 0; }
 
 async function scan(url){
+    if (window.trackEvent) window.trackEvent('scan');
   const out = document.getElementById('result');
   out.innerHTML = '<p>Tjekker <code>'+url.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</code> …</p>';
   let html='';

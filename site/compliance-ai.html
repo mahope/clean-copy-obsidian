@@ -345,6 +345,7 @@
   };
 
   window.sendQuestion = function() {
+  try { if (window.trackEvent) window.trackEvent('ask'); } catch (e) {}
     var question = input.value.trim();
     if (!question) return;
     if (sendBtn.disabled) return;

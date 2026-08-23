@@ -264,6 +264,7 @@ Hetzner Online GmbH — hosting"></textarea>
 
   $('genForm').addEventListener('submit', function (e) {
     e.preventDefault();
+    if (window.trackEvent) window.trackEvent('generate-da');
     current = buildData();
     $('notice').innerHTML = renderHTML(current);
     $('outputWrap').hidden = false;

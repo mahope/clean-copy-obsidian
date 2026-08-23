@@ -182,6 +182,8 @@ Hetzner Online GmbH — hosting"></textarea>
   </ul>
 </section>
 
+<p style="text-align:center;margin:24px 0">Prefer to work in your own document? <a href="/ropa-template">Download the free RoPA template</a>.</p>
+
 <footer class="site-footer">
   <div class="container">
     <p>Part of the <a href="/">Hermes Compliance toolkit</a> — free tools and
@@ -302,6 +304,7 @@ Hetzner Online GmbH — hosting"></textarea>
 
   $('genForm').addEventListener('submit', function (e) {
     e.preventDefault();
+    if (window.trackEvent) window.trackEvent('generate');
     current = buildData();
     $('agreement').innerHTML = renderHTML(current);
     $('outputWrap').hidden = false;

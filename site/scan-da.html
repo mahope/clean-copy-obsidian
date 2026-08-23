@@ -171,6 +171,7 @@ async function shareResult(){
 }
 window.shareResult=shareResult;
 async function scan(url){
+    if (window.trackEvent) window.trackEvent('scan');
   const out = document.getElementById('result');
   const label = document.querySelector('.sr-only') || out;
   out.innerHTML = '<p>Scanner <code>'+url.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</code> …</p>';

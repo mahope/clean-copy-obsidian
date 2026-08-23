@@ -260,3 +260,15 @@
 - Scanner-tjek af ALLE 8 blogsider live: samtlige 100/A.
 - health_check.py 60/60. Deployet + curl-verificeret (200, indhold OK,
   index linker, sitemap indeholder entry).
+
+
+## Iteration 83 (28/8) — brugsmåling + template-downloads
+
+- **trackEvent**: track.js fik `window.trackEvent(event)`; koblet på alle 11
+  værktøjer (generate, scan, finish, ask). /api/track gemmer `<path>@<event>`
+  — næste iteration kan måle ægte brug, ikke kun besøg.
+- **/ropa-template** + `/downloads/ropa-template.md` og
+  **/privacy-policy-template** + `/downloads/privacy-policy-template.md`:
+  downloadebare GDPR-skabeloner som link-magneter på søgte termer.
+- Sitemap 68 URLs, IndexNow pinget (200), health_check 71/71,
+  deployet og live-verificeret.

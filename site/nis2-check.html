@@ -188,6 +188,7 @@ function prev(){ if(cur>0){cur--;render();} }
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;')}
 
 function finish(){
+  if(window.trackEvent)window.trackEvent('finish');
   const findings=[];
   let errors=0,warnings=0;
 

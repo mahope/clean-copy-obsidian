@@ -1,38 +1,37 @@
-# STATUS — 28. august 2026, iteration 82 — Privacy Notice-generator (EN + DA) + free-tools-hub, live
+# STATUS — 28. august 2026, iteration 83 — brugsmåling + 2 template-downloads, live
 
 ## Stats
 
-Ingen ændring: venteliste 0, ekstern værktøjsbrug 0. /api/stats viser fortsat
-kun 23.-24. august-trafik — ingen eksterne besøg på generatorerne endnu.
+Ingen ændring: venteliste 0, ekstern værktøjsbrug 0, /api/stats viser fortsat
+kun 23.-24. august-trafik. Ingen eksterne besøg endnu.
 
 ## Hvad denne iteration byggede
 
-**1. Privacy Notice-generator i to sprog: `/privacy-notice-generator` og
-`/privacy-notice-generator-da`**
-- Klient-side GDPR art. 13/14-politik: formål (checkbox-baserede, med
-  automatiske behandlingsgrundlag pr. formål), modtagere, tredjelandsoverførsler,
-  opbevaringsfrister, rettigheder, klageadgang (landevalg af tilsynsmyndighed).
-- Output som fuldt HTML-dokument med copy/download/print. XSS-escaping,
-  samme arkitektur som DPA- og RoPA-generatoren.
-- hreflang EN↔DA, FAQPage JSON-LD valideret lokalt OG live.
+**1. Ægte brugsmåling (trackEvent) på alle 11 værktøjer**
+- track.js fik `window.trackEvent(event)` — sender `event=<navn>` til /api/track,
+  som allerede understøttede events (gemmes som `<path>@<event>` i KV).
+- Koblet på: generate-knapperne i RoPA/DPA/Privacy Notice (EN+DA), scan() i
+  /scan + /cookie-check (EN+DA), finish() i NIS2-tjek, sendQuestion i AI-assistent.
+- Betyder: næste iteration kan skelne BESØG fra FAKTISK BRUG — det tal der tæller.
 
-**2. `/free-tools` — samlet hub for alle gratis værktøjer**
-- Krydslinker 8 værktøjs-URLs: privacy notice EN/DA, DPA EN/DA, RoPA EN/DA,
-  scanner, cookie-tjek, AI-assistent.
-- CollectionPage JSON-LD med hasPart/WebApplication (price 0 EUR) pr. værktøj.
-- Styrker det interne link-mønster fra alle generator-sider.
+**2. To nye downloadbare template-sider (distribution/link-magneter)**
+- `/ropa-template` + `/downloads/ropa-template.md` — GDPR art. 30-registerskabelon
+  (én blok pr. aktivitet, lawful basis, transfers, retention, checkliste).
+  Måltermer: "RoPA template", "GDPR Article 30 template".
+- `/privacy-policy-template` + `/downloads/privacy-policy-template.md` —
+  art. 13-politik med purpose/lawful basis/retention-tabel.
+  Måltermer: "privacy policy template small business".
+- Begge: FAQPage JSON-LD valideret lokalt OG live, track.js på plads,
+  krydslink fra den tilhørende generator + forsiden + /free-tools.
 
-**3. Krydslinks begge veje**: forsiden + alle 4 gamle generatorer linker nu til
-de nye sider og til /free-tools; hubben linker retur. Sitemap 63→66 URLs
-(extensionless, XML-valideret). IndexNow pinget: 66 URLs → 200.
+**3. Sitemap 66→68 URLs** (extensionless, XML-valideret). IndexNow pinget:
+68 URLs → 200.
 
-Søgninger brugt: **0 af 12** · Budget: **0 kr af 1.000 DKK**
+## Verificering
 
-## Verificering (curl efter deploy)
-
-Alle tre nye sider + forsiden + to eksisterende generatorer: HTTP 200 via -sL,
-korrekt canonical, JSON-LD @context korrekt i LIVE-HTML, track.js på plads,
-krydslinks fundet i live-HTML. Sitemap: 66 URLs, ingen .html-URLs.
+health_check.py: 71 passed, 0 failed. Live curl: begge templatesider + begge
+.md-filer = HTTP 200; hub viser de nye kort; trackEvent fundet i live-HTML for
+ropa-generator og scan; sitemap live = 68 URLs; JSON-LD @context korrekt live.
 
 ## Blokering (uændret)
 
@@ -45,10 +44,12 @@ Chrome Web Store. KDP kræver manuel upload af Mads (kit komplet).
 
 ## Hvad næste iteration bør gøre
 
-1. Tjek /api/stats for besøg på de 6 generator-sider + /free-tools.
-2. Hvis der stadig er 0 trafik: flere generatorer ændrer ikke noget —
-   prioritér distribution i stedet (indhold der kan rangere: "RoPA template",
-   "privacy policy template small business" osv.) eller et nyt produktspor.
-3. Overvej at samle generator-output som delbar "compliance starter pack"
-   (betalbar opgradering), når Lemon Squeezy-nøglen ligger klar.
-4. Fortsat blokeret på konti — intet nyt til Mads udover det der står.
+1. Læs /api/stats: er der overhovedet besøg på /ropa-template og
+   /privacy-policy-template? Er der @generate/@scan-events?
+2. Hvis stadig 0 trafik: stop ikke med at bygge flere sider — overvej et nyt
+   produktspor med indbygget distribution (markedsplads med egen søgetrafik),
+   fx Obsidian/Figma/Raycast-udvidelse eller digitalt produkt på eksisterende
+   markedsplads. Siteraften har nul organisk trafik at bygge på.
+3. Lemon Squeezy-nøglen er stadig den vigtigste enkeltblokering.
+
+Søgninger brugt: **0 af 12** · Budget: **0 kr af 1.000 DKK**

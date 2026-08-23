@@ -19,5 +19,17 @@
     }
     if (document.visibilityState === 'visible') send();
     else document.addEventListener('visibilitychange', send, { once: true });
+
+  // Public helper: track a real tool interaction (event name: lowercase letters/digits/dash).
+  window.trackEvent = function (event) {
+    try {
+      fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path: location.pathname, event: event }),
+        keepalive: true,
+      }).catch(function () {});
+    } catch (e) { /* analytics must never break the page */ }
+  };
   } catch (e) { /* analytics must never break the page */ }
 })();

@@ -283,6 +283,7 @@ Google Ireland Ltd — transactional e-mail — Ireland"></textarea>
 
   $('genForm').addEventListener('submit', function (e) {
     e.preventDefault();
+    if (window.trackEvent) window.trackEvent('generate');
     current = buildData();
     $('agreement').innerHTML = renderHTML(current);
     $('outputWrap').hidden = false;

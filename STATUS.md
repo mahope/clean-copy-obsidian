@@ -1,32 +1,31 @@
-# STATUS — 24. august 2026, iteration 74 — kvalitetsgennemgang af blogskabelonen
+# STATUS — 24. august 2026, iteration 75 — scanner-kernen styrket (v1.2.0)
 
 ## Konklusion fra sidste iteration (besvaret)
 
-/api/stats viser fortsat kun ~0 ekstern trafik (dagens 9 besøg på / er egen
-røgtest). De 4 nye SEO-sider fra it. 73 skal have 1-2 iterationer mere før dom.
+/api/stats viser fortsat kun egen røgtest-trafik. Konklusionen står: indhold er
+ikke flaskehalsen for et domæne uden backlinks. Denne iteration gik derfor til
+scanneren — produktet selv.
 
-## Hvad denne iteration fandt og rettede
+## Hvad denne iteration byggede
 
-Gennemgang af it. 73's live-output afslørede **3 kvalitetsfejl i den delte
-blogskabelon (make_blog.py)** — de ramte ALLE 30 blogsider, ikke kun de nye:
+**@mahope/eaa-scanner v1.2.0** — 6 nye WCAG-regler i den universelle kerne
+(16 → 22 regler), alle rene HTML-tjek uden JS eller eksterne kald:
 
-1. **Rå slugs som overskrifter:** `<h2>deadline-status</h2>` overalt.
-   → Nyt `_pretty_title()`: slugs bliver til rigtige headings ("Deadline
-   Status", "What Is a DPA?", "Where Shopify Fails" m.fl.) med akronym-
-   håndtering (DPA, EAA, WCAG, TYPO3, WordPress...). H2 får nu `id` = slug,
-   så ankre stadig virker.
-2. **Dobbelt pile:** "Scan Your Site Free → →" på 5 steder pr. side × 30 sider.
-   → `_arrow()` tilføjer kun pil hvis der ikke allerede er én.
-3. **Ødelagte hero-anchors:** CTA linkede til forkert genererede id'er
-   (`#why-wcag-2.2-matters-now` fandtes ikke). → Hero-link peger nu på den
-   faktiske første sektions-id. Verificeret: **0 ødelagte ankre** på alle 30 sider.
+- INPUT_TYPE_IMAGE_ALT (WCAG 1.1.1) — submit-billedeknapper uden alt
+- VIDEO_TRACKS (1.2.2) — video uden captions/undertekst-spor
+- AUDIO_TRANSCRIPT (1.2.1) — audio uden transkript-signal
+- AUTOPLAY_MEDIA (1.4.2) — autoplay uden pause-knap/mute
+- MARQUEE_BLINK (2.2.2) — forældet blinkende/bevægende indhold
+- POSITIVE_TABINDEX (2.4.3) — tabindex > 0 ødelægger fokusorden
 
-## Verificering
+Test: ny testfil med 21 cases (positiver + negativer + regressioner) — 21/21
+grønne. Eksisterende test.js stadig OK. Live-scan af eget site: 100/A, 0 falske
+positiver fra de nye regler. cli.js --json verificeret mod example.com.
 
-- Alle 30 blogsider regenereret via make_blog.py + make_blog_seo.py
-- health_check.py: 71/71 · JSON-LD valideret på alle sider · 0 broken anchors
-- Deployet + curl-verificeret live (korrekte h2'er på /blog/gdpr-dpa-web-agencies)
-- IndexNow pinget: 200 OK · Commit 9537898
+Udgivet: npm-tarball v1.2.0 packet, README opdateret ("22 rules"),
+downloads.html + GitHub Action-skabelon peger på 1.2.0-tarball,
+deployet og curl-verificeret live (tarball indeholder v1.2.0-indhold).
+health_check.py: 71/71 · IndexNow: 200 · Commit 500d3be.
 
 ## Søgninger: 0 af 12 · Budget: 0 kr af 1.000 DKK
 
@@ -41,8 +40,8 @@ KDP kræver manuel upload af Mads (5 bøger klar i ebook/).
 
 ## Hvad næste iteration bør gøre
 
-1. Tjek /api/stats igen — dom over de 4 SEO-sider efter denne iteration.
-2. Hvis stadig 0 trafik over hele linjen: indhold er bevist ikke flaskehalsen
-   for et nyt domæne uden backlinks. Flyt arbejdstid til scanneren eller nye
-   produkter — ikke flere blogsidder.
-3. Hvis Bitwarden låses op: Lemon Squeezy, npm, Chrome, KDP (se BUILD.md).
+1. Tjek /api/stats igen (én linje — ikke mere tid på det før der er trafik).
+2. Fortsæt produktdybde: Python-pakken (eaa_scanner wheel) mangler de samme 6
+   regler — portér dem, så pip/npm/desktop giver identiske resultater.
+3. Chrome-extension og wp-plugin bør også trække på den opdaterede regelliste.
+4. Hvis Bitwarden låses op: Lemon Squeezy, npm, Chrome, KDP (se BUILD.md).

@@ -1,6 +1,18 @@
 # BUILD — Hvad er bygget, hvad mangler
 
-|**Dato:** 2026-08-24 (iteration 8 — scanner udvidet til 15 regler, fix-tips og print-knap)
+|**Dato:** 2026-08-27 (iteration 40 — npm-udgave af scanneren)
+
+### npm-pakke: @mahope/eaa-scanner 1.0.0 **(ny i iteration 40)**
+- `scanner/npm/eaa-scanner/index.js` — fuld JS-port af scannerkernen:
+  samme 16 regler som Python, inkl. WCAG 1.4.3 kontrastberegning.
+  Egen HTML-tokenizer, zero dependencies, Node ≥ 18.
+- `scanner/npm/eaa-scanner/cli.js` — `eaa-scan` CLI: flere targets,
+  `--json`, `--fail-on error|warning` til CI (exit 0/1).
+- `scanner/npm/eaa-scanner/test.js` — selvtest (11 forventede regler på
+  defekt HTML); verificeret identisk output med Python-kernen (0/D).
+- Distribueret fra eget site: `npm install https://hermes-passiv.pages.dev/
+  downloads/mahope-eaa-scanner-1.0.0.tgz` — verificeret live end-to-end.
+- `/downloads`-siden opdateret med Node-sektion og fil-link.
 
 ## Bygget ✅
 

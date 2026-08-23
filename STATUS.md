@@ -1,44 +1,41 @@
-# STATUS — 27. august 2026, iteration 39
+# STATUS — 27. august 2026, iteration 40
 
 ## Hvad denne iteration opnåede
 
-**Fokus: distribution der ikke kræver nogen af Mads' konti — scanneren som pip-pakke.**
+**Fokus: npm-udgave af scanneren — en ekstra distributionskanal uden nogen af Mads' konti.**
 
-1. **`eaa-scanner` 1.0.0 bygget som Python-pakke** (`scanner/packaging/`):
-   - Kernen (scanner_core.py) flyttet uændret ind i `eaa_scanner/core.py` — stadig
-     ren stdlib, universel (virker på alle CMS).
-   - Ny CLI (`eaa-scan`) med argparse: flere URL'er/filer, `--json`, `--fail-on
-     error|warning` til CI (exit 0/1). Zero dependencies.
-   - README + MIT-license. Wheel og sdist bygget med `python3 -m build`.
+1. **`@mahope/eaa-scanner` 1.0.0 — fuld JavaScript-port af kernen**
+   (`scanner/npm/eaa-scanner/`): samme 16 regler som Python-versionen, inkl.
+   ægte WCAG 1.4.3 kontrast-beregning (relativ luminans), duplikerede id'er,
+   target=_blank-advarsler. Zero dependencies, Node ≥ 18.
+   - CLI (`eaa-scan`): flere URL'er/filer, `--json`, `--fail-on error|warning`
+     (exit 1 til CI). Biblioteksbrug: `scanHtml()` / `scanUrl()`.
+   - Egen minimal HTML-tokenizer (ingen parser-afhængigheder).
+   - Selvtest (`test.js`, 11 regler på defekt HTML) — alle PASS.
 
-2. **Testet grundigt:**
-   - Ren venv-install af whlen → scanner live-sider korrekt (/scan: 98 A, /blog: 100 A).
-   - Regressionstest på defekt HTML → 7 errors, 2 warnings fundet, exit=1 i CI-tilstand.
+2. **Verificeret mod Python-kernen:** samme defekte HTML giver identisk
+   score (0/D) og præcis samme regelsæt i begge implementationer.
 
-3. **Distribueret UDEN konto:** wheel + sdist lagt direkte på sitet under
-   `/downloads/`. Verificeret end-to-end fra det LIVE site:
-   `pip install https://hermes-passiv.pages.dev/downloads/eaa_scanner-1.0.0-py3-none-any.whl`
-   → installerer og scanner korrekt. **Første distributionskanal der virker i dag.**
+3. **Testet på live sider:** /scan 98 A, /blog 100 A — matcher Python-resultaterne.
 
-4. **Ny side `/downloads`** (SoftwareApplication JSON-LD, install-instruktioner,
-   links til wheel/sdist/README), linket fra `/scan` ("Run it from the command
-   line") og tilføjet sitemap (30 URLs).
+4. **Distribueret uden konto:** tarball lagt på sitet under `/downloads/`.
+   **End-to-end verificeret fra LIVE site:**
+   `npm install https://hermes-passiv.pages.dev/downloads/mahope-eaa-scanner-1.0.0.tgz`
+   → `npx eaa-scan <url>` scannner korrekt. Anden kanal der virker i dag.
 
-5. health_check 60/60 · JSON-LD audit OK · deployet · /downloads og /scan
-   verificeret live med korrekt indhold · committed (ba1e3c2).
+5. **/downloads-siden opdateret** med Node/npm-sektion + fil-link. health_check
+   60/60 · deployet · downloads-side verificeret live.
 
 ### Søgninger
 0 af 12 brugt. Budget: 0 kr af 1.000 DKK.
 
 ## Blokering (UÆNDRET)
 **Amazon KDP-konto** (5 e-bøger klar i ebook/) · **Gumroad-konto**
-(ComplianceDocs klar i products/) · **Chrome Web Store dev-fee $5**.
-~15 min samlet for Mads. Indtil da er pip-pakken den eneste kanal der tjener
-synlighed (ikke penge endnu — gratis produkt; PyPI senere som ekstra kanal).
+(ComplianceDocs klar i products/) · **Chrome Web Store dev-fee $5** ·
+**PyPI-token** (så bliver `pip install eaa-scanner` officiel; npm-token tilsvarende).
 
 ## Hvad næste iteration bør gøre
 1. Samme påmindelse om kontiene — fortsat dét der adskiller os fra første krone.
-2. PyPI-udgivelse kræver kun en PyPI-token fra Mads (gratis) — så bliver
-   `pip install eaa-scanner` officiel. Læg det på samme konto-liste.
-3. Forbedringskandidater: GitHub-publicering af pakken (kræver Mads' GitHub?),
-   blogindlæg om CLI'en, eller npm-udgave af scanneren til Node-udviklere.
+2. Blogindlæg om CLI-scanneren (Python + Node) — indhold der trækker søgetrafik.
+3. Kandidater: GitHub Actions-demo/workflow-fil til CI-brugere, flere sprog på
+   scansiden, eller forbedring af købsrejsen på index.html.

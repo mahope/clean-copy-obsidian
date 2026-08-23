@@ -45,7 +45,7 @@ HERO = '''<header class="hero">
     <p class="subtitle">{subtitle}</p>
     <div class="hero-cta">
       <a href="#content" class="btn-primary">Start Reading</a>
-      <a href="{cta_link}" class="btn-secondary">{cta_label} →</a>
+      <a href="{cta_link}" class="btn-secondary">{cta_label}</a>
     </div>
     <p class="hero-note">Updated August 2026 · Reading time: {reading_time}</p>
   </div>
@@ -75,9 +75,9 @@ FOOTER = '''<footer class="site-footer">
 
 def product_cta(btn_text, btn_link, secondary_text, secondary_link):
     return f'''<div style="text-align:center;margin-top:24px;">
-      <a href="{btn_link}" class="btn-primary">{btn_text} →</a>
+      <a href="{btn_link}" class="btn-primary">{_arrow(btn_text)}</a>
       &nbsp;&nbsp;
-      <a href="{secondary_link}" class="btn-secondary">{secondary_text} →</a>
+      <a href="{secondary_link}" class="btn-secondary">{_arrow(secondary_text)}</a>
     </div>'''
 
 def intro_paragraph(text):
@@ -91,9 +91,42 @@ def card_block(cards):
     return f'''    <div class="problem-cards">
 {items}    </div>'''
 
+def _arrow(s):
+    """Append an arrow unless the label already ends with one."""
+    s = s.rstrip()
+    return s if s.endswith('→') else s + ' →'
+
+
+_PRETTY_OVERRIDES = {
+    'what-is-a-dpa': 'What Is a DPA?',
+    'when-you-need': 'When You Need a DPA',
+    'essential-clauses': 'The 7 Essential Clauses',
+    'mistakes': 'Five Common Mistakes',
+    'getting-it-signed': 'Getting It Signed',
+    'the-tools': 'The Tools, Compared',
+    'if-you-are-non-compliant-now': 'If You Are Non-Compliant Now',
+}
+
+def _pretty_title(slug_title):
+    """Turn a slug-style title into a human heading, keep real titles as-is."""
+    if ' ' in slug_title:
+        return slug_title
+    if slug_title in _PRETTY_OVERRIDES:
+        return _PRETTY_OVERRIDES[slug_title]
+    ACR = {'dpa':'DPA','eaa':'EAA','wcag':'WCAG','cms':'CMS','cli':'CLI','cmp':'CMP',
+           'ftc':'FTC','bitv':'BITV','typo3':'TYPO3','seo':'SEO','api':'API',
+           'gdpr':'GDPR','nis2':'NIS2','ci':'CI','koenig':'Koenig','wordpress':'WordPress'}
+    words = slug_title.split('-')
+    small = {'a', 'an', 'and', 'the', 'for', 'of', 'to', 'in', 'on', 'vs', 'with', 'is', 'are'}
+    out = [ACR.get(w, w.capitalize()) for w in words]
+    for i, w in enumerate(out):
+        if i > 0 and w.lower() in small:
+            out[i] = w.lower()
+    return ' '.join(out)
+
 def subsection(title, body_paragraphs, cards=None):
     """Returns HTML for a subsection with optional card grid."""
-    html = f'    <h2>{title}</h2>\n'
+    html = f'    <h2 id="{title}">{_pretty_title(title)}</h2>\n'
     if isinstance(body_paragraphs, str):
         body_paragraphs = [body_paragraphs]
     for p in body_paragraphs:
@@ -135,9 +168,10 @@ def build_post(slug, meta_desc, badge_label, h1, subtitle, reading_time,
 
     body = HERO.format(
         badge_label=badge_label, h1=h1, subtitle=subtitle,
-        cta_link=f'#{sections[0][0].lower().replace(" ", "-")[:30]}' if sections else '#content',
-        cta_label=cta_secondary[0], reading_time=reading_time
+        cta_link=f'#{sections[0][0]}' if sections else '#content',
+        cta_label=_arrow(cta_secondary[0]), reading_time=reading_time
     )
+
 
     body += SECTION_TOP
 

@@ -35,18 +35,18 @@
     <p class="subtitle">Theme fixes, content habits, and membership-flow checks that bring a Ghost site up to WCAG 2.2 AA — without rebuilding it.</p>
     <div class="hero-cta">
       <a href="#content" class="btn-primary">Start Reading</a>
-      <a href="#ghost-and-the-eaa" class="btn-secondary">WCAG 2.2 Guide → →</a>
+      <a href="#ghost-and-the-eaa" class="btn-secondary">WCAG 2.2 Guide →</a>
     </div>
     <p class="hero-note">Updated August 2026 · Reading time: 6 minutes</p>
   </div>
 </header><section class="problem" id="content">
-  <div class="container">    <h2>ghost-and-the-eaa</h2>
+  <div class="container">    <h2 id="ghost-and-the-eaa">Ghost and the EAA</h2>
     <p>Ghost runs newsletters, paid publications, and membership sites — exactly the kind of services the European Accessibility Act covers when they operate commercially in the EU. Since 28 June 2025, e-commerce-like services and consumer-facing digital services must be perceivable, operable, understandable and robust (the four WCAG principles). For a Ghost publisher that means the theme, the article content, and crucially the signup and checkout flows all need attention. The good news: a modern Ghost install has fewer moving parts than most platforms, so reaching WCAG 2.2 AA is genuinely achievable.</p>
   </div>
 </section>
 
 <section class="products">
-  <div class="container">    <h2>theme-level-checks</h2>
+  <div class="container">    <h2 id="theme-level-checks">Theme Level Checks</h2>
     <p>Most Ghost accessibility problems live in the theme, not the core. Work through these:</p>
     <div class="problem-cards">
       <div class="card"><h3>🎨 Colour Contrast</h3><p>Many magazine-style themes use light-grey text on white or text over gradient hero images. Body text needs 4.5:1; large headings 3:1; form inputs and icons 3:1. Fix in the theme CSS or custom settings once, benefit everywhere.</p></div>
@@ -58,7 +58,7 @@
 </section>
 
 <section class="products">
-  <div class="container">    <h2>koenig-content-habits</h2>
+  <div class="container">    <h2 id="koenig-content-habits">Koenig Content Habits</h2>
     <p>Ghost's Koenig editor produces clean HTML by default — better than most rich-text editors — but authors can still create inaccessible content:</p>
     <p></p>
     <p><strong>Alt text:</strong> the image card prompts for alt text but nobody is forced to fill it. Make it an editorial rule: every informative image gets descriptive alt text; decorative images get explicitly marked as such.</p>
@@ -75,13 +75,13 @@
 </section>
 
 <section class="products">
-  <div class="container">    <h2>membership-flows</h2>
+  <div class="container">    <h2 id="membership-flows">Membership Flows</h2>
     <p>This is the part unique to Ghost and easy to miss. Signup, login, checkout and account-management pages are user journeys, and under the EAA a payment flow that cannot be completed by assistive technology users is a compliance failure — not just a WCAG nitpick. Check that: email input and error messages are properly labelled and announced (error text associated with the field via aria-describedby); the Stripe checkout Ghost hands off to is configured with accessible branding settings; magic-link emails have meaningful link text ("Open your login link", not just "Click here"); and the member portal renders usable with keyboard alone. Test the full journey yourself with a screen reader once — it takes twenty minutes and reveals more than any automated tool.</p>
   </div>
 </section>
 
 <section class="products">
-  <div class="container">    <h2>verification-loop</h2>
+  <div class="container">    <h2 id="verification-loop">Verification Loop</h2>
     <p>A repeatable QA loop for a Ghost site:</p>
     <p></p>
     <p><strong>1. Automated scan</strong> of home, a tag page, a full post, /#/portal and signup pages. Static scanners catch the mechanical layer fast — expect them to find contrast, alt-text, and heading issues on the first run.</p>
@@ -101,9 +101,9 @@
   <div class="container">    <h2>Going Deeper</h2>
     <p class="section-intro">Start with a free automated scan of your Ghost site — it finds the mechanical WCAG failures (contrast, missing alt, heading order, unlabelled buttons) across all your key pages in one run.</p>
 <div style="text-align:center;margin-top:24px;">
-      <a href="/scan" class="btn-primary">Scan Your Ghost Site Free → →</a>
+      <a href="/scan" class="btn-primary">Scan Your Ghost Site Free →</a>
       &nbsp;&nbsp;
-      <a href="/blog/wcag-22-what-changes" class="btn-secondary">WCAG 2.2 Guide → →</a>
+      <a href="/blog/wcag-22-what-changes" class="btn-secondary">WCAG 2.2 Guide →</a>
     </div>  </div>
 </section>
 
@@ -116,9 +116,9 @@
       <div class="card"><h3>Can I automate Ghost accessibility checking?</h3><p>Partly. Automated tools catch roughly 30-50% of issues — contrast, missing alt, structure, labels. Keyboard operability, meaningful alt descriptions, and embed accessibility require human review. Combine both: scan automatically after each theme change, review manually per release.</p></div>
       <div class="card"><h3>Does fixing accessibility help SEO?</h3><p>Several accessibility signals overlap with SEO: proper heading hierarchy, descriptive link text, alt text, fast semantic HTML, mobile-friendly layouts. Accessibility work tends to improve crawlability and rankings as a side effect, though it should be done for users first.</p></div>
     </div><div style="text-align:center;margin-top:24px;">
-      <a href="/scan" class="btn-primary">Scan Your Ghost Site Free → →</a>
+      <a href="/scan" class="btn-primary">Scan Your Ghost Site Free →</a>
       &nbsp;&nbsp;
-      <a href="/blog/wcag-22-what-changes" class="btn-secondary">WCAG 2.2 Guide → →</a>
+      <a href="/blog/wcag-22-what-changes" class="btn-secondary">WCAG 2.2 Guide →</a>
     </div>
     <section class="products" style="border-top:1px solid var(--color-border);">
       <div class="container">

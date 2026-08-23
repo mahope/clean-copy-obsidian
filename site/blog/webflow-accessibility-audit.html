@@ -35,12 +35,12 @@
     <p class="subtitle">Where Webflow sites actually fail WCAG checks — and how agencies can fix them inside the Designer before the EAA becomes a client problem.</p>
     <div class="hero-cta">
       <a href="#content" class="btn-primary">Start Reading</a>
-      <a href="#why-webflow-and-eaa" class="btn-secondary">EAA Checklist Blog → →</a>
+      <a href="#why-webflow-and-eaa" class="btn-secondary">EAA Checklist Blog →</a>
     </div>
     <p class="hero-note">Updated August 2026 · Reading time: 6 minutes</p>
   </div>
 </header><section class="problem" id="content">
-  <div class="container">    <h2>why-webflow-and-eaa</h2>
+  <div class="container">    <h2 id="why-webflow-and-eaa">Why Webflow and EAA</h2>
     <p>Webflow is the build tool of choice for EU marketing sites, SaaS landing pages and agency clients — exactly the e-commerce and consumer-service territory the European Accessibility Act covers since June 2025. Agencies delivering Webflow projects therefore deliver the accessibility state themselves: unlike WordPress there is less plugin noise, but also no plugin that saves you. The good news is that Webflow gives you unusually direct control over semantics, and most failures come from design decisions rather than platform limits.</p>
     <div class="problem-cards">
       <div class="card"><h3>🎯 You Own Semantics</h3><p>Webflow lets you set any element tag (div → nav, section, h2...). Most accessibility bugs are simply divs doing semantic jobs.</p></div>
@@ -50,7 +50,7 @@
 </section>
 
 <section class="products">
-  <div class="container">    <h2>common-webflow-failures</h2>
+  <div class="container">    <h2 id="common-webflow-failures">Common Webflow Failures</h2>
     <p>Across audits of Webflow builds, the same handful of defects dominate:</p>
     <div class="problem-cards">
       <div class="card"><h3>🧱 Div Soup Headings</h3><p>Text styled to look like headings but left as plain divs. Screen readers see no document outline. Fix: select element → Settings → change tag to h1/h2/h3.</p></div>
@@ -62,7 +62,7 @@
 </section>
 
 <section class="products">
-  <div class="container">    <h2>designer-level-fixes</h2>
+  <div class="container">    <h2 id="designer-level-fixes">Designer Level Fixes</h2>
     <p>Work through these in the Designer — they cover most findings:</p>
     <p></p>
     <p><strong>Tag discipline:</strong> go section by section and set real tags: nav for navigation wrappers, header/footer elements, one h1 per page, logical h2/h3 nesting below it.</p>
@@ -81,13 +81,13 @@
 </section>
 
 <section class="products">
-  <div class="container">    <h2>interactions-and-keyboard</h2>
+  <div class="container">    <h2 id="interactions-and-keyboard">Interactions and Keyboard</h2>
     <p>Interactions are Webflow's biggest structural risk because they encourage mouse-first thinking. The audit rules: every hover interaction needs a focus equivalent (dropdowns open on focus-in and close on focus-out); tabs and sliders must be operable with arrow keys and expose aria-selected/roles; anything triggered on click must be a real button or link, not a div with a click trigger; modal interactions must move focus in on open and restore it on close; and autoplaying hero animations respect prefers-reduced-motion. If rebuilding an interaction accessibly is too costly, provide a static fallback path to the same content — WCAG does not require identical experience, only equivalent access.</p>
   </div>
 </section>
 
 <section class="products">
-  <div class="container">    <h2>audit-workflow</h2>
+  <div class="container">    <h2 id="audit-workflow">Audit Workflow</h2>
     <p>A repeatable Webflow audit process for agencies:</p>
     <p></p>
     <p><strong>1. Automated scan</strong> of home, a key landing page, a form page and any template/collection pages. This catches contrast, alt, heading order, labels, duplicate IDs in minutes — expect 10-30 findings on a typical build.</p>
@@ -107,9 +107,9 @@
   <div class="container">    <h2>Going Deeper</h2>
     <p class="section-intro">Run the free scanner on your Webflow site first — it catches contrast, alt-text, heading and label issues instantly so you know where to start in the Designer.</p>
 <div style="text-align:center;margin-top:24px;">
-      <a href="/scan" class="btn-primary">Scan Your Webflow Site Free → →</a>
+      <a href="/scan" class="btn-primary">Scan Your Webflow Site Free →</a>
       &nbsp;&nbsp;
-      <a href="/blog/eaa-accessibility-checklist" class="btn-secondary">EAA Checklist Blog → →</a>
+      <a href="/blog/eaa-accessibility-checklist" class="btn-secondary">EAA Checklist Blog →</a>
     </div>  </div>
 </section>
 
@@ -122,9 +122,9 @@
       <div class="card"><h3>How do I check contrast over gradients and images?</h3><p>Sample the lightest and darkest points of the area behind your text and check both against the text colour at a contrast tool. Add a scrim overlay if any point fails.</p></div>
       <div class="card"><h3>Can I sell accessibility audits as an agency service?</h3><p>Yes — pairing an automated scan with manual keyboard/screen-reader testing and a delivered report is a standard, billable engagement, and EAA deadlines have made it a growing demand.</p></div>
     </div><div style="text-align:center;margin-top:24px;">
-      <a href="/scan" class="btn-primary">Scan Your Webflow Site Free → →</a>
+      <a href="/scan" class="btn-primary">Scan Your Webflow Site Free →</a>
       &nbsp;&nbsp;
-      <a href="/blog/eaa-accessibility-checklist" class="btn-secondary">EAA Checklist Blog → →</a>
+      <a href="/blog/eaa-accessibility-checklist" class="btn-secondary">EAA Checklist Blog →</a>
     </div>
     <section class="products" style="border-top:1px solid var(--color-border);">
       <div class="container">

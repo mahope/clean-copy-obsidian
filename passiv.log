@@ -1657,3 +1657,19 @@ Iteration 72 færdig — QA-runde i stedet for nyt indhold.
 Næste iteration: tjek /api/stats — hvis der stadig er 0 trafik er problemet synlighed, ikke kvalitet.
 2026-08-23T20:49:59+02:00 iteration 33 afsluttet (exit 0)
 2026-08-23T20:50:52+02:00 === iteration 34/60 ===
+Iteration 73 færdig. Valg B (BYG) — DECISION.md eksisterer, så jeg byggede på synlighed, som sidste iteration pegede på.
+
+**Bygget: 4 nye SEO-nøgleordssider** (via ny generator `make_blog_seo.py` der genbruger den eksisterende skabelon):
+
+1. /blog/nis2-checklist-pdf — "NIS2 checklist pdf": 25 tjek, print-venlig
+2. /blog/eaa-deadline-2026 — "EAA deadline": hvad håndhæves nu i 2026
+3. /blog/gdpr-website-compliance-checklist — 18 GDPR-tjek for websites
+4. /blog/free-accessibility-testing-tools — værktøjssammenligning
+
+Alle med canonical, valideret JSON-LD, track.js og intern linkning. Føjet til index-bloggrid'et og sitemap (55 → 59 URLs).
+
+**Verificeret:** health_check 71/71 · JSON-LD parset ok · deployet · alle 4 sider curl-verificeret live (200 + rigtigt indhold) · IndexNow pinget (200 OK, 59 URLs) · commits 6435a20 + 87703c7.
+
+**Søgninger brugt: 0 af 12** · Budget stadig 0 kr · STATUS.md opdateret med næste-skridt: giv de nye sider 2-3 iterationers trafikdata; hvis hele sitet fortsat er på 0, er indhold bevist ikke flaskehalsen for et domæne uden backlinks, og arbejdstiden bør flyttes.
+2026-08-23T20:56:02+02:00 iteration 34 afsluttet (exit 0)
+2026-08-23T20:56:25+02:00 === iteration 35/60 ===

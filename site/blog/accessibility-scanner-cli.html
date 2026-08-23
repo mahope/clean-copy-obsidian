@@ -35,12 +35,12 @@
     <p class="subtitle">How to check any website for WCAG and European Accessibility Act issues straight from your terminal — and how to wire it into CI so regressions never ship.</p>
     <div class="hero-cta">
       <a href="#content" class="btn-primary">Start Reading</a>
-      <a href="#why-cli" class="btn-secondary">Download the CLI → →</a>
+      <a href="#why-cli" class="btn-secondary">Download the CLI →</a>
     </div>
     <p class="hero-note">Updated August 2026 · Reading time: 6 minutes</p>
   </div>
 </header><section class="problem" id="content">
-  <div class="container">    <h2>why-cli</h2>
+  <div class="container">    <h2 id="why-cli">Why CLI</h2>
     <p>Browser-based accessibility checkers are fine for a one-off audit, but they do not scale. If you maintain more than a handful of sites — or you want every deploy checked automatically — you need scanning that runs where your code runs: the terminal and your CI pipeline. A CLI scanner fits both. It takes a URL or a local HTML file, applies a fixed ruleset, and exits with a status code your build can act on.</p>
     <div class="problem-cards">
       <div class="card"><h3>⌨️ Scriptable</h3><p>Pipe results into reports, fail builds on errors, scan a whole sitemap in a loop. Anything you can type, you can automate.</p></div>
@@ -50,7 +50,7 @@
 </section>
 
 <section class="products">
-  <div class="container">    <h2>what-it-checks</h2>
+  <div class="container">    <h2 id="what-it-checks">What It Checks</h2>
     <p>The eaa-scanner applies 16 rules drawn from WCAG 2.1/2.2 Level A/AA success criteria — the same criteria the European Accessibility Act references. Each rule maps to a concrete fix:</p>
     <p></p>
     <p>• <strong>IMG_ALT</strong> — images without alt attributes (WCAG 1.1.1)</p>
@@ -67,7 +67,7 @@
 </section>
 
 <section class="products">
-  <div class="container">    <h2>install-and-use</h2>
+  <div class="container">    <h2 id="install-and-use">Install and Use</h2>
     <p>Two distributions, same engine and identical output:</p>
     <p></p>
     <p><strong>Node.js (npm):</strong> npm install https://hermes-passiv.pages.dev/downloads/mahope-eaa-scanner-1.0.0.tgz — then npx eaa-scan https://example.com. Zero dependencies; works on Node 18+.</p>
@@ -79,7 +79,7 @@
 </section>
 
 <section class="products">
-  <div class="container">    <h2>ci-pipeline</h2>
+  <div class="container">    <h2 id="ci-pipeline">CI Pipeline</h2>
     <p>The point of a CLI scanner is that nobody has to remember to run it. A minimal GitHub Actions workflow checks every push:</p>
     <p></p>
     <p><pre style="background:var(--color-surface-2);padding:16px;border-radius:8px;overflow-x:auto;font-size:0.85em;"><code>name: accessibility<br>on: [push]<br>jobs:<br>  a11y:<br>    runs-on: ubuntu-latest<br>    steps:<br>      - uses: actions/checkout@v4<br>      - uses: actions/setup-node@v4<br>        with:<br>          node-version: 20<br>      - run: npm install https://hermes-passiv.pages.dev/downloads/mahope-eaa-scanner-1.0.0.tgz<br>      - run: npx eaa-scan https://yoursite.example --fail-on error</code></pre></p>
@@ -89,7 +89,7 @@
 </section>
 
 <section class="products">
-  <div class="container">    <h2>limits</h2>
+  <div class="container">    <h2 id="limits">Limits</h2>
     <p>Automated tools catch roughly 30-50% of WCAG issues — the mechanical ones. Keyboard traps, logical focus order, meaningful alt text, and colour contrast that depends on overlaid images all need human judgement. Treat the scanner as a floor, not a ceiling: an automated pass means no known mechanical defects, not full compliance. Pair it with a keyboard-only walkthrough of your key user flows once per release.</p>
     <p></p>
     <p>Also note what a static-HTML scanner deliberately does not do: it does not execute JavaScript. Content rendered client-side after load may need a browser-based tool as a complement. For most marketing sites, documentation sites, and CMS-rendered pages, server-rendered HTML is the majority of the surface — and that is exactly what the scanner covers.</p>
@@ -100,9 +100,9 @@
   <div class="container">    <h2>Going Deeper</h2>
     <p class="section-intro">The eaa-scanner CLI is free, runs locally, and sends nothing anywhere. Available as a Python package and an npm package with zero dependencies — install instructions and tarballs on the downloads page.</p>
 <div style="text-align:center;margin-top:24px;">
-      <a href="/scan" class="btn-primary">Try the Free Web Scanner → →</a>
+      <a href="/scan" class="btn-primary">Try the Free Web Scanner →</a>
       &nbsp;&nbsp;
-      <a href="/downloads" class="btn-secondary">Download the CLI → →</a>
+      <a href="/downloads" class="btn-secondary">Download the CLI →</a>
     </div>  </div>
 </section>
 
@@ -115,9 +115,9 @@
       <div class="card"><h3>What score should I aim for?</h3><p>The scanner grades A-F. Errors are WCAG failures that block assistive technology users; warnings are best-practice issues. Aim for zero errors first (grade C or better), then work through warnings toward an A.</p></div>
       <div class="card"><h3>How is this different from Lighthouse?</h3><p>Lighthouse bundles performance, SEO and a small accessibility subset into a browser-based audit. eaa-scanner focuses purely on accessibility markup rules, runs without a browser, includes contrast computation, and is designed to fail CI builds. They complement each other.</p></div>
     </div><div style="text-align:center;margin-top:24px;">
-      <a href="/scan" class="btn-primary">Try the Free Web Scanner → →</a>
+      <a href="/scan" class="btn-primary">Try the Free Web Scanner →</a>
       &nbsp;&nbsp;
-      <a href="/downloads" class="btn-secondary">Download the CLI → →</a>
+      <a href="/downloads" class="btn-secondary">Download the CLI →</a>
     </div>
     <section class="products" style="border-top:1px solid var(--color-border);">
       <div class="container">

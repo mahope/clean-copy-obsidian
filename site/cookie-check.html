@@ -157,7 +157,12 @@ async function scan(url){
     const r = await fetch('/scan-proxy?url='+encodeURIComponent(url));
     const data = await r.json();
     if(!data.ok) throw new Error(data.error || 'Proxy returned error');
-    html = data.html;
+    const html = data.html;
+    try {
+      fetch('/api/track', { method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ path: location.pathname, event: 'scan' }), keepalive: true }).catch(function(){});
+    } catch(e) {}
+
   }catch(e){
     out.innerHTML='<p><strong>Check failed.</strong></p>'
       +'<p style="color:#667;font-size:14px">'+e.message+'</p>';

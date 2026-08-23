@@ -29,6 +29,13 @@ export default {
     if (path === '/api/track') return handleTrack(request, env);
     if (path === '/api/stats') return handleStats(url, env);
 
+    // === Route: IndexNow key verification (key file generated on the fly) ===
+    if (path.startsWith('/indexnow-')) {
+      return new Response(path.slice('/indexnow-'.length), {
+        headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+      });
+    }
+
     // === Route: everything else — serve static assets ===
     try {
       const response = await env.ASSETS.fetch(request);
@@ -347,6 +354,10 @@ async function handleTrack(request, env) {
     let p = String(body.path || '/');
     // keep keys tidy: strip query strings, cap length
     p = p.split('?')[0].slice(0, 120) || '/';
+    // event type: default pageview; tools send event=scan on actual use
+    let ev = String(body.event || 'pageview').slice(0, 24);
+    if (!/^[a-z0-9-]+$/.test(ev)) ev = 'pageview';
+    if (ev !== 'pageview') p = p + '@' + ev;
     const day = dailySalt();
 
     const vh = await visitorHash(request);

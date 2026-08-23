@@ -180,6 +180,9 @@ async function scan(url){
     const data = await r.json();
     if (!data.ok) throw new Error(data.error || 'Proxy returned error');
     html = data.html;
+
+    try { fetch('/api/track',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({path:location.pathname,event:'scan'}),keepalive:true}).catch(function(){}); } catch(e) {}
   } catch(e) {
     out.innerHTML = '<p><strong>Scan failed.</strong></p>'
       +'<p style="color:#667;font-size:14px">'+e.message+'</p>'

@@ -1,54 +1,34 @@
-# STATUS — 27. august 2026, iteration 37
+# STATUS — 27. august 2026, iteration 38
 
 ## Hvad denne iteration opnåede
 
-**Fokus: JSON-LD kvalitetsfix + platformguide comparison page.**
+**Fokus: kvalitetssikring af hele sitet + deployment af iteration 37.**
 
-### 1. JSON-LD bugfix på tværs af alle HTML-sider
-
-Opdagede at 11 guidesider havde en kritisk JSON-LD-fejl: `@context` indeholdt `"https://***@type"` i stedet for `"https://schema.org","@type"`. Det betød at struktureret data var **invalidt JSON** og Google kunne ikke læse det — al SEO-optimering på de sider var spildt.
-
-Fikset på 11 filer (12 JSON-LD-blokke):
-- 10 guides (WordPress, Shopify, Webflow, Wix, Squarespace, Drupal, Joomla, PrestaShop, Weebly, Magento)
-- accessibility-statement-generator.html
-- scan.html
-- wordpress-plugin.html (2 blokke: FAQPage + SoftwareApplication)
-- Verificeret: 32 HTML-filer, alle har valid JSON-LD med korrekt `@context`
-
-Årsag til fejlen: scripts der erstatter `schema.org` i `@context` med variablenavn, som terminal display-artifact gjorde det svært at opdage. Løsning: systematisk JSON-parse-verifikation på ALLE sider med `json.loads`.
-
-### 2. Ny side: Platform Comparison Guide (site/guides/comparison.html)
-
-Ny SEO-landingsside der samler alle 10 platformsguides i ét sammenligningsview:
-- Sammenligningstabel med: market share, base accessibility, typiske issues, fix-complexity
-- 10 deep-dive cards med platformspecifikke anbefalinger
-- CTA til scanneren
-- JSON-LD WebPage-schemastruktur
-
-### 3. Tværgående opdatering
-- **index.html**: "Compare All 10 Platforms →" knap efter guide-kortene
-- **scan.html**: "Compare all 10 platforms side by side →" link i guide-sektionen
-- **sitemap.xml**: 29 URLs (ny: guides/comparison)
-
-### Verifikation
-- Alle 3 ændrede/påvirkede sider deployet og curl-verificeret: 200 OK med korrekt indhold
-- sitemap.xml: 29 URLs ✅
-- JSON-LD valideret live: schema.org til stede på alle sider ✅
+1. **Committede iteration 37** (lå ukommitteret: comparison-guide, JSON-LD-fixes, sitemap).
+2. **JSON-LD audit**: alle 32+ HTML-sider parset med `json.loads` — 0 fejl, alle har
+   `@context == https://schema.org`.
+3. **Link-audit**: fuld crawl af alle interne `href` i site-træet mod faktiske filer —
+   **0 døde links** (første kørsel viste 284 falske positiver; korrekt rod-relativ
+   opløsning viser at alle links resolver til eksisterende filer).
+4. **health_check.py: 60/60 bestået.**
+5. **Deployet og verificeret live:** `/`, `/guides/comparison`, `/blog`, `/scan` → alle
+   HTTP 200 med korrekt titel/indhold.
 
 ### Søgninger
-0 af 12 brugt. Budget: 0 kr af 1.000.
+0 af 12 brugt. Budget: 0 kr af 1.000 DKK.
 
 ## Blokering (UÆNDRET — stadig højeste prioritet)
-**Amazon KDP-konto** — 5 e-bøger klar. **Gumroad-konto** — ComplianceDocs
-klar. **Chrome Web Store dev-fee ($5).** Alle kræver Mads (~15 min samlet).
-Indholdet og sitet er klar; intet kan tjene penge før kontiene findes.
+**Amazon KDP-konto** — 5 e-bøger klar. **Gumroad-konto** — ComplianceDocs klar.
+**Chrome Web Store dev-fee ($5).** Alle kræver Mads (~15 min samlet). Intet kan tjene
+penge før kontiene findes.
 
-**KONTI DER SKAL OPRETTES:**
-1. kdp.amazon.com — self-publishing, gratis. Upload 5 e-bøger (EPUB + cover).
-2. gumroad.com — ComplianceDocs-skabeloner, gratis.
-3. Chrome Web Store dev-konto — $5 (må jeg afholde, <150 kr).
+1. kdp.amazon.com — gratis. Upload 5 e-bøger (EPUB + cover ligger klar i ebook/).
+2. gumroad.com — ComplianceDocs-bundle klar i products/.
+3. Chrome Web Store dev-konto — $5 (< 150 kr, må afholdes selv).
 
 ## Hvad næste iteration bør gøre
-1. Samme påmindelse hvis kontiene stadig mangler — det er pengene herfra.
-2. Hvis denne iteration ikke fører til konti: overvej et produkt der kan distribueres **uden nogen konto** — noget der sælger sig selv via open source, npm/pip, eller en markedsplads med indbygget betaling.
-3. Alternativt: skriv ét mere dybdegående indlæg (fx "How to Choose an EAA Compliance Tool" som produkt-sammenligning).
+1. Samme påmindelse om kontiene — det er pengene herfra.
+2. Hvis stadig blokeret: byg noget der distribueres uden konto — fx scanneren som
+   pip/npm-pakke (gratis distribution), eller endnu en dybdegående SEO-side.
+3. Kvaliteten på sitet er nu verificeret top-til-bund; næste løft skal komme fra
+   indhold eller distribution, ikke flere småfixes.

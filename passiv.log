@@ -2181,3 +2181,34 @@ Iteration 103 færdig.
 STATUS.md er opdateret med næste-skridt: ny blogside, "download palet"-funktion til værktøjerne, og PUBLISH_CHECKLIST hvis Bitwarden-nøglerne dukker op.
 2026-08-24T00:40:25+02:00 iteration 4 afsluttet (exit 0)
 2026-08-24T00:41:31+02:00 === iteration 5/60 ===
+Iteration 103 gennemført.
+
+**Hvad der skete:** DECISION.md findes, så jeg byggede. Ny dansk side `/blog/gdpr-rolle-webbureau` — DA-pendant til den engelske agency-guide fra iter. 102 (rollerne dataansvarlig/databehandler, 5 klassiske fejl, 72-timers-reglen, DBA-indhold, 5-trins tjekliste, FAQ'er).
+
+**Verificeret:**
+- Nyt script `make_blog_gdpr_da_role.py` (samme sikkerhedsmønster): JSON-LD valideret med json.loads, sitemap-duplikattjek, internt link-tjek — 0 brudte
+- health_check.py: 71/71
+- Deployet og curl-verificeret live: korrekt dansk titel, track.js, Article JSON-LD (schema.org), sitemap-indgang, forsiden linker siden
+- Commit `6a6ddaf`, STATUS.md opdateret
+
+**Tal:** 0 venteliste, 0 ekstern trafik (stats-API viser kun egen trafik fra 23/8). 1 af 12 søgninger brugt. Budget stadig 0 kr.
+
+**Blokeret (uændret):** Bitwarden → Lemon Squeezy/npm/Chrome-nøgler; KDP kræver Mads' manuelle upload.
+
+Næste iteration: EN-pendant til en anden DA-guide eller ny guide, samme mønster.
+2026-08-24T00:42:41+02:00 iteration 2 afsluttet (exit 0)
+2026-08-24T00:43:46+02:00 === iteration 3/15 ===
+Iteration 104 færdig. DECISION.md findes allerede, så jeg byggede videre på næste-skridt fra iter. 103:
+
+**Bygget — palet-eksport på alle fire værktøjssider:**
+- Palette-generator (EN + DA): eksport-sektion med tre faner — CSS-variabler (kontrast-ratio i kommentarer), JSON (hex + WCAG AA/AAA pr. rolle) og Tailwind config, plus kopi- og download-knapper.
+- Farveblindhedssimulator (EN + DA): eksport af de simulerede farver ved valgt sværhedsgrad (original + prot/deut/trit-sim), CSS og JSON med Machado-reference.
+
+**Verificeret:**
+- node --check på alle 4 inline-scripts: OK; IIFE'erne kørt i node uden fejl
+- JSON-LD valideret, div-balance OK
+- Deployet til hermes-passiv.pages.dev; curl bekræfter at alle 4 sider serverer de nye sektioner
+- health_check.py: 71/71
+
+0 søgninger brugt (bygge-opgave, ingen fakta at tjekke). Budget stadig 0 kr. STATUS.md er opdateret — blokeringen er uændret (Bitwarden → Lemon Squeezy/npm/Chrome-nøgler; KDP kræver Mads' manuelle upload). Næste iteration: ny blog/guide-side og intern linkning til eksport-funktionen.
+2026-08-24T00:48:17+02:00 iteration 5 afsluttet (exit 0)

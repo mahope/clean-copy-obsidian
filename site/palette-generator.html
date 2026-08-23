@@ -42,6 +42,12 @@
   .pg-note { margin-top:18px; font-size:.88rem; color:var(--color-text-muted); }
   .pg-error { color:var(--color-red); font-size:.9rem; margin-top:10px; min-height:1.2em; }
   .pg-copied { font-size:.85rem; color:var(--color-green); margin-left:8px; }
+  .pg-export { margin-top:24px; border:1px solid var(--color-border); border-radius:var(--radius); padding:18px; background:var(--color-surface-2); }
+  .pg-export pre { margin:12px 0 0; padding:14px; background:#0f172a; color:#e2e8f0; border-radius:8px; overflow-x:auto; font-size:.85rem; line-height:1.5; max-height:340px; }
+  .pg-tabs { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+  .pg-tab { padding:8px 14px; border-radius:8px; border:1px solid var(--color-border); background:var(--color-surface); cursor:pointer; font-weight:600; font-size:.88rem; }
+  .pg-tab[aria-selected="true"] { background:var(--color-accent); color:#fff; border-color:var(--color-accent); }
+  .pg-dl { display:inline-block; margin-left:auto; }
 </style>
 </head>
 <body>
@@ -92,6 +98,21 @@
   </table>
   </div>
   <p class="pg-copied" id="copied-msg" aria-live="polite"></p>
+
+  <h3 style="margin-top:28px">Export your palette</h3>
+  <div class="pg-export">
+    <div class="pg-tabs" role="tablist" aria-label="Export format">
+      <button type="button" class="pg-tab" id="tab-css" role="tab" aria-selected="true" aria-controls="export-out">CSS variables</button>
+      <button type="button" class="pg-tab" id="tab-json" role="tab" aria-selected="false" aria-controls="export-out">JSON</button>
+      <button type="button" class="pg-tab" id="tab-tailwind" role="tab" aria-selected="false" aria-controls="export-out">Tailwind config</button>
+    </div>
+    <pre id="export-out" tabindex="0" aria-label="Generated palette code, select all to copy"></pre>
+    <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+      <button type="button" class="pg-btn" id="copy-export" style="background:var(--color-accent);color:#fff">Copy code</button>
+      <button type="button" class="pg-btn pg-dl" id="download-export" style="background:var(--color-surface);border:1px solid var(--color-border)">Download file</button>
+      <span class="pg-copied" id="export-msg" aria-live="polite"></span>
+    </div>
+  </div>
 
   <h3 style="margin-top:28px">Live preview</h3>
   <div class="pg-preview" id="preview" role="presentation">
@@ -309,6 +330,65 @@
     } else { done(); }
   }
 
+  var exportFmt = 'css';
+  var lastRows = null, lastBg = null;
+  function cssVarName(role) {
+    return '--' + role.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
+  function buildExport() {
+    if (!lastRows) return '';
+    if (exportFmt === 'css') {
+      var out = ':root {\n';
+      lastRows.forEach(function (r) { out += '  ' + cssVarName(r.role) + ': ' + r.hex + '; /* ' + (r.aa === null ? '' : (r.ratio.toFixed(2) + ':1')) + ' */\n'; });
+      return out + '}\n';
+    }
+    if (exportFmt === 'json') {
+      var obj = { background: lastBg };
+      lastRows.forEach(function (r) {
+        obj[cssVarName(r.role).slice(2)] = { hex: r.hex,
+          contrast: r.aa === null ? null : Math.round(r.ratio * 100) / 100,
+          wcagAA: r.aa === null ? null : r.aa, wcagAAA: r.aaa === null ? null : r.aaa };
+      });
+      return JSON.stringify(obj, null, 2) + '\n';
+    }
+    // tailwind
+    var t = '// tailwind.config.js — add under theme.extend.colors\n  colors: {\n';
+    lastRows.forEach(function (r) {
+      var k = cssVarName(r.role).slice(2);
+      t += "    '" + k + "': '" + r.hex + "',\n";
+    });
+    return t + '  },\n';
+  }
+  function renderExport() {
+    $('export-out').textContent = buildExport();
+    ['tab-css','tab-json','tab-tailwind'].forEach(function (id) {
+      $(id).setAttribute('aria-selected', id === 'tab-' + exportFmt ? 'true' : 'false');
+    });
+  }
+  function flashExport(msg) {
+    $('export-msg').textContent = msg;
+    clearTimeout(flashExport._t);
+    flashExport._t = setTimeout(function () { $('export-msg').textContent = ''; }, 2200);
+  }
+  function copyExport() {
+    var text = buildExport();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { flashExport('Copied!'); }, function () { flashExport('Copy failed — select the code manually.'); });
+    } else { flashExport('Copy failed — select the code manually.'); }
+  }
+  function downloadExport() {
+    try {
+      var exts = { css: 'css', json: 'json', tailwind: 'js' };
+      var blob = new Blob([buildExport()], { type: 'text/plain' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'accessible-palette.' + exts[exportFmt];
+      document.body.appendChild(a); a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+      flashExport('Downloaded accessible-palette.' + exts[exportFmt]);
+    } catch (e) { flashExport('Download not supported in this browser.'); }
+  }
+
   function update() {
     var errEl = $('pg-error');
     errEl.textContent = '';
@@ -320,8 +400,17 @@
       return;
     }
     $('base-color').value = toHex(base);
-    render(buildPalette(base, bg), bgHex);
+    lastRows = buildPalette(base, bg);
+    lastBg = bgHex;
+    render(lastRows, bgHex);
+    renderExport();
   }
+
+  ['tab-css','tab-json','tab-tailwind'].forEach(function (id) {
+    $(id).addEventListener('click', function () { exportFmt = id.slice(4); renderExport(); });
+  });
+  $('copy-export').addEventListener('click', copyExport);
+  $('download-export').addEventListener('click', downloadExport);
 
   $('base-color').addEventListener('input', function () { $('base-text').value = $('base-color').value; update(); });
   $('base-text').addEventListener('input', update);

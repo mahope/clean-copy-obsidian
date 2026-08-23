@@ -39,6 +39,11 @@
   .cb-note { margin-top:18px; font-size:.88rem; color:var(--color-text-muted); }
   .cb-error { color:var(--color-red); font-size:.9rem; margin-top:10px; min-height:1.2em; }
   input[type=range].cb-sev { width:180px; accent-color: var(--color-accent); }
+  .cb-export { margin-top:24px; border:1px solid var(--color-border); border-radius:var(--radius); padding:18px; background:var(--color-surface-2); }
+  .cb-export pre { margin:12px 0 0; padding:14px; background:#0f172a; color:#e2e8f0; border-radius:8px; overflow-x:auto; font-size:.85rem; line-height:1.5; max-height:340px; }
+  .cb-tabs { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+  .cb-tab { padding:8px 14px; border-radius:8px; border:1px solid var(--color-border); background:var(--color-surface); cursor:pointer; font-weight:600; font-size:.88rem; }
+  .cb-tab[aria-selected="true"] { background:var(--color-accent); color:#fff; border-color:var(--color-accent); }
   @media (max-width:640px){ .cb-chip{width:44px;height:30px} .cb-grid td,.cb-grid th{padding:7px;font-size:.85rem} }
 </style>
 </head>
@@ -84,6 +89,20 @@
     </thead>
     <tbody id="grid-body"></tbody>
   </table>
+  </div>
+
+  <h3 style="margin-top:28px">Export the simulated palette</h3>
+  <div class="cb-export">
+    <div class="cb-tabs" role="tablist" aria-label="Export format">
+      <button type="button" class="cb-tab" id="tab-css" role="tab" aria-selected="true" aria-controls="export-out">CSS</button>
+      <button type="button" class="cb-tab" id="tab-json" role="tab" aria-selected="false" aria-controls="export-out">JSON</button>
+    </div>
+    <pre id="export-out" tabindex="0" aria-label="Simulated palette code, select all to copy"></pre>
+    <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+      <button type="button" class="cb-add" id="copy-export">Copy code</button>
+      <button type="button" class="cb-add" id="download-export">Download file</button>
+      <span style="font-size:.85rem;color:var(--color-green);margin-left:8px;min-height:1.2em" id="export-msg" aria-live="polite"></span>
+    </div>
   </div>
 
   <h3 style="margin-top:28px">Live text preview</h3>
@@ -380,10 +399,64 @@
     body.style.color = toHex(simulate(fg, 'protanomaly', sev));
   }
 
+  // Export of the simulated palette
+  var exportFmt = 'css';
+  function cssVarName(hex) { return '--color-' + hex.replace('#',''); }
+  function buildExport() {
+    if (!colors.length) return '';
+    var sev = Math.round(($('severity').value / 100) * 10);
+    if (exportFmt === 'css') {
+      var out = ':root {\n';
+      colors.forEach(function (c) {
+        var rgb = parseHex(c.hex);
+        out += '  ' + cssVarName(c.hex) + ': ' + c.hex + '; /* original */\n';
+        ['protanomaly','deuteranomaly','tritanomaly'].forEach(function (t) {
+          out += '  ' + cssVarName(c.hex) + '-' + t.slice(0, 4) + '-sim: ' + toHex(simulate(rgb, t, sev / 10)) + ';\n';
+        });
+      });
+      return out + '}\n';
+    }
+    var arr = colors.map(function (c) {
+      var rgb = parseHex(c.hex), o = { original: c.hex };
+      ['protanomaly','deuteranomaly','tritanomaly'].forEach(function (t) { o[t] = toHex(simulate(rgb, t, sev / 10)); });
+      return o;
+    });
+    return JSON.stringify({ severity: sev * 10, method: 'Machado et al. (2009)', colors: arr }, null, 2) + '\n';
+  }
+  function renderExport() {
+    $('export-out').textContent = buildExport();
+    ['tab-css','tab-json'].forEach(function (id) {
+      $(id).setAttribute('aria-selected', id === 'tab-' + exportFmt ? 'true' : 'false');
+    });
+  }
+  function flashExport(msg) {
+    $('export-msg').textContent = msg;
+    clearTimeout(flashExport._t);
+    flashExport._t = setTimeout(function () { $('export-msg').textContent = ''; }, 2200);
+  }
+  function copyExport() {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(buildExport()).then(function () { flashExport('Copied!'); }, function () { flashExport('Copy failed — select the code manually.'); });
+    } else { flashExport('Copy failed — select the code manually.'); }
+  }
+  function downloadExport() {
+    try {
+      var exts = { css: 'css', json: 'json' };
+      var blob = new Blob([buildExport()], { type: 'text/plain' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'cvd-simulated-palette.' + exts[exportFmt];
+      document.body.appendChild(a); a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+      flashExport('Downloaded cvd-simulated-palette.' + exts[exportFmt]);
+    } catch (e) { flashExport('Download not supported in this browser.'); }
+  }
+
   function updateAll() {
     $('sev-label').textContent = $('severity').value + '%';
     renderGrid();
     updatePreview();
+    renderExport();
   }
 
   function addColor() {
@@ -405,6 +478,11 @@
   $('severity').addEventListener('input', updateAll);
   $('fg-select').addEventListener('change', updatePreview);
   $('bg-select2').addEventListener('change', updatePreview);
+  ['tab-css','tab-json'].forEach(function (id) {
+    $(id).addEventListener('click', function () { exportFmt = id.slice(4); renderExport(); });
+  });
+  $('copy-export').addEventListener('click', copyExport);
+  $('download-export').addEventListener('click', downloadExport);
 
   renderGrid();
   renderSelects();

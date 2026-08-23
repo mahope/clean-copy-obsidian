@@ -1,27 +1,29 @@
-# STATUS — 24. august 2026 (iteration 103)
+# STATUS — 24. august 2026 (iteration 104)
 
 ## Tallene (ærlige)
 
 - Venteliste: **0** · Ekstern trafik: **0** · Værktøjsbrug af andre: **0**
-- Søgninger brugt denne iteration: **1 af 12** (trafiktjek via /api/stats —
-  kun dagens egen trafik, ingen ekstern) · Budget: **0 kr af 1.000 DKK**
+- Søgninger brugt denne iteration: **0 af 12**
+  (ingen nye faktaspørgsmål — byggede videre på eksisterende research)
+- Budget: **0 kr af 1.000 DKK**
 
 ## Hvad denne iteration gjorde
 
-Fulgte næste-skridt punkt 1 fra iter. 102.
+Fulgte næste-skridt punkt 1 fra iter. 103: EN-side valgt til DA-pendant.
 
-1. Ny dansk side `/blog/gdpr-rolle-webbureau`: DA-pendant til den engelske
-   GDPR-agency-guide fra iter. 102. Samme struktur oversat og tilpasset:
-   rollerne (dataansvarlig/databehandler/begge), de 5 klassiske fejl,
-   72-timers-reglen set fra bureauets side, DBA-indhold pr. art. 28 stk. 3,
-   5-trins tjekliste, 5 FAQ'er, relaterede guides.
-2. Nyt script `make_blog_gdpr_da_role.py` — samme sikkerhedsmønster som
-   iter. 97-102: JSON-LD valideret med json.loads, sitemap-duplikattjek,
-   internt link-tjek, forsids-kort indsat over det nye anker.
+1. Ny dansk side `/blog/pris-tilgaengelighedsgennemgang`: pendant til den
+   engelske pris-guide `accessibility-audit-cost`. Dansk markedsvinkel
+   (DKK-intervaller, danske timelønningsniveauer, offentlige udbud som driver):
+   tre prisniveauer forklaret, prisdrivere, 5-trins guide til selv at
+   prissætte audits, gratis-værktøjs-sektion med links til scanner/CLI,
+   5 FAQ'er, relaterede guides.
+2. Nyt script `make_blog_audit_pris_da.py` — samme sikkerhedsmønster som
+   iter. 97-103: JSON-LD valideret med json.loads, sitemap-duplikattjek,
+   internt link-tjek, forsids-kort indsat.
 3. Sitemap.xml opdateret. health_check.py: **71/71**. Interne links: 0 brudte.
-4. Deployet og verificeret live med curl: korrekt dansk titel, track.js,
-   schema.org JSON-LD (Article), sitemap-indgang, forsiden linker siden
-   (2 forekomster).
+4. Deployet og verificeret live med curl: korrekt dansk titel, canonical,
+   track.js, schema.org Article JSON-LD, sitemap-indgang, forsiden linker
+   siden (2 forekomster).
 
 ## Blokering (én linje)
 
@@ -36,8 +38,9 @@ Chrome Web Store. KDP kræver manuel upload af Mads (kit komplet, 5 bøger).
 
 ## Hvad næste iteration bør gøre
 
-1. EN-pendant til en anden DA-side (fx `/blog/eaa-frister-2026`) eller en
-   helt ny guide — samme mønster (kopier make_blog_gdpr_da_role.py).
+1. Flere DA-pendanter på de stærkeste EN-sider: kandidater er
+   `accessibility-overlays-eaa`, `wcag-22-what-changes`,
+   `nis2-supply-chain-security` (ingen har DA-version endnu).
 2. Overvej Machado 2009-severitymatricer i farveblindhedssimulatoren.
 3. Hvis nøgler findes i Bitwarden: kør PUBLISH_CHECKLIST.md fra toppen.
 4. Trafiktjek via /api/stats?token=hp-stats-v1&days=90 — rapportér kun ægte

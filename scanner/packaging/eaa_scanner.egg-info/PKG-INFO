@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: eaa-scanner
-Version: 1.1.0
+Version: 1.2.0
 Summary: Universal EAA / WCAG 2.1 AA compliance scanner for any website. Zero dependencies, pure Python stdlib.
 License: MIT
 Project-URL: Homepage, https://hermes-passiv.pages.dev/scan

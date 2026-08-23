@@ -83,6 +83,13 @@ class _Collector(HTMLParser):
         self._open_label = None
         self._label_text_chars = 0
         self._labelled_ids = set()
+        # v1.2.0 rules (parity with npm index.js)
+        self.input_images_no_alt = 0
+        self.video_no_tracks = []
+        self.audio_no_alt = []
+        self.autoplay_unpausable = []
+        self.marquee_blink_count = 0
+        self.pos_tabindex = 0
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
@@ -118,7 +125,13 @@ class _Collector(HTMLParser):
                 self.labels_for.add(a["for"])
         elif tag == "input" or tag == "select" or tag == "textarea":
             itype = (a.get("type") or "text").lower()
-            if itype in ("hidden", "submit", "button", "reset", "image"):
+            if itype in ("hidden", "submit", "button", "reset"):
+                pass
+            elif itype == "image":
+                # WCAG 1.1.1: image submit buttons need alt text
+                alt = a.get("alt")
+                if alt is None or alt.strip() == "":
+                    self.input_images_no_alt += 1
                 return
             labelled = (
                 aid and aid in self.labels_for or
@@ -141,10 +154,37 @@ class _Collector(HTMLParser):
                 self.tables[-1] = True
         elif tag == "form":
             self.form_count += 1
+        elif tag == "video":
+            self.video_no_tracks.append((a.get("src") or "")[:60])
+            if "autoplay" in a and "muted" not in a:
+                self.autoplay_unpausable.append("video")
+        elif tag == "audio":
+            label = f"{a.get('aria-label') or ''} {a.get('title') or ''}".lower()
+            if not re.search(r"transcript|captions?|subtitle", label):
+                self.audio_no_alt.append((a.get("src") or "")[:60])
+            if "autoplay" in a and "controls" not in a:
+                self.autoplay_unpausable.append("audio")
+        elif tag == "track":
+            # a captions/subtitles track inside the current <video> satisfies 1.2.2
+            if re.search(r"captions?|subtitles", a.get("kind") or "") \
+                    and self.video_no_tracks:
+                self.video_no_tracks.pop()
+        elif tag in ("marquee", "blink"):
+            self.marquee_blink_count += 1
+        tb = None
+        if a.get("tabindex") is not None:
+            try:
+                tb = int(a["tabindex"] or "")
+            except (ValueError, TypeError):
+                tb = None
+        if tb is not None and tb > 0:
+            self.pos_tabindex += 1
         if a.get("aria-hidden") == "true" and any(
             k in a for k in ("tabindex",)) and a.get("tabindex") not in ("-1",):
             self.aria_hidden_focusable.append(tag)
         style = a.get("style") or ""
+        if re.search(r"text-decoration\s*:\s*blink", style):
+            self.marquee_blink_count += 1
         if re.search(r"font-size\s*:\s*\d+px", style):
             self.fixed_font_px += 1
         # inline colour contrast (WCAG 1.4.3) — track inherited fg/bg
@@ -352,6 +392,39 @@ def scan_html(html: str) -> dict:
             f"{len(low)} text colour combination(s) below the WCAG AA "
             "contrast minimum (4.5:1 normal text, 3:1 large text)",
             len(low), low[:3]))
+
+    # --- v1.2.0 rules -------------------------------------------------------
+    if c.input_images_no_alt:
+        findings.append(Finding(
+            "INPUT_TYPE_IMAGE_ALT", "error",
+            f"{c.input_images_no_alt} image submit button(s) "
+            "(<input type=image>) without alt text (WCAG 1.1.1)",
+            c.input_images_no_alt))
+
+    def _add(rid, sev, msg, items):
+        if items:
+            findings.append(Finding(rid, sev, msg.format(n=len(items)),
+                                    len(items), [str(i)[:80] for i in items[:3]]))
+
+    _add("VIDEO_TRACKS", "error",
+         "{n} video(s) without a captions/subtitles track (WCAG 1.2.2)",
+         c.video_no_tracks)
+    _add("AUDIO_TRANSCRIPT", "warning",
+         "{n} audio element(s) with no indicated transcript or captions "
+         "alternative (WCAG 1.2.1)", c.audio_no_alt)
+    _add("AUTOPLAY_MEDIA", "error",
+         "{n} media element(s) that autoplay without visible pause controls "
+         "or muting (WCAG 1.4.2)", c.autoplay_unpausable)
+    if c.marquee_blink_count:
+        findings.append(Finding(
+            "MARQUEE_BLINK", "error",
+            f"{c.marquee_blink_count} deprecated blinking/moving element(s) — "
+            "cannot be paused by the user (WCAG 2.2.2)", c.marquee_blink_count))
+    if c.pos_tabindex:
+        findings.append(Finding(
+            "POSITIVE_TABINDEX", "warning",
+            f"{c.pos_tabindex} element(s) with tabindex greater than 0 — "
+            "breaks natural focus order (WCAG 2.4.3)", c.pos_tabindex))
 
     errors = sum(1 for f in findings if f.severity == "error")
     warnings = sum(1 for f in findings if f.severity == "warning")

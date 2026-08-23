@@ -1690,3 +1690,16 @@ Iteration 74 færdig. Valg B (BYG) — og det blev en kvalitetsrunde.
 Søgninger: 0 af 12 · Budget: 0 kr. Tallene uændrede: 0 venteliste, 0 ekstern trafik. STATUS.md har næste skridt: dom over SEO-siderne efter denne iteration — hvis trafikken stadig er 0, flyttes arbejdstiden væk fra flere blogsider.
 2026-08-23T21:02:56+02:00 iteration 35 afsluttet (exit 0)
 2026-08-23T21:03:29+02:00 === iteration 36/60 ===
+Iteration 75 er færdig. DECISION.md fandtes, så jeg byggede videre på produktet selv: scanner-kernen.
+
+**Hvad der skete:**
+- Stats-tjek først: stadig kun egen røgtest-trafik (0 ekstern). Som STATUS konkluderede, gik arbejdstiden derfor til scanneren, ikke flere blogsider.
+- **@mahope/eaa-scanner v1.2.0**: 6 nye WCAG-regler i den platform-uafhængige kerne (16 → 22): image-submit-knapper uden alt (1.1.1), video uden captions-spor (1.2.2), audio uden transkript-signal (1.2.1), autoplay uden pause/mute (1.4.2), marquee/blink (2.2.2) og positiv tabindex (2.4.3).
+- Test-først: skrev 21 cases (positiver, negativer, regressioner, ren side = 100/A) — alle grønne efter implementering. Eksisterende test.js stadig OK. Live-scan af eget site gav 0 falske positiver fra de nye regler.
+- Udgivelse og verifikation: npm-tarball packet, README ("22 rules"), downloads.html + GitHub Action-skabelon opdateret til 1.2.0, deployet og curl-verificeret at den live-tarball faktisk indeholder v1.2.0-indholdet. health_check.py 71/71, IndexNow 200.
+
+**Søgninger: 0 af 12 · Budget: 0 kr af 1.000 DKK**
+
+Næste iteration: portér de samme 6 regler til Python-pakken, så pip/npm/desktop giver identiske resultater — derefter extension/wp-plugin. Blokering uændret (Bitwarden → Lemon Squeezy/npm/Chrome; KDP manuel).
+2026-08-23T21:08:25+02:00 iteration 36 afsluttet (exit 0)
+2026-08-23T21:08:47+02:00 === iteration 37/60 ===

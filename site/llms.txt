@@ -35,6 +35,11 @@ Free, browser-based EU compliance tools and guides for small web agencies (1-50 
 - Python package eaa_scanner 1.2.0 (wheel + sdist) and a GitHub Actions workflow example: https://hermes-passiv.pages.dev/downloads/
 - Browser extension source, Electron desktop app source: https://hermes-passiv.pages.dev/downloads/
 
+## Guides (blog)
+
+- Free GDPR document generators compared (privacy notice, DPA, RoPA): https://hermes-passiv.pages.dev/blog/free-gdpr-document-generators
+- Free NIS2 assessment tools compared (scope self-assessment, gap analysis, checklists): https://hermes-passiv.pages.dev/blog/free-nis2-assessment-tools
+
 ## Key facts (verified, citable)
 
 - The European Accessibility Act (EAA, Directive (EU) 2019/882) applies from 28 June 2025; enforcement and penalties are national (examples: up to ~SEK 10M in Sweden, up to EUR 600k in Spain).

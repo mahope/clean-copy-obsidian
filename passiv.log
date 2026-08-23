@@ -1954,3 +1954,66 @@ STATUS.md er opdateret med næste skridt (indekseringskontrol, evt. color blindn
 2026-08-23T22:58:55+02:00 UPSTREAM - venter 5 min (forsoeg 2/24)
 2026-08-23T23:03:56+02:00 UPSTREAM - venter 5 min (forsoeg 3/24)
 2026-08-23T23:10:08+02:00 === iteration 52/60 ===
+Iteration 91 færdig. Resumé:
+
+**Bygget: Color Blindness Simulator (EN + DA)**
+- /color-blindness-simulator og /color-blindness-simulator-da — live og verificeret (HTTP 200, indhold tjekket)
+- Simulerer protanopi/deuteranopi/tritanopi med Viénot-matricer i lineær RGB, severity-slider, live tekst-preview, op til 10 farver
+- Node-test af matematikken bestået; JSON-LD valideret på begge sider; health_check 71/71
+
+**Indkobling:** sitemap nu 74 URLs, nyt kort på /free-tools, llms.txt opdateret, krydslinks fra palette-generator-siderne. Deployet + IndexNow pinget (74 URLs → 200).
+
+**Indeksering:** 3 søgninger brugt — stadig ikke indekseret i søgemaskinen bag backenden. Det er tredje iteration i træk; jeg har foreslået i STATUS.md at næste skridt kan være et rigtigt domæne (~50-80 kr/år, kræver Mads' ja da det er bindende).
+
+**Ærlige tal:** venteliste 0, ekstern brug 0, budget 0/1000 DKK. Blokering uændret (Bitwarden → npm/Lemon Squeezy/Chrome; KDP manuel upload). STATUS.md og BUILD.md opdateret, alt committet (af80221).
+2026-08-23T23:15:58+02:00 iteration 52 afsluttet (exit 0)
+2026-08-23T23:16:57+02:00 === iteration 53/60 ===
+Iteration 92 færdig — DECISION.md findes, så der blev bygget.
+
+**Nyt værktøj: Text on Image Contrast Checker** (kandidaten fra iter. 91)
+- `/text-on-image-checker` (EN) + `/text-on-image-checker-da` (DA) — begge live og HTTP 200
+- Upload billede, placér tekst ved klik/træk, få den reelle WCAG-kontrast målt mod de faktiske pixels bag hvert bogstav. Worst-case-logik (lyseste + mørkeste baggrundspixel under teksten), AA/AAA for stor/normal tekst, fix-forslag ved fail. Indbygget demo-gradient så værktøjet virker før upload.
+- 0 søgninger brugt — intet usikkert faktum skulle tjekkes.
+
+**Verifikation**
+- Kontrastmatematik node-testet: sort/hvid = præcis 21,00:1, worst-case på gradienten = 1,46:1 → korrekt FAIL
+- JSON-LD valideret på begge sider, health_check.py 71/71
+- Sitemap nu 76 URLs, free-tools-kort, llms.txt, krydslinks fra contrast-checker-siderne
+- Deployet og curl-verificeret live; IndexNow pinget (200)
+
+Commit: `1b52193`. STATUS.md opdateret med næste skridt (blog-runde der linker alle værktøjerne, eller Machado-opgradering af simulatoren). Blokering uændret: Bitwarden → Lemon Squeezy/npm/Chrome-nøgler; KDP venter på Mads' manuelle upload.
+2026-08-23T23:22:09+02:00 iteration 53 afsluttet (exit 0)
+2026-08-23T23:22:29+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+2026-08-23T23:28:59+02:00 === iteration 54/60 ===
+Iteration 93 færdig. Resumé:
+
+**Valg:** DECISION.md findes → byg. 0 af 12 søgninger brugt — ingen usikre fakta.
+
+**Bygget:**
+1. Nyt blogindlæg `site/blog/free-gdpr-document-generators.html` (EN): sammenligner privacy notice-, DPA- og RoPA-generatoren plus skabelonerne, med hvornår-man-skal-have-advokat-sektion og eftermiddags-workflow. Linker alle værktøjerne ind (6 generator-URLs, cookie-check, scan) — det var kandidat 1 fra sidste iteration.
+2. Krydslinks ind i den eksisterende tools-comparison-post (text-on-image-checker + nyt GDPR-indlæg).
+3. Indkobling overalt: sitemap.xml (77 URLs), llms.txt, index.html blog-kort, free-tools.html.
+
+**Verificeret live:** ny URL HTTP 200 med korrekt indhold, sitemap live, JSON-LD valideret med json.loads, alle interne links resolver, health_check.py 71/71, IndexNow pinget (77 URLs → 200).
+
+STATUS.md er opdateret. Næste iteration: flere sider af samme skabelon eller Machado-opgradering; stadig blokeret kun på Bitwarden-nøglerne til kontiene.
+2026-08-23T23:33:39+02:00 iteration 54 afsluttet (exit 0)
+2026-08-23T23:34:01+02:00 === iteration 55/60 ===
+Iteration 94 færdig. Resumé:
+
+**Bygget:** Nyt blogindlæg `/blog/free-nis2-assessment-tools` — sammenligner alle seks NIS2-ressourcer på sitet (12-spørgsmåls scope-selvtesten, readiness-guiden, incident-checklisten, supply-chain-guiden, checklist-PDF'en, GDPR-vs-NIS2-overlap) med workflow, grænsesektion og intern linking til nis2-check + e-bogen.
+
+**Ret et reelt hul undervejs:** `/nis2-check` manglede en synlig indgang fra guides — den fik nu links til både comparison-posten og readiness-guiden. Krydslinkede desuden readiness-guiden og indkoblede overalt.
+
+**Verificeret (faktiske resultater, ikke antagelser):**
+- JSON-LD validerer på alle berørte sider (`***@type`-mystikken fra sidst er bekræftet som rent visningsartefakt — rå bytes var altid korrekte)
+- Sitemap: 78 URLs, well-formed, ny URL med
+- health_check.py 71/71
+- Deployet; live curl-tjek: ny side 200 med nyt indhold, krydslinks live på index/nis2-check/readiness-guide
+- IndexNow pinget → 200
+
+**Søgninger brugt: 0 af 12. Budget: 0 kr.**
+
+STATUS.md opdateret med næste skridt (bl.a. at /nis2-check fortsat mangler i selve free-tools.html-oversigten). Blokering uændret: Bitwarden → Lemon Squeezy/npm/Chrome-nøgler, KDP manuel upload.
+2026-08-23T23:38:33+02:00 iteration 55 afsluttet (exit 0)
+2026-08-23T23:39:14+02:00 === iteration 56/60 ===

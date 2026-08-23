@@ -1,40 +1,35 @@
-# STATUS — 24. august 2026, iteration 71 — NIS2 Self-Assessment (nyt gratis værktøj)
+# STATUS — 24. august 2026, iteration 72 — QA-runde: brudte links + manglende canonical
 
 ## Konklusion fra sidste iteration (besvaret)
 
-/api/stats 90 dage: stadig **0 ekstern trafik**. Det ene `@scan`-event er
-egen smoke-test. Distribution er fortsat problemet — så denne iteration
-byggede en **ny distributionsindgang** i stedet for at pudse de gamle.
+/api/stats 90 dage: stadig **0 ekstern trafik**. Ingen ny `/nis2-check@scan`.
+Derfor valgte jeg denne iteration ikke at bygge mere indhold (29 blogs og
+6 værktøjer er nok) men at gå site-kvaliteten efter — et site med døde links
+konverterer ingen af de besøgende der måtte komme.
 
-## Hvad denne iteration byggede
+## Hvad denne iteration fandt og rettede
 
-**/nis2-check — Free NIS2 Self-Assessment (værktøj #6):**
-- 12 spørgsmål i browseren (ren JS, ingenting sendes nogen steder)
-- Afgør scope efter Direktiv (EU) 2022/2555: Annex I essential vs
-  Annex II important, størrelsestærskler (50+ / €10M), size-uafhængige
-  tilfælde (digital infra/MSP, kritiske udbydere)
-- Lister pligter med artikelhenvisninger: Art. 21 risikostyring,
-  Art. 23 incident-rapportering (24h/72h/1 måned), Art. 20
-  ledelsesansvar + national registrering
-- Readiness-score A–D med konkrete næste skridt; print/PDF + delelink
-- Scan-event tracking (`@scan`) indbygget fra start — konverterings-
-  måling besøg → brug virker med det samme
-- FAQPage JSON-LD valideret (@context korrekt)
+Fuld link-audit af alle 55 sitemap-URL'er + alle interne hrefs i hele sitet:
 
-**Distribution:**
-- Forside: hero-knap + "6 free tools" tæller opdateret
-- sitemap.xml: 55 URL'er (nis2-check, prioritet 0.9)
-- IndexNow ping kørt efter deploy: **200 OK, 55 URLs**
-- health_check.py udvidet til /nis2-check: **71/71 ok**
+1. **/accessibility-statement-generator manglede canonical-tag** — eneste side
+   i sitemap uden én. Tilføjet.
+2. **Dødt link** /blog/nis2-small-agencies-what-changes (siden findes aldrig)
+   fra /nis2-check — peger nu på /blog/nis2-readiness-guide.
+3. **Døde links** /guides og /guides/ (ingen index-side) fra
+   /blog/eaa-enforcement-2026 og /guides/comparison — peger nu på
+   /guides/platforms.
+
+Alt andet rent: 55/55 URL'er HTTP 200 med matchende canonical, alle billeder
+findes, alt har alt-tekst, JSON-LD valid på alle sider.
 
 ## Verificering
 
-- JS-logik testet mod 5 scope-scenarier (essential/important/out) — alle korrekte
-- node --check på inline-script: OK · JSON-LD parsed og valideret
-- Deployet; curl-live: HTTP 200, indhold + track.js serveret
-- Commit 4d1ddbb
+- python3 health_check.py: **71/71 ok**
+- Deployet; curl-live bekræfter canonical + rettede links på de 4 berørte sider
+- IndexNow ping: 200 OK, 55 URLs
+- Commit bf35b1f
 
-## Søgninger: 1 af 12 · Budget: 0 kr af 1.000 DKK
+## Søgninger: 0 af 12 · Budget: 0 kr af 1.000 DKK
 
 ## Blokering (uændret — nævnes kun én gang)
 
@@ -47,11 +42,10 @@ KDP kræver manuel upload af Mads (5 bøger klar i ebook/).
 
 ## Hvad næste iteration bør gøre
 
-1. Tjek /api/stats for `/nis2-check@scan` og øvrig trafik. IndexNow pinger
-   Bing/Yandex m.fl., men Google læser ikke IndexNow — overvej om en
-   robots-venlig struktur + tid er nok, eller hvad der ellers kan gøres
-   inden for reglerne (ingen udadvendte handlinger uden Mads' ja).
-2. Dansk version /nis2-check-da hvis det engelske får trafik (ikke før —
-    undgå mere indhold uden målgruppe).
+1. Tjek /api/stats igen. Hvis der stadig er 0 trafik, er kvalitet ikke længere
+   problemet — synlighed er. Overvej hvad der kan hente trafik inden for
+   reglerne (ingen udadvendte handlinger uden Mads' ja): fx flere lange,
+   søgbare nøgleords-sider ("NIS2 checklist pdf", "EAA deadline") eller
+   vent på at Bing/Yandex indexer (IndexNow pinger dem).
+2. Dansk versioner kun hvis der kommer trafik (ellers undladelse).
 3. Hvis Bitwarden låses op: Lemon Squeezy, npm, Chrome, KDP (se BUILD.md).
-4. Kør ./indexnow_ping.sh hvis nye sider deployes.

@@ -2100,3 +2100,20 @@ STATUS.md er opdateret. Næste iteration: dansk cookie-consent/GDPR-guide efter 
 2026-08-23T23:58:47+02:00 passiv-loop afsluttet
 2026-08-24T00:01:53+02:00 === iteration 1/60 ===
 2026-08-24T00:02:28+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+Iteration 99 færdig.
+
+**Hvad der blev bygget:**
+- Ny dansk side `/blog/cookie-consent-gdpr-2026` — pendant til den engelske cookie-consent-guide. Indhold: ePrivacy + GDPR-grundreglen, gyldigt vs. ugyldigt samtykke (Planet49-præcedens), EDPB's 5 banner-krav inkl. Opinion 28/2024, bøder pr. land (CNIL €150 mio./Google, tyske myndigheder, Datatilsynet DK), Google Consent Mode v2-faldgruber, 5-trins plan med CTA til scanneren, 5 FAQ'er og krydslink til EN-versionen.
+- Scriptet `make_blog_gdpr99.py` genbruger det etablerede sikkerhedsmønster (JSON-LD via json.loads, sitemap-duplikattjek, internt link-tjek).
+
+**Verificeret:**
+- health_check.py: 71/71 · 0 brudte interne links
+- Deployet; curl bekræfter live: dansk titel, korrekt canonical, track.js, JSON-LD (`schema.org` / `Article`), sitemap-indgang, forsiden linker siden
+- Committed
+
+Søgninger brugt: **0 af 12** — intet behøvede faktatjek, alt indhold bygger på dokumenteret stof fra eksisterende sider. STATUS.md er opdateret; næste iteration foreslår en dansk NIS2-guide efter samme mønster.
+2026-08-24T00:05:34+02:00 iteration 1 afsluttet (exit 0)
+2026-08-24T00:07:24+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+2026-08-24T00:07:29+02:00 UPSTREAM - venter 5 min (forsoeg 2/24)
+2026-08-24T00:12:24+02:00 UPSTREAM - venter 5 min (forsoeg 2/24)
+2026-08-24T00:12:57+02:00 === iteration 1/15 ===

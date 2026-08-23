@@ -1,6 +1,21 @@
 # BUILD — Hvad er bygget, hvad mangler
 
-|**Dato:** 2026-08-27 (iteration 41 — blogindlæg om CLI-scanning)
+**Dato:** 2026-08-28 (iteration 56 — desktop app)
+
+### Desktop App: EAA Compliance Scanner (Electron) **(ny i iteration 56)**
+- `desktop/` — Ny desktop-applikation (Electron): native macOS-scanner med 16 WCAG 2.1 AA-regler, offline-brug, save-as-PDF
+- Genbruger `scanner-core.js` (npm-pakkens kernemotor) direkte — nul porting, identisk output
+- `desktop/main.js` — Electron main process: IPC-handlers for scan-url, save-pdf, open-external; fuld menu-bar (File, Edit, View, Help)
+- `desktop/preload.js` — contextBridge: scanUrl, savePdf, openExternal til renderer
+- `desktop/index.html` — renderer-UI: URL-input, scan-knap, scorecard (A-D), summary (errors/warnings/notices), findings med fix-tips, PDF-save, dark theme
+- `desktop/style.css` — dark theme, responsive, tilpasset eletron-app-stil
+- `desktop/icon.png` — 512×512 shield/checkmark-icon (512+128px)
+- `desktop/LICENSE.txt` — fri software-licens med Pro-klausul
+- Verificeret: `node --check` alle 4 JS-filer OK; end-to-end test mod example.com → 100/A/0 findings; `npm install` + `npm start` kører (macOS, Apple Silicon)
+- Distribueret som kildekode-zip (17 KB) via /downloads — Cloudflare Pages 25 MB grænse
+- `site/downloads.html` opdateret med desktop-sektion + JSON-LD SoftwareApplication
+- Deployet + live-verificeret (HTTP 200, zip download OK, health_check 60/60)
+- Pro-licens ($29/år) klar til Lemon Squeezy når API-nøgle er tilgængelig
 
 ### Blog: "Automated Accessibility Scanning from the Command Line" **(ny i iteration 41)**
 - `site/blog/accessibility-scanner-cli.html` via `make_blog.py` (nyt job-dict)
@@ -21,6 +36,19 @@
 - Distribueret fra eget site: `npm install https://hermes-passiv.pages.dev/
   downloads/mahope-eaa-scanner-1.0.0.tgz` — verificeret live end-to-end.
 - `/downloads`-siden opdateret med Node-sektion og fil-link.
+
+## Iteration 55 (27/8) — AI Compliance Assistant (nyt format)
+
+**Nyt produkt, nyt format:** AI-drevet compliance Q&A chat (EAA/NIS2/GDPR)
+- `site/_worker.js` — ny route `/api/compliance-ai` (POST → OpenRouter proxy):
+  system prompt med compliance-ekspertise, input-validering, harmful filter,
+  fejlhåndtering (API-key mangler, OpenRouter ned, tomt svar, netværksfejl)
+- `site/compliance-ai.html` (~15 KB) — chat-grænseflade: dark theme, auto-resize
+  input, Enter-send, typing indicator, markdown-formattering, forslagschips,
+  FAQ-sektion, JSON-LD WebApplication, SEO meta
+- Cloudflare Pages secret `OPENROUTER_API_KEY` sat via wrangler (0 kr)
+- Integration: index.html (hero-knap + "3 free tools"), sitemap (52 URL'er)
+- Verificeret: 60/60 health_check, live worker-svarer korrekt, sitemap valid
 
 ## Bygget ✅
 

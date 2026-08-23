@@ -38,6 +38,9 @@
   .sr-only { position:absolute; width:1px; height:1px; overflow:hidden;
              clip:rect(0 0 0 0); white-space:nowrap; }
 </style>
+<link rel="canonical" href="https://hermes-passiv.pages.dev/scan">
+<link rel="alternate" hreflang="da" href="https://hermes-passiv.pages.dev/scan-da">
+<link rel="alternate" hreflang="en" href="https://hermes-passiv.pages.dev/scan">
 <script defer src="/track.js"></script>
 </head>
 <body>
@@ -97,7 +100,6 @@
         download>Download extension (Chrome/Edge)</a></p>
 </section>
 
-<section aria-labelledby="wp-heading">
 <section aria-labelledby="gen-heading" style="margin-top:36px">
   <h2 id="gen-heading">Accessibility Statement Generator</h2>
   <p>After you fix what the scanner finds, publish an
@@ -146,6 +148,7 @@
     <li><a href="/guides/umbraco-accessibility-check">Umbraco accessibility check</a></li>
   </ul>
   <p><a href="/guides/comparison">Compare all platforms side by side →</a></p>
+  <p>Platform deep-dives: <a href="/blog/webflow-vs-squarespace-accessibility">Webflow vs Squarespace</a> · <a href="/blog/drupal-vs-typo3-accessibility">Drupal vs TYPO3</a> · <a href="/blog/prestashop-vs-shopify-accessibility">PrestaShop vs Shopify</a> · <a href="/blog/wordpress-vs-wix-accessibility">WordPress vs Wix</a></p>
 </section>
 </main>
 
@@ -158,7 +161,7 @@
 <script>
 function gradeOf(s){return s>=90?'A':s>=75?'B':s>=55?'C':'D'}
 async function shareResult(){
-  const url=location.origin+'/scan.html#url='+encodeURIComponent(document.getElementById('url').value.trim());
+  const url=location.origin+'/scan#url='+encodeURIComponent(document.getElementById('url').value.trim());
   try{await navigator.clipboard.writeText(url);}catch(e){
     const ta=document.createElement('textarea');ta.value=url;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();}
   alert('Link copied: '+url);

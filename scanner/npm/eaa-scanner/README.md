@@ -25,12 +25,36 @@ eaa-scan https://example.com
 ## Usage
 
 ```bash
-eaa-scan <url-or-file>... [--json] [--fail-on error|warning]
+eaa-scan <url-or-file>... [--json] [--fail-on error|warning] [--crawl N]
 
 eaa-scan https://example.com            # human-readable report
 eaa-scan https://example.com --json     # machine-readable (pipe to jq)
 eaa-scan page.html --fail-on warning    # CI mode: exit 1 if warnings found
+eaa-scan https://example.com --crawl 15 # whole-site audit: crawl up to 15 pages
 ```
+
+### Site crawl (`--crawl N`)
+
+One command scans up to N pages of a site (follows same-origin HTML links,
+skips assets) and prints a **site report**: average score, total
+errors/warnings/notices, issues ranked by frequency across the site, the worst
+page, and per-page scores. `--json` gives the full machine-readable structure
+(`aggregate` fields + per-page reports).
+
+```bash
+$ eaa-scan https://example.com --crawl 10
+
+SITE REPORT — https://example.com
+  Pages scanned: 8
+  Average score: 91/100 (A)
+  Totals: 3 errors, 4 warnings, 0 notices
+  Worst page: 76/100 — https://example.com/pricing
+  Issues by frequency:
+       5  IMG_ALT
+       2  CONTRAST
+```
+
+Library use: `const { crawlSite } = require('@mahope/eaa-scanner')`.
 
 ## What it checks
 

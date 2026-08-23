@@ -49,7 +49,18 @@ eaa-scan --json https://example.com
 
 # CI mode: fail the build on warnings too
 eaa-scan --fail-on warning https://example.com
+
+# whole-site audit: crawl up to N same-origin pages (1-200)
+eaa-scan https://example.com --crawl 15
 ```
+
+### Site crawl (`--crawl N`)
+
+One command scans a whole site: it starts at your URL, follows same-origin
+links breadth-first (assets like .zip/.pdf/images are skipped), and returns a
+combined report — average score, total issues ranked by frequency across the
+site, and the worst-scoring page. Combine with `--json` for machine output.
+Progress goes to stderr, so you can pipe the report.
 
 Exit code is `0` when clean, `1` when findings at `--fail-on` severity exist
 (default: errors) — drop it straight into CI.

@@ -403,7 +403,110 @@ def scan_url(url: str, timeout: int = 15) -> dict:
         break
     rep = scan_html(html)
     rep["url"] = url
+    rep["html"] = html   # retained so crawl_site can extract same-origin links
     return rep
+
+
+# --- link extraction + site crawl -------------------------------------------
+
+_SKIP_HREF = re.compile(
+    r"^(mailto:|tel:|javascript:|data:|#)", re.IGNORECASE)
+_SKIP_EXT = re.compile(
+    r"\.(zip|tar|gz|tgz|pdf|png|jpe?g|gif|svg|webp|ico|css|js|json|xml|"
+    r"woff2?|mp4|mp3|dmg|exe|deb|appimage|whl)(\?|$)", re.IGNORECASE)
+_HREF_RE = re.compile(r"""<a\s[^>]*href\s*=\s*(?:"([^"]*)"|'([^']*)')""", re.IGNORECASE)
+
+
+def extract_links(html: str, base_url: str) -> list:
+    """Same-origin <a href> links found in *html*, absolute and deduplicated."""
+    from urllib.parse import urljoin, urlsplit
+    parts = urlsplit(base_url)
+    out = set()
+    for m in _HREF_RE.finditer(html):
+        href = (m.group(1) or m.group(2) or "").strip()
+        if not href or _SKIP_HREF.match(href) or _SKIP_EXT.search(href):
+            continue
+        u = urljoin(base_url, href)
+        p = urlsplit(u)
+        if p.scheme not in ("http", "https") or p.netloc != parts.netloc:
+            continue          # same-site only; malformed URLs fail urljoin/split harmlessly
+        out.add(u.split("#", 1)[0])
+    return sorted(out)
+
+
+def crawl_site(start_url: str, max_pages: int = 10, timeout: int = 15,
+               delay_s: float = 0.25, on_page=None) -> dict:
+    """BFS-crawl same-origin links from *start_url* up to *max_pages* pages.
+
+    Returns {"pages": [report,...], "aggregate": {...}}. Individual page
+    failures are reported in the result, never raised.
+    """
+    import time
+
+    seen = set()
+    queue = [start_url]
+    pages = []
+    while queue and len(seen) < max_pages:
+        url = queue.pop(0)
+        if url in seen:
+            continue
+        seen.add(url)
+        try:
+            rep = scan_url(url, timeout=timeout)
+        except Exception as e:
+            rep = {"ok": False, "error": str(e), "score": None,
+                   "findings": [], "summary": {}}
+        rep["target"] = url
+        if not rep.get("ok"):
+            # retry once on transient network hiccups
+            try:
+                time.sleep(delay_s)
+                rep = scan_url(url, timeout=timeout)
+                rep["target"] = url
+            except Exception as e:
+                rep = {"ok": False, "error": str(e), "score": None,
+                       "findings": [], "summary": {}, "target": url}
+        html = rep.get("html") or ""
+        rep.pop("html", None)          # keep the aggregate report lean
+        pages.append(rep)
+        if on_page:
+            try:
+                on_page(rep, len(seen), max_pages)
+            except Exception:
+                pass
+        if rep.get("ok"):
+            queue.extend(link for link in extract_links(html, url)
+                         if link not in seen)
+        time.sleep(delay_s)
+
+    ok_pages = [p for p in pages if p.get("ok")]
+    totals = {"errors": 0, "warnings": 0, "notices": 0}
+    by_rule = {}
+    for p in ok_pages:
+        s = p.get("summary", {})
+        for k in totals:
+            totals[k] += s.get(k, 0)
+        for f in p["findings"]:
+            by_rule[f["rule_id"]] = by_rule.get(f["rule_id"], 0) + f["count"]
+    failed = len(pages) - len(ok_pages)
+    avg_score = (round(sum(p["score"] for p in ok_pages) / len(ok_pages))
+                 if ok_pages else None)
+    worst = min(ok_pages, key=lambda p: p["score"]) if ok_pages else None
+    aggregate = {
+        "pagesScanned": len(pages),
+        "pagesFailed": failed,
+        "averageScore": avg_score,
+        "grade": None if avg_score is None else
+            ("A" if avg_score >= 90 else "B" if avg_score >= 75
+             else "C" if avg_score >= 55 else "D"),
+        "totalErrors": totals["errors"],
+        "totalWarnings": totals["warnings"],
+        "totalNotices": totals["notices"],
+        "rulesByFrequency": sorted(by_rule.items(), key=lambda kv: -kv[1]),
+        "worstPage": None if worst is None else
+            {"target": worst.get("target"), "score": worst["score"]},
+    }
+    return {"pages": pages, "aggregate": aggregate}
 
 
 if __name__ == "__main__":

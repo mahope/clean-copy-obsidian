@@ -77,6 +77,14 @@ Hvis han også vil have Gumroad: endnu en konto, men ikke kritisk.
 
 Alle Mads-interaktioner er **én-vejs, forudsigelige og tidsbegrænsede.**
 
+## Desktop-app (tilføjet iteration 56)
+
+EAA Compliance Scanner Desktop (Electron) — nyt produktformat, samme kerne:
+- Fri desktop-app til macOS med 16 WCAG 2.1 AA-regler, offline-brug, save-as-PDF
+- Distribueres som kildekode-zip (17 KB) via /downloads — ingen markedsplads nødvendig
+- Pro-licens ($29/år) via Lemon Squeezy når API-nøgle er tilgængelig
+- Bygget mens KDP-konto og Lemon Squeezy-nøgle venter på Mads
+
 ## Hvad kan slå det ihjel
 
 1. **Amazon ændrer KDP-politik** (lav risiko — stabil platform siden 2007)

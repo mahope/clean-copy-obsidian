@@ -49,10 +49,22 @@ eaa-scan --json https://example.com
 
 # CI mode: fail the build on warnings too
 eaa-scan --fail-on warning https://example.com
+
+# whole-site audit: crawl up to N same-origin pages
+eaa-scan https://example.com --crawl 15
 ```
 
 Exit code is `0` when clean, `1` when findings at `--fail-on` severity exist
 (default: errors) — drop it straight into CI.
+
+## GitHub Actions
+
+A ready-made workflow is published alongside this README:
+[`eaa-scan-github-action.yml`](https://hermes-passiv.pages.dev/downloads/eaa-scan-github-action.yml).
+Drop it into `.github/workflows/eaa-scan.yml`, edit the `PAGES` list, and every
+push / pull request / weekly schedule runs the scanner with `--fail-on warning`.
+The template also includes an optional `crawl-audit` job that runs
+`--crawl 25` on schedules for a whole-site report.
 
 ## Example output
 
@@ -66,6 +78,28 @@ Score: 88/100  Grade B (errors=1, warnings=0, notices=0)
 Note: automated checks catch ~30-40% of accessibility issues.
 A full manual checklist is still required for EAA conformance.
 ```
+
+## Desktop app (optional)
+
+A desktop version (Electron) is available as source:
+[`eaa-scanner-desktop-src-1.1.1.zip`](https://hermes-passiv.pages.dev/downloads/eaa-scanner-desktop-src-1.1.1.zip).
+
+```bash
+unzip eaa-scanner-desktop-src-1.1.1.zip && cd desktop
+npm install
+npm start
+```
+
+Note: on some npm versions the Electron post-install script is blocked
+("Electron failed to install correctly"). Fix with:
+
+```bash
+node node_modules/electron/install.js   # or: npm rebuild electron
+npm start
+```
+
+Requires Node.js 18+. The scanner core itself is pure JavaScript with no
+runtime dependencies — `scanner-core.js` can also be used directly in Node.
 
 ## Library use
 

@@ -19,6 +19,16 @@
   "license": "https://opensource.org/licenses/MIT"
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "EAA Compliance Scanner Desktop",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "macOS 12+ (Apple Silicon)",
+  "description": "Native desktop application for EAA / WCAG 2.1 AA compliance scanning. Offline-capable, save-as-PDF reports.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
 <style>
   .dl-card { background: var(--color-surface-2, #16202c); border-radius: 12px; padding: 1.5rem; margin: 1rem 0; }
   .dl-card code { display: block; background: #0b1119; padding: .8rem 1rem; border-radius: 8px; margin-top: .6rem; overflow-x: auto; font-size: .95em; }
@@ -39,7 +49,7 @@
   <section class="dl-card">
     <h2>Install with pip</h2>
     <p>Install straight from this page — no account needed:</p>
-    <code>pip install https://hermes-passiv.pages.dev/downloads/eaa_scanner-1.0.0-py3-none-any.whl</code>
+    <code>pip install https://hermes-passiv.pages.dev/downloads/eaa_scanner-1.1.0-py3-none-any.whl</code>
     <p>Once the package is on PyPI, simply:</p>
     <code>pip install eaa-scanner</code>
   </section>
@@ -47,8 +57,20 @@
   <section class="dl-card">
     <h2>Node.js / npm (new)</h2>
     <p>Same 16 rules, same JSON report — now for Node&nbsp;18+. Zero dependencies:</p>
-    <code>npm install -g https://hermes-passiv.pages.dev/downloads/mahope-eaa-scanner-1.0.0.tgz<br>npx eaa-scan https://your-site.com --fail-on warning</code>
-    <p>Or use it as a library: <code>const { scanUrl } = require('@mahope/eaa-scanner')</code>.</p>
+    <code>npm install -g https://hermes-passiv.pages.dev/downloads/mahope-eaa-scanner-1.1.0.tgz<br>npx eaa-scan https://your-site.com --crawl 15</code>
+    <p><strong>New: <code>--crawl N</code></strong> — whole-site audit in one command. Follows same-origin
+    links across up to N pages and reports average score, issues ranked by frequency, and the worst pages.</p>
+    <p>Or use it as a library: <code>const { crawlSite } = require('@mahope/eaa-scanner')</code>.</p>
+  </section>
+
+  <section class="dl-card">
+    <h2>🖥️ Desktop App (macOS, Apple Silicon)</h2>
+    <p>Native macOS desktop application for the EAA Compliance Scanner. Same 16 WCAG 2.1 AA rules
+    as the CLI and web versions, with a native interface and one-click save-as-PDF reports.</p>
+    <p><a href="/downloads/eaa-scanner-desktop-src-1.1.1.zip" class="btn-primary" style="display:inline-block;padding:10px 24px;margin:8px 0;text-decoration:none">⬇ Download Source (48 KB)</a></p>
+    <p style="font-size:13px;color:var(--text-dim)">Requires Node.js 18+ and npm. To build and run:</p>
+    <code style="font-size:13px">cd eaa-scanner-desktop<br>npm install<br>npm start</code>
+    <p style="font-size:13px;color:var(--text-dim);margin-top:8px">The app launches as a native macOS window. Enter a URL and scan instantly — or switch to <strong>Whole site</strong> to crawl up to 200 same-site pages with a live progress readout and per-page findings. Linux and Windows builds coming soon.</p>
   </section>
 
   <section class="dl-card">
@@ -57,14 +79,15 @@
     Download the workflow template, drop it into
     <code>.github/workflows/eaa-scan.yml</code>, and edit the page list:</p>
     <code><a href="/downloads/eaa-scan-github-action.yml" download>eaa-scan-github-action.yml</a> &mdash; fails the build on errors or warnings (<code>--fail-on</code>)</code>
+    <p style="font-size:13px;color:var(--text-dim);margin-top:8px">Runs on every push, pull request and a weekly schedule. The template also ships an optional <strong>crawl-audit</strong> job that runs <code>eaa-scan --crawl 25</code> for a whole-site report (average score + most frequent issue types) without failing the build.</p>
   </section>
 
   <section class="dl-card">
     <h2>Direct downloads</h2>
     <ul>
-      <li><a href="/downloads/eaa_scanner-1.0.0-py3-none-any.whl">eaa_scanner-1.0.0-py3-none-any.whl</a> (11 KB)</li>
-      <li><a href="/downloads/eaa_scanner-1.0.0.tar.gz">eaa_scanner-1.0.0.tar.gz</a> — source distribution (11 KB)</li>
-      <li><a href="/downloads/mahope-eaa-scanner-1.0.0.tgz">mahope-eaa-scanner-1.0.0.tgz</a> — Node.js package, install with <code>npm install -g &lt;url&gt;</code> (8 KB)</li>
+      <li><a href="/downloads/eaa_scanner-1.1.0-py3-none-any.whl">eaa_scanner-1.1.0-py3-none-any.whl</a></li>
+      <li><a href="/downloads/eaa_scanner-1.1.0.tar.gz">eaa_scanner-1.1.0.tar.gz</a> — source distribution</li>
+      <li><a href="/downloads/mahope-eaa-scanner-1.1.0.tgz">mahope-eaa-scanner-1.1.0.tgz</a> — Node.js package, install with <code>npm install -g &lt;url&gt;</code></li>
       <li><a href="/downloads/eaa-scanner-README.md">README with full usage guide</a></li>
       <li><a href="/downloads/eaa-scan-github-action.yml" download>GitHub Actions workflow template</a></li>
     </ul>
@@ -72,7 +95,7 @@
 
   <section class="dl-card">
     <h2>Quick start</h2>
-    <code>eaa-scan https://your-site.com<br>eaa-scan --json https://your-site.com &gt; report.json<br>eaa-scan --fail-on warning https://your-site.com&nbsp;&nbsp;# CI mode: non-zero exit on warnings</code>
+    <code>eaa-scan https://your-site.com<br>eaa-scan --json https://your-site.com &gt; report.json<br>eaa-scan https://your-site.com --crawl 15&nbsp;&nbsp;# whole-site audit (average score + issue ranking)<br>eaa-scan --fail-on warning https://your-site.com&nbsp;&nbsp;# CI mode: non-zero exit on warnings</code>
     <p>Exit code is <strong>0</strong> when clean and <strong>1</strong> when findings exist at
     the chosen severity, so it drops straight into CI pipelines.</p>
   </section>
@@ -87,5 +110,6 @@
 <footer class="site-footer">
   <div class="container"><a href="/">&larr; hermes-passiv.pages.dev</a></div>
 </footer>
+<script defer src="/track.js"></script>
 </body>
 </html>

@@ -210,4 +210,11 @@
   <url><loc>https://hermes-passiv.pages.dev/blog/magento-eaa-accessibility</loc><changefreq>weekly</changefreq></url>
   <url><loc>https://hermes-passiv.pages.dev/blog/prestashop-eaa-accessibility</loc><changefreq>weekly</changefreq></url>
   <url><loc>https://hermes-passiv.pages.dev/blog/joomla-bitv-accessibility</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://hermes-passiv.pages.dev/blog/prestashop-vs-shopify-accessibility</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://hermes-passiv.pages.dev/blog/wordpress-vs-wix-accessibility</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://hermes-passiv.pages.dev/blog/webflow-vs-squarespace-accessibility</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://hermes-passiv.pages.dev/blog/drupal-vs-typo3-accessibility</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://hermes-passiv.pages.dev/guides/platforms</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://hermes-passiv.pages.dev/scan-da</loc><lastmod>2026-08-27</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://hermes-passiv.pages.dev/compliance-ai</loc><lastmod>2026-08-27</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
 </urlset>

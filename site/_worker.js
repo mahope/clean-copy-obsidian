@@ -19,6 +19,12 @@ export default {
       return handleScanProxy(request, url);
     }
 
+    // === Route: AI Compliance Assistant ===
+    if (path === '/api/compliance-ai') return handleComplianceAI(request, env);
+
+    // === Route: waitlist signup ===
+    if (path === '/api/waitlist') return handleWaitlist(request, env);
+
     // === Route: cookieless visit tracking ===
     if (path === '/api/track') return handleTrack(request, env);
     if (path === '/api/stats') return handleStats(url, env);
@@ -130,6 +136,135 @@ async function handleScanProxy(request, url) {
   }
 }
 /**
+ * Handle the AI Compliance Assistant endpoint.
+ * Accepts a user question, calls OpenRouter (Ox Alpha / fallback),
+ * and returns the answer as JSON.
+ */
+async function handleComplianceAI(request, env) {
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Content-Type': 'application/json',
+  };
+
+  if (request.method === 'OPTIONS') {
+    return new Response(null, { status: 204, headers });
+  }
+
+  if (request.method !== 'POST') {
+    return new Response(
+      JSON.stringify({ ok: false, error: 'POST only' }),
+      { status: 405, headers }
+    );
+  }
+
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return new Response(
+      JSON.stringify({ ok: false, error: 'Invalid JSON body' }),
+      { status: 400, headers }
+    );
+  }
+
+  const question = (body.question || '').trim().slice(0, 2000);
+  if (!question) {
+    return new Response(
+      JSON.stringify({ ok: false, error: 'Missing question' }),
+      { status: 400, headers }
+    );
+  }
+
+  const harmful = /(how\s+to\s+hack|exploit|sql\s+injection|malware|illegal)/i;
+  if (harmful.test(question)) {
+    return new Response(
+      JSON.stringify({ ok: false, error: 'I can only answer compliance-related questions. Please rephrase.' }),
+      { status: 400, headers }
+    );
+  }
+
+  const apiKey = env.OPENROUTER_API_KEY;
+  if (!apiKey) {
+    return new Response(
+      JSON.stringify({ ok: false, error: 'AI service not configured. Contact the site owner.' }),
+      { status: 503, headers }
+    );
+  }
+
+  const systemPrompt = `You are a practical EU digital compliance expert for small web agencies (1-50 employees). You answer questions about:
+
+1. **EAA (European Accessibility Act)** — WCAG 2.1/2.2 AA requirements, accessibility statements, enforcement since June 2025, exemptions for micro-enterprises
+2. **NIS2 Directive** — cybersecurity requirements for digital service providers, vendor security assessments, incident reporting (24h/72h), supply chain security
+3. **GDPR** — data processing agreements, controller vs processor roles, cookie consent, subject access requests, data breach notification
+4. **Practical compliance** — documentation templates, contract clauses, audit checklists, implementing compliance without a dedicated team
+
+Guidelines:
+- Be PRACTICAL and ACTIONABLE. Give specific steps, not just theory.
+- Reference exact regulation articles where relevant (e.g., NIS2 Art. 20, GDPR Art. 28, EAA Annex I).
+- If you don't know something, say so honestly — don't make up regulation numbers.
+- Keep answers concise but complete. Aim for 2-5 paragraphs unless the question needs more.
+- Use plain English, not legalese.
+- IMPORTANT: You are NOT a lawyer. Always include a brief disclaimer when giving specific legal interpretation.
+- End with a practical next-step suggestion where appropriate.
+
+The user's site is: https://hermes-passiv.pages.dev — a free resource with an EAA scanner, platform guides, and compliance templates. Mention it only when directly relevant to their question.`;
+
+  const openRouterUrl = 'https://openrouter.ai/api/v1/chat/completions';
+  const payload = {
+    model: 'openrouter/auto',
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: question },
+    ],
+    max_tokens: 1500,
+    temperature: 0.3,
+  };
+
+  try {
+    const orResponse = await fetch(openRouterUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': 'https://hermes-passiv.pages.dev',
+        'X-Title': 'Hermes Passiv Compliance AI',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!orResponse.ok) {
+      const errText = await orResponse.text().catch(() => 'Unknown error');
+      return new Response(
+        JSON.stringify({ ok: false, error: 'The AI service is temporarily unavailable. Please try again in a moment.' }),
+        { status: 502, headers }
+      );
+    }
+
+    const data = await orResponse.json();
+    const answer = (data.choices?.[0]?.message?.content || '').trim();
+
+    if (!answer) {
+      return new Response(
+        JSON.stringify({ ok: false, error: 'The AI returned an empty response. Please rephrase your question.' }),
+        { status: 502, headers }
+      );
+    }
+
+    headers['Content-Type'] = 'application/json';
+    return new Response(
+      JSON.stringify({ ok: true, answer }),
+      { status: 200, headers }
+    );
+  } catch (err) {
+    return new Response(
+      JSON.stringify({ ok: false, error: 'Network error contacting the AI service. Please try again.' }),
+      { status: 502, headers }
+    );
+  }
+}
+/**
  * Cookieless visit tracking.
  *
  * Privacy: no cookies, no localStorage, no cross-site identifiers.
@@ -161,6 +296,46 @@ function jsonResp(obj, status = 200) {
       'Cache-Control': 'no-store',
     },
   });
+}
+
+/**
+ * Waitlist signup — POST { email }
+ * Stored in the same VISITS KV namespace under wl:<email-hash>.
+ * One entry per email (dedupe). No personal data beyond the email itself.
+ */
+async function handleWaitlist(request, env) {
+  if (request.method === 'OPTIONS') {
+    return new Response(null, { status: 204, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' } });
+  }
+  if (request.method !== 'POST') {
+    return jsonResp({ ok: false, error: 'POST only' }, 405);
+  }
+  try {
+    const body = await request.json();
+    const email = String(body.email || '').trim().toLowerCase();
+    // basic validation — no regex overreach
+    const valid = /^[^\s@]{1,64}@[^\s@]+\.[^\s@]{2,}$/.test(email);
+    if (!valid) {
+      return jsonResp({ ok: false, error: 'Please enter a valid email address.' }, 400);
+    }
+
+    const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('wl:' + email));
+    const key = 'wl:' + [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, '0')).join('');
+
+    const isNew = !(await env.VISITS.get(key));
+    if (isNew) {
+      // store the email so Mads can import the list later; KV value = email
+      await env.VISITS.put(key, email, { expirationTtl: 365 * 86400 });
+      // counter for quick reads
+      const cKey = 'wl-count';
+      const prev = parseInt((await env.VISITS.get(cKey)) || '0', 10);
+      await env.VISITS.put(cKey, String(prev + 1), { expirationTtl: 365 * 86400 });
+    }
+    // always answer ok — do not leak whether an address was already signed up
+    return jsonResp({ ok: true });
+  } catch {
+    return jsonResp({ ok: false, error: 'Something went wrong. Please try again.' }, 500);
+  }
 }
 
 async function handleTrack(request, env) {

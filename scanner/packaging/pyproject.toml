@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "eaa-scanner"
-version = "1.0.0"
+version = "1.1.0"
 description = "Universal EAA / WCAG 2.1 AA compliance scanner for any website. Zero dependencies, pure Python stdlib."
 readme = "README.md"
 requires-python = ">=3.8"

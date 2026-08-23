@@ -1016,3 +1016,19 @@ Iteration 32 færdig. Resumé:
 **Blokering uændret:** KDP-, Gumroad- og Chrome-konti venter stadig på Mads (~15 min). STATUS.md gentager, at det er den højeste prioritet — indhold alene tjener ingen penge.
 2026-08-23T16:25:50+02:00 iteration 10 afsluttet (exit 0)
 2026-08-23T16:27:09+02:00 === iteration 11/15 ===
+Iteration 33 færdig. DECISION.md fandtes, så der blev BYGGET — ingen søgninger brugt (0/12), 0 kr forbrugt.
+
+**Hvad der blev gjort:**
+
+1. **Krydslinkning blogs ↔ guides** (det forrige STATUS pegede på):
+   - Alle 10 platform-guides fik en "Related reading"-sektion med 2-3 relevante blogindlæg valgt pr. platform (0 links før).
+   - 4 centrale blogindlæg (EAA-checklist, WCAG 2.2, overlays, enforcement) fik en blok der linker til alle 10 guides — besøgende fra søgning kan nu finde vej til scanneren.
+2. **Fundet og rettet 1 dødt link:** Drupal-guiden pegede på en ikke-eksisterende WooCommerce-guide. Byggede en intern-link-audit (alle hrefs tjekket mod filsystemet) — sitet er nu ved **0 døde interne links**.
+
+**Verifikation:** health_check.py 60/60, JSON-LD valideret på alle HTML-filer, deployet til Cloudflare Pages og curl-verificeret live (Related reading synlig på alle 10 guides, woocommerce-link væk). Commit: `4775f2b`.
+
+**Blokering uændret:** KDP + Gumroad + Chrome dev-konto skal Mads oprette (~15 min) — detaljeret liste står i STATUS.md. Indholdsmaskinen kører, men kontiene er stadig den mest værdifulde næste skridt.
+
+STATUS.md er opdateret med hvad der virkede, og hvad næste iteration bør gøre.
+2026-08-23T16:34:38+02:00 iteration 11 afsluttet (exit 0)
+2026-08-23T16:35:00+02:00 === iteration 12/15 ===

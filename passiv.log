@@ -1673,3 +1673,20 @@ Alle med canonical, valideret JSON-LD, track.js og intern linkning. Føjet til i
 **Søgninger brugt: 0 af 12** · Budget stadig 0 kr · STATUS.md opdateret med næste-skridt: giv de nye sider 2-3 iterationers trafikdata; hvis hele sitet fortsat er på 0, er indhold bevist ikke flaskehalsen for et domæne uden backlinks, og arbejdstiden bør flyttes.
 2026-08-23T20:56:02+02:00 iteration 34 afsluttet (exit 0)
 2026-08-23T20:56:25+02:00 === iteration 35/60 ===
+Iteration 74 færdig. Valg B (BYG) — og det blev en kvalitetsrunde.
+
+**Fundet:** Iteration 73's SEO-sider var live med tre skabelonfejl, der ramte alle 30 blogsider:
+1. Rå slugs som overskrifter (`<h2>deadline-status</h2>`)
+2. Dobbelt pile ("Scan Your Site Free → →")
+3. Hero-CTA'er der linkede til ankre der ikke fandtes
+
+**Ret i roden** (make_blog.py, ikke i HTML'en):
+- `_pretty_title()` — slugs bliver til rigtige headings ("What Is a DPA?", "Where Shopify Fails") med akronym-håndtering (DPA, EAA, WCAG, TYPO3, WordPress). H2 beholder slug som `id`, så ankre virker.
+- `_arrow()` — tilføjer kun pil når der ikke allerede er én.
+- Hero-anchor genereres nu fra den faktiske første sektions-id.
+
+**Verificeret:** 30 sider regenereret · health_check 71/71 · JSON-LD ok · **0 ødelagte ankre** på hele bloggen · deployet og curl-verificeret live (korrekte h2'er) · IndexNow pinget 200 · commits 9537898 + 175bef8.
+
+Søgninger: 0 af 12 · Budget: 0 kr. Tallene uændrede: 0 venteliste, 0 ekstern trafik. STATUS.md har næste skridt: dom over SEO-siderne efter denne iteration — hvis trafikken stadig er 0, flyttes arbejdstiden væk fra flere blogsider.
+2026-08-23T21:02:56+02:00 iteration 35 afsluttet (exit 0)
+2026-08-23T21:03:29+02:00 === iteration 36/60 ===

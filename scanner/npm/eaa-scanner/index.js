@@ -103,6 +103,8 @@ function scanHtml(html) {
     targetBlankNoWarning: [], idsSeen: new Map(), dupIds: new Set(),
     styleStack: [], linkText: [], blankStack: [], colorPairs: [],
     inHeading: null, headingText: [], openLabel: false,
+    inputImagesNoAlt: 0, videoNoTracks: [], audioNoAlt: [],
+    autoplayUnpausable: [], marqueeBlinkCount: 0, posTabindex: 0,
   };
 
   try {
@@ -164,7 +166,11 @@ function scanHtml(html) {
         if (a.for !== undefined && a.for !== '') c.labelsFor.add(a.for);
       } else if (['input','select','textarea'].includes(tag)) {
         const itype = (a.type || 'text').toLowerCase();
-        if (['hidden','submit','button','reset','image'].includes(itype)) continue;
+        if (['hidden','submit','button','reset'].includes(itype)) continue;
+        if (itype === 'image') {
+          if (a.alt === undefined || !a.alt.trim()) c.inputImagesNoAlt++;
+          continue;
+        }
         const labelled = (aid && c.labelsFor.has(aid)) || a['aria-label'] ||
           a['aria-labelledby'] || a.title;
         if (!labelled) {
@@ -176,6 +182,25 @@ function scanHtml(html) {
         c.linkText.push([]);
       } else if (tag === 'iframe') {
         if (!a.title) c.iframesNoTitle.push((a.src || '').slice(0, 60));
+      } else if (tag === 'input' && (a.type || '').toLowerCase() === 'image') {
+        if (a.alt === undefined || !a.alt.trim()) c.inputImagesNoAlt++;
+      } else if (tag === 'video') {
+        if (!a['data-captions-present']) c.videoNoTracks.push((a.src || '').slice(0, 60));
+        if (a.autoplay !== undefined && a.muted === undefined)
+          c.autoplayUnpausable.push('video');
+      } else if (tag === 'audio') {
+        // an aria-label mentioning a transcript is a weak but real signal of an
+        // alternative; without it, flag for manual caption/transcript check
+        const label = `${a['aria-label'] || ''} ${a.title || ''}`.toLowerCase();
+        if (!/transcript|captions?|subtitle/.test(label)) c.audioNoAlt.push((a.src || '').slice(0, 60));
+        if (a.autoplay !== undefined && a.controls === undefined)
+          c.autoplayUnpausable.push('audio');
+      } else if (tag === 'track') {
+        // a captions/subtitles track inside the current <video> satisfies 1.2.2
+        if (/captions?|subtitles/.test(a.kind || '') && c.videoNoTracks.length)
+          c.videoNoTracks.pop();
+      } else if (tag === 'marquee' || tag === 'blink') {
+        c.marqueeBlinkCount++;
       } else if (tag === 'table') {
         c.tables.push(false);
       } else if (tag === 'th') {
@@ -184,7 +209,10 @@ function scanHtml(html) {
 
       if (a['aria-hidden'] === 'true' && 'tabindex' in a && a.tabindex !== '-1')
         c.ariaHiddenFocusable.push(tag);
+      const tb = parseInt(a.tabindex, 10);
+      if (Number.isFinite(tb) && tb > 0) c.posTabindex++;
       const style = a.style || '';
+      if (/text-decoration\s*:\s*blink/i.test(style)) c.marqueeBlinkCount++;
       if (/font-size\s*:\s*\d+px/.test(style)) c.fixedFontPx++;
       const parent = c.styleStack.length
         ? c.styleStack[c.styleStack.length - 1] : { fg: '', bg: '' };
@@ -256,6 +284,26 @@ function scanHtml(html) {
   if (low.length) findings.push({ rule_id: 'CONTRAST', severity: 'error',
     message: `${low.length} text colour combination(s) below the WCAG AA contrast minimum (4.5:1 normal text, 3:1 large text)`,
     count: low.length, examples: low.slice(0, 3) });
+  if (c.inputImagesNoAlt) findings.push({ rule_id: 'INPUT_TYPE_IMAGE_ALT',
+    severity: 'error',
+    message: `${c.inputImagesNoAlt} image submit button(s) (<input type=image>) without alt text (WCAG 1.1.1)`,
+    count: c.inputImagesNoAlt, examples: [] });
+  add('VIDEO_TRACKS', 'error',
+    '{n} video(s) without a captions/subtitles track (WCAG 1.2.2)', c.videoNoTracks);
+  add('AUDIO_TRANSCRIPT', 'warning',
+    '{n} audio element(s) with no indicated transcript or captions alternative (WCAG 1.2.1)',
+    c.audioNoAlt);
+  add('AUTOPLAY_MEDIA', 'error',
+    '{n} media element(s) that autoplay without visible pause controls or muting (WCAG 1.4.2)',
+    c.autoplayUnpausable);
+  if (c.marqueeBlinkCount) findings.push({ rule_id: 'MARQUEE_BLINK',
+    severity: 'error',
+    message: `${c.marqueeBlinkCount} deprecated blinking/moving element(s) — cannot be paused by the user (WCAG 2.2.2)`,
+    count: c.marqueeBlinkCount, examples: [] });
+  if (c.posTabindex) findings.push({ rule_id: 'POSITIVE_TABINDEX',
+    severity: 'warning',
+    message: `${c.posTabindex} element(s) with tabindex greater than 0 — breaks natural focus order (WCAG 2.4.3)`,
+    count: c.posTabindex, examples: [] });
 
   const sevOrder = { error: 0, warning: 1, notice: 2 };
   findings.sort((x, y) => sevOrder[x.severity] - sevOrder[y.severity]);

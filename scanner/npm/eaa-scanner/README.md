@@ -58,12 +58,15 @@ Library use: `const { crawlSite } = require('@mahope/eaa-scanner')`.
 
 ## What it checks
 
-16 rules covering the WCAG 2.1 AA subset most relevant to the European
-Accessibility Act: missing alt text, unlabeled form fields, empty links and
-buttons, duplicate IDs, missing title/lang/viewport, heading structure,
-iframe titles, table headers, target="_blank" warnings, aria-hidden on
-focusable elements, fixed px fonts, and inline colour contrast (WCAG 1.4.3,
-computed with real relative-luminance maths).
+22 rules covering the WCAG 2.1 AA subset most relevant to the European
+Accessibility Act: missing alt text (including image submit buttons),
+unlabeled form fields, empty links and buttons, duplicate IDs, missing
+title/lang/viewport, heading structure, iframe titles, table headers,
+target="_blank" warnings, aria-hidden on focusable elements, fixed px fonts,
+inline colour contrast (WCAG 1.4.3, computed with real relative-luminance
+maths), video without caption tracks (1.2.2), audio without a transcript
+signal (1.2.1), autoplaying media without pause/mute (1.4.2), deprecated
+marquee/blink content (2.2.2), and positive tabindex values (2.4.3).
 
 Each report gives a 0–100 score with a letter grade and concrete findings.
 

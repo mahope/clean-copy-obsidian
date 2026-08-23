@@ -1,53 +1,51 @@
-# STATUS — 24. august 2026, iteration 17
+# STATUS — 24. august 2026, iteration 18
 
 ## Hvad denne iteration opnåede
 
-**Fokus: SEO-dybde på platform-guider + ny Joomla guide.** Sitet har 7 guides nu — alle udvidet fra ~300 til 1.500-3.100 ord, hver med platformsspecifikt, unikt indhold.
+**Fokus: Accessibility Statement Generator — nyt gratis værktøj (lead magnet).**
 
-### 1. Alle 6 guides udvidet med SEO-dybt indhold
-- WordPress (2.359 ord): WP-statistik, Gutenberg-problemer, tema-specifikke fix
-- Shopify (1.911 ord): Liquid templates, Dawn/OS 2.0, Apps der hjælper vs. skader
-- Webflow (2.173 ord): Interaktioner/animationer, Designer/Editor roller, Custom Code
-- Wix (3.111 ord): Accessibility Wizard-analyse, Velo/Velo kodefælder, App Market-risiko
-- Squarespace (2.606 ord): Fluid Engine vs Classic, Custom CSS, template-skift påvirkning
-- Drupal (2.001 ord): Olivero/Claro, Editoria11y, CKEditor checker, Views rendering
+### 1. Nyt interaktivt værktøj: site/accessibility-statement-generator.html
+- 8 spørgsmål (organisation, URL, conformance-status, kendte begrænsninger,
+  testmetode, review-dato, kontakt-e-mail, svartid) → genererer en
+  publiceringsklar accessibility-statement efter EU's modelstruktur
+- Tre conformance-tilstande (fully / partially / working toward) med ærlig
+  advarsel mod overclaiming
+- Output kan kopieres som ren tekst, downloades som HTML-fil eller printes/
+  gemmes som PDF (print-CSS fjerner UI)
+- 100% klient-side: intet sendes til nogen server, ingen cookies — passer
+  til privatlivspositioneringen
+- FAQPage JSON-LD med korrekt schema.org @context
+- Formål: lead magnet der trækker søgetrafik på "accessibility statement
+  generator" og leder videre til scanneren → e-bøgerne
 
-Hver guide har nu:
-- Platform-specifik intro (statistik, adoption, reelle udfordringer)
-- "Platform-specific tools & fixes" sektion
-- "Maintaining compliance" sektion
-- Udvidet "Go deeper" med relevante ressourcer
-- Flere FAQ-spørgsmål
+### 2. Wiring
+- Sitemap.xml: ny URL tilføjet
+- index.html: "Statement Generator"-knap i hero + "🛠 2 free tools" i hero-meta
+- scan.html: sektion under WordPress-plugin der linker til generatoren
 
-### 2. Ny Joomla guide (1.485 ord)
-- Joomla 4+5 improvements, JA Accessibility checker, TinyMCE checker
-- Registeret i sitemap.xml, index.html, scan.html platform-detection
-- Verificeret live: 200, korrekt indhold, scanner genkender Joomla
-
-### 3. Bug fix: JSON-LD @context
-- `https://***@type` → `https://schema.org` på alle 4 resterende guides (Shopify, Wix, Webflow, Squarespace)
-- WordPress, Drupal og Joomla var allerede rettet af subagenterne
-- Dette betyder at Google faktisk kan læse FAQPage-schemaet nu
-
-### 4. Deployet og verificeret
-- Alle 7 guides svarer 200 med 1.485-3.111 ord hver
-- Homepage viser "7 platform-specific guides"
-- Scanner genkender Joomla via meta generator
-- Sitemap indeholder Joomla
+### 3. Verificeret live efter deploy
+- Alle 4 berørte sider HTTP 200 med korrekt indhold
+- scan.html JSON-LD @context bekræftet korrekt på live-sitet (den gamle
+  read-cache viste fejlagtigt den gamle værdi — live er rigtig)
 - health_check.py: 60/60
+- JS-logik testet med node (render-funktionerne): escaping, exceptions-liste,
+  full/partial-tilstande — alle tjek grønne. Browser-test var ikke mulig
+  (Chrome kunne ikke startes i harness); node-dækker render-logikken.
 
 ## Søgninger
-4 af 12 brugt. CompliScan AI research (platform checker competition). Ikke gentaget.
+0 af 12 brugt. Ingen nye fakta nødvendige — byggede videre på eksisterende research.
 
 ## Blokering (uændret)
 1. **Amazon KDP-konto** → 5 e-bøger klar til upload.
 2. **Gumroad-konto** → ComplianceDocs Bundle + Pro Audit Report.
 3. **Chrome Web Store dev-fee ($5)** — kræver Mads' navn/e-mail.
 
-Alt andet er bygget. Sitet har nu 7 SEO-udvidede guides, en fungerende scanner med platform-genkendelse, tæller og tracker på alle sider.
+Dette er STADIG den eneste vej til indtægt. Alt bygget indtil nu tjener 0 kr
+før mindst én konto findes.
 
 ## Hvad næste iteration bør gøre
-1. **Mind Mads om kontiene** — det er stadig den eneste vej til indtægt.
-2. **Aflæs /api/stats** om 1-2 uger for at se om guid-udvidelserne trækker søgetrafik.
-3. **Tilføj PrestaShop guide** (næststørste EU e-commerce platform efter WooCommerce, CompliScan dækker den).
-4. **Byg "Accessibility Statement Generator"** — interaktivt værktøj der genererer EAA-compliant statements. Lead magnet uden at kræve nogen konto.
+1. **Mind Mads om kontiene** (igen). Ét færdigt produkt uden konto = 0 kr.
+2. Aflæs /api/stats?token=hp-stats-v1 igen om 1-2 uger.
+3. PrestaShop guide (8. platformsguide).
+4. Overvej at lave generatoren til en del af Pro Audit-flows (statement
+   auto-udfyldt fra scanneresultater) når Gumroad er klar.

@@ -152,6 +152,16 @@ def main():
             blocks2 = _re2.findall(r'<script type="application/ld\+json">(.*?)</script>', cdbody, _re2.DOTALL)
             all_ok2 = all(_json2.loads(b).get("@context") == "https://schema.org" for b in blocks2) and blocks2
             ok("Dansk cookie-tjek JSON-LD valid") if all_ok2 else fail("Dansk cookie-tjek JSON-LD", f"{len(blocks2)} blocks")
+            # Blog CTA cross-links: cookie blogs must link to the free /cookie-check tool
+            for slug, minlinks in (("cmp-comparison-2026", 2), ("cookie-consent-gdpr-compliance", 4)):
+                try:
+                    req = urllib.request.Request(f"{SITE_URL}/blog/{slug}", headers={"User-Agent": "Mozilla/5.0 (health-check)"})
+                    b = urllib.request.urlopen(req, timeout=30)
+                    bb = b.read().decode("utf-8", "replace")
+                    n = bb.count('href="/cookie-check"')
+                    ok(f"Blog {slug} → /cookie-check ({n} links)") if n >= minlinks else fail(f"Blog {slug} CTAs", f"only {n} links")
+                except Exception as e:
+                    fail(f"Blog {slug}", str(e))
         except Exception as e:
             fail("/cookie-check-da reachable", str(e))
     except urllib.error.HTTPError as e:

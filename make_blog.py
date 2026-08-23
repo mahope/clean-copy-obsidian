@@ -401,9 +401,9 @@ def main():
             h1='Cookie Consent &amp; GDPR Compliance<br>for Web Agencies',
             subtitle='What small web agencies need to know about cookie banners, consent records, and ePrivacy rules — no legal team required.',
             reading_time='8 minutes',
-            cta_product=('Get the Complete Cookie Consent E-Book →', '/#products'),
-            cta_secondary=('GDPR DPA Guide →', '/blog/gdpr-dpa-web-agencies',
-                           'Our Cookie Consent &amp; Privacy Compliance e-book includes cookie banner templates, consent record templates, privacy policy structure, and data subject request forms.'),
+            cta_product=('Test Your Cookies Free →', '/cookie-check'),
+            cta_secondary=('Run the Cookie Consent Checker →', '/cookie-check',
+                           'Before choosing a CMP, see what cookies your site actually sets and whether trackers fire before consent. Our free Cookie Consent Checker scans any URL in seconds — no signup.'),
             sections=[
                 ('What the Law Says',
                  'Three EU laws govern cookie consent. Most small web agencies know about GDPR, but the ePrivacy Directive is where most cookie requirements live. For now, we operate under GDPR for personal data and the ePrivacy Directive (transposed into national laws) for cookies.',
@@ -697,9 +697,9 @@ def main():
             h1='CMP Comparison 2026:<br>Best Cookie Consent Platforms for EU Web Agencies',
             subtitle='Cookiebot, CookieYes, Iubenda, Osano, Complianz, and more — a side-by-side comparison of pricing, features, Google Consent Mode v2 support, and practical recommendations for small agencies managing multiple client sites.',
             reading_time='8 minutes',
-            cta_product=('Read Our GDPR Guide →', '/blog/cookie-consent-gdpr-compliance'),
-            cta_secondary=('Get the Cookie Consent Guide →', '/blog/cookie-consent-gdpr-compliance',
-                           'Our full GDPR guide covers cookie consent requirements, ePrivacy Directive rules, consent records, and a 7-step implementation plan — nothing here replaces reading the full guide.'),
+            cta_product=('Run the Cookie Consent Checker →', '/cookie-check'),
+            cta_secondary=('Read the GDPR Guide →', '/blog/cookie-consent-gdpr-compliance',
+                           'Our full GDPR guide covers cookie consent requirements, ePrivacy Directive rules, consent records, and a 7-step implementation plan — pair it with a free scan of your own site.'),
             sections=[
                 ('why-cmp-matters', [
                     'Every EU web agency needs to know about cookie consent management platforms (CMPs) in 2026. The ePrivacy Directive and GDPR require informed consent before placing non-essential cookies. Google Consent Mode v2 is mandatory for Google Ads and Analytics tags in the EU. And the EAA now requires accessible consent banners (WCAG 2.1 AA).',

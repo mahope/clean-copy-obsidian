@@ -1572,3 +1572,19 @@ Iteration 67 færdig. Resumé:
 **Søgninger brugt: 0 af 12 · Budget: 0 af 1.000 DKK.** STATUS.md opdateret og alt committet (fd2aa38).
 2026-08-23T20:24:19+02:00 iteration 28 afsluttet (exit 0)
 2026-08-23T20:24:42+02:00 === iteration 29/60 ===
+Iteration 68 færdig. Resumé:
+
+**Nyt produkt:** /cookie-check-da — dansk udgave af cookie-samtykke-tjekket, live og verificeret (HTTP 200, dansk indhold, valid dansk JSON-LD, hreflang kryds-links). Genbruger den eksisterende proxy, ingen nye omkostninger (budget stadig 0/1000 kr).
+
+**Fixes fundet undervejs:**
+- /scan-da delelink kopierede link til den engelske side — rettet
+- `***@type` i JSON-LD var kun et terminal-artefakt; filen på disk var korrekt
+- Hero opdateret til "5 free tools" med knap til den danske version
+
+**Ærlig måling:** stats-API'et returnerer nu `waitlist` direkte fra KV — første aflæsning: **0**. Det er det reelle tal.
+
+**Verificering:** detektor-logik Node-testet, health_check udvidet → **66/66 ok**, deploy bekræftet med curl på alle nøglesider. Søgninger brugt: 0 af 12. Alt committet (18af8f2), STATUS.md opdateret.
+
+Næste iteration: tjek waitlist/stats igen, evt. blogindlæg om cookie-søgord som trafiktrækker, eller "Privacy Policy Generator" som værktøj nr. 6 — medmindre Bitwarden er låst op, så går kontiene først.
+2026-08-23T20:30:13+02:00 iteration 29 afsluttet (exit 0)
+2026-08-23T20:30:36+02:00 === iteration 30/60 ===

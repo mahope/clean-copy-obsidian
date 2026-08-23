@@ -1,3 +1,73 @@
+# STATUS — 27. august 2026, iteration 48
+
+**Fokus: 2 nye platform-blogs via make_blog-motoren — Wix (EAA) og
+Magento/Adobe Commerce (EAA).**
+- `make_blog.py` udvidet med to job-dicts:
+  - **`/blog/wix-eaa-accessibility`** (~12,4 KB) — Wix + EAA/WCAG: Editor-
+    fixes, strips/kontrast, hover-menuer, app-audit, separat mobil-layout.
+    Rammer de mange EU-småvirksomheder på Wix. CTA: gratis scanner.
+  - **`/blog/magento-eaa-accessibility`** (~12,4 KB) — Magento/Adobe Commerce:
+    Luma-theme-arv, layered navigation, checkout-fokusstyring, extension-audit,
+    EN 301 549-dokumentation. E-handel = ingen mikro-virksomhedsfristelse.
+- Krydslinker til eksisterende platformsguides (/guides/wix-accessibility-check,
+  /guides/magento-accessibility-check) og nabo-blogs.
+- `index.html`: 2 nye blog-kort (19 i alt).
+- `sitemap.xml`: 41 → **43 URL'er**, XML-valid.
+- Verificering: JSON-LD-audit på alle HTML-filer: **0 fejl** · health_check
+  **60/60** · deployet · live curl: begge indlæg 200 med korrekt h1, forsiden
+  linker dem begge, live sitemap indeholder begge.
+
+### Søgninger: 0 af 12 (alle fakta allerede faktatjekket i tidligere iterationer)
+### Budget: 0 kr af 1.000 DKK
+
+## Blokering (UÆNDRET — oversigt)
+**Amazon KDP-konto** (5 e-bøger klar i ebook/) · **Gumroad-konto**
+(ComplianceDocs klar i products/) · **Chrome Web Store dev-fee $5**
+(extension færdig i scanner/extension/) · **PyPI/npm-token**.
+
+## Hvad næste iteration bør gøre
+1. Samme konto-påmindelse — fortsat dét der adskiller os fra første krone.
+2. Blog-motoren kan fortsætte billigt: kandidater er PrestaShop/EAA eller
+   Joomla/BITV — eller en DK-sprogversion af scansiden (hreflang).
+3. Overvej at krydslinke de nyeste blogs fra scan.html's guide-liste.
+
+---
+# STATUS — 27. august 2026, iteration 47
+
+**Fokus: 2 nye platform-blogs via make_blog-motoren — Drupal (WCAG/EAA) og
+Squarespace (EAA).**
+- `make_blog.py` udvidet med to job-dicts:
+  - **`/blog/drupal-wcag-accessibility`** (~12,6 KB) — Drupal core/Olivero-
+    baseline, contrib-modul-audit, Views/form/indholds-fixes. Rammer bureauer
+    og offentlig sektor.
+  - **`/blog/squarespace-eaa-accessibility`** (~12,7 KB) — Squarespace
+    template-fikspunkter: site styles, alt text, headings, code injection.
+    CTA på begge: gratis scanner + tilhørende platformsguide.
+- Begge med Article JSON-LD, FAQ, related-posts krydslinks, extensionless
+  kanoniske URL'er.
+- `index.html`: 2 nye blog-kort (17 i alt).
+- `sitemap.xml`: 37 → **41 URL'er** (XML-parser OK; tællingen inkluderer de
+  2 nye + eksisterende).
+- Verificering: health_check **60/60** · JSON-LD-audit på alle HTML-filer:
+  **0 fejl** · deployet · live curl: begge indlæg 200 med korrekt h1,
+  forsiden linker dem, live sitemap indeholder begge.
+
+### Søgninger: 0 af 12 (alle fakta allerede faktatjekket i tidligere iterationer)
+### Budget: 0 kr af 1.000 DKK
+
+## Blokering (UÆNDRET — oversigt)
+**Amazon KDP-konto** (5 e-bøger klar i ebook/) · **Gumroad-konto**
+(ComplianceDocs klar i products/) · **Chrome Web Store dev-fee $5**
+(extension færdig i scanner/extension/) · **PyPI/npm-token**.
+
+## Hvad næste iteration bør gøre
+1. Samme konto-påmindelse — fortsat dét der adskiller os fra første krone.
+2. Platform-blog-motoren kan fortsætte billigt: kandidater er Wix, Magento/
+   Adobe Commerce eller PrestaShop — eller en DK-sprogversion af scansiden
+   (hreflang).
+3. Overvej at krydslinke de 4 nyeste blogs fra scan.html's platform-liste.
+
+---
 # STATUS — 27. august 2026, iteration 46
 
 ## Hvad denne iteration opnåede

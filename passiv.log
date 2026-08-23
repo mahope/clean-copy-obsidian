@@ -1193,3 +1193,40 @@ Iteration 45 færdig og committet (4894c4f).
 Blokering uændret: KDP-, Gumroad-, Chrome dev-fee-konti og PyPI/npm-token venter stadig på Mads — det er fortsat dét der adskiller os fra første krone.
 2026-08-23T17:40:37+02:00 iteration 6 afsluttet (exit 0)
 2026-08-23T17:41:12+02:00 === iteration 7/60 ===
+Iteration 46 færdig. DECISION.md fandtes → jeg byggede videre.
+
+**Udgivet og live-verificeret:**
+
+1. **To nye SEO-blogindlæg** via make_blog.py-motoren:
+   - `/blog/shopify-eaa-accessibility` (14,3 KB) — Shopify + EAA: theme settings, Liquid-fixes, app-audit, checkout
+   - `/blog/webflow-accessibility-audit` (12,3 KB) — Webflow + EAA: div-soup headings, interactions/keyboard, Designer-workflow
+2. **`/scan.html` udvidet:** Ghost, TYPO3, Craft CMS og Umbraco guides tilføjet både til guide-listen og til den automatiske platform-detection efter scan
+3. **index.html:** 17 blog-kort · **sitemap.xml:** 39 URL'er
+
+**Verificering:** health_check 60/60 · JSON-LD-audit på alle blogsider: 0 fejl · deployet · live curl bekræfter begge indlæg 200 med korrekt h1, /scan indeholder de nye guide-links, sitemap live = 39 URL'er.
+
+**Søgninger: 0 af 12 brugt** — alle fakta (EAA-datoer, WCAG-niveauer) var allerede faktatjekket i tidligere iterationer. Budget: stadig 0 kr af 1.000.
+
+Blokering uændret: KDP-, Gumroad-, Chrome dev-fee- og PyPI/npm-konti venter på Mads. Næste iteration: Drupal/Squarespace-blogs eller en platforms-hub-side, jf. STATUS.md.
+2026-08-23T17:47:35+02:00 iteration 7 afsluttet (exit 0)
+2026-08-23T17:48:00+02:00 === iteration 8/60 ===
+**Iteration 47 færdig — 2 nye platform-blogs bygget, deployet og live-verificeret.**
+
+DECISION.md eksisterede allerede (KDP + ComplianceDocs), så jeg valgte B: BYG. Motoren fra iteration 46 var varm, og STATUS.md pegede selv på næste kandidater.
+
+**Bygget:**
+- `/blog/drupal-wcag-accessibility` — Drupal core/Olivero-baseline, contrib-modul-audit, Views/form-fixes
+- `/blog/squarespace-eaa-accessibility` — Squarespace site styles, alt text, headings, code-injection-punkter
+- Begge via `make_blog.py` med Article JSON-LD, FAQ-sektion, krydslinks til de ældre blogs, CTA til gratis scanner + platformsguide
+
+**Verificering (rigtig output, ikke antagelser):**
+- health_check: 60/60
+- JSON-LD-audit på alle HTML-filer: 0 fejl
+- Deployet via deploy.sh · live curl: begge indlæg 200 med korrekt h1 og canonical
+- Forside linker begge kort (17 blog-kort), sitemap live: 41 URL'er inkl. de nye
+
+**Søgninger: 0 af 12** — alle fakta var faktatjekket i tidligere iterationer, ingen nye påstande introduceret. **Budget: 0 kr.**
+
+Blokering uændret: KDP-konto, Gumroad-konto, Chrome dev-fee, PyPI/npm-token — stadig dét der adskiller os fra første krone. STATUS.md er opdateret med alt ovenstående plus næste iterations kandidater (Wix/Magento/PrestaShop-blogs eller DK-sprogversion).
+2026-08-23T17:53:04+02:00 iteration 8 afsluttet (exit 0)
+2026-08-23T17:53:39+02:00 === iteration 9/60 ===

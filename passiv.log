@@ -975,3 +975,25 @@ Alt i mål. Her er hvad iteration 28 leverede:
 - **Site:** 10 blogindlæg, 10 platform guides, 1 scanner, 1 statement generator, 3 e-bøger, 4 ComplianceDocs templates
 2026-08-23T16:07:18+02:00 iteration 7 afsluttet (exit 0)
 2026-08-23T16:07:41+02:00 === iteration 8/15 ===
+Iteration 30 færdig.
+
+**Hvad der blev bygget:** Nyt SEO-blogindlæg `site/blog/accessibility-overlays-eaa.html` (~14.4KB) — "Accessibility Overlays & the EAA: Why One Line of Code Is Not Compliance". Emnet matcher scanner-produktet direkte: folk der googler accessiBe/UserWay er samme målgruppe som scanner-brugerne, og indlæggets konklusion ("scan og fix i koden") peger på produktets CTA `/scan`.
+
+**Fakta (1 søgning af 12 brugt):** FTC bødlagde accessiBe $1M (april 2025), 20-25% af amerikanske accessibility-søgsmål rammer sider med overlay installeret, 900+ underskrifter på Overlay Fact Sheet, EU-Kommissionen har slået fast at overlays alene ikke opfylder EAA.
+
+**Pipeline:** job-dict i make_blog.py → index.html 11 blog-kort → sitemap 25 URLs → health_check 60/60 → scanner-tjek 100/A → deployet → curl-verificeret live (200 + indhold + links OK).
+
+Budget: stadig 0 kr. Blokering uændret: KDP/Gumroad/Chrome-konto venter på Mads — det er stadig den eneste vej til reelle penge; alt SEO-arbejde heropbygger trafikken der skal konverteres når butikken åbner.
+2026-08-23T16:13:38+02:00 iteration 8 afsluttet (exit 0)
+2026-08-23T16:14:02+02:00 === iteration 9/15 ===
+Iteration 31 færdig.
+
+**Bygget:** Nyt blogindlæg "What Does an Accessibility Audit Cost in 2026?" — høj køber-intention (prissøgere er tæt på at købe). Faktatjekket med 1 søgning: real 2026-priser ($0-500 scan, $1.5-3.5k hybrid, $5-15k manuel audit), VPAT-omkostninger, remediation = 1-3x gebyr. Sektioner inkl. hvordan bureauet selv kan pakke og sælge arbejdet (€900-2.500 baseline + re-scan abonnement) — CTA peger direkte på /scan.
+
+**Verificeret:** Scanner 100/A, JSON-LD valideret, sitemap XML-valid (26 URLs), health_check 60/60, deployet og curl-verificeret live (200, indhold OK, index+sitemap opdateret).
+
+**Søgedisciplin:** 1 af 12 brugt. Budget: 0 kr.
+
+**Blokering uændret:** KDP-, Gumroad- og Chrome-konti venter på Mads (~15 min). Indtil da fortsætter jeg med at bygge trafikmaskinen. Næste iteration: NIS2-indhold trænger til opmærksomhed (kun 2 posts vs. 9 EAA-posts).
+2026-08-23T16:18:43+02:00 iteration 9 afsluttet (exit 0)
+2026-08-23T16:19:06+02:00 === iteration 10/15 ===

@@ -126,6 +126,20 @@ def main():
         ok("Schema.org present") if "@type" in body else fail("Schema.org", "missing")
         ok("Viewport meta") if "viewport" in body else fail("Viewport meta", "missing")
         ok("Cover images linked") if "cover.jpg" in body and "gdpr-cover.jpg" in body else fail("Cover images", "not in page")
+
+        # Cookie Consent Checker live
+        try:
+            cc = urllib.request.urlopen(urllib.request.Request(
+                SITE_URL + "/cookie-check", headers={"User-Agent": "HermesHealthCheck/2.0"}), timeout=15)
+            cbody = cc.read().decode()
+            ok("HTTP 200 /cookie-check") if cc.status == 200 else fail("/cookie-check status", f"got {cc.status}")
+            ok("Cookie checker content") if "Consent" in cbody and "scan-proxy" in cbody else fail("Cookie checker", "content missing")
+            import json as _json, re as _re
+            blocks = _re.findall(r'<script type="application/ld\+json">(.*?)</script>', cbody, _re.DOTALL)
+            all_ok = all(_json.loads(b).get("@context") == "https://schema.org" for b in blocks) and blocks
+            ok("Cookie checker JSON-LD valid") if all_ok else fail("Cookie checker JSON-LD", f"{len(blocks)} blocks")
+        except Exception as e:
+            fail("/cookie-check reachable", str(e))
     except urllib.error.HTTPError as e:
         fail("HTTP status", f"HTTP {e.code}")
         for kw in ["NIS2", "EAA", "GDPR", "ComplianceDocs", "schema.org"]:

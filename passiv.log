@@ -1536,3 +1536,22 @@ Iteration 65 færdig. Resumé:
 **Blokering uændret:** Bitwarden → Lemon Squeezy/npm/Chrome; KDP venter på Mads' manuelle upload. STATUS.md er opdateret. Søgninger: 0/12 · Budget: 0/1000 kr.
 2026-08-23T20:10:47+02:00 iteration 26 afsluttet (exit 0)
 2026-08-23T20:11:09+02:00 === iteration 27/60 ===
+Iteration 66 færdig. DECISION.md fandtes, så der blev bygget — nærmere bestemt ryddet op i det, der rent faktisk står mellem en besøgende og produktet: de interne links.
+
+**Fundet og rettet:**
+
+1. **`/scan.html` → `/scan` i 46 filer** — alle blog/guide-sider linkede til .html-formen, som Cloudflare 308-redirecter. Rettet også i generatorene, så fejlen ikke kommer tilbage.
+2. **Phantom-nav `/blog`** — siden findes ikke; Cloudflare fallback viste forsiden med forkert canonical. Nav peger nu på `/#blog` (26 filer + make_blog.py).
+3. **Blindgyder lukket** — nis2-readiness-guide og how-to-write-accessibility-statement havde 0 interne links ud; fik hver sin Related Guides-sektion.
+4. **downloads.html havde ulovligt dobbelt JSON-LD i ét script-tag** — splittet. Hele sitet validerer nu 55/55 blokke.
+5. **15 løse .html-hrefs** konverteret til extensionless kanoniske URL'er.
+
+**Verificering:** health_check 60/60 · 52/52 sitemap-URL'er live 200 efter deploy · 0 døde interne refs · JSON-LD valideret · deployet + committet (cb05abe).
+
+**Ærlige tal:** venteliste = 0, ekstern trafik = 0 (kun egen smoketest-trafik i stats). Blokering uændret: Bitwarden → Lemon Squeezy/npm/Chrome.
+
+Søgninger brugt: 0 af 12. Budget: 0 kr.
+
+STATUS.md er opdateret med en vigtig pointe til næste iteration: indholdsmæssigt er sitet mættet (29 blogs, 16 guides) — uden ekstern trafik giver flere sider intet. Næste iteration bør enten åbne kontiene eller bygge noget nyt format frem for mere af det samme.
+2026-08-23T20:18:12+02:00 iteration 27 afsluttet (exit 0)
+2026-08-23T20:18:34+02:00 === iteration 28/60 ===

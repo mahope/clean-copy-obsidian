@@ -1,33 +1,35 @@
-# STATUS — 24. august 2026, iteration 72 — QA-runde: brudte links + manglende canonical
+# STATUS — 24. august 2026, iteration 73 — SEO-nøgleordssider (synlighedsrunde)
 
 ## Konklusion fra sidste iteration (besvaret)
 
-/api/stats 90 dage: stadig **0 ekstern trafik**. Ingen ny `/nis2-check@scan`.
-Derfor valgte jeg denne iteration ikke at bygge mere indhold (29 blogs og
-6 værktøjer er nok) men at gå site-kvaliteten efter — et site med døde links
-konverterer ingen af de besøgende der måtte komme.
+/api/stats viser stadig ~0 ekstern trafik. Kvaliteten er ikke problemet
+(71/71 health checks) — synligheden er. Denne iteration handlede derfor om
+flere indgange fra søgning, som AGENTS.md's næste-skridt-liste pegede på.
 
-## Hvad denne iteration fandt og rettede
+## Hvad denne iteration byggede
 
-Fuld link-audit af alle 55 sitemap-URL'er + alle interne hrefs i hele sitet:
+4 nye, søgbare nøgleordssider med høj købs-/søgehensigt — genereret via ny
+generator `make_blog_seo.py` (genbruger make_blog.py-skabelonen):
 
-1. **/accessibility-statement-generator manglede canonical-tag** — eneste side
-   i sitemap uden én. Tilføjet.
-2. **Dødt link** /blog/nis2-small-agencies-what-changes (siden findes aldrig)
-   fra /nis2-check — peger nu på /blog/nis2-readiness-guide.
-3. **Døde links** /guides og /guides/ (ingen index-side) fra
-   /blog/eaa-enforcement-2026 og /guides/comparison — peger nu på
-   /guides/platforms.
+1. **/blog/nis2-checklist-pdf** — "NIS2 checklist pdf": 25 tjek over alle
+   Artikel 21-foranstaltninger, print-venlig.
+2. **/blog/eaa-deadline-2026** — "EAA deadline": status efter 28. juni 2025,
+   undtagelser, bøder pr. land, hvad man gør nu.
+3. **/blog/gdpr-website-compliance-checklist** — "GDPR website compliance":
+   18 tjek ud over cookie-banneret.
+4. **/blog/free-accessibility-testing-tools** — værktøjssammenligning
+   (WAVE/axe/Lighthouse/screen readers) med workflow.
 
-Alt andet rent: 55/55 URL'er HTTP 200 med matchende canonical, alle billeder
-findes, alt har alt-tekst, JSON-LD valid på alle sider.
+Alle 4: korrekt canonical, JSON-LD valideret, track.js, intern linkning
+(både kryds-links mellem de nye sider og fra index.html-bloggrid'et).
+Sitemap opdateret: 55 → 59 URL'er (extensionless).
 
 ## Verificering
 
-- python3 health_check.py: **71/71 ok**
-- Deployet; curl-live bekræfter canonical + rettede links på de 4 berørte sider
-- IndexNow ping: 200 OK, 55 URLs
-- Commit bf35b1f
+- python3 health_check.py: 71/71 ok · JSON-LD json.loads-valideret på alle 4 nye
+- Deployet; curl-live: alle 4 sider HTTP 200 med rigtigt titelindhold, sitemap 59 locs
+- IndexNow ping: 200 OK, 59 URLs
+- Commit 6435a20
 
 ## Søgninger: 0 af 12 · Budget: 0 kr af 1.000 DKK
 
@@ -42,10 +44,9 @@ KDP kræver manuel upload af Mads (5 bøger klar i ebook/).
 
 ## Hvad næste iteration bør gøre
 
-1. Tjek /api/stats igen. Hvis der stadig er 0 trafik, er kvalitet ikke længere
-   problemet — synlighed er. Overvej hvad der kan hente trafik inden for
-   reglerne (ingen udadvendte handlinger uden Mads' ja): fx flere lange,
-   søgbare nøgleords-sider ("NIS2 checklist pdf", "EAA deadline") eller
-   vent på at Bing/Yandex indexer (IndexNow pinger dem).
-2. Dansk versioner kun hvis der kommer trafik (ellers undladelse).
+1. Tjek /api/stats igen — og specifikt om de 4 nye sider får hits. Giv dem
+   2-3 iterationer før dom.
+2. Hvis stadig 0 trafik over hele linjen: indhold er bevist ikke flaskehalsen
+   for et nyt domæne uden backlinks. Overvej at flytte arbejdstid til noget
+   andet end flere sider (fx forbedre scanneren eller vente på konti).
 3. Hvis Bitwarden låses op: Lemon Squeezy, npm, Chrome, KDP (se BUILD.md).

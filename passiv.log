@@ -2017,3 +2017,36 @@ Iteration 94 færdig. Resumé:
 STATUS.md opdateret med næste skridt (bl.a. at /nis2-check fortsat mangler i selve free-tools.html-oversigten). Blokering uændret: Bitwarden → Lemon Squeezy/npm/Chrome-nøgler, KDP manuel upload.
 2026-08-23T23:38:33+02:00 iteration 55 afsluttet (exit 0)
 2026-08-23T23:39:14+02:00 === iteration 56/60 ===
+Iteration 94 færdig. DECISION.md findes allerede, så jeg byggede:
+
+**Lukkede hullet fra iter. 93:** /nis2-check manglede i den officielle tooloversigt på free-tools.html (kun i llms.txt).
+
+- Ny "NIS2 tools"-sektion i `site/free-tools.html` med to kort: NIS2 Self-Assessment (/nis2-check) og Readiness Guide, med krydslinks til comparison-posten, incident-checklist og PDF
+- JSON-LD `hasPart` udvidet med NIS2 Self-Assessment (12 værktøjer nu, valideret med json.loads)
+- Deployet og verificeret live med curl: /free-tools indeholder nu linket og sektionen; /nis2-check svarer OK
+- health_check.py: 71/71 bestået · IndexNow pinget (78 URLs → 200)
+- Committed (`af3cc5c` + STATUS-opdatering)
+
+Søgninger brugt: 0 af 12 — ingen usikre fakta. Budget: stadig 0 kr.
+
+Næste iteration: flere crawl-bait-sider (dansk pendant eller free-EAA-generators), evt. Machado-severitymatricer til farveblindhedssimulatoren.
+2026-08-23T23:41:52+02:00 iteration 56 afsluttet (exit 0)
+2026-08-23T23:42:15+02:00 === iteration 57/60 ===
+Iteration 95 færdig. DECISION.md fandtes, så jeg byggede (valg B).
+
+**Hvad der blev bygget:** Dansk pendant til NIS2-toolguiden — næste-skridt punkt 1 fra iter. 94:
+
+- Ny side `site/blog/gratis-nis2-vaerktoejer.html` (dansk, Article JSON-LD, track.js, samme design som EN-versionen): 6 værktøjskort (selvvurdering, guide, incident-tjekliste, leverandørkæde, PDF-tjekliste, GDPR-overlap) + e-bog-CTA
+- Indgange: sitemap.xml (+1 URL → 122), blog-grid på forsiden, krydslink fra EN-pendanten
+
+**Verifikation (rigtig output, ikke antagelser):**
+- Deployet og curl-tjekket live: dansk titel kommer tilbage, `/nis2-check-da` bekræftet 200 inden linkning, sitemap + forside indeholder den nye URL ✓
+- health_check.py: 71/71 bestået · IndexNow pinget (200)
+- JSON-LD valideret med json.loads; link-tjek fandt ingen brudte links
+- Committed: `c2d6797` + STATUS-opdatering `fe2f9e5`
+
+**Tal:** 0 søgninger brugt · budget stadig 0/1.000 DKK · trafik rapporteret som 0 (ingen ægte ekstern trafik).
+
+Næste iteration: dansk GDPR-generator-guide eller EN-side om gratis EAA-statement-generatorer — eller kør PUBLISH_CHECKLIST.md hvis Bitwarden-nøglerne er kommet.
+2026-08-23T23:46:03+02:00 iteration 57 afsluttet (exit 0)
+2026-08-23T23:46:26+02:00 === iteration 58/60 ===

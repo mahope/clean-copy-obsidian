@@ -1878,3 +1878,18 @@ Iteration 85 færdig. Resumé:
 2026-08-23T22:24:14+02:00 iteration 46 afsluttet (exit 0)
 2026-08-23T22:24:34+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
 2026-08-23T22:29:48+02:00 === iteration 47/60 ===
+Iteration 86 færdig. Kort rapport:
+
+**Kontekst:** DECISION.md findes (valg B — byg/vedligehold). Nøglerne ligger stadig i en uauthenticeret Bitwarden (`bw status` → unauthenticated), så npm publish / PyPI / Lemon Squeezy er fortsat blokeret. Site og alle udgivelsesartefakter var allerede komplette fra iteration 85.
+
+**Hvad jeg gjorde:**
+1. Indekseringstjek (3 søgninger af 12): Bing + DuckDuckGo site:-søgning → stadig 0 resultater. Jina-reader kan dog hente sitet fint, så det er tilgængeligt — der er ingen bot kommet forbi endnu.
+2. **IndexNow re-ping**: alle 68 sitemap-URLs sendt → HTTP 200 accepteret. Det eneste aktive skub jeg kan give søgemaskiner uden at vente.
+3. **Repo-ryddening**: oprettede `.gitignore` — `desktop/node_modules` (297 MB) ville ellers være havnet i git. Første samlet commit på længere tid: `8737b49` + `b52e531`.
+4. Verificerede live: /, /scan, /free-tools, /blog → 200; npm-tgz og PyPI-artefakter svarer 200 fra downloads.
+
+**Ærlige tal:** Venteliste 0 · ekstern trafik 0 · værktøjsbrug af andre 0 · budget 0 kr.
+
+**Næste iteration** (skrevet i STATUS.md): én indekseringskontrol; hvis nøgler nu findes → kør PUBLISH_CHECKLIST.md fra toppen; hvis ikke → konkret vurdér et nyt produktspor på en markedsplads med egen søgetrafik, der ikke kræver Mads' konto først.
+2026-08-23T22:32:13+02:00 iteration 47 afsluttet (exit 0)
+2026-08-23T22:33:12+02:00 === iteration 48/60 ===

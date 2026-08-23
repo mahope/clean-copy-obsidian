@@ -1,30 +1,42 @@
-# STATUS — 27. august 2026, iteration 42
+# STATUS — 27. august 2026, iteration 43
 
 ## Hvad denne iteration opnåede
 
-**Fokus: endnu en selvbetjent indgang til CLI'en — en færdig GitHub Actions-workflow-skabelon (punkt 2 fra iter. 41).**
+**Fokus: faktatjek og rensning af købsrejsen på forsiden (index.html).**
 
-1. **`/downloads/eaa-scan-github-action.yml`** — klar-til-kopi CI-workflow:
-   - Installerer scanneren direkte fra tarball'en på sitet (ingen konto/token).
-   - Scannner en konfigurerbar liste af URL'er med `--fail-on`, så buildet
-     fejler ved findings; weekly cron + push/PR-triggere + step summary.
-   - YAML valideret (yaml.safe_load), og `--fail-on warning`-adfærden
-     testet mod defekt HTML: exit 1 ved warnings/errors, exit 0 på rene sider.
-2. **Downloads-siden udvidet:** ny CI-sektion + workflow-filen i listen.
-   health_check 60/60 · deployet · live verificeret: /downloads = 200,
-   fil = 200 med korrekt indhold, sektionen linket fra siden.
-3. Commit: `143f5a8`.
+Gik gennem hele index.html som en fremmed ville og fandt fire problemer,
+som alle er rettet:
 
-### Søgninger
-0 af 12 brugt. Budget: 0 kr af 1.000 DKK.
+1. **Forkert GDPR-henvisning:** "Privacy policy — what must be in it
+   (Article 13)" → rettet til **Articles 13–14** (Art. 14 dækker data
+   hentet fra tredjeparter — verificeret mod kilde).
+2. **Forældede KDP-tal:** "$9.09/$6.99 per sale" → ændret til
+   "~$9/~$7 per sale". KDP udvidede 1. juli 2026 70%-båndet til
+   $12.99, men royalty afhænger af filstørrelse (leveringsomkostninger
+   ~$0,15/MB) — præcise tal var ikke dokumenterbare.
+3. **Brudt FAQ:** "How do I get notified when products launch?" svarede
+   "Use the notification link at the bottom of this page" — der ingen
+   link længere findes (siden bruger mailto-knappen i #notify-sektionen).
+   Fjernet; sektionen nederst dækker det allerede.
+4. **Dokumentabel påstand:** "built from field experience working with
+   small web agencies" var ikke noget vi kunne bevise (0 kunder).
+   Omformuleret til hvad der faktisk er sandt: bygget fra EU-primær-
+   kilder + offentliggjorte enforcement-beslutninger.
+
+### Søgninger: 2 af 12 (GDPR Art. 13/14 · KDP royalty-bånd)
+### Budget: 0 kr af 1.000 DKK · Commit `5b47d34`
+
+## Verificering
+health_check 60/60 · alle JSON-LD-blokke validerer sitewide · sitemap
+parser · deployet · live curl-check: nye royalty-tekster og Art.
+13–14-rettelsen synlige på https://hermes-passiv.pages.dev/
 
 ## Blokering (UÆNDRET)
 **Amazon KDP-konto** (5 e-bøger klar i ebook/) · **Gumroad-konto**
 (ComplianceDocs klar i products/) · **Chrome Web Store dev-fee $5**
-(extension færdig i scanner/extension/) · **PyPI/npm-token** (officiel
-distribution).
+(extension færdig i scanner/extension/) · **PyPI/npm-token**.
 
 ## Hvad næste iteration bør gøre
-1. Samme påmindelse om kontiene — fortsat dét der adskiller os fra første krone.
-2. Forbedring af købsrejsen på index.html (klar når betaling åbner); evt.
-   flere sprog på scansiden eller flere guides.
+1. Samme konti-påmindelse — fortsat dét der adskiller os fra første krone.
+2. Evt. hreflang/DK-version af scansiden, eller flere guides via
+   make_guides.py (guides konverterer søgetrafik → scanninger).

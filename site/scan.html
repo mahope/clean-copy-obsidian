@@ -140,6 +140,10 @@
     <li><a href="/guides/prestashop-accessibility-check">PrestaShop accessibility check</a></li>
     <li><a href="/guides/weebly-accessibility-check">Weebly accessibility check</a></li>
     <li><a href="/guides/magento-accessibility-check">Magento / Adobe Commerce accessibility check</a></li>
+    <li><a href="/guides/ghost-accessibility-check">Ghost accessibility check</a></li>
+    <li><a href="/guides/typo3-accessibility-check">TYPO3 accessibility check (BITV / EN 301 549)</a></li>
+    <li><a href="/guides/craftcms-accessibility-check">Craft CMS accessibility check</a></li>
+    <li><a href="/guides/umbraco-accessibility-check">Umbraco accessibility check</a></li>
   </ul>
   <p><a href="/guides/comparison">Compare all platforms side by side →</a></p>
 </section>
@@ -287,7 +291,11 @@ async function scan(url){
     'Drupal':'/guides/drupal-accessibility-check',
     'Joomla':'/guides/joomla-accessibility-check',
     'PrestaShop':'/guides/prestashop-accessibility-check',
-    'Magento':'/guides/magento-accessibility-check'};
+    'Magento':'/guides/magento-accessibility-check',
+    'Ghost':'/guides/ghost-accessibility-check',
+    'TYPO3':'/guides/typo3-accessibility-check',
+    'Craft CMS':'/guides/craftcms-accessibility-check',
+    'Umbraco':'/guides/umbraco-accessibility-check'};
   const gen=((doc.querySelector('meta[name="generator"]')||{}).content||'');
   let plat=null;
   for(const p of Object.keys(PLATFORM_GUIDES)){

@@ -1177,3 +1177,19 @@ Iteration 44 færdig og deployet.
 **Bemærkninger:** comparison.html nævner stadig "10 platforms" i meta/beskrivelser — noteret som kandidat til næste iteration (sammen med at få de 4 nye ind i sammenligningstabellen). STATUS.md er opdateret; blokeringerne er uændrede (KDP-, Gumroad-, Chrome- og PyPI/npm-konti).
 2026-08-23T17:34:50+02:00 iteration 5 afsluttet (exit 0)
 2026-08-23T17:35:12+02:00 === iteration 6/60 ===
+Iteration 45 færdig og committet (4894c4f).
+
+**Hvad der blev bygget:**
+- To nye platformsspecifikke SEO-blogindlæg via make_blog.py-motoren:
+  - `/blog/typo3-accessibility-bitv-check` — TYPO3 + BITV 2.0/EN 301 549/BFSG (tysk offentlig sektor, en målgruppe ingen eksisterende blog ramte)
+  - `/blog/ghost-eaa-accessibility` — Ghost + EAA/WCAG 2.2, inkl. membership/checkout-flow-tjek
+- Begge med Article JSON-LD, FAQ, krydslinks og CTA direkte ind i gratis-scanneren
+- index.html: 15 blog-kort · sitemap: 37 URL'er
+
+**Verificering:** health_check 60/60 · JSON-LD-audit på hele sitet: 0 fejl · deployet · live curl bekræfter begge indlæg 200 med korrekt h1, forsiden linker dem, sitemap live viser begge.
+
+**Søgninger: 0 af 12** — alle fakta (BITV/BFSG/EN 301 549/EAA-dato) var allerede faktatjekket i tidligere iterationer. Budget: 0 kr.
+
+Blokering uændret: KDP-, Gumroad-, Chrome dev-fee-konti og PyPI/npm-token venter stadig på Mads — det er fortsat dét der adskiller os fra første krone.
+2026-08-23T17:40:37+02:00 iteration 6 afsluttet (exit 0)
+2026-08-23T17:41:12+02:00 === iteration 7/60 ===

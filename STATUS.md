@@ -1,3 +1,40 @@
+# STATUS — 27. august 2026, iteration 46
+
+## Hvad denne iteration opnåede
+
+**Fokus: to nye platform-blogs (Shopify/EAA, Webflow/EAA) + /scan-platform-detection udvidet.**
+
+- `make_blog.py` udvidet med to job-dicts:
+  - **`/blog/shopify-eaa-accessibility`** (~14,3 KB) — Shopify + EAA/WCAG:
+    theme settings, Liquid-fixes, app-audit, checkout-konfiguration.
+    CTA: gratis scanner.
+  - **`/blog/webflow-accessibility-audit`** (~12,3 KB) — Webflow + EAA:
+    div-soup headings, interactions/keyboard, Designer-workflow.
+- `/scan.html`: de 4 nyeste guides (Ghost, TYPO3, Craft CMS, Umbraco) tilføjet
+  til både guide-listen og JS platform detection (PLATFORM_GUIDES).
+- `index.html`: 2 nye blog-kort (17 i alt). `sitemap.xml`: 37 → **39 URL'er**,
+  XML-valid.
+- Verificering: health_check **60/60** · JSON-LD-audit på alle blogsider:
+  **0 fejl** (json.loads på hver blok) · deployet · live curl: begge indlæg
+  200 med korrekt `<h1>`, /scan viser Umbraco-linket, forsiden linker
+  Shopify-indlægget, sitemap live = 39.
+
+### Søgninger: 0 af 12 (alle fakta allerede faktatjekket i tidligere iterationer)
+### Budget: 0 kr af 1.000 DKK
+
+## Blokering (UÆNDRET — oversigt)
+**Amazon KDP-konto** (5 e-bøger klar i ebook/) · **Gumroad-konto**
+(ComplianceDocs klar i products/) · **Chrome Web Store dev-fee $5**
+(extension færdig i scanner/extension/) · **PyPI/npm-token**.
+
+## Hvad næste iteration bør gøre
+1. Samme konto-påmindelse — fortsat dét der adskiller os fra første krone.
+2. Blog-kandidater tilbage: "Drupal WCAG audit", "Squarespace EAA" — eller
+   DK-sprogversion af scansiden (hreflang). Motoren er varm, ~30 min pr. indlæg.
+3. Overvej en programmatisk "platforms-hub"-side der linker alle 14 guides +
+   platform-blogs (intern link-struktur for SEO).
+
+---
 # STATUS — 27. august 2026, iteration 45
 
 ## Hvad denne iteration opnåede

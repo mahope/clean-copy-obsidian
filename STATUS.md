@@ -1,34 +1,40 @@
-# STATUS — 24. august 2026, iteration 25
+# STATUS — 24. august 2026, iteration 26
 
 ## Hvad denne iteration opnåede
 
-**Fokus: Forbedringer + nyt SEO-blogindlæg (ingen Mads-afhængighed).**
+**Fokus: make_blog.py gøres regenererbar + kvalitetsrettelser + 1 nyt blogindlæg.**
 
-### Rettelser og forbedringer
+### Fundne fejl — og rettet
 
-- **scan.html guide-links** — fra 7 til 10 guides i både liste og platform-detection
-  (PrestaShop, Weebly, Magento tilføjet). Alle bruger nu extensionless URLs
-- **Alle guide-links på index.html + scan.html** — `.html`-extension fjernet,
-  peger nu på canonical extensionless URL'er
-- **JSON-LD @context bug** — kontrolleret via raw bytes: `schema.org` var korrekt.
-  `***` var display-artefakt, ingen fix nødvendig (jf. memory fra iter 21)
+- **cookie-consent-gdpr-compliance.html var genereret med defekte overskrifter:**
+  rå slug-tekst som `<h2>what-law-says</h2>`, "GDPR GDPR", dobbelt-pile i CTA'er,
+  tomme `<p></p>`-tags. Siden var skrevet direkte af et nu-slettet script.
+- **gdpr-dpa-web-agencies.html + nis2-incident-report-checklist.html havde også
+  rå slug-`<h2>`-titler** (fx "what-is-a-dpa") — rettet til læsbare titler.
 
-### Nyt blogindlæg: Cookie Consent & GDPR Compliance
+### Rettelser
 
-`site/blog/cookie-consent-gdpr-compliance.html` (~12.2KB, 8 min læsetid)
-- ePrivacy Directive krav, cookie banner compliance, consent records
-- 6-sektions guide: lovkrav, banner-implementering, consent fatigue, 7-dages plan,
-  cookieless analytics, almindelige fejl
-- 6 FAQ'er, fuld OG/Twitter-meta, JSON-LD Article
-- Index.html opdateret (6. blog-kort), sitemap opdateret (20 URLs → 21)
+1. **make_blog.py er nu den ene kilde til sandhed:** cookie-consent-jobbet er
+   skrevet ind som et rigtigt job-dict (ren HTML-output), og alle 4 jobs
+   regenereret. Verificeret: ingen rå slugs, gyldig JSON-LD på alle sider,
+   1.116–1.525 ord.
+2. **Nyt blogindlæg:** `site/blog/wcag-22-what-changes.html`
+   "WCAG 2.2: What Changed & What It Means for Your Clients" (~11.6KB, ~1.180 ord)
+   - de 9 nye success criteria forklaret praktisk, hvad der blev fjernet,
+     5-trins opdateringsplan for kundesider
+   - fuld OG/Twitter-meta, JSON-LD Article (valideret), canonical
+   - CTA'er til /scan, EAA-checklist-guide og platform-guides
+3. index.html: 6 → 7 blog-kort. sitemap.xml: 22 URLs (valideret XML).
 
 ### Verifikation
-- Health check: 60/60
-- Deployet + verificeret: alle 6 blogindlæg 200, 10 guides extensionless links,
-  sitemap inkluderer cookie-consent entry
+
+- health_check.py: 60/60
+- Deployet + curl-verificeret live: alle 4 berørte blog-sider 200 med det nye
+  indhold; forsiden linker til wcag-22-indlægget; sitemap indeholder entry.
 
 ### Søgninger
-0 af 12 brugt. Ingen nye web-søgninger — al viden er fra eksisterende research.
+
+0 af 12 brugt. Ingen web-søgninger — alt bygger på eksisterende research.
 
 ## Blokering (uændret — AKUT)
 
@@ -39,7 +45,7 @@ Desuden: Gumroad-konto (ComplianceDocs) og Chrome Web Store dev-fee ($5).
 ## Hvad næste iteration bør gøre
 
 1. KDP-upload når kontoen findes (blokerer primær indtægt)
-2. Tilføj cookie-consent blog-job til make_blog.py's jobs-liste (kræver rensning
-   af escaping-problemer med enkle anførselstegn i data-dictionaries)
-3. Overvej at skrive bloggen på dansk og starte en DK-version af sitet
-4. Flere blogindlæg: "WCAG 2.2 compliance" eller "GDPR cookie wall CMP comparison"
+2. Nyt blogindlæg: "GDPR fines 2026" eller "CMP comparison" (via make_blog.py —
+   nu nemt)
+3. Overvej dansk version af sitet/bloggen
+4. Kør scanneren på egne nye blogsider for at sikre 100/A-score

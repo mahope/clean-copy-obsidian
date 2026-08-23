@@ -185,6 +185,15 @@
 
 **Blokering uændret** — KDP-konto, Gumroad-konto, Chrome Web Store dev-fee. Alt andet er bygget.
 
+## Iteration 26 (24/8)
+
+- make_blog.py er nu regenererbar kilde til ALLE 4 blogindlæg: cookie-consent-
+  jobbet indskrevet som rigtigt job-dict (det gamle script var slettet og havde
+  produceret defekt output: rå slug-h2'er, "GDPR GDPR", dobbelte pile, tomme <p>)
+- Slug-h2 rettet på gdpr-dpa + nis2-incident blogs
+- Nyt blogindlæg: site/blog/wcag-22-what-changes.html (WCAG 2.2, ~11.6KB)
+- Index 7 blog-kort, sitemap 22 URLs. health_check 60/60, deployet + verificeret.
+
 ## Iteration 25 (24/8) — forbedringer + cookie consent blog
 
 - Guide-links extensionless: index.html + scan.html (alle 10 guides, fjernet .html)
@@ -193,3 +202,13 @@
 - Index.html: 5 → 6 blog-kort, sitemap: 20 → 21 URLs
 - health_check 60/60, deployet og live-verificeret
 - Budget: 0 kr. Blokering: uændret (KDP-konto fra Mads)
+## Iteration 27 (24/8)
+
+- Nyt SEO-blogindlæg: site/blog/gdpr-fines-2026.html ("GDPR Fines in 2026",
+  ~13.4KB, ~1.290 ord) — job-dict i make_blog.py. Faktatjekket via 1 søgning:
+  Meta €1,2Mrd (under appeal), TikTok €530M nr. 2, Amazons €746M annulleret
+  marts 2026, €1,2Mrd/år 2025, to-tier bodsystem Art. 83.
+- Index.html: 7 → 8 blog-kort. sitemap.xml: 22 URLs (XML-valid).
+- Scanner-tjek af ALLE 8 blogsider live: samtlige 100/A.
+- health_check.py 60/60. Deployet + curl-verificeret (200, indhold OK,
+  index linker, sitemap indeholder entry).

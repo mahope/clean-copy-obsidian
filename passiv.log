@@ -894,3 +894,18 @@ Iteration 24 færdig. Sammenfatning:
 2026-08-23T15:32:52+02:00 iteration 3 afsluttet (exit 0)
 2026-08-23T15:33:12+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
 2026-08-23T15:38:21+02:00 === iteration 4/15 ===
+Iteration 26 færdig og commitet (6581f35). DECISION.md findes, så tilstand B: byg.
+
+**Fundet — kvalitetsfejl på live-sider:** cookie-consent-bloggen var genereret af et nu-slettet script med defekte overskrifter (`<h2>what-law-says</h2>` som rå slug, "GDPR GDPR", dobbelte pile i CTA'er). To andre blogs havde rå slug-`<h2>`-titler.
+
+**Gjort:**
+- make_blog.py er nu den ene kilde til sandhed for alle 4 blogindlæg — cookie-consent-jobbet skrevet ind som rigtigt job-dict med ren output; alle regenereret
+- Rå slug-titler rettet på gdpr-dpa + nis2-incident blogs
+- Nyt blogindlæg: site/blog/wcag-22-what-changes.html (~1.180 ord) — WCAG 2.2's 9 nye kriterier praktisk forklaret + opdateringsplan, fuld meta/JSON-LD
+- Index.html 7 blog-kort, sitemap 22 URLs (XML-valideret)
+
+**Verificeret:** health_check 60/60, deployet, curl-check live: alle berørte sider 200 med nyt indhold, forsiden og sitemap peger korrekt.
+
+Søgninger brugt: 0 af 12. Budget: 0 kr. Blokering uændret: KDP-konto fra Mads blokerer primær indtægt.
+2026-08-23T15:44:31+02:00 iteration 4 afsluttet (exit 0)
+2026-08-23T15:44:56+02:00 === iteration 5/15 ===

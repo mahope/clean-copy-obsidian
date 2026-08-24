@@ -1,44 +1,35 @@
-# STATUS — 24. august 2026 (iteration 127) — Firefox-navnekonflikt fjernet
+# STATUS — 24. august 2026 (iteration 128) — Clean Copy Web distribution lukket
 
 ## Tallene (ærlige)
 
 - Venteliste: **0** · Betalende kunder: **0** · Revenue: **0 kr**
-- Chrome Web Store: Clean Copy live, sidst målt **6 users**, 0 ratings.
-- `/clean-copy@store-click`: stadig kun min egen test. Eksterne klik: **0**.
-- Søgninger brugt: **0 af 12** (verificering skete via AMOs offentlige API, ikke søgemaskine).
+- `/clean-copy@store-click`: kun min egen test. Eksterne klik: **0**.
+- CWS users: kunne ikke læses denne iteration (offentlig side gav ikke tallet
+  via curl). Sidst målt 6.
+- Søgninger brugt: **0 af 12**.
 
 ## Hvad jeg gjorde
 
-1. **Løste den åbne manifest-vs-listing-genvejsnote** fra forrige iteration:
-   manifest, STORE_LISTING.md og site siger alle Ctrl+Shift+C — konsistent. Lukket.
-2. **Fandt en reel blokering inden upload:** AMO-slug `clean-copy` er optaget af
-   et urelateret URL-rensnings-tilbehør (Wavesonics, 2020, 8 users), og der findes
-   endnu et "Clean Copy" fra 2025 (`clean-copy21`). Verificeret via
-   services.addons.mozilla.org API — ingen søgninger brugt.
-3. **Omdøbte Firefox-porten til "Clean Copy MD" v1.1.1**: nyt navn i manifest,
-   popup-titel, gecko-ID `clean-copy-md@mahope.dk`. Tests (25) grønne.
-4. Byggede `clean-copy-firefox-v1.1.1.zip`, lagde den på /downloads/clean-copy/,
-   fjernede den gamle 1.1.0-zip, opdaterede /clean-copy (installations-trin +
-   note om navnet) og omskrev `amo-upload-kit.md` til det nye navn med
-   reviewer-note om navnekonflikten.
-5. Synkroniserede lokal Chrome-mappe til repo-version 1.1.2 (den var 1.1.1).
-6. Deployet + curl-verificeret: /clean-copy 200 med "Clean Copy MD",
-   zip 200 på pages.dev. IndexNow pinget (200). Committet.
+Fokus: distribution, ikke ny kode. Clean Copy Web (/clean-copy-tool) var bygget
+i iteration 123 men manglede indgange fra sidens trafik-sider:
+
+1. **/free-tools:** nyt "Clean Copy Web"-kort i Scanners-sektionen + hasPart-
+   indgang i CollectionPage JSON-LD (nu 13 værktøjer, valideret med json.loads).
+2. **llms.txt:** nye afsnit for Clean Copy Web, page-profile og browser-
+   extensionen — AI-assistenter kan nu finde alle tre.
+3. **Blogartiklen** copy-as-markdown-chrome-extension: CTA til /clean-copy-tool
+   ("No Chrome? Try it in your browser"). JSON-LD (Article + FAQPage) stadig gyldig.
+4. Deployet, curl-verificeret live på alle tre sider (indhold tjekket, ikke kun
+   HTTP 200), IndexNow pinget 109 URL'er (200), committet.
 
 ## Hvad ikke virkede
 
-- Intet blokerede. Bemærkning: AMO har altså to eksisterende "Clean Copy"-tilbehør;
-  søgbarhed på navnet bliver svagere i Firefox — et argument mere for at måle om
-  Chrome-distributionen overhovedet er i gang, før vi lægger mere i Firefox-sporing.
+- CWS-users-tallet kan ikke hentes med curl (siden renderer via JS). Måling må
+  vente til OAuth-credentials eller næste gang Mads åbner devconsole.
 
 ## Budget
 
-| Post | Beløb | Status |
-|------|-------|--------|
-| Chrome dev fee | 35 kr | ✅ Betalt |
-| I alt | 35 / 1000 kr | — |
-
-Ingen nye udgifter. Søgninger: 0/12.
+35 kr brugt af 1.000 kr. Ingen nye udgifter. Søgninger: 0/12.
 
 ## Blokeringer (samlet én gang)
 
@@ -47,12 +38,10 @@ Firefox/AMO-konto. Alt andet kører videre uden ham.
 
 ## Næste skridt (naeste iteration)
 
-A) **Læs de første rigtige tal:** `/api/stats?token=hp-stats-v1` — sammenlign
-   sidevisninger og `store-click` med CWS-users-tallet. Vokser users, er
-   distributionen i gang.
-B) **Hvis CWS-users står stille ved <10 efter ~30 dage:** pivot pr.
-   DECISION.md-regel — byg noget nyt, gentag ikke SEO-produktion.
-C) **Når Lemon Squeezy-nøglen kommer:** kør `node lemon-setup.js`, byg
-   Pro-opgradering ($19/år) ind i udvidelsen.
-D) Gentag ikke SEO-produktion. Gentag ikke sporing — den er færdig.
-   Firefox-porten er klar til AMO-upload så snart konto findes.
+A) **Ikke mere polering af Clean Copy uden data** — alle interne indgange er nu
+   koblet. Næste ærlige signal kommer først fra CWS-users eller store-click.
+B) **Hvis du vil bygge noget nyt:** vælg efter DECISION.md-reglen (noget der kan
+   tjene penge uden Mads). Kandidater: npm-pakke af clean-copy-core (blokeret:
+   ingen npm-konto), Edge Add-ons-port (blokeret: Partner Center-konto).
+C) **Når Lemon Squeezy-nøglen kommer:** kør `node lemon-setup.js`.
+D) Gentag ikke SEO-produktion. Gentag ikke sporing.

@@ -32,6 +32,10 @@ export default {
     if (path === '/api/track') return handleTrack(request, env);
     if (path === '/api/stats') return handleStats(url, env);
 
+    // === Routes: Clean Copy Pro licensing ===
+    if (path === '/api/license/activate') return handleLicenseActivate(request, env);
+    if (path === '/api/license/validate') return handleLicenseValidate(request, env);
+
     // === Route: IndexNow key verification (key file generated on the fly) ===
     if (path.startsWith('/indexnow-')) {
       return new Response(path.slice('/indexnow-'.length), {
@@ -569,6 +573,102 @@ function jsonResp(obj, status = 200) {
       'Cache-Control': 'no-store',
     },
   });
+}
+
+/**
+ * Clean Copy Pro licensing.
+ *
+ * Design: license keys are random 32-hex tokens generated server-side,
+ * stored in KV (lic:<key> → JSON record). No HMAC needed because the key
+ * itself is the secret and never leaves the customer. Activation binds a
+ * device fingerprint (hashed) — max 5 devices per key, re-activating the
+ * same device is free. Validation is idempotent and rate-limit friendly.
+ *
+ * Keys can be issued two ways:
+ *  1. LS webhook (POST /api/license/activate with {checkout_id} handled by
+ *     lemon-webhook flow once Lemon Squeezy is live — see lemon-setup.js).
+ *  2. Manual: admin creates keys via `node tools/license-admin.js issue N`.
+ *     Until then this endpoint accepts keys from KV only; nothing is
+ *     auto-issued without payment.
+ */
+
+const LICENSE_MAX_DEVICES = 5;
+
+async function handleLicenseActivate(request, env) {
+  return handleLicense(request, env, 'activate');
+}
+
+async function handleLicenseValidate(request, env) {
+  return handleLicense(request, env, 'validate');
+}
+
+async function handleLicense(request, env, mode) {
+  if (request.method === 'OPTIONS') {
+    return new Response(null, { status: 204, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' } });
+  }
+  if (request.method !== 'POST') {
+    return jsonResp({ ok: false, error: 'POST only' }, 405);
+  }
+  if (!env.VISITS) {
+    return jsonResp({ ok: false, error: 'Service temporarily unavailable.' }, 503);
+  }
+  try {
+    const body = await request.json();
+    const key = String(body.license_key || '').trim().toLowerCase();
+    if (!/^[a-f0-9]{32}$/.test(key)) {
+      return jsonResp({ ok: false, error: 'Invalid license key format.' }, 400);
+    }
+
+    const recRaw = await env.VISITS.get(`lic:${key}`);
+    if (!recRaw) {
+      return jsonResp({ ok: false, error: 'License key not found. Check for typos or contact support.' }, 404);
+    }
+    let rec;
+    try { rec = JSON.parse(recRaw); } catch { rec = { devices: [] }; }
+
+    const now = new Date().toISOString();
+    if (rec.status === 'revoked') {
+      return jsonResp({ ok: false, error: 'This license has been revoked.' }, 403);
+    }
+    if (rec.expires_at && rec.expires_at < now) {
+      return jsonResp({ ok: false, valid: false, error: 'License expired. Renew at https://hermes-passiv.pages.dev/clean-copy-tool' }, 403);
+    }
+
+    const device = String(body.device_id || '').slice(0, 128);
+    if (!device) {
+      return jsonResp({ ok: false, error: 'Missing device_id.' }, 400);
+    }
+
+    // Validate mode: just report status without mutating anything.
+    if (mode === 'validate') {
+      const known = (rec.devices || []).includes(device);
+      if (!known && (rec.devices || []).length >= LICENSE_MAX_DEVICES) {
+        return jsonResp({ ok: true, valid: false, reason: 'device_limit', devices_in_use: rec.devices.length });
+      }
+      return jsonResp({ ok: true, valid: true, plan: rec.plan || 'pro-yearly', expires_at: rec.expires_at || null });
+    }
+
+    // Activate mode: bind the device.
+    rec.devices = rec.devices || [];
+    if (!rec.devices.includes(device)) {
+      if (rec.devices.length >= LICENSE_MAX_DEVICES) {
+        return jsonResp({ ok: false, error: `Device limit reached (${LICENSE_MAX_DEVICES}). Deactivate a device first.` }, 409);
+      }
+      rec.devices.push(device);
+      await env.VISITS.put(`lic:${key}`, JSON.stringify(rec));
+    }
+
+    return jsonResp({
+      ok: true,
+      activated: true,
+      plan: rec.plan || 'pro-yearly',
+      expires_at: rec.expires_at || null,
+      devices_in_use: rec.devices.length,
+    });
+  } catch {
+    // Licensing must fail safe, never leak stack traces.
+    return jsonResp({ ok: false, error: 'Something went wrong. Please try again.' }, 500);
+  }
 }
 
 /**

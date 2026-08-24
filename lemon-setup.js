@@ -83,6 +83,15 @@ const PRODUCTS = [
     type: 'software',
     url: 'https://hermes-passiv.pages.dev/downloads/mahope-eaa-scanner-desktop-1.0.0.zip',
   },
+  {
+    id: 'clean-copy-pro',
+    name: 'Clean Copy Pro',
+    slug: 'clean-copy-pro',
+    description: 'Pro upgrade for the Clean Copy converter (web + browser extension): batch conversion, custom cleanup rules, a year of major updates. One license, 5 devices.',
+    price_cents: 1900,      // $19/yr
+    type: 'software-license',
+    license: true,          // triggers license-key issuance instructions in output
+  },
 ];
 
 // ── API helpers ───────────────────────────────────────────────────
@@ -303,6 +312,7 @@ async function main() {
         productId: prodId,
         variantId: varId,
         priceId,
+        licenseProduct: !!product.license,
       });
     } catch (err) {
       console.error(`  ✗ FAILED: ${err.message}`);
@@ -330,6 +340,17 @@ async function main() {
   for (const r of results) {
     const slug = r.id.replace(/-/g, '_');
     console.log(`  const CHECKOUT_${slug.toUpperCase()} = '${r.checkoutUrl}';`);
+    if (r.licenseProduct) {
+      console.log(`\n  ── ${r.name} is a LICENSED product. Post-setup steps:`);
+      console.log('  1. In the Lemon Squeezy dashboard, add a webhook:');
+      console.log('     URL:    https://hermes-passiv.pages.dev/api/license/activate');
+      console.log('     Events: order_created, subscription_created');
+      console.log('  2. The Worker issues a key per order and emails it via LS receipt.');
+      console.log('     Until webhook automation lands, issue keys manually with:');
+      console.log('       node tools/license-admin.js issue 1   # then email to buyer');
+      console.log('  3. Inject the checkout link into the buy button before deploy:');
+      console.log(`       node tools/set_checkout_url.js "${r.checkoutUrl}"`);
+    }
   }
 }
 

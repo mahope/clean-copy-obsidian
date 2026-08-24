@@ -102,6 +102,13 @@
     details.faq { border-bottom: 1px solid var(--color-border); padding: 0.8rem 0; }
     details.faq summary { cursor: pointer; font-weight: 600; }
     details.faq p { color: var(--color-text-muted); font-size: 0.9rem; }
+    .pro-box {
+      background: var(--color-surface-2, #f8fafc);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 1.2rem 1.4rem;
+      margin: 1.5rem 0;
+    }
   </style>
 </head>
 <body>
@@ -190,6 +197,32 @@
       use the source of this trick: paste it into the field — the tool detects raw tags starting with
       "&lt;" and converts them directly.</p>
     </details>
+
+    <h2>Clean Copy Pro — $19/year</h2>
+    <div class="pro-box" id="pro-box">
+      <p><strong>Pro</strong> adds priority features to both the web tool and the browser
+      extension: <em>batch conversion</em> of many snippets at once, <em>custom cleanup
+      rules</em> you define once and reuse everywhere, and a year of major updates.
+      One license covers 5 devices.</p>
+      <p id="pro-buy-row">
+        <a class="btn-primary pro-buy" id="pro-buy" style="text-decoration:none;display:inline-block;" href="#" rel="nofollow noopener" hidden>Buy Clean Copy Pro — $19/year</a>
+        <span id="pro-soon" class="tool-hint">Checkout opens shortly — join the
+        <a href="/#waitlist">announcement list</a> to hear first.</span>
+      </p>
+      <details class="faq" id="pro-activate-details">
+        <summary>Already have a license key? Activate it here</summary>
+        <form id="pro-form" style="margin-top:.8rem;">
+          <label for="pro-key" style="font-weight:400;font-size:.9rem;">License key</label>
+          <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.35rem;">
+            <input type="text" id="pro-key" name="license_key" autocomplete="off"
+                   placeholder="32-character key" required aria-describedby="pro-status"
+                   style="flex:1;min-width:220px;padding:.55rem .7rem;border:1px solid var(--color-border);border-radius:8px;background:var(--color-surface);color:var(--color-text);font-family:'SF Mono','Monaco',monospace;font-size:.85rem;">
+            <button type="submit" class="btn-primary">Activate</button>
+          </div>
+          <p id="pro-status" role="status" aria-live="polite" style="font-size:.85rem;margin-top:.5rem;"></p>
+        </form>
+      </details>
+    </div>
 
     <footer style="text-align:center;padding:2rem 1rem;color:var(--color-text-muted);font-size:0.85rem;">
       <p><a href="/clean-copy">Clean Copy browser extension</a> · <a href="/free-tools">More free tools</a> · by Passiv</p>
@@ -307,6 +340,76 @@
         + '<ul><li>Hired 6 engineers</li><li>Shipped v2<ul><li>New editor</li><li>Offline mode</li></ul></li></ul>'
         + '<p>Contact: \u201Cteam\u201D <code>ops@example.com</code></p>';
       convert();
+    });
+
+    // ── Clean Copy Pro: license activation ──────────────────────────
+    // Checkout link is injected at deploy time when the Lemon Squeezy
+    // checkout exists (see PRO_CHECKOUT_URL). Until then the buy button
+    // stays hidden — no dead purchase links.
+    var PRO_CHECKOUT_URL = ''; // filled by lemon-setup output → sed placeholder
+    if (PRO_CHECKOUT_URL) {
+      var buy = document.getElementById('pro-buy');
+      buy.href = PRO_CHECKOUT_URL;
+      buy.hidden = false;
+      document.getElementById('pro-soon').hidden = true;
+    }
+
+    function deviceId() {
+      // Non-identifying random device token, persisted locally only.
+      try {
+        var d = localStorage.getItem('cc_device_id');
+        if (!d) {
+          d = crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2) + Date.now();
+          localStorage.setItem('cc_device_id', d);
+        }
+        return d;
+      } catch (e) { return 'anon-' + String(Math.random()).slice(2); }
+    }
+
+    var proForm = document.getElementById('pro-form');
+    var proStatus = document.getElementById('pro-status');
+    var proKeyInput = document.getElementById('pro-key');
+
+    function savePro(key, expiresAt) {
+      try { localStorage.setItem('cc_pro_license', key); } catch (e) {}
+      if (expiresAt) {
+        try { localStorage.setItem('cc_pro_expires', expiresAt); } catch (e) {}
+      }
+      showProActive(expiresAt);
+    }
+    function showProActive(expiresAt) {
+      proStatus.textContent = '✓ Pro activated' + (expiresAt ? ' — valid until ' + expiresAt.slice(0, 10) : '') + '.';
+      proStatus.style.color = '#16a34a';
+      proKeyInput.value = '';
+    }
+    try {
+      var saved = localStorage.getItem('cc_pro_license');
+      if (saved) showProActive(localStorage.getItem('cc_pro_expires'));
+    } catch (e) {}
+
+    proForm.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var key = proKeyInput.value.trim().toLowerCase();
+      if (!key) return;
+      proStatus.textContent = 'Checking license…';
+      proStatus.style.color = '';
+      fetch('/api/license/activate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ license_key: key, device_id: deviceId() })
+      }).then(function (r) { return r.json().then(function (j) { return { s: r.status, j: j }; }); })
+        .then(function (res) {
+          if (res.s === 200 && res.j.ok && res.j.activated) {
+            savePro(key, res.j.expires_at);
+          } else {
+            proStatus.textContent = res.j && res.j.error ? res.j.error : 'Activation failed. Please try again.';
+            proStatus.style.color = '#dc2626';
+          }
+        })
+        .catch(function () {
+          proStatus.textContent = 'Network error — check your connection and try again.';
+          proStatus.style.color = '#dc2626';
+        });
     });
   })();
   </script>

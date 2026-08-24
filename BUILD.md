@@ -1,4 +1,19 @@
 
+## Iteration 129 — Clean Copy Pro licens-backend ✅
+
+- `site/_worker.js`: `/api/license/activate` + `/api/license/validate` — KV-baserede
+  nøgler (`lic:<key>`), max 5 enheder, idempotent aktivering, revoked/expired-check,
+  fail-safe fejlbeskeder. Testet lokalt i wrangler dev (alle cases grønne) og live.
+- `site/clean-copy-tool.html`: Pro-sektion ($19/år, features, 5 enheder) +
+  licensaktiveringsformular. Købsknappen er skjult til en ægte LS-checkout-URL
+  injiceres via `tools/set_checkout_url.js` — ingen døde links.
+- `tools/license-admin.js`: issue/revoke/list nøgler via wrangler (manuel
+  leveringsvej indtil webhook-automatisering).
+- `lemon-setup.js`: Clean Copy Pro tilføjet (produkt #8, $19/år, license: true);
+  printer webhook-/manuelle opfølgningstrin for licensproduktet.
+- `site/wrangler.toml`: ny — lokal wrangler dev-test af Worker+KV muligt.
+- Deployet + curl-verificeret live.
+
 ## Iteration 123 — Clean Copy Web ✅
 
 - **Nyt produkt:** `site/clean-copy-tool.html` — indsæt rodet tekst/rå HTML, få ren

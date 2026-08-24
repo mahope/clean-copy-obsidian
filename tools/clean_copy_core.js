@@ -40,6 +40,27 @@ function htmlToMarkdown(html) {
   // CDATA sections: keep the raw content instead of dropping everything.
   md = md.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1');
 
+  // Strip SVG and MathML subtrees entirely — their internal markup/text
+  // would otherwise leak into the output as noise. <math alt> is kept.
+  md = md.replace(/<(svg|math)\b[^>]*>[\s\S]*?<\/\1>/gi,
+    (m, tag) => {
+      if (tag.toLowerCase() === 'math') {
+        const alt = /alt="([^"]*)"/i.exec(m);
+        if (alt && alt[1]) return '\n' + alt[1].trim() + '\n';
+      }
+      return '';
+    });
+
+  // <details>/<summary>: keep the content, summary becomes a bold line so
+  // collapsible sections don't lose their heading.
+  md = md.replace(/<details[^>]*>([\s\S]*?)<\/details>/gi, (_, body) => {
+    let out = '';
+    const sum = body.match(/<summary[^>]*>([\s\S]*?)<\/summary>/i);
+    if (sum) out += '**' + htmlToMarkdown(sum[1]).trim() + '**\n\n';
+    out += htmlToMarkdown(body.replace(/<summary[^>]*>[\s\S]*?<\/summary>/i, ''));
+    return '\n' + out + '\n\n';
+  });
+
   // Definition lists: <dt> becomes a bold term line, <dd> an indented line.
   md = md.replace(/<dl[^>]*>([\s\S]*?)<\/dl>/gi, (_, body) => {
     const parts = [];
@@ -130,7 +151,10 @@ function htmlToMarkdown(html) {
   // so arbitrarily deep nesting produces one "- " per item.
   const convertList = (_, openTag, body) => {
     const ordered = /^<ol/i.test(openTag);
+    // <ol start="3"> continues numbering from the given value.
     let idx = 0;
+    const startAttr = /start\s*=\s*["']?(\d+)["']?/i.exec(openTag);
+    if (ordered && startAttr) idx = Math.max(0, parseInt(startAttr[1], 10) - 1);
     const items = [];
     const re = /<li[^>]*>([\s\S]*?)<\/li>/gi;
     let m;

@@ -109,6 +109,27 @@ def site_zip_state(product, version):
     return {"zip": fname, "exists_in_downloads": exists_local, "referenced_from": refs}
 
 
+# Homebrew formula: version + tarball URL must track the CLI release
+HOMEBREW_FORMULA = os.path.join(ROOT, "homebrew-clean-copy", "Formula", "clean-copy.rb")
+
+def homebrew_state(cli_version):
+    try:
+        with open(HOMEBREW_FORMULA) as f:
+            text = f.read()
+    except Exception as e:
+        return f"ERROR reading {HOMEBREW_FORMULA}: {e}"
+    vm = re.search(r'version\s+"([^"]+)"', text)
+    um = re.search(r'url\s+"[^"]*/v([^/]+)/[^"]*"', text)
+    ver = vm.group(1) if vm else None
+    url_ver = um.group(1) if um else None
+    problems = []
+    if ver != cli_version:
+        problems.append(f"formula version {ver} != CLI {cli_version}")
+    if url_ver != cli_version:
+        problems.append(f"formula url points at v{url_ver}, expected v{cli_version}")
+    return {"version": ver, "url_version": url_ver, "problems": problems}
+
+
 def stale_zips():
     """Old-version zips still sitting in downloads/ (confusing duplicates)."""
     current = set()
@@ -153,6 +174,15 @@ def main():
                 problems.append(f"{prod}: {zs['zip']} not referenced by any site page")
     st = stale_zips()
     report["_stale_zips_in_downloads"] = st
+    cli_v = local_version(PRODUCTS["clean-copy-cli"])
+    if isinstance(cli_v, str) and not cli_v.startswith("ERROR"):
+        hb = homebrew_state(cli_v)
+        report["homebrew-formula"] = hb
+        if isinstance(hb, dict):
+            for p in hb.get("problems", []):
+                problems.append(f"homebrew: {p}")
+        else:
+            problems.append(f"homebrew: {hb}")
 
     print(json.dumps(report, indent=2))
     if problems:

@@ -1,13 +1,16 @@
 const fs = require('fs');
 const vm = require('vm');
 
-// Strip chrome API listeners; keep pure functions cleanText/htmlToMarkdown.
-let src = fs.readFileSync('extension-clean-copy/background.js', 'utf8');
-src = src.split('/* ── Pro: custom cleanup rules')[0];
+let src = fs.readFileSync('tools/clean_copy_core.js', 'utf8');
+// The UMD factory assigns to module.exports in Node — provide a shim so the
+// sandbox exposes CleanCopyCore's API directly.
+src += '\n;this.CleanCopyCore = (typeof module === "object" && module.exports) ? module.exports : CleanCopyCore;\n';
 
 const sandbox = {};
+sandbox.module = { exports: {} };
 vm.createContext(sandbox);
 vm.runInContext(src, sandbox);
+Object.assign(sandbox, sandbox.module.exports);
 
 const assert = require('assert');
 const t1 = sandbox.cleanText('  \u201Csmart\u201D  \u00A0  text\u200B  ');
@@ -77,3 +80,18 @@ assert(/>\s*c/.test(bq2), 'trailing outer content still quoted');
 const bq3 = sandbox.htmlToMarkdown('<blockquote><ul><li>i1</li><li>i2</li></ul></blockquote>');
 assert(bq3.includes('> - i1') && bq3.includes('> - i2'), 'list in quote: ' + JSON.stringify(bq3));
 console.log('iteration-175 fixes OK');
+
+// Iteration 177: <ol start="N"> continues numbering
+const olStart = sandbox.htmlToMarkdown('<ol start="3"><li>three</li><li>four</li></ol>');
+assert(/3\. three/.test(olStart) && /4\. four/.test(olStart), 'ol start attr: ' + JSON.stringify(olStart));
+
+// Iteration 177: details/summary -> bold summary + content
+const det = sandbox.htmlToMarkdown('<details><summary>More info</summary><p>Hidden text</p></details>');
+assert(/\*\*More info\*\*/.test(det) && /Hidden text/.test(det), 'details/summary: ' + JSON.stringify(det));
+
+// Iteration 177: SVG subtrees stripped, MathML alt kept
+const svg = sandbox.htmlToMarkdown('<p>A</p><svg width="10"><circle r="5"/></svg><p>B</p>');
+assert(/^A\s*\n+\s*B$/.test(svg), 'svg stripped: ' + JSON.stringify(svg));
+const math = sandbox.htmlToMarkdown('<p>Formula:</p><math alt="E=mc2"><mi>E</mi></math>');
+assert(/E=mc2/.test(math) && !/<mi>/.test(math), 'math alt kept: ' + JSON.stringify(math));
+console.log('iteration-177 fixes OK');

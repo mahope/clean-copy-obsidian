@@ -47,3 +47,14 @@ const tbl3 = sandbox.htmlToMarkdown(
 );
 assert(tbl3.includes('| **b** [l](x) |'), 'inline markup inside cell: ' + JSON.stringify(tbl3));
 console.log('table conversion OK');
+
+// Iteration 174: CDATA content must survive (was silently dropped)
+const cdata = sandbox.htmlToMarkdown('<p>a</p><![CDATA[raw cdata text]]><p>b</p>');
+assert(cdata.includes('raw cdata text'), 'CDATA kept: ' + JSON.stringify(cdata));
+
+// Iteration 174: definition lists get structure instead of smelting together
+const dl = sandbox.htmlToMarkdown('<dl><dt>API</dt><dd>Interface for apps</dd><dt>SDK</dt><dd>Toolkit</dd></dl>');
+assert(dl.includes('**API**'), 'dt bolded: ' + JSON.stringify(dl));
+assert(/:\s*Interface for apps/.test(dl), 'dd indented: ' + JSON.stringify(dl));
+assert(!/APISDK|TermDef/.test(dl.replace(/[\s*:]|\*\*/g, '')), 'no fused terms');
+console.log('iteration-174 fixes OK');

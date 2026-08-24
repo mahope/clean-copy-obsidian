@@ -316,4 +316,8 @@
   <url><loc>https://hermes-passiv.pages.dev/blog/open-graph-checker</loc><lastmod>2026-08-24</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://hermes-passiv.pages.dev/blog/meta-tag-checker</loc><lastmod>2026-08-24</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://hermes-passiv.pages.dev/da/blog/open-graph-tjekker</loc><lastmod>2026-08-24</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url>
+    <loc>https://hermes-passiv.pages.dev/blog/paste-into-obsidian-clean-markdown</loc>
+    <changefreq>monthly</changefreq>
+  </url>
 </urlset>

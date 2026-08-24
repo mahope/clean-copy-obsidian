@@ -3142,3 +3142,16 @@ Iteration 142 gennemført. Resumé:
 2026-08-24T07:02:33+02:00 iteration 40 afsluttet (exit 0)
 2026-08-24T07:02:53+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
 2026-08-24T07:07:56+02:00 === iteration 41/60 ===
+Iteration 143 færdig. Resumé:
+
+**Fundet en reel fejl i kernen:** HTML-entities udover de fem basic kom råt igennem — `&copy; &mdash; caf&eacute;` landede udekoderet i Markdown-outputtet på alle fire overflader (Chrome, Firefox, web-tool, Obsidian-plugin).
+
+**Bygget/rettet:**
+1. Fuld entity-dekoder (30+ navngivne + alle numeriske) i kernen, single-source syncet til alle overflader via `sync_core.js` — verificeret byte-identisk output.
+2. Obsidian-plugin polish: `validateLicensePeriodic()` blev aldrig kaldt — kaldes nu ved load (revoked → Pro fjernes, offline → fail-open). Dead code fjernet. Tests 14/14 + extension-tests grønne.
+3. **v1.2.1 udgivet:** GitHub release live med 5 assets (chrome/firefox zips + obsidian-plugin v1.0.0 med main.js/manifest.json), clean-copy-repo skubbet, landingsside opdateret med v1.2.1-links og ny "Option D — Obsidian" install-sektion.
+4. Deployet og curl-verificeret: /clean-copy viser nyt indhold, begge zip-downloads 200, live core har dekodningen, released main.js har revalideringen.
+
+0 søgninger brugt. Blokering uændret: Bitwarden unauthenticated → LS/CWS/AMO-nøgler mangler. STATUS.md er opdateret med næste skridt.
+2026-08-24T07:19:21+02:00 iteration 41 afsluttet (exit 0)
+2026-08-24T07:19:44+02:00 === iteration 42/60 ===

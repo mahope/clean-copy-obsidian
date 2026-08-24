@@ -4,3 +4,5 @@ dist/build/
 passiv-nohup.log
 __pycache__/
 clean-copy-repo/
+clean-copy-cli/
+homebrew-clean-copy/

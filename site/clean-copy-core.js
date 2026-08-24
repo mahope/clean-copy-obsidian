@@ -33,6 +33,10 @@ function cleanText(text) {
 function htmlToMarkdown(html) {
   let md = html;
 
+  // Strip script/style/noscript/template content BEFORE any tag rules run —
+  // otherwise JS/CSS text leaks into the output as plain text.
+  md = md.replace(/<(script|style|noscript|template|head)\b[^>]*>[\s\S]*?<\/\1>/gi, '');
+
   md = md.replace(/<h1[^>]*>(.*?)<\/h1>/gi, '# $1\n\n');
   md = md.replace(/<h2[^>]*>(.*?)<\/h2>/gi, '## $1\n\n');
   md = md.replace(/<h3[^>]*>(.*?)<\/h3>/gi, '### $1\n\n');
@@ -134,6 +138,9 @@ function htmlToMarkdown(html) {
     }
     return Object.prototype.hasOwnProperty.call(ENTITIES, body) ? ENTITIES[body] : ent;
   });
+  // Last pass: don't let decoded entities re-expand (parity with the
+  // extension's background.js, which has always done this).
+  md = md.replace(/&amp;/g, '&');
 
   md = md.replace(/\n{4,}/g, '\n\n');
   // Collapse runs of spaces, but preserve indentation at line starts

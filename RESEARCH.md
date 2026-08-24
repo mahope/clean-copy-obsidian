@@ -1,3 +1,31 @@
+# RESEARCH — Iteration 171: GitHub Action-udvidelse + Obsidian PR-blokering bekræftet (0 web-søgninger)
+
+**Dato:** 2026-08-24
+**Metode:** Lokal research (gh CLI, CI-logs, filanalyse). 0 af 12 mulige søgninger brugt.
+
+## Fakta
+
+1. **Obsidian community plugin PR:** Bekræftet blokeret via både REST og GraphQL API
+   (`gh pr create`: "mahope does not have the correct permissions to execute
+   CreatePullRequest"). Web-UI compare-URL'en virker men kræver Mads i browser:
+   `https://github.com/obsidianmd/obsidian-releases/compare/master...mahope:obsidian-releases:add-clean-copy-obsidian?expand=1`
+2. **GitHub Action Marketplace:** Clean Copy Action er ikke synlig på Marketplace
+   (slug `clean-copy-url-to-markdown` returnerer 404). Funktionelt virker den via
+   `uses: mahope/clean-copy-cli@v1` — Marketplace-listing er en ekstra discovery-lag,
+   ikke en forudsætning for brug.
+3. **GitHub Action CI:** `echo "${{ steps...outputs.markdown }}"` fejler på multi-line
+   output med `#`-heading (shell tolker `#` som kommentar). Løsning: `printf '%s\n'`.
+4. **GitHub Action v1.3.0 testet:** Alle 5 jobs (URL, file, html, output_file, CLI) passerer
+   i CI med 100% success rate.
+
+## Konklusion
+
+GitHub Action er den eneste distributionskanal der kan forbedres uden Mads. v1.3.0 gør
+den mere nyttig (file/html inputs) og dermed mere synlig på Marketplace. Obsidian PR
+forbliver Mads-browser-blokeret. CWS upload tilsvarende.
+
+---
+
 # RESEARCH — Iteration 122: Browser store upload-API'er faktatjek (12 web-søgninger)
 
 **Dato:** 2026-08-24

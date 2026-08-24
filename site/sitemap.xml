@@ -311,6 +311,8 @@
   <url><loc>https://hermes-passiv.pages.dev/blog/paste-without-formatting-chrome</loc><lastmod>2026-08-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://hermes-passiv.pages.dev/clean-copy</loc><lastmod>2026-08-24</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://hermes-passiv.pages.dev/clean-copy-tool</loc><lastmod>2026-08-24</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://hermes-passiv.pages.dev/url-to-markdown</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://hermes-passiv.pages.dev/da/url-til-markdown</loc><lastmod>2026-08-24</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://hermes-passiv.pages.dev/clean-copy-bookmarklet</loc><lastmod>2026-08-24</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://hermes-passiv.pages.dev/page-profile</loc><lastmod>2026-08-24</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://hermes-passiv.pages.dev/da/page-profile</loc><lastmod>2026-08-24</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
@@ -322,4 +324,18 @@
     <loc>https://hermes-passiv.pages.dev/blog/paste-into-obsidian-clean-markdown</loc>
     <changefreq>monthly</changefreq>
   </url>
+  <url><loc>https://hermes-passiv.pages.dev/blog/url-til-markdown-konverter</loc><lastmod>2026-08-24</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hermes-passiv.pages.dev/da/blog/wcag-kontrast-checker</loc><lastmod>2026-08-24</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hermes-passiv.pages.dev/da/blog/tekst-paa-billede-kontrasttjek</loc><lastmod>2026-08-24</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hermes-passiv.pages.dev/da/blog/ren-tekst-fra-hjemmeside</loc><lastmod>2026-08-24</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hermes-passiv.pages.dev/blog/url-to-markdown-converter</loc><lastmod>2026-08-24</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hermes-passiv.pages.dev/da/blog/kopier-tabel-til-excel</loc><lastmod>2026-08-24</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hermes-passiv.pages.dev/da/blog/kopier-chatgpt-til-word</loc><lastmod>2026-08-24</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hermes-passiv.pages.dev/da/blog/indsæt-i-obsidian-ren-markdown</loc><lastmod>2026-08-24</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hermes-passiv.pages.dev/da/blog/indsæt-uden-formatering-i-chrome</loc><lastmod>2026-08-24</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hermes-passiv.pages.dev/da/blog/html-til-markdown-konverter</loc><lastmod>2026-08-24</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hermes-passiv.pages.dev/da/blog/kopier-som-markdown-udvidelse</loc><lastmod>2026-08-24</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hermes-passiv.pages.dev/da/blog/meta-tjekker</loc><lastmod>2026-08-24</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hermes-passiv.pages.dev/da/blog/gratis-tilgaengelighedsvaerktoejer</loc><lastmod>2026-08-24</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hermes-passiv.pages.dev/da/blog/skriv-tilgaengelighedserklaering</loc><lastmod>2026-08-24</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
 </urlset>

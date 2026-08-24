@@ -272,13 +272,13 @@
         </ol>
         <h3 style="margin:1.5rem 0 1rem;">Option B — Manual install (load unpacked)</h3>
         <ol>
-          <li><strong>Download the zip</strong> — <a href="/downloads/clean-copy-v1.3.0.zip" rel="noopener">clean-copy-v1.3.0.zip</a> and unzip it.</li>
+          <li><strong>Download the zip</strong> — <a href="/downloads/clean-copy-v1.3.1.zip" rel="noopener">clean-copy-v1.3.1.zip</a> and unzip it.</li>
           <li><strong>Open</strong> <code>chrome://extensions</code> and enable <strong>Developer mode</strong> (top right).</li>
           <li><strong>Click "Load unpacked"</strong> and select the unzipped folder.</li>
         </ol>
         <h3 style="margin:1.5rem 0 1rem;">Option C — Firefox (install from source)</h3>
         <ol>
-          <li><strong>Download the Firefox zip</strong> — <a href="/downloads/clean-copy-firefox-v1.3.0.zip" rel="noopener">clean-copy-firefox-v1.3.0.zip</a> and unzip it. (The Firefox build is named <strong>Clean Copy MD</strong> — the name “Clean Copy” is taken on addons.mozilla.org.)</li>
+          <li><strong>Download the Firefox zip</strong> — <a href="/downloads/clean-copy-firefox-v1.3.1.zip" rel="noopener">clean-copy-firefox-v1.3.1.zip</a> and unzip it. (The Firefox build is named <strong>Clean Copy MD</strong> — the name “Clean Copy” is taken on addons.mozilla.org.)</li>
           <li><strong>Open</strong> <code>about:debugging#/runtime/this-firefox</code>, click <strong>"Load Temporary Add-on…"</strong>, and pick <code>manifest.json</code>. (Temporary add-ons are removed when Firefox closes.)</li>
           <li><strong>A signed, permanent install is coming to addons.mozilla.org</strong> — listing texts are prepared; only account access is pending.</li>
         </ol>
@@ -290,15 +290,15 @@
         </ol>
         <h3 style="margin:1.5rem 0 1rem;">Option E — Obsidian (paste as clean Markdown inside your vault)</h3>
         <ol>
-          <li><strong>Install the plugin</strong> — easiest via <a href="https://github.com/TfTHacker/obsidian42-brat" rel="noopener">BRAT</a>: add <code>mahope/clean-copy-obsidian</code>. Manual alternative: grab <code>main.js</code>, <code>manifest.json</code> and <code>styles.css</code> from the <a href="https://github.com/mahope/clean-copy-obsidian/releases/latest" rel="noopener">latest release</a> (or download the <a href="/downloads/clean-copy-obsidian-v1.0.1.zip" rel="noopener">zip bundle</a>) and put them in <code>&lt;vault&gt;/.obsidian/plugins/clean-copy-obsidian/</code>.</li>
+          <li><strong>Install the plugin</strong> — easiest via <a href="https://github.com/TfTHacker/obsidian42-brat" rel="noopener">BRAT</a>: add <code>mahope/clean-copy-obsidian</code>. Manual alternative: grab <code>main.js</code>, <code>manifest.json</code> and <code>styles.css</code> from the <a href="https://github.com/mahope/clean-copy-obsidian/releases/latest" rel="noopener">latest release</a> (or download the <a href="/downloads/clean-copy-obsidian-v1.0.2.zip" rel="noopener">zip bundle</a>) and put them in <code>&lt;vault&gt;/.obsidian/plugins/clean-copy-obsidian/</code>.</li>
           <li><strong>Reload Obsidian</strong> and enable "Clean Copy" under Community plugins. (A listing in Obsidian's official community-plugin store is pending.)</li>
           <li><strong>Paste with Ctrl/Cmd+Shift+V</strong> — clipboard HTML becomes proper Markdown in your note.</li>
         </ol>
-        <h3 style="margin:1.5rem 0 1rem;">Option F — GitHub Action (convert URLs in your CI pipeline)</h3>
+        <h3 style="margin:1.5rem 0 1rem;">Option F — GitHub Action (convert URLs, files, or raw HTML in CI)</h3>
         <ol>
-          <li><strong>Add to any workflow:</strong> <code>uses: mahope/clean-copy-cli@v1</code> with <code>url: 'https://...'</code></li>
-          <li><strong>Get clean Markdown</strong> — the action fetches the URL, extracts the main content, and converts it. Use the output in later steps: <code>${{ steps.clean-copy.outputs.markdown }}</code></li>
-          <li><strong>Same engine</strong> — zero dependencies, no API key needed. <a href="https://github.com/marketplace/actions/clean-copy-url-to-markdown" rel="noopener">Available on GitHub Marketplace →</a></li>
+          <li><strong>Convert a URL:</strong> <code>uses: mahope/clean-copy-cli@v1</code> with <code>url: 'https://...'</code> — the action fetches the page, extracts the main content, and returns clean Markdown.</li>
+          <li><strong>Convert a local file:</strong> pass <code>file: 'path/to/file.html'</code> to convert a repo-local HTML file. <code>Html</code> input also accepts raw HTML strings directly.</li>
+          <li><strong>Write to a file:</strong> use <code>output_file: 'path/to/result.md'</code> to save the result for later workflow steps. <a href="https://github.com/mahope/clean-copy-cli" rel="noopener">View on GitHub →</a></li>
         </ol>
       </div>
       <p style="color:var(--color-text-muted);font-size:0.85rem;">Source code is MIT-licensed on GitHub. Free forever — no account, nothing leaves your browser.</p>
@@ -310,8 +310,8 @@
       <h2>What's new</h2>
       <div class="feature-grid">
         <div class="feature-card">
-          <h3>v1.3.0 — current</h3>
-          <p>Full HTML entity decoder (named and numeric), hardened table conversion, and one shared conversion core across the Chrome extension, Firefox build, CLI and Obsidian plugin — so every surface produces identical Markdown.</p>
+          <h3>v1.3.1 — current</h3>
+          <p>Full HTML entity decoder (named and numeric), hardened table conversion, and one shared conversion core across the Chrome extension, Firefox build, CLI and Obsidian plugin — so every surface produces identical Markdown. The GitHub Action now also accepts <code>file</code>, <code>html</code>, and <code>output_file</code> inputs for CI pipelines.</p>
           <span class="tech-badge">Aug 2026</span>
         </div>
         <div class="feature-card">
@@ -321,7 +321,7 @@
         </div>
         <div class="feature-card">
           <h3>More surfaces</h3>
-          <p>The same engine now ships as a Firefox extension, a zero-dependency CLI (<code>brew install mahope/clean-copy/clean-copy</code>), an Obsidian plugin, and a <a href="https://github.com/marketplace/actions/clean-copy-url-to-markdown" rel="noopener">GitHub Action</a> — see all install options above.</p>
+          <p>The same engine now ships as a Firefox extension, a zero-dependency CLI (<code>brew install mahope/clean-copy/clean-copy</code>), an Obsidian plugin, and a <a href="https://github.com/mahope/clean-copy-cli" rel="noopener">GitHub Action</a> — see all install options above.</p>
           <span class="tech-badge">5 platforms</span>
         </div>
       </div>

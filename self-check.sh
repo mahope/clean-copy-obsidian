@@ -40,6 +40,11 @@ if [ "$PRODUCT_COUNT" -lt 4 ]; then
   exit 1
 fi
 
-# --- All clear ---
-# Silent on success — only log failures
+# --- Check 4: Version sweep — all Clean Copy surfaces in sync ---
+SWEEP=$(python3 "$(dirname "$0")/version_sweep.py" 2>&1) || true
+if ! echo "$SWEEP" | grep -q "ALL SURFACES IN SYNC"; then
+  log "VERSION_SWEEP_FAIL — $SWEEP"
+  echo "CHECK_FAIL: version mismatch across Clean Copy surfaces"
+  exit 1
+fi
 exit 0

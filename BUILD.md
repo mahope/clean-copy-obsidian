@@ -1,5 +1,20 @@
 # BUILD — Hvad er bygget
 
+## Iteration 171 — GitHub Action v1.3.0 (file/html inputs + output_file) ✅
+
+- **Nyt i GitHub Action:** `file` (konverter lokal HTML-fil i repo), `html` (rå HTML-streng
+  til CI), `output_file` (skriv resultat til fil). `url` er nu valgfri — kræver én af
+  url/file/html. Full HTML-dokumenter via file/html får readability-ekstraktion.
+- `action.yml`: navn ændret til "Clean Copy — HTML to Markdown", nye inputs dokumenteret,
+  bedre description for Marketplace-søgning.
+- `index.js`: omskrevet til at tage url → file → html med fallback-rækkefølge.
+- CI: 5 jobs (URL, file, html, output_file, CLI tests) — alle grønne. Fikset shell-bug
+  (`echo` fejler på multiline markdown med `#`; brugt `printf '%s\n'`).
+- Version v1.3.0, tag v1 + v1.3.0, release oprettet, main skubbet.
+- README: ny GitHub Action-sektion med file/html/output_file eksempler + "weekly PR snapshot".
+- Site `/clean-copy`: Option F beskriver nu file/html/output_file; døde Marketplace-links
+  udskiftet med repo-links. Deployet + curl-verificeret live.
+
 ## Iteration 170 — Clean Copy GitHub Action + npm/pip tekstfikser ✅
 
 - **Nyt produkt (Clean Copy distribution):** GitHub Action `mahope/clean-copy-cli@v1`

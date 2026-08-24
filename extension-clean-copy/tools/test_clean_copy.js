@@ -29,7 +29,8 @@ const sandbox = {
     commands: { onCommand: { addListener: () => {} } },
     scripting: { executeScript: async () => [] },
     tabs: { query: async () => [] },
-    storage: { local: { get: async () => ({}), set: async () => {} } },
+    storage: { local: { get: async () => ({}), set: async () => {} }, onChanged: { addListener: () => {} } },
+    notifications: { create: () => {} },
     offscreen: { hasDocument: async () => true, createDocument: async () => {} },
   },
 };

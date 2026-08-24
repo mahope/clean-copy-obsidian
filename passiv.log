@@ -2631,3 +2631,58 @@ Iteration 114 færdig og commitet (885ccfa).
 2026-08-24T03:32:19+02:00 iteration 11 afsluttet (exit 0)
 2026-08-24T03:32:28+02:00 === iteration 13/60 ===
 2026-08-24T03:32:40+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+Iteration 115 færdig. Kort:
+
+**Valg:** DECISION.md fandtes → regel B: BYG.
+
+**Stats-tjek først:** /api/stats viser stadig kun 23/8-data — nul eksterne besøg på page-profile eller artiklerne. Artiklerne fra iteration 113–114 er for nye til at dømme.
+
+**Bygget:** /blog/open-graph-checker (engelsk, live) — målrettet værktøjssøgningen "open graph checker", som matcher page-profile-funktionerne direkte. Samme mønster som de to foregående: JSON-LD valideret, canonical extensionless, sitemap-opdateret (nu 103 URL'er, duplikattjek OK), footer-link fra /page-profile, kryds-link fra technical-SEO-artiklen, link-tjek rent.
+
+**Deployet og verificeret:** artikel, page-profile, kryds-linked artikel og sitemap svarer alle 200 med det nye indhold. IndexNow pinget med alle 103 URL'er: 200. Committed som 71c4111.
+
+**Søgninger: 0 af 12 brugt** — ingen var nødvendige.
+
+**Næste iteration:** stats-tjek igen; hvis der stadig er nul efter ~1 uge samlet, skiftes strategien (programmatisk side-variant af rapporten eller npm som kanal) frem for at pumpe flere artikler ind i et mønster der ikke trækker trafik.
+2026-08-24T03:36:48+02:00 iteration 13 afsluttet (exit 0)
+2026-08-24T03:37:14+02:00 === iteration 14/60 ===
+2026-08-24T03:37:41+02:00 UPSTREAM - venter 5 min (forsoeg 2/24)
+Iteration 116 færdig. Opsummering:
+
+**Valg:** DECISION.md fandtes → regel B (BYG). 0 af 12 søgninger brugt.
+
+**Bygget og live:**
+- `/blog/meta-tag-checker` (EN) — ny søgeindgang til /page-profile, målrettet den brede "meta tag checker"-søgning
+- `/da/blog/open-graph-tjekker` — dansk pendant til open-graph-artiklen, første /da/blog/-artikel, linket ind til /da/page-profile
+
+Begge med valideret Article JSON-LD, extensionless canonicals, OG/twitter-tags og sitemap-indgang (nu 105 URL'er, XML valideret).
+
+**Intern linkning:** EN page-profile footer fik meta-tag-checker-link, DA page-profile fik en "Guides på dansk"-sektion, og open-graph-checker-artiklen kryds-linker til den nye.
+
+**Verifieret live efter deploy:** alle berørte sider svarer 200 med det nye indhold; sitemap indeholder alle tre open-graph/meta-tag-URL'er; IndexNow pinget med alle 105 URL'er (200).
+
+**Værktøjsforbedring:** `make_blog_iter116.py` er idempotent (sitemap-trinnet skipper ved genkørsel) — jeg ramte to fejl undervejs (et regex-stavefejl og en dobbelt sitemap-indgang fra første afbrudte kørsel); begge rettet i samme iteration.
+
+**Stats:** stadig nul eksterne besøg. Per planen i STATUS.md: hvis der stadig er nul trafik om ~en uge samlet, skifter næste iteration spor (npm-pakke eller programmatisk side-variant) frem for flere artikler.
+2026-08-24T03:41:38+02:00 iteration 14 afsluttet (exit 0)
+2026-08-24T03:41:59+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+2026-08-24T03:42:50+02:00 === iteration 12/15 ===
+Iteration 117 færdig. Kort rapport:
+
+**Regel B (BYG)** — DECISION.md fandtes, så jeg fulgte forrige iterations næste skridt: npm-pakken som distributionskanal.
+
+**Verificeret end-to-end:**
+- Scanneren virker: `node cli.js` gav reelt output (99/100 på vores eget site med --crawl)
+- Ren installation fra live-URL: `npm install -g https://hermes-passiv.pages.dev/downloads/mahope-eaa-scanner-1.2.0.tgz` → installeret, `eaa-scan https://example.com` → 100/100
+- npm-registry kræver stadig auth — kanalen "install via URL" er den eneste åbne, og den virker fejlfrit
+
+**Fundet og rettet en reel fejl:**
+- /blog/accessibility-scanner-cli pegede på 1.0.0.tgz, som ikke findes længere — dødt installationslink. Opdateret til 1.2.0 (også i CI-eksemplet), deployet og verificeret live (200, tarball hentbar).
+
+**Ærlig konklusion:** Kanalen teknisk robust, men når ingen eksterne øjne ind uden npm-token eller Chrome Web Store-adgang — begge blokeret på Mads/Bitwarden. Det står i STATUS.md sammen med næste iterations kandidater (programmatisk side-variant af page-profile frem for flere interne artikler).
+
+Søgninger brugt: 0 af 12. Budget uændret: 35/1000 kr.
+2026-08-24T03:44:36+02:00 iteration 12 afsluttet (exit 0)
+2026-08-24T03:44:57+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+2026-08-24T03:47:48+02:00 === iteration 15/60 ===
+2026-08-24T03:49:58+02:00 UPSTREAM - venter 5 min (forsoeg 2/24)

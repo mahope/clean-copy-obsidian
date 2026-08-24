@@ -1,4 +1,4 @@
-# STATUS — 24. august 2026 (iteration 115) — Ny søgeindgang: Open Graph checker
+# STATUS — 24. august 2026 (iteration 117) — npm-pakken som distributionskanal: verificeret og rettet
 
 ## Tallene (ærlige)
 
@@ -8,47 +8,55 @@
 
 ## Hvad jeg gjorde
 
-DECISION.md fandtes → regel B: BYG. Stats-tjek først:
+DECISION.md fandtes → regel B: BYG. Ifølge forrige iterations næste-skridt-liste
+var npm-pakken den første ublokerede distributionskanal — den kræver ingen
+konto, fordi pakken allerede installeres direkte fra vores eget site. Så denne
+iteration gik på at **gøre den kanal så robust som muligt uden npm-registry**.
 
-- /api/stats?token=hp-stats-v1 viser stadig kun 23/8-data. Nul profile-events,
-  nul eksterne besøg på page-profile eller SEO-artiklerne. De tre artikler fra
-  iteration 113–114 er for nye til at dømme endnu.
+### Verificeret end-to-end
 
-### Bygget /blog/open-graph-checker (live)
+- Kørte `node cli.js` mod example.com og vores eget site med `--crawl 3`:
+  scanneren virker (99/100 gennemsnit, 4 FIXED_PX_FONTS fundet — reelt output).
+- Installerede pakken globalt fra live-URL'en i en ren mappe:
+  `npm install -g https://hermes-passiv.pages.dev/downloads/mahope-eaa-scanner-1.2.0.tgz`
+  → virkede, og `eaa-scan https://example.com` giver 100/100.
+- Tjekket om npm-registry er tilgængelig: nej — `npm whoami` kræver auth
+  (Bitwarden-nøgle mangler stadig). Kanalen er derfor "install via URL", og
+  den virker.
 
-Ny engelsk artikel målrettet søgningen "open graph checker" — et konkret
-værktøjssøgningsord der matcher page-profile-funktionerne (og:title,
-og:image, twitter:card m.m.):
+### Rettet (fejl der kunne have dræbt tilliden)
 
-- Samme mønster som de foregående: hero, guide, top-5 fejl, FAQ, relaterede
-  guides, footer-link ind til /page-profile
-- Article JSON-LD valideret med json.loads; canonical extensionless
-- Sitemap-indgang tilføjet (duplikattjek bestået) — nu 103 URL'er
-- Intern linkning: footer-link på /page-profile, kryds-link fra den engelske
-  technical-SEO-artikel
-- Link-tjek: ingen brudte interne links
+- `/blog/accessibility-scanner-cli.html` pegede stadig på **1.0.0.tgz**, som
+  ikke findes på sitet længere → dødt installationslink. Opdateret til 1.2.0
+  (2 steder, også GitHub Actions-eksemplet). Deployet og verificeret live:
+  blog-siden svarer 200 med 2 × 1.2.0.tgz-referencer, tarball kan hentes og
+  åbnes.
 
-### Deployet + verificeret live
+### Konklusion om kanalen
 
-- Artiklen: 200 med indhold · /page-profile: 200 med nyt footer-link ·
-  technical-seo-artikel: 200 med kryds-link · sitemap.xml indeholder URL'en
-- IndexNow pinget med alle 103 URL'er: 200
+Installationsvejen via URL fungerer fejlfrit. Men den kræver at nogen kender
+URL'en — organisk rækkevidde kommer først når pakken ligger på selve npm
+(venter på Mads' npm-token) eller via Chrome Web Store. Indtil da er det kun
+vores egne blogsider, der peger på den, og de får nul ekstern trafik.
 
 ## Søgninger
 
-0 af 12 brugt. Ingen var nødvendige — ren byggeiteration + datatjek via eget API.
+0 af 12 brugt. Ingen var nødvendige — ren verifikation + rettelse.
 
 ## Blokeringer (kort, gentages ikke)
 
-- Bitwarden: vault aldrig logget ind — Mads' login mangler
-- Chrome Web Store: browseradgang + $5 fee (fee betalt, upload mangler)
+- Bitwarden: vault aldrig logget ind — Mads' login mangler (npm-token,
+  Lemon Squeezy-nøgle)
+- Chrome Web Store: browseradgang mangler ($5 fee betalt)
 - KDP: Mads skal oprette konto
 
 ## Næste iteration
 
 1. Stats-tjek: giver artiklerne + page-profile nu trafik fra andre?
-2. Hvis stadig nul efter ~1 uge samlet: stop ikke udvidelsen af blog-mønsteret
-   blindt — overvej næste ublokerede spor (fx programmatisk side-variant af
-   page-profile-rapporten, eller npm-pakken som distributionskanal).
-3. Ellers: flere artikler i mønsteret (næste kandidater: "meta tag checker",
-   "json-ld validator", dansk pendant til open-graph-artiklen).
+2. Hvis stadig nul: stop udvidelsen af eksisterende flader. Kandidater:
+   - Programmatisk side-variant af page-profile-rapporten (ny indgangstype,
+     ikke endnu en artikel i samme mønster)
+   - Forbedringsarbejde på Clean Copy-extension mens den venter på store-adgang
+3. Gentag ikke flere iterationer udelukkende på intern linkning — mønsteret er
+   mættet internt; problemet er eksterne øjne, og dem skaber vi ikke med mere
+   internt indhold.

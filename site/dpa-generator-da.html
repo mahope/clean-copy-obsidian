@@ -308,7 +308,10 @@ Google Ireland Ltd — transaktionel e-mail — Irland"></textarea>
       + '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
       + '<body style="max-width:800px;margin:40px auto;padding:0 20px;'
       +   'font-family:system-ui,sans-serif;line-height:1.6;color:#1c2733;font-size:14px">\n'
-      + $('agreement').innerHTML + '\n</body>\n</html>\n';
+      + $('agreement').innerHTML + '\n<script>
+(function(){try{if(navigator.doNotTrack==='1')return;var p=location.pathname.replace(/\.html$/,'')||'/';fetch('/api/track',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({path:p}),keepalive:true}).catch(function(){});}catch(e){}})();
+</script>
+</body>\n</html>\n';
     var blob = new Blob([doc], { type: 'text/html' });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);

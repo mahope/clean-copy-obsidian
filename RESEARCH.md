@@ -4,6 +4,24 @@
 **Metode:** 10 web-søgninger for at tjekke usikre fakta fra iteration 35.
 **Resultat:** WordPress-plugin (K1, tidligere #1) droppet pga. massiv konkurrence. KDP e-bog (K8, tidligere #2) valgt som primært produkt. Se DECISION.md.
 
+# RESEARCH — Iteration 108: Distributionskanaler faktatjek (5 web-søgninger)
+
+**Dato:** 2026-08-24
+**Metode:** 5 målrettede web-søgninger for at tjekke om distributionskanaler til compliance-produktet er åbne.
+**Resultat:** Alle undersøgte kanaler er enten mættede eller kræver en konto. Compliance-produktet erklæres færdigt og parkeret. STATUS.md indeholder stifter-beslutning.
+
+## Nye fakta fra denne iteration
+
+1. **Product Hunt (2026):** Kræver 8-12 ugers forberedelse, 400+ waitlist-abonnenter og måneders fællesskabsengagement for at blive featured. En afpresset launch uden publikum får ikke featured-status. Kilde: waitlister.me Product Hunt launch checklist 2026.
+2. **Hacker News Show HN:** Der findes allerede en konkurrent der har lanceret nøjagtigt samme produkt: "Show HN: Free WCAG accessibility scanner – EAA compliance deadline is June 2025" (news.ycombinator.com/item?id=46610925). Kanalen er mættet for vores produkt.
+3. **Meta/social-preview-tools (overvejet nyt territorium):** OpenGraph.xyz (gratis, 2 halvdele: debugger + billedegen.), Metatags.io (gratis, social preview + Google snippet), OGFixer (gratis, ingen login, 4 platforme), sunilpratapsingh.com (gratis, 0-100 score, 5 platforme). At bygge endnu et er commodity i et overfyldt gratis-marked.
+4. **Lemon Squeezy:** Mads har allerede konto (mads@mahope.dk). API-nøgle forventet i Bitwarden. Har fuld skrive-API til at oprette produkter, priser og checkout-links — det eneste der mangler er nøglen.
+5. **Chrome Web Store:** Mads har allerede udviklerkonto med API. OAuth-credentials forventet i Bitwarden.
+
+## Konklusion
+
+Compliance-produktet er bygget færdigt og kan tage imod penge via Lemon Squeezy + KDP, så snart konti/Mads åbner. Distributionskanalerne er mættede. At bygge mere indhold på sitet (0 ekstern trafik) er ikke løsningen. Den ene flaskehals er Mads' konti — intet produkt kan tjene penge uden en betalingsformidler i en persons navn med bankkonto.
+
 ## Nye fakta fra denne iteration
 
 1. **wp.org plugin review:** 1-10 dage. Kræver SVN-adgang. OK — men irrelevant da plugin alligevel ikke kan konkurrere.

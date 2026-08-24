@@ -1,58 +1,71 @@
-# STATUS — 24. august 2026 (iteration 106)
+# STATUS — 24. august 2026 (iteration 108) — Stifter-beslutning
 
-## Tallene (ærlige)
+## Tallene (ædle, verificeret direkte)
 
-- Venteliste: **0** · Ekstern trafik: **~8 uniques på forsiden 23/8** (fra
-  /api/stats — kan ikke verificeres som ikke-egen trafik, så tælles forsigtigt;
-  værktøjsbrug: 1 cookie-check + 2 guide-visninger, ingen tegn på gentagen brug)
-- Søgninger brugt denne iteration: **0 af 12** (ingen nye faktaspørgsmål)
-- Budget: **0 kr af 1.000 DKK**
+- Venteliste: **0** · Ekstern trafik: **0** · Betalende kunder: **0** · Revenue: **0 kr**
+- Health check: **71/71** — sitet kører perfekt, nul døde links.
+- Søgninger brugt: **5 af 12** · Budget: **0 kr af 1.000 DKK**
 
-## Hvad denne iteration gjorde
+**Vigtig metode-detalje:** Ventelistetælleren stod på "1" — det var min egen API-test lige inden.
+Jeg slettede nøglen og nulstillede `wl-count` til 0, verificeret via wrangler. Der er dermed **nul
+ægte tilmeldinger**. Det er det ærlige tal.
 
-Fortsatte næste-skridt punkt 1 fra iter. 105: flere DA-pendanter. Tre nye:
+## Hvad jeg gjorde
 
-1. **`/blog/dbbaftale-webbureau`** — pendant til EN `gdpr-dpa-web-agencies`.
-   Artikel 28's ni obligatoriske elementer, hvornår bureauet er databehandler,
-   underbehandlere, test-data i staging, 6 FAQ'er.
+Brugte iterationen på **det afgørende spørgsmål** i stedet for at bygge den 108. side til et produkt
+der aldrig får brugere: **findes der overhovedet en åben distributions- eller indtjeningskanal?**
 
-2. **`/blog/gdpr-boeder-2026`** — pendant til EN `gdpr-fines-2026`.
-   Bøde-trappen (art. 83 niveau 1+2), de fem fejl der faktisk udløser sanktioner,
-   dansk praksis, 6 FAQ'er.
+### 3 faktatjek (5 søgninger) — og hvad de siger
 
-3. **`/blog/tilgaengelighedsscanner-cli`** — pendant til EN
-   `accessibility-scanner-cli`. Regelsæt, CI-integration med --fail-on,
-   portefølje-scanning, grænser ved automatisering, 6 FAQ'er.
+1. **Product Hunt (2026):** Kræver nu 8-12 ugers forberedelse, 400+ waitlist-abonnenter og måneders
+   fællesskabsengagement for en featured launch. En afpresset launch uden publikum bliver ikke featured.
+   → KAN IKKE bruges som genvej til trafik.
+2. **Hacker News Show HN:** Der findes **allerede** en konkurrent der har gjort præcis det:
+   *"Show HN: Free WCAG accessibility scanner – EAA compliance deadline is June 2025"*. Kanalen er mættet
+   for præcis det produkt jeg har bygget.
+3. **Meta/Social-preview-værktøjer (nyt territorium jeg overvejede):** OpenGraph.xyz (gratis),
+   Metatags.io (gratis), OGFixer (gratis uden login), plus endnu en gratis 0-100-scoreværktøj.
+   → At bygge endnu ét er commodity i et overfyldt gratis-marked. **Ikke bygget.**
 
-Alle via `make_blog_da_trio2.py` (samme mønster): JSON-LD valideret med
-json.loads, sitemap-duplikattjek, internt link-tjek (0 brudte), forsids-kort.
+### Konklusion (ærlig)
 
-## Verifikation
+Compliance-produktet — 5 e-bøger, universel EAA-scanner (web/CLI/npm/PyPI/desktop/extension),
+ComplianceDocs, 70+ sider site, venteliste — er **bygget færdigt og kan tage imod penge, men har fået
+0 eksterne brugere over mere end 100 iterationer.** De kanaler der kunne bære det i luften er
+(a) mættede af konkurrenter eller (b) blokeret på en konto i Mads' navn. Mere indhold på sitet løser
+det ikke — det er ifølge AGENTS det modsatte af hvad jeg skal gøre.
 
-- health_check.py: **71/71**
-- Sitemap: gyldig XML, **95 URL'er**, alle 3 nye slugs til stede
-- Alle 3 blogs live: korrekt DA-titel, canonical, track.js, Article JSON-LD OK
-- Forsids-kort live (grep finder dbbaftale-webbureau 2 gange = kort + link)
+## Det rigtige valg nu
 
-## Trafiktjek (punkt 3 fra iter. 105)
+Dette er et helt reelt enten/eller der kun Mads kan afgøre. Jeg holder op med at pudse compliance —
+det gentog blokeringen iteration efter iteration, hvilket AGENTS.fil forbød.
 
-/api/stats?days=90 viser kun én dag med trafik (2026-08-23): 11 visits / 8
-uniques på forsiden, 1 scan, 2 guide-visninger. Ingen venteliste. Kan ikke
-skilles fra egen trafik — behandles som ~0 ekstern. Konklusion uændret:
-indhold alene trækker ikke målbar trafik endnu; distribution er flaskehalsen.
+**Mulighed A (videre på det vi har):** Mads åbner kontiene (KDP-upload af 5 e-bøger ~15 min, og
+låser Bitwarden op for Lemon Squeezy/npm/Chrome-keys). Alt er klar → deploy → vi måler ægt trafik.
+Dette var beslutningen i DECISION.md, og den er stadig ikke prøvet i praksis fordi vi aldrig kom live
+mod rigtige kunder.
 
-## Blokering (én linje)
+**Mulighed B (pivot):** Mads siger at compliance er dødt, og jeg starter et produkt i et helt andet
+territorium med en distribution der ikke afhænger af en konto. Jeg har ikke brugt budget og har fri
+rammer. (Bemærk: også dette ender i sidste ende på en betalingsformidler i Mads' navn — det er et
+grundvilkår for enhver indtægt her.)
 
-Bitwarden uauthenticeret → npm-token, PyPI-token, Lemon Squeezy-nøgle,
-Chrome Web Store. KDP kræver manuel upload af Mads (kit komplet, 5 bøger).
+## Hvad JEG anbefaler
 
-## Hvad næste iteration bør gøre
+**A.** Vi har et færdigt, velbygget, sundt produkt (71/71) der aldrig er blevet skudt rigtigt af.
+Det eneste der mangler mellem det og en reel måling af efterspørgsel er én time af Mads' tid til at
+åbne kontiene. Hvis vi gør det og der stadig er 0 salg efter f.eks. 60-90 dage, er det et rent empirisk
+bevis på at vi pivoterer — ikke et gæt.
 
-1. DA-pendanter er nu tæt på dækning af top-EN-siderne. Næste løft er ikke
-   flere artikler men **intern DA-struktur**: en samlet "Dansk guides"-sektion
-   eller underside (/da) der linker alle 14 DA-sider — bedre crawlbarhed og
-   tydeligere for danske besøgende.
-2. IndexNow-ping af de 3 nye URL'er (`./indexnow_ping.sh`) hvis scriptet
-   understøtter lister.
-3. Hvis nøgler findes i Bitwarden: kør PUBLISH_CHECKLIST.md fra toppen.
-4. Overvej EN↔DA hreflang-crosslinks mellem pendanter (SEO-correct pairing).
+## Næste skridt (afventer Mads)
+
+1. **Ikke bygget:** endnu en compliance-side, endnu et gratis værktøj, endnu en blog. STOP — producerer ingen brugere.
+2. **Klart til det sekund Mads siger A:** alle 5 e-bøger (EPUB+covers+metadata), npm/PyPI-tarballs,
+   Chrome-extension-zip, desktop-app-kildekode, ComplianceDocs-bundle, waitlist-API. Alt på places.
+3. **Hvis Mads siger B:** jeg bruger næste iteration på ét konkret nyt territorium med faktatjek.
+
+## Blokering
+
+Jeg gentager ikke blokeringen i detaljer. Én linje: **Bitwarden uauthenticeret + KDP-konto mangler =
+ingen betalingskanal, og alle distributionskanaler til det eksisterende produkt er mættet.** Det
+kræver beslutning fra Mads, ikke mere arbejde fra mig.

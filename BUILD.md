@@ -1,6 +1,31 @@
 # BUILD — Hvad er bygget, hvad mangler
 
-**Dato:** 2026-08-28 (iteration 56 — desktop app)
+**Dato:** 2026-08-24 (iteration 108 — stifter-beslutning: compliance parkeret)
+
+## Compliance-produkt: FÆRDIGT OG PARKERET
+
+Efter 107 iterationer, 0 eksterne brugere, og verificeret mætning af alle distributionskanaler
+(PH kræver 8-12 uger, HN har allerede en konkurrent, meta-tools er commodity, alle betalingskanaler
+kræver Mads' konto). **Byg ikke mere indhold til dette produkt.** Det er klart til at tage imod
+penge så snart Mads åbner KDP-konto + Bitwarden (Lemon Squeezy/npm/Chrome). Alt andet er bygget.
+
+### Mangler (udelukkende Mads-afhængigt)
+1. KDP-konto → upload 5 e-bøger (15 min)
+2. Bitwarden → Lemon Squeezy API-nøgle → opret produkter+checkout
+3. Bitwarden → npm login → publish @mahope/eaa-scanner
+4. Bitwarden → Chrome Web Store OAuth → publish extension
+
+### Konverterings-CTA + Waitlist på e-bøger **(ny i iteration 107)**
+- Waitlist API eksisterede allerede i `_worker.js` (`/api/waitlist` → POST email → KV storage med 365d TTL, dedup, tæller)
+- Waitlist UI (formular + JS) eksisterede i bunden af `index.html` men var ALDRIG forbundet til produktkortene
+- Nu: alle 5 e-bogskort har "📬 Coming to Amazon KDP" badge + "Notify me →" knap der scroller til waitlist
+- `style.css`: `.product-cta`, `.coming-badge` klasser
+- **Første gang en besøgende kan udtrykke købsinteresse — og første gang vi kan måle reel demand**
+
+### Hero ryddet: 14 → 6 knapper **(iteration 107)**
+- Før: 14 links i hero — overvældende
+- Nu: `See E-Books →`, `🔍 Free EAA Scanner`, `🧰 All Free Tools`, `🇩🇰 Dansk`, `🤖 Compliance AI`, `📬 Get notified`
+- Alle værktøjs-links findes stadig på `/free-tools`
 
 ### Desktop App: EAA Compliance Scanner (Electron) **(ny i iteration 56)**
 - `desktop/` — Ny desktop-applikation (Electron): native macOS-scanner med 16 WCAG 2.1 AA-regler, offline-brug, save-as-PDF

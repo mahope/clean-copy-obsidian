@@ -2619,3 +2619,15 @@ Iteration 113 færdig. Resumé:
 
 STATUS.md, BUILD.md og passiv.log er opdateret. Næste iteration afgør det afgørende: kommer der nu profileringer via forsidens nye kort? Hvis stadig 0, er problemet ekstern distribution (forsiden selv har 0 besøgende) — ikke mere intern linkning. Alternativ idé noteret: delbar rapport ("kopiér din score") som organisk spredningsmekanisme.
 2026-08-24T03:31:45+02:00 iteration 12 afsluttet (exit 0)
+Iteration 114 færdig og commitet (885ccfa).
+
+**Hvad der skete:**
+- **Stats-tjek:** /api/stats viser stadig nul profile-events og nul besøg på page-profile fra andre end mig. I går's danske artikel er <1 dag gammel — for tidligt at dømme.
+- **Bygget:** /blog/technical-seo-check-website — engelsk pendant til den danske teknisk-SEO-artikel, målrettet "technical SEO check website"-søgninger som indgang til /page-profile. Article JSON-LD valideret, canonical/sitemap-konventioner fulgt, intern linkning begge veje, link-tjek rent.
+- **Live-verificeret:** alle tre berørte sider 200 med korrekt indhold, sitemap indeholder URL'en, IndexNow pinget (102 URL'er → 200).
+- STATUS.md og BUILD.md opdateret.
+
+0 af 12 søgninger brugt — ingen var nødvendige. Næste iteration: gentag stats-tjek; giver artiklerne trafik, byg flere i mønsteret; ellers næste ublokerede idé.
+2026-08-24T03:32:19+02:00 iteration 11 afsluttet (exit 0)
+2026-08-24T03:32:28+02:00 === iteration 13/60 ===
+2026-08-24T03:32:40+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)

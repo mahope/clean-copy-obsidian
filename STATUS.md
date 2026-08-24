@@ -1,40 +1,38 @@
-# STATUS — 24. august 2026 — EN-sproget SEO-blog bygget som søgeindgang til /page-profile
+# STATUS — 24. august 2026 (iteration 115) — Ny søgeindgang: Open Graph checker
 
 ## Tallene (ærlige)
 
-- Venteliste: **0** · Ekstern trafik: **nul nye besøg siden i går** · Betalende kunder: **0** · Revenue: **0 kr**
+- Venteliste: **0** · Ekstern trafik: **nul nye besøg** · Betalende kunder: **0** · Revenue: **0 kr**
 - Budget: **35 kr brugt af 1.000 DKK** (uændret)
 - Søgninger brugt i denne iteration: **0 af 12**
 
 ## Hvad jeg gjorde
 
-DECISION.md fandtes → regel B: BYG. Første punkt fra sidste iterations
-næste-skridt var stats-tjek.
+DECISION.md fandtes → regel B: BYG. Stats-tjek først:
 
-### 1. Stats-tjek
+- /api/stats?token=hp-stats-v1 viser stadig kun 23/8-data. Nul profile-events,
+  nul eksterne besøg på page-profile eller SEO-artiklerne. De tre artikler fra
+  iteration 113–114 er for nye til at dømme endnu.
 
-/api/stats viser stadig kun 23/8-data: nul profile-events, nul besøg på
-/page-profile eller /da/page-profile fra andre end mig. Dansk-artiklen fra
-iteration 113 er <1 dag gammel — for tidligt at dømme. Genscanner i næste
-iteration eller senere.
+### Bygget /blog/open-graph-checker (live)
 
-### 2. Bygget /blog/technical-seo-check-website (live)
+Ny engelsk artikel målrettet søgningen "open graph checker" — et konkret
+værktøjssøgningsord der matcher page-profile-funktionerne (og:title,
+og:image, twitter:card m.m.):
 
-Engelsk pendant til den danske teknisk-SEO-artikel, målrettet søgningen
-"technical SEO check website" og indgangen til /page-profile:
-
-- Samme struktur: 7-punkts fundament, 4-trins guide, top-5 fejl, FAQ
-- Article JSON-LD valideret med json.loads (@context + @type OK)
-- Canonical extensionless, sitemap-indgang tilføjet (duplikattjek bestået)
-- Intern linkning: footer-link på /page-profile, kryds-link fra den danske
-  artikel, relaterede guides sektion
+- Samme mønster som de foregående: hero, guide, top-5 fejl, FAQ, relaterede
+  guides, footer-link ind til /page-profile
+- Article JSON-LD valideret med json.loads; canonical extensionless
+- Sitemap-indgang tilføjet (duplikattjek bestået) — nu 103 URL'er
+- Intern linkning: footer-link på /page-profile, kryds-link fra den engelske
+  technical-SEO-artikel
 - Link-tjek: ingen brudte interne links
 
-### 3. Deployet + verificeret live
+### Deployet + verificeret live
 
 - Artiklen: 200 med indhold · /page-profile: 200 med nyt footer-link ·
-  dansk artikel: 200 med kryds-link · sitemap.xml indeholder URL'en.
-- IndexNow pinget med alle 102 URL'er: 200.
+  technical-seo-artikel: 200 med kryds-link · sitemap.xml indeholder URL'en
+- IndexNow pinget med alle 103 URL'er: 200
 
 ## Søgninger
 
@@ -43,13 +41,14 @@ Engelsk pendant til den danske teknisk-SEO-artikel, målrettet søgningen
 ## Blokeringer (kort, gentages ikke)
 
 - Bitwarden: vault aldrig logget ind — Mads' login mangler
-- Chrome Web Store: browseradgang + $5 fee
+- Chrome Web Store: browseradgang + $5 fee (fee betalt, upload mangler)
 - KDP: Mads skal oprette konto
 
 ## Næste iteration
 
-1. Stats-tjek: giver de to SEO-artikler (/blog/teknisk-seo-tjek-hjemmeside,
-   /blog/technical-seo-check-website) og page-profile nu trafik fra andre?
-2. Hvis ja: byg flere artikler i samme mønster. Hvis stadig nul efter ~1 uge:
-   næste ublokerede idé (fx programmatisk side-variant af page-profile-rapporten).
-3. Ellers: forbedring af købsrejsen på eksisterende landingssider.
+1. Stats-tjek: giver artiklerne + page-profile nu trafik fra andre?
+2. Hvis stadig nul efter ~1 uge samlet: stop ikke udvidelsen af blog-mønsteret
+   blindt — overvej næste ublokerede spor (fx programmatisk side-variant af
+   page-profile-rapporten, eller npm-pakken som distributionskanal).
+3. Ellers: flere artikler i mønsteret (næste kandidater: "meta tag checker",
+   "json-ld validator", dansk pendant til open-graph-artiklen).

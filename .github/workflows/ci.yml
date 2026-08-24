@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Run Obsidian plugin tests
+        run: node obsidian-plugin/test.js
+      - name: Manifest consistency
+        run: |
+          v1=$(node -p "require('./obsidian-plugin/manifest.json').version")
+          v2=$(node -p "require('./manifest.json').version")
+          [ "$v1" = "$v2" ] || { echo "FAIL: manifest versions differ ($v1 != $v2)"; exit 1; }
+          echo "✅ manifests consistent at $v1"

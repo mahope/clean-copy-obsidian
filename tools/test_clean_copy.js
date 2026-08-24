@@ -112,6 +112,20 @@ assert(/Navn/.test(inp), 'input value: ' + JSON.stringify(inp));
 
 console.log('iteration-178 fixes OK');
 
+// Iteration 180: nested tables — inner table converts first, content survives
+const nt = sandbox.htmlToMarkdown('<table><tr><th>Outer</th></tr><tr><td><table><tr><td>inner</td></tr></table></td></tr></table>');
+assert(/inner/.test(nt), 'nested table cell survives: ' + JSON.stringify(nt));
+assert(nt.startsWith('| Outer |'), 'outer table intact');
+// flat table regression
+assert(sandbox.htmlToMarkdown('<table><tr><th>A</th></tr><tr><td>1</td></tr></table>').startsWith('| A |'), 'flat table');
+
+// Iteration 180: abbr title as parenthetical at first occurrence only
+const ab = sandbox.htmlToMarkdown('<p>The <abbr title="World Health Organization">WHO</abbr> and <abbr title="World Health Organization">WHO</abbr> again.</p>');
+assert(ab.includes('WHO (World Health Organization)'), 'abbr expanded: ' + JSON.stringify(ab));
+assert(ab.indexOf('WHO (World Health') === ab.lastIndexOf('WHO (World Health'), 'abbr expanded only once');
+
+console.log('iteration-180 fixes OK');
+
 // Iteration 179: parity check — extension background.js conversion must equal the shared core
 (function(){
   const bg = fs.readFileSync('extension-clean-copy/background.js', 'utf8');

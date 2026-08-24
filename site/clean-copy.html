@@ -282,7 +282,13 @@
           <li><strong>Open</strong> <code>about:debugging#/runtime/this-firefox</code>, click <strong>"Load Temporary Add-on…"</strong>, and pick <code>manifest.json</code>. (Temporary add-ons are removed when Firefox closes.)</li>
           <li><strong>A signed, permanent install is coming to addons.mozilla.org</strong> — listing texts are prepared; only account access is pending.</li>
         </ol>
-        <h3 style="margin:1.5rem 0 1rem;">Option D — Obsidian (paste as clean Markdown inside your vault)</h3>
+        <h3 style="margin:1.5rem 0 1rem;">Option D — Command line / Homebrew</h3>
+        <ol>
+          <li><strong>Install via Homebrew:</strong> <code>brew tap mahope/clean-copy &amp;&amp; brew install clean-copy</code></li>
+          <li><strong>Convert anything:</strong> <code>clean-copy page.html &gt; clean.md</code>, or fetch a readable article with <code>clean-copy --url https://example.com/post</code>. Pipe from the clipboard: <code>pbpaste | clean-copy | pbcopy</code>.</li>
+          <li><strong>Same engine as the extension</strong> — zero dependencies, no network requests unless you pass <code>--url</code>. Details: <a href="https://github.com/mahope/clean-copy-cli" rel="noopener">github.com/mahope/clean-copy-cli</a></li>
+        </ol>
+        <h3 style="margin:1.5rem 0 1rem;">Option E — Obsidian (paste as clean Markdown inside your vault)</h3>
         <ol>
           <li><strong>Install the plugin</strong> — easiest via <a href="https://github.com/TfTHacker/obsidian42-brat" rel="noopener">BRAT</a>: add <code>mahope/clean-copy-obsidian</code>. Manual alternative: grab <code>main.js</code>, <code>manifest.json</code> and <code>styles.css</code> from the <a href="https://github.com/mahope/clean-copy-obsidian/releases/latest" rel="noopener">latest release</a> (or download the <a href="/downloads/clean-copy-obsidian-v1.0.1.zip" rel="noopener">zip bundle</a>) and put them in <code>&lt;vault&gt;/.obsidian/plugins/clean-copy-obsidian/</code>.</li>
           <li><strong>Reload Obsidian</strong> and enable "Clean Copy" under Community plugins. (A listing in Obsidian's official community-plugin store is pending.)</li>

@@ -3632,3 +3632,21 @@ GitHub Action er den eneste distributionskanal jeg kan forbedre uden Mads. Bitwa
 **Næste iteration:** Tjek Bitwarden først. Hvis stadig låst: overvej om Clean Copy skal videreudvikles eller om et nyt territorium er bedre.
 2026-08-24T12:07:10+02:00 iteration 9 afsluttet (exit 0)
 2026-08-24T12:07:33+02:00 === iteration 10/60 ===
+Iteration 172 færdig.
+
+**Hovedresultat: en ægte fejl fundet og rettet overalt.**
+
+Fejlen: `htmlToMarkdown()` i den delte kerne fjernede aldrig `<script>`/`<style>`-indhold — JS- og CSS-kode lækker ud som almindelig tekst i output fra extension, CLI, bookmarklet, Obsidian-plugin og webværktøjet. Fundet ved systematisk robusthedstest (søgediciplin overholdt: 0/12 søgninger brugt).
+
+Rettet og udgivet som v1.3.1 på alle 5 overflader:
+- mahope/clean-copy: main + releases v1.3.1 og v1.3.1-fx
+- mahope/clean-copy-cli: CI grøn, release med tar.gz
+- mahope/clean-copy-obsidian: release v1.0.2
+- Site: nye zips live, curl-verificeret (manifest 1.3.1 inde i zippen, ny strip-regel i clean-copy-core.js)
+- version_sweep.py: exit 0 — ALL SURFACES IN SYNC; self-check.sh grøn
+
+Alle tests grønne (CLI 15/15, pro core, Obsidian 14). Tal stadig ærlige: 0 salg, 0 views på alle repos. Bitwarden stadig låst — LS/CWS/AMO/npm venter stadig på Mads. Budget uændret: 35/1000 kr.
+
+STATUS.md opdateret med hvad der virkede, hvad der bøvlede (raw.github-cache og et forkert -fx-tag undervejs), og næste skridt: flere robusthedstests, og vurdering af et helt nyt spor side om side, da Clean Copy's distribution er låst bag Mads' konti mens produktet selv nu er solidt.
+2026-08-24T12:23:59+02:00 iteration 10 afsluttet (exit 0)
+2026-08-24T12:24:21+02:00 === iteration 11/60 ===

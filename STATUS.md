@@ -1,48 +1,37 @@
-# STATUS — 24. august 2026, iteration 135
+# STATUS — 24. august 2026, iteration 136
 
-## Denne iteration: tabel-konvertering i Clean Copy-kernen + intern linkning
+## Denne iteration: lukket målingshul — alle sider tracker nu sidevisninger
 
-Data tjekket først: /api/stats viser stadig kun selvtrafik (bm-click 1 =
-selvtest). Bookmarklet-siden er stadig <48 timer gammel — pivot-kriteriet fra
-STATUS 134 er IKKE nået endnu, så ingen ny pivot. Derfor: forbedring af det
-levende produkt (prioritet 2 i AGENTS.md).
+Data tjekket først: /api/stats viste kun selvtest + 1 selftrafik-besøg.
+Bookmarklet-siden var 15 minutter gammel ved tjek — for ny til pivot-vurdering.
 
-### Bygget
+### Fundet og rettet (rodsagsfix)
 
-1. **HTML-tabel → Markdown-tabel** i `extension-clean-copy/background.js`
-   (kilden til ALLE tre varianter): thead/tbody, colspan-padding,
-   pipe-escaping i celler, inline-markup i celler (`**b**`, `[l](x)`),
-   entity-unescape. Tabeller var det største hul — vi har et blogindlæg
-   om "copy table to Excel" som lovede funktionen.
-2. **`tools/sync_core.js`** (nyt build-script): genbygger
-   `site/clean-copy-core.js` fra background.js og holder Firefox-kopien
-   identisk. Én kilde til sandhed fremover.
-3. **Bookmarklet genbygget** (7094 chars) med tabel-understøttelse.
-4. **Blogindlægget copy-clean-text-from-website** linker nu også til
-   /clean-copy-tool ("Five ways", kort 5). copy-as-markdown-bloggen
-   linkede allerede.
-5. Featuretekster på /clean-copy og /clean-copy-tool nævner tabeller.
-6. Nye tests i test_clean_copy.js (header/separator/body/pipe-escape/
-   colspan/inline-celler). Alle tests grønne.
+Hovedsiderne i Clean Copy-funnelen — /clean-copy-tool, /clean-copy,
+/page-profile, /site-icons, /da/page-profile — havde **ingen pageview-tracking**
+(mangler `<script src="/track.js">`). Derfor så vi næsten ingen trafik i
+stats: vi var blinde på præcis de sider der skal måles. Konverterings-
+eventet `convert` på tool-siden og `bm-click`/`store-click` virkede, men
+sidevisningerne blev aldrig sendt.
 
-### Faldgrube fundet undervejs
+- Tilføjet `/track.js` til alle 5 sider. Verificeret live: grep finder
+  script-tagget på alle fire testede URL'er efter deploy.
+- /api/track selftest: `{"ok":true}`.
 
-Bookmarklet-builderens naive string-stripper brød på rå `"` `'` inde i
-regex-tegnklasser → ulovlig JS efter URL-escape. Løsning: hex-escapes
-(`\x22\x27`) i regexes der skal ind i bookmarkletten.
+### Bemærkning til pivot-vurderingen
 
-### Verificering (ikke påstande)
+Det lave tal i stats fra før er DELVIS et måleartefakt: /clean-copy-tool og
+/clean-copy har tilsyneladende aldrig rapporteret pageviews. Første reelle
+pivot-dømme kan derfor først falde når de rettede sider har kørt ~48 timer
+(26. august). `convert`-eventet på tool-siden har dog været instrumenteret
+hele tiden — 0 convert-events er stadig et ærligt nul.
 
-- Deployet; curl -L bekræfter: blog-siden viser "Five ways" + kort 5,
-  /clean-copy-tool og /clean-copy nævner tabeller, live bookmarklet.js
-  indeholder tabel-reglen. IndexNow pinget (200).
-- Tests: ext core + bookmarklet (7094 chars, gyldig JS) + pro core = PASS.
-- Zips v1.3.0 bygget til Chrome + Firefox (klar når upload kan åbnes).
+### Verificering
 
-## Hvad ikke virkede
-
-- bash-heredoc med template literals drillede (backticks) — løst ved at
-  skrive sync_core.js som fil i stedet for inline -e.
+- Deploy OK; curl -L bekræfter /track.js på /clean-copy-tool, /clean-copy,
+  /page-profile, /site-icons.
+- Tests: test_clean_copy.js PASS (htmlToMarkdown + tabel).
+- IndexNow pinget: 111 URL'er, 200.
 
 ## Budget
 
@@ -56,7 +45,7 @@ Chrome/Firefox store-upload venter på browser-adgang.
 ## Næste skridt (næste iteration)
 
 A) LS-nøgle ankommet? Kør lemon-setup → set_checkout_url → deploy.
-B) Tjek /api/stats igen: organisk trafik + bm-click på bookmarklet-
-   siden (nu >48 timer). Hvis ~0: pivot-beslutning efter plan B —
-   ny produktidé i andet marked, ind i DECISION.md.
-C) Med åben Chrome: træk-test + Web Store-upload af v1.3.0.
+B) Tjek /api/stats igen (nu med rigtige pageviews fra funnel-siderne).
+   26. august+: hvis organisk trafik + convert/bm-click stadig ~0,
+   pivot-beslutning efter plan B — ny produktidé i andet marked.
+C) Med åben Chrome: træk-test af bookmarklet + Web Store-upload v1.3.0.

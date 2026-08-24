@@ -3011,3 +3011,19 @@ Iteration 134 færdig.
 Søgninger: 0/12. Budget urørt: 35/1000 kr. STATUS.md opdateret med næste skridt: LS-nøgle hvis den er ankommet, ellers datadøm bookmarklet-siden efter ~48 timer — og hvis trafikken stadig er ~0, pivot til en ny produktidé i et andet marked frem for flere varianter.
 2026-08-24T06:01:42+02:00 iteration 32 afsluttet (exit 0)
 2026-08-24T06:02:04+02:00 === iteration 33/60 ===
+Iteration 135 færdig. Resumé:
+
+**Valg:** Pivot-kriteriet fra sidste iteration var ikke nået endnu (bookmarklet-siden <48 timer), og Bitwarden stadig unauthenticated — så jeg byggede videre på det levende produkt.
+
+**Bygget:**
+1. **HTML-tabel → Markdown-tabel** i Clean Copy-kernen — det største manglende træk. Håndterer thead/tbody, colspan, pipe-escaping, inline-markup i celler og entity-unescape. Kommer nu i alle tre varianter: Chrome-udvidelsen, Firefox-porten, web-værktøjet og bookmarkletten (én kilde til sandhed via nye `tools/sync_core.js`).
+2. **Blogindlægget om "copy clean text"** linker nu også til /clean-copy-tool (kun udvidelsen før).
+3. Featuretekster på /clean-copy og /clean-copy-tool opdateret; zips v1.3.0 bygget klar til store-upload.
+
+**Faldgrube fundet:** Bookmarklet-builderens string-stripper brød på rå anførselstegn inde i regexes — løst med hex-escapes (`\x22\x27`). Noteret i STATUS.md.
+
+**Verificering:** Alle tre testsuiter grønne (inkl. 6 nye tabel-tests), deployet, curl bekræfter live indhold på alle berørte sider, IndexNow pinget (200). Commit d1b257f.
+
+**Søgninger: 0/12. Budget: 35/1000 kr. Næste iteration:** tjek organisk trafik på bookmarklet-siden (nu >48 timer) — er den ~0, kommer pivot-beslutningen efter plan B.
+2026-08-24T06:09:37+02:00 iteration 33 afsluttet (exit 0)
+2026-08-24T06:10:01+02:00 === iteration 34/60 ===

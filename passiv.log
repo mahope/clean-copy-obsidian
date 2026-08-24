@@ -4074,3 +4074,31 @@ Iteration 181 færdig.
 Næste iteration: Bitwarden-tjek igen, derefter trafiktal for at styre DA vs. EN-indhold.
 2026-08-24T14:33:12+02:00 iteration 19 afsluttet (exit 0)
 2026-08-24T14:33:34+02:00 === iteration 20/60 ===
+Iteration 182 færdig.
+
+**Hvad der skete:**
+- **Data først:** Tjekket KV-trafikdata via `/api/stats` — alle besøg er mine egne smoke-tests. 0 eksterne besøg, bekræftet af egne data (ikke antagelser). Waitlist: 1 (egen test).
+- **Bitwarden:** stadig unauthenticated → Lemon Squeezy/Chrome Web Store/npm-nøgler fortsat blokeret.
+- **Bygget:** Ny DA-blogpost `/da/blog/test-din-zip-foer-release` — syv-punkts tjekliste til udgivelses-zips + tre kopierbare kommandoer (unzip -l, parity-diff, versions-grep), med Article + FAQPage JSON-LD (valideret), ingen brudte links, track.js på plads.
+- **Udgivet:** Deploy OK, live-verificeret med curl (HTTP 200 + indhold + track.js), sitemap nu 132 URL'er og live-talt, IndexNow pinget, commit + push til main.
+- **Søgninger: 0/12** — ingen var nødvendige; alt faktisk tjekket direkte (bw status, live API).
+
+**Ærlige tal:** 0 eksterne salg, 0 eksterne besøg. Budget: 35/1000 kr.
+
+**Næste iteration (skrevet i STATUS.md):** Bitwarden-tjek først; hvis trafikdata stadig kun viser egen trafik, stoppes ny blogproduktion til fordel for distributionskanaler der ikke kræver Mads (npm-pakke, bookmarklet-sider).
+2026-08-24T14:37:18+02:00 iteration 20 afsluttet (exit 0)
+2026-08-24T14:37:40+02:00 === iteration 21/60 ===
+Iteration 183 gennemført. Resumé:
+
+**Vigtigste fund:** CLI'en (clean-copy-cli) hang fast på v1.3.4 og manglede alle kerne-fixes fra 1.3.5–1.3.7 — den var ikke i parity med udvidelserne.
+
+**Gjort:**
+- Syncet den fulde v1.3.7-kerne ind i CLI-repoet, tests 15/15, skubbet til GitHub
+- Udgivet GitHub release v1.3.7 med tar.gz; Homebrew-formula bumpet (ny sha256), pushet til tap — verificeret live: `brew upgrade` → 1.3.7, round-trip-tests OK
+- **Ny distributionskanal uden npm-konto:** `npm install -g github:mahope/clean-copy-cli` virker direkte fra GitHub — testet installeret og konverteret korrekt. Kommandoen tilføjet på /clean-copy-siden, deployed og curl-verificeret live
+- Rettet en fejl i version_sweep.py (cached gh API gav falsk versions-mismatch); nu "ALL SURFACES IN SYNC" inkl. Homebrew-formulaen
+- STATUS.md opdateret, alt committet og pushet
+
+Søgninger brugt: 0/12. Budget uændret 35/1000 kr. Blokering uændret: Bitwarden unauthenticated (LS/CWS-nøgler mangler). Næste iteration: tjek Bitwarden igen; ellers GitHub traffic-API på CLI-repoet som ny distributions-måling.
+2026-08-24T14:46:12+02:00 iteration 21 afsluttet (exit 0)
+2026-08-24T14:46:34+02:00 === iteration 22/60 ===

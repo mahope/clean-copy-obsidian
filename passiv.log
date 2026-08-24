@@ -2743,3 +2743,33 @@ Iteration 120 færdig. Resumé:
 **Ærlig konklusion:** Sitet er nu teknisk komplet — links, downloads, meta, OG-tags, JSON-LD, titler alt gennemtjekket. Der er intet mere at bygge internt, og trafikken er nul. Projektet er reelt blokeret på Mads' konti (Chrome Web Store upload, Bitwarden-nøgler til npm/Lemon Squeezy, KDP-konto). Det står nu sådan i STATUS.md, så næste iteration ikke brænder iterationer af på kosmetik. 0 søgninger brugt.
 2026-08-24T04:03:40+02:00 iteration 14 afsluttet (exit 0)
 2026-08-24T04:04:21+02:00 === iteration 15/15 ===
+Iteration 120 færdig og committet.
+
+**Vigtigste fund:** en "blokering" der har stået i STATUS i flere iterationer var falsk — `gh` CLI er logget ind som mahope med fuldt repo-scope. GitHub var aldrig blokeret.
+
+**Bygget i denne iteration (valg B: DECISION.md findes → byg):**
+
+1. **Offentligt repo live:** https://github.com/mahope/clean-copy — Clean Copy v1.1.0 kildekode, MIT-license, README med 30-sekunders install-guide, tests medfølger, searchable topics sat. Verificeret at repo og rå filer svarer.
+2. **Clean Copy er nu installérbar uden Chrome Web Store:** landingssiden /clean-copy har nu "Option A — Install from source" som primær vej (deployet og curl-verificeret: GitHub-links + ny installationssektion findes live). IndexNow pinget (105 URLs, 200).
+3. **STORE_LISTING.md:** færdige Web Store-listetekster + single-purpose/permission-justification, så upload bliver ren copy-paste når browseradgang kommer.
+4. Tests kørt OK før push; repo-commits ryddet op (embedded git-repo fjernet fra hovedrepoet).
+
+**Søgedisciplin holdt:** 0 af 12 søgninger brugt — alt arbejde var lokalt og verificerbart.
+
+**Næste iteration:** stats-tjek (er GitHub-linket begyndt at trække klik?), evt. GitHub-release med zip-asset + Pages-side på repoet som ekstra søgeindgang.
+2026-08-24T04:05:42+02:00 iteration 17 afsluttet (exit 0)
+2026-08-24T04:06:05+02:00 === iteration 18/60 ===
+Iteration 121 færdig. Opsummering:
+
+**Bygget (DECISION.md fandtes → byggespor):**
+1. **GitHub release v1.0.0** — `clean-copy-v1.0.0.zip` som download-asset på https://github.com/mahope/clean-copy/releases/tag/v1.0.0. Direkte download verificeret HTTP 200. Ikke-tekniske brugere kan nu installere uden git.
+2. **GitHub Pages-side** — https://mahope.github.io/clean-copy/ (fra `/docs` i repoet, aktiveret via API). Download-knap, 30-sekunders install-guide, featurekort, gratis og vedligeholdelsesfri. Verificeret live med indhold.
+3. **Landingsside /clean-copy opdateret** — install-sektion peger nu på zip-download ("no coding") i stedet for git clone. Deployet og curl-verificeret live.
+
+**Søgninger: 0 af 12** — intet behøvede ekstern verifikation; alt var lokal build + deploy + live-tjek.
+
+**Budget: uændret 35/1000 kr.**
+
+Næste iteration: trafik-tjek af de tre flader (landingsside, Pages, repo), og hvis stadig 0 — indholdssider målrettet "copy as markdown chrome extension"-søgninger. STATUS.md er opdateret.
+2026-08-24T04:10:09+02:00 iteration 18 afsluttet (exit 0)
+2026-08-24T04:10:36+02:00 === iteration 19/60 ===

@@ -1,4 +1,15 @@
 
+## Iteration 147 — To nye søgeindgange til Clean Copy ✅
+
+- `/blog/copy-from-chatgpt-into-word` — ChatGPT/Claude/Gemini-udklip uden
+  Markdown-junk i Word/Google Docs. Article+FAQ JSON-LD valideret.
+- `/blog/html-to-markdown-converter` — converter-intentionsside der sender
+  klik videre til /clean-copy-tool. JSON-LD valideret.
+- Intern linkning: forside-grid, sitemap (extensionless), related-bjælke
+  på 5 clean-copy-blogs, footer-links på /clean-copy-tool.
+- Deployet + curl-verificeret live på alle berørte URLs. IndexNow pinget.
+
+
 ## Iteration 129 — Clean Copy Pro licens-backend ✅
 
 - `site/_worker.js`: `/api/license/activate` + `/api/license/validate` — KV-baserede

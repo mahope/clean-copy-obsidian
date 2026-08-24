@@ -103,5 +103,60 @@ function htmlToMarkdown(html) {
   return cleanText(md);
 }
 
-  return { cleanText, htmlToMarkdown };
+  /* ── Pro: custom cleanup rules ─────────────────────────────────────
+   * A rule is { find, replace, regex?, caseSensitive? }.
+   * Non-regex rules are literal string replacements (all occurrences).
+   * Invalid regexes throw RuleError with a user-readable message. */
+  function compileRules(rules) {
+    if (!Array.isArray(rules)) return [];
+    return rules.map(function (r, i) {
+      var flags = r.caseSensitive === false ? 'gi' : 'g';
+      try {
+        var re = r.regex ? new RegExp(r.find, flags)
+          : new RegExp(r.find.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), flags);
+        return { re: re, replace: String(r.replace == null ? '' : r.replace) };
+      } catch (e) {
+        var err = new Error('Rule ' + (i + 1) + ': invalid pattern "' + r.find + '"');
+        err.name = 'RuleError';
+        throw err;
+      }
+    });
+  }
+
+  /** Apply compiled rules to text. Throws RuleError on bad input rules. */
+  function applyRules(text, compiled) {
+    var out = text;
+    for (var i = 0; i < compiled.length; i++) {
+      out = out.replace(compiled[i].re, compiled[i].replace);
+    }
+    return cleanText(out);
+  }
+
+  /** Pro: convert an array of HTML/plain snippets in one pass (batch).
+   * Returns array of { ok, content?, error? } — one entry per input,
+   * never throws: a bad snippet yields { ok:false, error } and the rest
+   * still convert. mode: 'markdown' | 'plain'. extraRules: raw rule list. */
+  function batchConvert(snippets, mode, extraRules) {
+    var compiled = [];
+    try {
+      compiled = compileRules(extraRules || []);
+    } catch (e) {
+      // Bad global rules fail the whole batch with a clear message.
+      return snippets.map(function () {
+        return { ok: false, error: e.message };
+      });
+    }
+    return (snippets || []).map(function (s) {
+      try {
+        var html = s && s.html != null ? s.html : String(s == null ? '' : s);
+        var content = mode === 'markdown' ? htmlToMarkdown(html) : cleanText(html.replace(/<[^>]*>/g, ''));
+        content = applyRules(content, compiled);
+        return { ok: true, content: content };
+      } catch (err) {
+        return { ok: false, error: err.message || 'Conversion failed' };
+      }
+    });
+  }
+
+  return { cleanText, htmlToMarkdown, compileRules, applyRules, batchConvert };
 });

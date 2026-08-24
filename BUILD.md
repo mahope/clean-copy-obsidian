@@ -179,3 +179,11 @@ Alt er bygget. Se BUILD.md iteration 108 for komplet liste. Intet nyt tilføjes.
 - `STORE_LISTING.md` i repo-roden: færdige listetekster + permission-
   justification til Web Store-upload (ren copy-paste når adgang kommer).
 
+
+## Iteration 130 — Clean Copy Pro-funktioner (v1.2.0) ✅
+
+- Kerne: compileRules/applyRules/batchConvert i clean_copy_core.js (delt af web + extensions). Tests: tools/test_pro_core.js.
+- Extensions v1.2.0 (Chrome+Firefox): options.html/options.js — licensaktivering mod /api/license/*, custom regler med find/replace/regex; regler anvendes på alle kopier når Pro er aktiv (fejlende regler springes stille over).
+- Web: batch-sektion på /clean-copy-tool, Pro-gated, kvietisk revalidering.
+- Zips: clean-copy-v1.2.0.zip, clean-copy-firefox-v1.2.0.zip. GitHub repo skubbet (v1.2.0).
+- Deployet og curl-verificeret live.

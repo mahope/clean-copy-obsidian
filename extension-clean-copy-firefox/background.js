@@ -1,9 +1,9 @@
 /**
- * Clean Copy — Background (Firefox port)
+ * Clean Copy — Background Service Worker
  * Context menu, keyboard shortcut, HTML→Markdown conversion,
- * clipboard via navigator.clipboard (Firefox: clipboardWrite permission
- * works from the background page without offscreen documents).
+ * clipboard via offscreen document, toast injected on demand.
  * Permissions: activeTab only — no host_permissions, no static content scripts.
+ * Pro: custom cleanup rules from chrome.storage are applied after every copy.
  */
 
 const CLEAN_RULES = [
@@ -100,10 +100,51 @@ function htmlToMarkdown(html) {
   return cleanText(md);
 }
 
+/* ── Pro: custom cleanup rules ────────────────────────────────────
+ * Rules live in chrome.storage.local ({customRules:[...]}), edited on
+ * the options page. They are compiled once per storage version and
+ * applied to the final output after normal cleaning. A rule that
+ * fails to compile is skipped silently — copying must never break. */
+
+let proState = { active: false, compiled: [], version: 0 };
+
+function compileRules(rules) {
+  if (!Array.isArray(rules)) return [];
+  return rules.map((r) => {
+    try {
+      const flags = r.caseSensitive === false ? 'gi' : 'g';
+      const re = r.regex ? new RegExp(r.find, flags)
+        : new RegExp(r.find.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), flags);
+      return { re, replace: String(r.replace == null ? '' : r.replace) };
+    } catch (e) {
+      return null; // skip broken rules — copy keeps working
+    }
+  }).filter(Boolean);
+}
+
+function applyCompiled(text) {
+  let out = text;
+  for (const c of proState.compiled) out = out.replace(c.re, c.replace);
+  return cleanText(out);
+}
+
+chrome.storage.local.get(['proLicense', 'customRules'], (d) => {
+  proState.active = !!d.proLicense;
+  proState.compiled = proState.active ? compileRules(d.customRules) : [];
+});
+chrome.storage.onChanged.addListener((changes) => {
+  if (changes.customRules || changes.proLicense) {
+    chrome.storage.local.get(['proLicense', 'customRules'], (d) => {
+      proState.active = !!d.proLicense;
+      proState.compiled = proState.active ? compileRules(d.customRules) : [];
+    });
+  }
+});
+
 /** Extract selection text/html from a tab via scripting API */
 async function processSelection(tabId, mode) {
   try {
-    const results = await browser.scripting.executeScript({
+    const results = await chrome.scripting.executeScript({
       target: { tabId },
       func: (extractHtml) => {
         const sel = window.getSelection();
@@ -139,39 +180,53 @@ async function processSelection(tabId, mode) {
   }
 }
 
+/** Apply Pro custom rules to a finished conversion result. */
+function withProRules(result) {
+  if (!result || result.error || !proState.active || !result.content) return result;
+  return { ...result, content: applyCompiled(result.content), proApplied: true };
+}
+
 /**
- * Copy to clipboard. In Firefox the clipboardWrite permission lets the
- * background page call navigator.clipboard.writeText without transient
- * user activation.
+ * Copy to clipboard via offscreen document.
+ * Robust: reuses existing document, waits for it to be ready before sending.
  */
 async function copyToClipboard(text) {
   try {
-    await navigator.clipboard.writeText(text);
+    // Has contextIds check: createDocument throws if one already exists — handle that.
+    const hasOffscreen = await chrome.offscreen.hasDocument?.();
+    if (!hasOffscreen) {
+      await chrome.offscreen.createDocument({
+        url: chrome.runtime.getURL('offscreen.html'),
+        reasons: ['CLIPBOARD'],
+        justification: 'Copy cleaned text to clipboard'
+      });
+    }
+    // Wait until the offscreen page signals readiness (avoids lost messages).
+    await new Promise((resolve) => {
+      const timeout = setTimeout(resolve, 1500); // safety net
+      const listener = (msg) => {
+        if (msg.type === 'offscreen-ready') {
+          clearTimeout(timeout);
+          chrome.runtime.onMessage.removeListener(listener);
+          resolve();
+        }
+      };
+      chrome.runtime.onMessage.addListener(listener);
+      chrome.runtime.sendMessage({ type: 'ping-offscreen' }).catch(() => {});
+    });
+    const response = await chrome.runtime.sendMessage({ type: 'copy', text });
+    if (!response || !response.success) throw new Error('Offscreen copy failed');
     return true;
   } catch (err) {
     console.error('Clipboard error:', err);
-    // Fallback: deprecated but still functional in a background page.
-    try {
-      const input = document.createElement('textarea');
-      input.value = text;
-      input.style.position = 'fixed';
-      input.style.opacity = '0';
-      document.body.appendChild(input);
-      input.select();
-      document.execCommand('copy');
-      document.body.removeChild(input);
-      return true;
-    } catch (err2) {
-      console.error('Clipboard fallback failed:', err2);
-      return false;
-    }
+    return false;
   }
 }
 
 /** Inject a transient toast into the tab (requires activeTab access) */
 async function showToast(tabId, message, isError = false) {
   try {
-    await browser.scripting.executeScript({
+    await chrome.scripting.executeScript({
       target: { tabId },
       func: (msg, err) => {
         const existing = document.querySelector('.clean-copy-toast');
@@ -194,12 +249,12 @@ async function showToast(tabId, message, isError = false) {
       args: [message, isError]
     });
   } catch {
-    // Restricted pages (about:, addons.mozilla.org) — silently skip the toast.
+    // Restricted pages (chrome://, Web Store) — silently skip the toast.
   }
 }
 
 async function doCopy(tabId, mode) {
-  const result = await processSelection(tabId, mode);
+  const result = withProRules(await processSelection(tabId, mode));
   if (result.error) {
     await showToast(tabId, result.error, true);
     return false;
@@ -213,50 +268,51 @@ async function doCopy(tabId, mode) {
   return ok;
 }
 
-// Context menus. Firefox event pages persist menus registered in
-// onInstalled; register unconditionally too so they survive on older
-// versions where event pages behave as persistent pages.
-function registerMenus() {
-  chrome.contextMenus.create({
-    id: 'copy-plain',
-    title: 'Copy as Clean Text',
-    contexts: ['selection']
-  }, () => void browser.runtime.lastError);
-  chrome.contextMenus.create({
-    id: 'copy-markdown',
-    title: 'Copy as Markdown',
-    contexts: ['selection']
-  }, () => void browser.runtime.lastError);
-}
+// Context menu
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.contextMenus.removeAll(() => {
+    chrome.contextMenus.create({
+      id: 'copy-plain',
+      title: 'Copy as Clean Text',
+      contexts: ['selection']
+    });
+    chrome.contextMenus.create({
+      id: 'copy-markdown',
+      title: 'Copy as Markdown',
+      contexts: ['selection']
+    });
+  });
+});
 
-browser.runtime.onInstalled.addListener(registerMenus);
-registerMenus();
-
-browser.contextMenus.onClicked.addListener(async (info, tab) => {
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (!tab || !tab.id) return;
   const mode = info.menuItemId === 'copy-markdown' ? 'markdown' : 'plain';
   await doCopy(tab.id, mode);
 });
 
-browser.commands.onCommand.addListener(async (command) => {
+chrome.commands.onCommand.addListener(async (command) => {
   if (command === 'copy-as-markdown') {
-    const tabs = await browser.tabs.query({ active: true, currentWindow: true });
+    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
     if (tabs.length === 0) return;
     await doCopy(tabs[0].id, 'markdown');
   }
 });
 
-// Messages from popup
-browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
+// Messages from popup + options page (batch conversion)
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === 'process-selection') {
-    browser.tabs.query({ active: true, currentWindow: true }).then(async (tabs) => {
+    chrome.tabs.query({ active: true, currentWindow: true }).then(async (tabs) => {
       if (tabs.length === 0) {
         sendResponse({ error: 'No active tab.' });
         return;
       }
-      const result = await processSelection(tabs[0].id, request.mode || 'plain');
+      const result = withProRules(await processSelection(tabs[0].id, request.mode || 'plain'));
       sendResponse(result);
     });
     return true;
+  }
+  if (request.type === 'get-pro-state') {
+    sendResponse({ active: proState.active });
+    return false;
   }
 });

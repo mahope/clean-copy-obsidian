@@ -204,6 +204,30 @@
       extension: <em>batch conversion</em> of many snippets at once, <em>custom cleanup
       rules</em> you define once and reuse everywhere, and a year of major updates.
       One license covers 5 devices.</p>
+
+      <!-- Batch conversion (Pro) -->
+      <details class="faq" id="batch-details" hidden>
+        <summary>Batch conversion — clean many snippets at once</summary>
+        <p style="font-size:.88rem;">Paste one snippet per line. Lines starting with
+        <code>&lt;</code> are treated as HTML and converted to Markdown; other lines are
+        cleaned as plain text. Results appear one per line, in the same order.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:.8rem;" class="batch-grid">
+          <div>
+            <label for="batch-input" style="font-weight:600;font-size:.85rem;">Snippets (one per line)</label>
+            <textarea id="batch-input" rows="6" style="width:100%;box-sizing:border-box;border:1px solid var(--color-border);border-radius:8px;background:var(--color-surface);color:var(--color-text);padding:.7rem;font-family:'SF Mono','Monaco',monospace;font-size:.82rem;resize:vertical;"></textarea>
+          </div>
+          <div>
+            <label for="batch-output" style="font-weight:600;font-size:.85rem;">Results</label>
+            <textarea id="batch-output" rows="6" readonly aria-live="polite" style="width:100%;box-sizing:border-box;border:1px solid var(--color-border);border-radius:8px;background:var(--color-surface);color:var(--color-text);padding:.7rem;font-family:'SF Mono','Monaco',monospace;font-size:.82rem;resize:vertical;"></textarea>
+          </div>
+        </div>
+        <div class="toolbar" style="margin-bottom:0;">
+          <button type="button" class="btn-primary" id="btn-batch">Convert all</button>
+          <button type="button" class="btn-secondary" id="btn-batch-copy">Copy results</button>
+          <span id="batch-status" role="status"></span>
+        </div>
+      </details>
+
       <p id="pro-buy-row">
         <a class="btn-primary pro-buy" id="pro-buy" style="text-decoration:none;display:inline-block;" href="#" rel="nofollow noopener" hidden>Buy Clean Copy Pro — $19/year</a>
         <span id="pro-soon" class="tool-hint">Checkout opens shortly — join the
@@ -376,16 +400,87 @@
         try { localStorage.setItem('cc_pro_expires', expiresAt); } catch (e) {}
       }
       showProActive(expiresAt);
+      enableBatch(true); // Pro feature gate
     }
     function showProActive(expiresAt) {
       proStatus.textContent = '✓ Pro activated' + (expiresAt ? ' — valid until ' + expiresAt.slice(0, 10) : '') + '.';
       proStatus.style.color = '#16a34a';
       proKeyInput.value = '';
     }
+    function clearPro() {
+      try { localStorage.removeItem('cc_pro_license'); localStorage.removeItem('cc_pro_expires'); } catch (e) {}
+      enableBatch(false);
+    }
     try {
       var saved = localStorage.getItem('cc_pro_license');
       if (saved) showProActive(localStorage.getItem('cc_pro_expires'));
+      var expiresSaved = localStorage.getItem('cc_pro_expires');
+      var notExpired = !expiresSaved || expiresSaved > new Date().toISOString();
+      if (saved && !notExpired) {
+        clearPro();
+      } else if (saved) {
+        // Re-validate the saved license quietly; revoke it server-side if invalid.
+        enableBatch(true);
+        fetch('/api/license/validate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ license_key: saved, device_id: deviceId() })
+        }).then(function (r) { return r.json().then(function (j) { return { s: r.status, j: j }; }); })
+          .then(function (res) {
+            if (!(res.s === 200 && res.j.ok && res.j.valid)) clearPro();
+          })
+          .catch(function () { /* offline: keep working */ });
+      } else {
+        enableBatch(false);
+      }
     } catch (e) {}
+
+    // ── Batch conversion (Pro) ───────────────────────────────────
+    function enableBatch(on) {
+      document.getElementById('batch-details').hidden = !on;
+    }
+    var batchInput = document.getElementById('batch-input');
+    var batchOutput = document.getElementById('batch-output');
+    var batchStatus = document.getElementById('batch-status');
+
+    document.getElementById('btn-batch').addEventListener('click', function () {
+      var lines = batchInput.value.split('\n').filter(function (l) { return l.trim().length > 0; });
+      if (!lines.length) {
+        batchStatus.textContent = 'Paste at least one snippet.';
+        batchStatus.style.color = '#dc2626';
+        return;
+      }
+      var results = CleanCopyCore.batchConvert(lines.map(function (l) {
+        var looksLikeHtml = /<\/?(?:p|div|span|h[1-6]|ul|ol|li|a|b|strong|i|em|br|code|pre|table)\b/i.test(l)
+          || /&(?:amp|lt|gt|quot|nbsp);/.test(l);
+        if (!looksLikeHtml) return l;
+        var doc = new DOMParser().parseFromString(l, 'text/html');
+        return { html: doc.body.innerHTML };
+      }), 'markdown');
+      batchOutput.value = results.map(function (r) {
+        return r.ok ? r.content.replace(/\n+/g, ' ').trim() : '[error] ' + r.error;
+      }).join('\n');
+      var failed = results.filter(function (r) { return !r.ok; }).length;
+      batchStatus.textContent = failed
+        ? results.length + ' snippets — ' + failed + ' failed.'
+        : '✓ Converted ' + results.length + ' snippets.';
+      batchStatus.style.color = failed ? '#dc2626' : '#16a34a';
+    });
+
+    document.getElementById('btn-batch-copy').addEventListener('click', function () {
+      if (!batchOutput.value) {
+        batchStatus.textContent = 'Nothing to copy yet.';
+        batchStatus.style.color = '#dc2626';
+        return;
+      }
+      navigator.clipboard.writeText(batchOutput.value).then(function () {
+        batchStatus.textContent = '✓ Results copied.';
+        batchStatus.style.color = '#16a34a';
+      }, function () {
+        batchStatus.textContent = 'Could not access clipboard.';
+        batchStatus.style.color = '#dc2626';
+      });
+    });
 
     proForm.addEventListener('submit', function (ev) {
       ev.preventDefault();

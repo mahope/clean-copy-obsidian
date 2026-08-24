@@ -1,47 +1,55 @@
-# STATUS — 24. august 2026 (iteration 129) — Clean Copy Pro licens-backend bygget
+# STATUS — 24. august 2026 (iteration 130) — Clean Copy Pro-funktioner bygget (v1.2.0)
 
 ## Tallene (ærlige)
 
 - Venteliste: **0** · Betalende kunder: **0** · Revenue: **0 kr**
 - Søgninger brugt: **0 af 12**.
-- Nye rigtige signaler: 0. Alt i denne iteration er infrastruktur, ikke trafik.
+- Nye rigtige signaler: 0.
 
 ## Hvad jeg gjorde
 
-DECISION.md findes, så det var BYG-dag. Det eneste der manglede og IKKE var
-Mads-blokeret, var selve penge-maskineriet: fra betaling til fungerende
-licensnøgle. Bygget, testet og deployet:
+STATUS.md fra i går sagde: hvis LS-nøglen ikke er ankommet, så byg
+Pro-funktionerne selv, så produktet lever op til teksten. Det gjorde jeg.
+Clean Copy v1.2.0 — Pro-funktionerne findes NU og låses op med en ægte licens:
 
-1. **`/api/license/activate` + `/api/license/validate`** i `site/_worker.js` —
-   32-hex nøgler i KV (`lic:<key>`), max 5 enheder pr. nøgle, idempotent
-   genaktivering, revoked/expired-håndtering, fail-safe fejlbeskeder.
-2. **Pro-sektion på /clean-copy-tool:** pris ($19/år), feature-liste,
-   licensaktiveringsformular med localStorage-device-ID. Købsknappen vises
-   FØRST når en ægte Lemon Squeezy-checkout-URL injiceres — ingen døde
-   købslinks.
-3. **`tools/set_checkout_url.js`:** injicerer checkout-URL'en i siden før
-   deploy (validerer at det ER en lemonsqueezy.com-link).
-4. **`tools/license-admin.js`:** issue/revoke/list nøgler via wrangler — så
-   der er en manuel leveringsvej fra dag ét (nøgle udstedes → mail til køber),
-   indtil LS-webhook automatiserer det.
-5. **lemon-setup.js:** Clean Copy Pro ($19/år) tilføjet som produkt #8; outputtet
-   printer nu de præcis webhook-/manuelle trin for licensproduktet.
-6. **`site/wrangler.toml`:** ny — muliggør lokal wrangler dev-test af Worker+KV.
+1. **Kernen (`tools/clean_copy_core.js`):** `compileRules`, `applyRules` og
+   `batchConvert` — brugerdefinerede oprydningsregler (bogstavelig eller regex,
+   case-følsomhed valgfri) og batch-konvertering der aldrig kaster: én dårlig
+   snippet giver `[error]`-linje, resten konverterer stadig.
+2. **Udvidelsen (Chrome + Firefox, v1.2.0):** ny options-side med
+   licensaktivering mod `/api/license/validate|activate` (gemmes i
+   chrome.storage.local, re-valideres ved opstart, revoked/expired → låser op
+   igen automatisk; offline → forbliver aktiv). Regler redigeres med
+   find/replace/regex-rækker, valideres klient-side før gem. Når Pro er aktiv
+   anvendes reglerne på ALLE kopier (context menu, genvej, popup) — en regel
+   der fejler at kompilere springes stille over, copying må aldrig gå i stykker.
+   Popup-footer viser "✓ Pro active" når licensen gælder.
+3. **Web-værktøjet (/clean-copy-tool):** batch-sektion (Pro-gated via den
+   eksisterende localStorage-licens + kvietisk server-revalidering) — én
+   snippet pr. linje ind, Markdown-resultater ud, kopier-knap.
+4. **Versioner:** Chrome/Firefox/GitHub-repo = 1.2.0. Zips rebuildet:
+   `clean-copy-v1.2.0.zip`, `clean-copy-firefox-v1.2.0.zip`. GitHub-repo
+   skubbet (commit aa695a2) — offentlig kildekode matcher butiks-zippen.
 
 ## Verificering (ikke påstande)
 
-- Lokal wrangler dev: activate OK, genaktivering idempotent, validate OK,
-  forkert format → 400, GET → 405, 6. enhed → 409 "Device limit reached",
-  validate ved device-grænse → `valid:false, reason:device_limit`. Testnøgle
-  slettet bagefter.
-- Live efter deploy: /api/license/activate med ukendt nøgle → 404 med pæn
-  besked; GET → 405; Pro-sektion live; JSON-LD stadig gyldig.
+- `node tools/test_pro_core.js`: 8 assertions — literal/regex/case-regler,
+  invalid regex kaster med læsbar besked, batch med null/object-inputs,
+  bad-global-rules fejl hele batchen, tom batch. PASS.
+- `node tools/test_clean_copy.js`: baseline cleanText/htmlToMarkdown. PASS.
+- Inline-JS på /clean-copy-tool syntaktjekket med node --check; JSON-LD
+  json.loads-verificeret.
+- Live efter deploy: /clean-copy-tool indeholder batch-UI + batchConvert;
+  /clean-copy-core.js indeholder batchConvert; /api/license/activate ukendt
+  nøgle → 404, GET → 405 (uændret). IndexNow pinget: 200.
 
 ## Hvad ikke virkede
 
-- Første wrangler dev-start fejlede (manglede `main` + `[assets]` i toml) —
-  rettet. `wrangler kv key put --local` med inline JSON slug første forsøg;
-  `--path` virker.
+- test_clean_copy.js brød sammen på den nye background.js (chrome undefined i
+  vm-sandbox) — rettet ved at klippe før Pro-sektionen i stedet for før
+  context-menu-sektionen.
+- To testfejl var min egen tests skyld (case-insensitiv regel rammer også
+  "Foo"; `[` er gyldig som bogstaveligt mønster) — kernen opførte sig rigtigt.
 
 ## Budget
 
@@ -49,14 +57,13 @@ licensnøgle. Bygget, testet og deployet:
 
 ## Blokeringer (samlet én gang)
 
-Mads skal åbne Bitwarden (Lemon Squeezy API-nøgle). Først da kan:
-`node lemon-setup.js` oprette produkterne → `node tools/set_checkout_url.js
-"<url>"` tænde købsknappen → deploy → rigtig betaling modtages.
+Mads skal åbne Bitwarden (Lemon Squeezy API-nøgle). Først da:
+`node lemon-setup.js` → `node tools/set_checkout_url.js "<url>"` → deploy →
+nøgler udstedes → købsknappen tænder → første betaling. Alt andet er klar.
 
 ## Næste skridt (naeste iteration)
 
-A) LS-nøgle ankommet? Kør lemon-setup → set_checkout_url → deploy. Ellers:
-B) Byg Pro-funktionerne selv (batch-konvertering + custom regler i
-   clean-copy-core) så produktet lever op til teksten — de kan bygges uden
-   blokering og testes lokalt.
-C) Ikke mere polering uden data. Gentag ikke SEO-produktion eller sporing.
+A) LS-nøgle ankommet? Kør lemon-setup → set_checkout_url → deploy.
+B) Ellers: distribution af v1.2.0 — Firefox AMO-upload-kit ligger klar
+(amo-upload-kit.md), og GitHub-release/tag for v1.2.0 kan oprettes med gh CLI.
+C) Ikke mere polering uden data.

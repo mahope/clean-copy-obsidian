@@ -2,7 +2,7 @@
 
 Paste and clean text as proper Markdown inside [Obsidian](https://obsidian.md).
 
-- **Free:** "Paste as clean Markdown" (Ctrl/Cmd+Shift+V) converts clipboard HTML — headings, bold, italic, links, lists, tables, code, entities — to proper Markdown using the same engine as [Clean Copy for Chrome/Firefox](https://github.com/mahope/clean-copy). "Clean selection" tidies the current selection (strips pasted HTML junk, smart quotes, zero-width characters).
+- **Free:** "Paste as clean Markdown" (Ctrl/Cmd+Shift+V) converts clipboard HTML — headings, bold, italic, links, lists, tables, code, entities — to proper Markdown using the same engine as [Clean Copy for Chrome/Firefox](https://github.com/mahope/clean-copy). "Clean selection" tidies the current selection (strips pasted HTML junk, smart quotes, zero-width characters). Also available as a [CLI](https://github.com/mahope/clean-copy-cli) (`brew install clean-copy`).
 - **Pro ($19/yr):** custom find/replace cleanup rules applied after every conversion, with regex support. Activated with a license key in settings.
 
 ## Install
@@ -52,8 +52,3 @@ Tests cover HTML→Markdown conversion (tables, nested lists, code blocks, entit
 ## License
 
 MIT
-
-## Changelog
-
-- **1.0.1** — Shared core with Clean Copy 1.3.0 (full entity decoder, hardened tables), `versions.json` for Obsidian's updater, styles for settings pane.
-- **1.0.0** — Initial release: paste as clean Markdown, paste as plain text, clean selection, Pro cleanup rules.

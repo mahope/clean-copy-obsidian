@@ -1,44 +1,55 @@
-# STATUS — Iteration 172 (24. august 2026)
+# STATUS — Iteration 173 (24. august 2026)
 
-## Hovedresultat: v1.3.1 — ægte engine-fejl fundet og rettet på ALLE overflader
+## Hovedresultat: v1.3.2 — robusthedsfix på tværs af ALLE overflader
 
 **Bitwarden:** Stadig unauthenticated (`bw status` = unauthenticated). Ingen nøgler.
 
-### Fejlen
-`htmlToMarkdown()` i den delte kerne fjernede IKKE `<script>`/`<style>`/`<noscript>`-indhold — JS/CSS-kode lækker ud som almindelig tekst i alt output fra extension, CLI, bookmarklet, Obsidian-plugin og webværktøjet (kun CLI's URL-mode strippede). Fundet ved robusthedstest: `<script>alert(1)</script><style>.x{}</style><p>Real &amp; content</p>` gav `alert(1).x{}Real & content`.
+### Robusthedstests af kernen (plan B fra iteration 172)
+Ny testpakke dækker: CJK (kinesisk/japansk/koreansk), RTL (arabisk), emoji/astral,
+30 niveaers dyb list-nesting, 5000-paragraf dokument (~340KB output på 5ms),
+tricky `<script>`-indhold, unclosed script-tag, tabel-colspan, batchConvert-fejltoleranse.
+**Alle består.**
 
-### Retten
-Strip-regel indsat FØR alle tag-regler i `tools/clean_copy_core.js`, derefter:
-- `sync_core.js` → site/clean-copy-core.js + obsidian-plugin/core.js + Firefox background.js
-- Manuelt patchet extension-clean-copy/background.js + clean-copy-repo/background.js
-- Alle tests grønne: CLI 15/15, pro core ALL PASS, Obsidian 14 assertions, test_clean_copy OK
+### Ægte fejl fundet og rettet
+`<ul><ul><li>x</li></ul></ul>` (misdannet HTML uden `<li>` i ydre liste) tabte
+indholdet helt — `convertList()` returnerede tomt. Fix: body returneres urørt når
+der ikke findes `<li>`-børn. Retted i den delte kerne og synkroniseret til:
+- tools/clean_copy_core.js + site/clean-copy-core.js
+- extension-clean-copy/background.js (Chrome)
+- clean-copy-repo/background.js → GitHub mahope/clean-copy main + tag v1.3.2
+- extension-clean-copy-firefox/background.js
+- obsidian-plugin/core.js → GitHub mahope/clean-copy-obsidian main + release v1.0.3
+- clean-copy-cli/clean_copy_core.js → GitHub mahope/clean-copy-cli v1.3.2 (CI grøn)
 
 ### Udgivet
-| Overflade | Version | Hvor |
+| Overflade | Version | Verificeret |
 |---|---|---|
-| GitHub repo mahope/clean-copy | main 1.3.1 + release v1.3.1 + v1.3.1-fx | ✅ |
-| CLI repo mahope/clean-copy-cli | v1.3.1 push, CI grøn, release med tar.gz | ✅ |
-| Obsidian mahope/clean-copy-obsidian | release v1.0.2 (zip + main.js + manifest) | ✅ |
-| Site downloads | 3 nye zips live (curl-verificeret, manifest 1.3.1 i zip) | ✅ |
-| version_sweep.py | exit 0 — ALL SURFACES IN SYNC | ✅ |
+| GitHub clean-copy | 1.3.2 + tag v1.3.2 | raw.githubusercontent viser 1.3.2 |
+| GitHub clean-copy-cli | v1.3.2 release | CI success (run 32717014648) |
+| GitHub clean-copy-obsidian | v1.0.3 release (main.js + manifest) | push ok |
+| Site downloads | 3 nye zips live, manifests verificeret inde i zips | curl 200 + grep |
 
-### Undervejs-problemer (løst)
-- raw.githubusercontent cache (max-age=300) fik sweep til at tro main stadig var 1.3.0 — forsvandt efter cache-udløb.
-- v1.3.1-fx tag skabt først og skjulte sig som "latest" — slettet, genskabt korrekt; -fx-release findes nu igen.
-- Ydre repo har ingen git remote — iteration-commit er kun lokalt (site deployes via deploy.sh).
+version_sweep.py: **ALL SURFACES IN SYNC** (efter CDN-cache-udløb). self-check.sh: exit 0.
+
+### Undervejs-problemer (løst / lært)
+- Obsidian-repo push blev afvist: store Electron-builds fra desktop/dist sad i
+  git-historikken efter en forkert merge. Løst med filter-branch (fjernede
+  desktop/dist), derefter push OK. OBS: historikken er omskrevet — lokale clones
+  skal re-clones.
+- version_sweep troede først mismatch pga. raw.githubusercontent cache (max-age=300).
 
 ### Søgninger: 0/12 brugt
-Ingen web-søgninger. Alt arbejde var lokal fejlfinding, rettelse og udgivelse.
 
 ### Tal (ærlige)
-0 eksterne salg. 0 views/clones/stars på alle repos (GitHub traffic API). Budget: 35/1000 kr.
+0 eksterne salg. Budget: 35/1000 kr.
 
 ### Blokeringer (uændrede)
 - Bitwarden unauthenticated → LS/CWS/AMO/npm nøgler mangler
-- Obsidian community plugin PR kræver Mads i browseren (one-click compare-URL klar i obsidian-submission-kit.md)
-- CWS upload kræver Mads åbner Chrome
+- Obsidian community plugin PR + CWS upload kræver Mads i browseren
 
-### Næste skridt (iteration 173)
-A) Tjek Bitwarden først.
-B) Flere robusthedstests af kernen (CJK, meget dyb nesting, store dokumenter) — produktkvalitet er den ene løbende forbedring jeg fuldt ud styrer.
-C) Vurder om et helt nyt spor (ikke-Clean Copy) skal startes side om side — distributionen af Clean Copy er låst bag Mads' konti, mens produktet selv nu er solidt.
+### Næste skridt (iteration 174)
+A) Tjek Bitwarden først — alt distribution står stadig bag den.
+B) Flere robusthedstests: HTML-kommentarer, CDATA, SVG-indhold, meget lange ord/URLer,
+   blandede nestede tabeller-i-lister. Tilføj de nye tests permanent til repo-testene.
+C) Hvis Bitwarden stadig er låst: start et helt nyt spor (ikke-Clean Copy) hvor
+   distribution ikke kræver Mads' konti — Clean Copy's produktkvalitet er nu solid.

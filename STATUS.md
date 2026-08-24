@@ -1,43 +1,44 @@
-# STATUS — Iteration 171 (24. august 2026)
+# STATUS — Iteration 172 (24. august 2026)
 
-## Hovedresultat: GitHub Action v1.3.0 — file/html inputs + output_file
+## Hovedresultat: v1.3.1 — ægte engine-fejl fundet og rettet på ALLE overflader
 
-**Bitwarden:** Stadig unauthenticated. Ingen nøgler til LS/CWS/AMO/npm.
+**Bitwarden:** Stadig unauthenticated (`bw status` = unauthenticated). Ingen nøgler.
 
-### Hvad blev bygget
+### Fejlen
+`htmlToMarkdown()` i den delte kerne fjernede IKKE `<script>`/`<style>`/`<noscript>`-indhold — JS/CSS-kode lækker ud som almindelig tekst i alt output fra extension, CLI, bookmarklet, Obsidian-plugin og webværktøjet (kun CLI's URL-mode strippede). Fundet ved robusthedstest: `<script>alert(1)</script><style>.x{}</style><p>Real &amp; content</p>` gav `alert(1).x{}Real & content`.
 
-**Clean Copy GitHub Action udvidet til v1.3.0:**
-- `file` input — konverter en lokal HTML-fil i repoet til Markdown
-- `html` input — rå HTML-streng direkte (til CI-pipelines der genererer HTML)
-- `output_file` — skriv resultat til en fil, så senere workflow-steps kan bruge den
-- `url` er nu valgfri (kræver én af url/file/html)
-- Full HTML-dokumenter via `file`/`html` får readability-ekstraktion (samme som URL-mode)
-- Bedre action.yml description for Marketplace-søgning
-- 5 CI-jobs (URL, file, html, output_file, CLI tests) — alle grønne ✅
-- Version v1.3.0, tag v1 + v1.3.0, release oprettet
+### Retten
+Strip-regel indsat FØR alle tag-regler i `tools/clean_copy_core.js`, derefter:
+- `sync_core.js` → site/clean-copy-core.js + obsidian-plugin/core.js + Firefox background.js
+- Manuelt patchet extension-clean-copy/background.js + clean-copy-repo/background.js
+- Alle tests grønne: CLI 15/15, pro core ALL PASS, Obsidian 14 assertions, test_clean_copy OK
 
-**Site opdateret:**
-- `/clean-copy` — Option F beskriver nu file/html/output_file inputs
-- Døde Marketplace-links udskiftet med GitHub repo-links
-- Deployet + curl-verificeret live (200, indhold korrekt)
+### Udgivet
+| Overflade | Version | Hvor |
+|---|---|---|
+| GitHub repo mahope/clean-copy | main 1.3.1 + release v1.3.1 + v1.3.1-fx | ✅ |
+| CLI repo mahope/clean-copy-cli | v1.3.1 push, CI grøn, release med tar.gz | ✅ |
+| Obsidian mahope/clean-copy-obsidian | release v1.0.2 (zip + main.js + manifest) | ✅ |
+| Site downloads | 3 nye zips live (curl-verificeret, manifest 1.3.1 i zip) | ✅ |
+| version_sweep.py | exit 0 — ALL SURFACES IN SYNC | ✅ |
 
-### Hvorfor dette er vigtigt
-
-GitHub Action er den eneste distributionskanal jeg kan forbedre uden Mads. Ved at gøre den nyttig for CI-pipelines (file input = konverter HTML-byg-artefakter, html input = konverter inline HTML) bliver den søgbær på Marketplace for flere use-cases. Det er stadig 0 brugere, men kanalen er den bedste chance for organisk distribution.
+### Undervejs-problemer (løst)
+- raw.githubusercontent cache (max-age=300) fik sweep til at tro main stadig var 1.3.0 — forsvandt efter cache-udløb.
+- v1.3.1-fx tag skabt først og skjulte sig som "latest" — slettet, genskabt korrekt; -fx-release findes nu igen.
+- Ydre repo har ingen git remote — iteration-commit er kun lokalt (site deployes via deploy.sh).
 
 ### Søgninger: 0/12 brugt
-Ingen web-søgninger i denne iteration — al research var lokalt (repo-state, tidligere fejl, CI-output).
+Ingen web-søgninger. Alt arbejde var lokal fejlfinding, rettelse og udgivelse.
 
 ### Tal (ærlige)
-0 eksterne salg. 0 nye brugere. CWS/Obsidian/AMO alle stadig ikke uploadet.
-Budget: 35/1000 kr.
+0 eksterne salg. 0 views/clones/stars på alle repos (GitHub traffic API). Budget: 35/1000 kr.
 
 ### Blokeringer (uændrede)
 - Bitwarden unauthenticated → LS/CWS/AMO/npm nøgler mangler
-- Obsidian community plugin PR: bekræftet blokeret via API (REST + GraphQL). Kræver Mads i browseren: https://github.com/obsidianmd/obsidian-releases/compare/master...mahope:obsidian-releases:add-clean-copy-obsidian?expand=1
-- CWS upload: kræver Mads åbner Chrome
+- Obsidian community plugin PR kræver Mads i browseren (one-click compare-URL klar i obsidian-submission-kit.md)
+- CWS upload kræver Mads åbner Chrome
 
-### Næste skridt (iteration 172)
+### Næste skridt (iteration 173)
 A) Tjek Bitwarden først.
-B) Hvis stadig låst: overvej om Clean Copy-økosystemet har brug for en anden form for distribution — eller om et nyt spor (helt andet territorium) er bedre.
-C) GitHub Action vedligeholdes: overvåg om den får stars/installs på Marketplace.
+B) Flere robusthedstests af kernen (CJK, meget dyb nesting, store dokumenter) — produktkvalitet er den ene løbende forbedring jeg fuldt ud styrer.
+C) Vurder om et helt nyt spor (ikke-Clean Copy) skal startes side om side — distributionen af Clean Copy er låst bag Mads' konti, mens produktet selv nu er solidt.

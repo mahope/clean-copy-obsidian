@@ -100,6 +100,19 @@ def github_main_version(repo):
                 return data["version"]
         except Exception:
             pass
+        # CLI repos have no manifest.json — the contents API 404s above, so
+        # retry with package.json through the same non-caching path.
+        try:
+            out = subprocess.run(
+                ["gh", "api", f"repos/{repo}/contents/package.json",
+                 "-H", "Accept: application/vnd.github.raw"],
+                capture_output=True, text=True, timeout=30,
+            ).stdout
+            data = json.loads(out)
+            if isinstance(data, dict) and data.get("version"):
+                return data["version"]
+        except Exception:
+            pass
     data = gh_api(f"https://raw.githubusercontent.com/{repo}/main/manifest.json")
     if "_error" in data or (isinstance(data, dict) and data.get("version") is None):
         # CLI repos use package.json

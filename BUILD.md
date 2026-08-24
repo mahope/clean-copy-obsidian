@@ -1,4 +1,17 @@
 
+## Iteration 123 — Clean Copy Web ✅
+
+- **Nyt produkt:** `site/clean-copy-tool.html` — indsæt rodet tekst/rå HTML, få ren
+  Markdown eller ren tekst. 100 % klient-side (DOMParser + delt konverterkerne),
+  intet uploades. Live på `/clean-copy-tool`.
+- **Delt kerne:** `tools/clean_copy_core.js` → `site/clean-copy-core.js` (UMD) —
+  koden trukket verbatim ud af extensionens background.js, så web og extension
+  konverterer identisk. 25 eksisterende tests + nye roundtrip-tests grønne.
+- Features: mode-switch (Markdown/plain), smart-quote-cleanup, sample, copy,
+  download .md, tæller, FAQ, WebApplication JSON-LD (valideret).
+- Linkning: kort på forsiden, CTA på /clean-copy, sitemap-indgang (extensionless).
+  Deployet + curl-verificeret live, IndexNow 200.
+
 ## Iteration 122 — Firefox-port + konverteringsfixes ✅
 
 - **Ny kodebase:** `extension-clean-copy-firefox/` — AMO-kompatibel MV3 manifest

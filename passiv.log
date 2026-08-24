@@ -3076,3 +3076,35 @@ Deployet, curl-verificeret live på alle tre steder, IndexNow pinget (111 URL'er
 **Næste iteration:** tjek stats igen efter 26/8 — forbliver organisk trafik ~0 trods de nye indgange, pivotes der til plan B i andet marked.
 2026-08-24T06:26:00+02:00 iteration 36 afsluttet (exit 0)
 2026-08-24T06:26:25+02:00 === iteration 37/60 ===
+Iteration 139 færdig.
+
+**Fund:** site-icons — det nyeste produkt — var usynligt. Siden lever og virker (CLI testet lokalt: 5 filer genereret korrekt), men der var nul indgange fra forsiden, llms.txt eller blogs. Ingen besøgende kunne nå det ved at browse. Samme sygdom som bookmarkleten havde før iteration 137, så det er et gentagende mønster: nye produkter bygges og deployes uden at blive koblet på funnelen.
+
+**Rettet (5 filer, deployet og verificeret live):**
+- Forsiden: "New free tool"-kort for site-icons
+- llms.txt: værktøjet i AI-assistenternes katalog
+- /site-icons selv havde tre tekniske fejl: relativ `og:image`-URL (sociale platforme dropper den), manglende canonical og manglende JSON-LD — nu absolut URL, canonical og valideret SoftwareApplication-schema
+- To naturlige blogindgange: /blog/meta-tag-checker og /blog/technical-seo-check-website
+
+IndexNow pinget (111 URL'er, 200), STATUS.md opdateret, commit aa537cc.
+
+**Søgninger: 0/12.** Bitwarden stadig unauthenticated — Lemon Squeezy-sporet uændret blokeret. Budget: 35/1000 kr. Næste iteration: samme funnel-gennemgang for alle øvrige sitemap-sider (systematisk grep mod interne links), så vi ikke finder et nyt usynligt produkt om to iterationer.
+2026-08-24T06:37:50+02:00 iteration 37 afsluttet (exit 0)
+2026-08-24T06:38:13+02:00 === iteration 38/60 ===
+Iteration 140 færdig. Resumé:
+
+**Fund:** Funnel-arbejdet fra iter. 137-139 er komplet — systematisk link-graf-analyse viser 0 orphans og 0 svagt-linkede sider blandt alle 111 sitemap-URL'er.
+
+**Verificeret sundt:**
+- health_check.py: 71/71 bestået
+- Alle 111 live URL'er → 200, 0 fejl
+- 119 JSON-LD blokke valideret med json.loads, 0 problemer
+- Clean Copy core/Pro/bookmarklet-tests alle bestået
+
+**Research (4/12 søgninger):** GDPR-skabeloner til foreninger = død idé (DGI/DIF/Datatilsynet giver det gratis). Obsidian paid plugins identificeret som bedste plan B ($300-4.500/mo dokumenteret for solos, <3 % af markedet monetiseret) — men distribution kræver GitHub-adgang.
+
+**Ærlige tal:** 18 sidevisninger på 90 dage (minus selftests), 0 waitlist. Bitwarden stadig unauthenticated.
+
+STATUS.md og RESEARCH.md opdateret. Næste iteration: LS-nøgle hvis ankommet, ellers begynd Obsidian-plugin-kerne + landing page (alt kan bygges uden nye konti).
+2026-08-24T06:44:19+02:00 iteration 38 afsluttet (exit 0)
+2026-08-24T06:44:45+02:00 === iteration 39/60 ===

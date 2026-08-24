@@ -3,32 +3,62 @@
  * license-admin.js — issue/revoke/list Clean Copy Pro license keys.
  *
  * Keys live in the same Cloudflare KV namespace (VISITS) the Worker uses,
- * under lic:<key>. This script talks to KV via `wrangler` using the same
- * credentials deploy.sh uses (~/.hermes/.env).
+ * under lic:<key>. This script talks to the KV REST API directly with the
+ * same credentials deploy.sh uses (~/.hermes/.env). (The `wrangler kv` CLI
+ * path proved unreliable from this machine — writes silently landed in a
+ * different view than production — so we use the REST API.)
  *
  * Usage:
  *   node tools/license-admin.js issue [N]     # create N keys, print them
  *   node tools/license-admin.js revoke <key>  # mark a key revoked
  *   node tools/license-admin.js list          # list keys + device counts
  *
- * Requires: CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID in env.
+ * Requires: CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID in env
+ * (and CF_KV_NAMESPACE_ID, which defaults to the VISITS namespace).
  */
 
-const { execSync } = require('child_process');
 const crypto = require('crypto');
 
-const NAMESPACE = process.env.CF_KV_NAMESPACE_ID; // set in ~/.hermes/.env
-if (!NAMESPACE) {
-  console.error('CF_KV_NAMESPACE_ID not set — add it to ~/.hermes/.env');
+const NAMESPACE = process.env.CF_KV_NAMESPACE_ID || '215f8a921ac34dbcad9eb204e06baf2f';
+const ACCOUNT = process.env.CLOUDFLARE_ACCOUNT_ID;
+const TOKEN = process.env.CLOUDFLARE_API_TOKEN;
+if (!ACCOUNT || !TOKEN) {
+  console.error('CLOUDFLARE_ACCOUNT_ID / CLOUDFLARE_API_TOKEN missing — source ~/.hermes/.env first.');
   process.exit(1);
 }
 
-function wrangler(args) {
-  return execSync(`npx --yes wrangler kv key ${args}`, {
-    stdio: ['ignore', 'pipe', 'pipe'],
-    encoding: 'utf8',
-    env: process.env,
+const BASE = `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT}/storage/kv/namespaces/${NAMESPACE}`;
+
+async function kvPut(key, value) {
+  const res = await fetch(`${BASE}/values/${encodeURIComponent(key)}`, {
+    method: 'PUT',
+    headers: { Authorization: `Bearer ${TOKEN}`, 'Content-Type': 'application/json' },
+    body: value,
   });
+  const j = await res.json();
+  if (!j.success) throw new Error(`KV put failed for ${key}: ${JSON.stringify(j.errors)}`);
+}
+
+async function kvGet(key) {
+  const res = await fetch(`${BASE}/values/${encodeURIComponent(key)}`, {
+    headers: { Authorization: `Bearer ${TOKEN}` },
+  });
+  if (!res.ok) return null;
+  return await res.text();
+}
+
+async function kvList(prefix) {
+  const out = [];
+  let cursor = '';
+  do {
+    const url = `${BASE}/keys?limit=1000&prefix=${encodeURIComponent(prefix)}${cursor ? `&cursor=${cursor}` : ''}`;
+    const res = await fetch(url, { headers: { Authorization: `Bearer ${TOKEN}` } });
+    const j = await res.json();
+    if (!j.success) throw new Error(`KV list failed: ${JSON.stringify(j.errors)}`);
+    out.push(...j.result.map((k) => k.name));
+    cursor = j.result_info.cursor || '';
+  } while (cursor);
+  return out;
 }
 
 function newKey() {
@@ -36,10 +66,7 @@ function newKey() {
 }
 
 function putKey(key, record) {
-  const tmp = `/tmp/lic-${key}.json`;
-  require('fs').writeFileSync(tmp, JSON.stringify(record));
-  wrangler(`put "lic:${key}" --path "${tmp}" --namespace-id ${NAMESPACE}`);
-  require('fs').unlinkSync(tmp);
+  return kvPut(`lic:${key}`, JSON.stringify(record));
 }
 
 async function main() {
@@ -56,7 +83,7 @@ async function main() {
         status: 'active',
         devices: [],
       };
-      putKey(key, record);
+      await putKey(key, record);
       console.log(key);
     }
     return;
@@ -69,18 +96,24 @@ async function main() {
     }
     let rec = { devices: [] };
     try {
-      rec = JSON.parse(wrangler(`get "lic:${arg}" --namespace-id ${NAMESPACE}`));
+      const raw = await kvGet(`lic:${arg}`);
+      if (raw) rec = JSON.parse(raw);
     } catch {}
     rec.status = 'revoked';
-    putKey(arg, rec);
+    await putKey(arg, rec);
     console.log(`Revoked ${arg}`);
     return;
   }
 
   if (cmd === 'list') {
-    // wrangler has no direct JSON list here; fall back to per-day scan hint.
-    console.log('Listing is done via: npx wrangler kv key list --namespace-id $CF_KV_NAMESPACE_ID | grep lic:');
-    execSync(`npx --yes wrangler kv key list --namespace-id ${NAMESPACE} | grep lic: || true`, { stdio: 'inherit' });
+    const names = await kvList('lic:');
+    for (const name of names) {
+      const key = name.slice(4);
+      let rec;
+      try { rec = JSON.parse(await kvGet(name)); } catch { rec = {}; }
+      console.log(`${key}  status=${rec.status || '?'}  expires=${rec.expires_at || '?'}  devices=${(rec.devices || []).length}`);
+    }
+    if (!names.length) console.log('(no lic: keys)');
     return;
   }
 

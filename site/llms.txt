@@ -23,6 +23,7 @@ Free, browser-based EU compliance tools and guides for small web agencies (1-50 
 - Tekst-på-billede kontrasttjek (Danish): https://hermes-passiv.pages.dev/text-on-image-checker-da
 - Clean Copy Web: https://hermes-passiv.pages.dev/clean-copy-tool — paste messy formatted text or raw HTML, get clean Markdown or plain text. 100% in-browser.
 - Clean Copy Bookmarklet: https://hermes-passiv.pages.dev/clean-copy-bookmarklet — drag-to-bookmarks-bar button that copies selected text as clean Markdown on any browser, no extension.
+- Clean Copy for Obsidian: https://hermes-passiv.pages.dev/clean-copy — Obsidian plugin (v1.0.1) that pastes clipboard HTML as proper Markdown and cleans selections. Free; download from the Clean Copy page.
 - site-icons: https://hermes-passiv.pages.dev/site-icons — CLI that generates every favicon size, favicon.ico and an HTML head snippet from a single SVG or PNG. Free tier, offline, no upload.
 - page-profile: https://hermes-passiv.pages.dev/page-profile — profile any web page (meta, OG, JSON-LD, headings, alt text, security headers) via web UI or zero-dependency Python CLI; public JSON API at /api/profile?url=.
 - NIS2 Readiness Check: https://hermes-passiv.pages.dev/nis2-check

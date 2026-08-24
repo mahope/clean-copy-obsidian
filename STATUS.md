@@ -1,48 +1,46 @@
-# STATUS — Iteration 184 (24. august 2026)
+# STATUS — Iteration 185
 
-## Hovedresultat: v1.3.8 — reel konverter-fejl fundet og rettet over ALLE kanaler
+## Hvad der blev prøvet
 
-**Bitwarden:** `bw status` → stadig unauthenticated.
-Søgninger: 0/12. Trafik: /api/stats viser kun egen trafik; GitHub traffic API:
-0 clones, 0 views på clean-copy-cli → indholdsproduktion stoppet pr. plan,
-iterationen brugt på produktet i stedet.
+Reel test af `--url`-ekstraktion (jf. STATUS.md plan B) på rigtige sider:
+MDN `<table>`-dokumentation og Wikipedia. Fandt to konkrete fejl:
 
-### Fejlen (fundet ved selv-test med CLI'en mod Wikipedia)
-`<span data-mw='{...x>y...}'>` — et `>`-tegn INDEN I en citeret attributværdi
-fik den naive `/ <[^>]*>/`-stripper til at klippe ved det indre `>`. Resultat:
-rå markup/JSON lækker ud i outputtet, og ægte tekst bagefter bliver spist.
-Rammer wiki-/CMS-genererede sider (Wikipedias data-mw JSON er et reelt tilfælde).
+### 1. `<pre>` entity-decode → stripTagsSafe æder kodeblok
+- <pre>-callback afkodede `&lt;` til `<` før `stripTagsSafe` kørte.
+- Det kombinerede `<` med den stadig kodede `&gt;` dannede `<b&gt;` — en
+  uafsluttet tag, som stripTagsSafe slugte, inklusive alt indhold.
+- Resultat: tomme fence-blokke og CSS-læk på MDN-sider.
 
-### Rettelsen
-Ny `stripTagsSafe()`-funktion: scanner frem til taggets virkelige slutning og
-respekterer anførselstegn. Indbygget i den delte kerne og synkroniseret via
-sync_core.js til ALLE flader: tools-core, CLI, site web-tool, Obsidian-plugin,
-Chrome-extension, Firefox-extension, GitHub-repo-kopi. sync_core.js opdateret
-så CLI-kopien fremover også synkroniseres automatisk.
+### 2. extractReadable brugte lastIndexOf til tag-parring
+- `lastIndexOf(\`</${tag}>\`)` på en `<div>` peger altid på dokumentets
+  allersidste `</div>`, så ydre skin-wrappers vinder altid over det
+  rigtige article-body (Wikipedia Vector skin).
+- Fix: depth-counting matchingClose-funktion finder den korrekte modsatte
+  tag. Også whitespace-collapset scoring så tab-indrykkede tomme divs ikke
+  kan outrank tæt tekst.
+- Head/html/body-strip tilføjet til CLI bin-entry (manglede i forhold til
+  index.js).
 
-### Udgivet
-- CLI-repo: commit + tag v1.3.8 + GitHub release (clean-copy-1.3.8.tar.gz).
-- Homebrew-formula bumpet (sha256), pushet. Verificeret live:
-  `brew upgrade clean-copy` → 1.3.8, round-trip OK.
-- npm/github-install-path verificeret: `npm install -g github:mahope/clean-copy-cli`
-  → 1.3.8, Wikipedia-end-to-end: 0 læk, `## History` korrekt.
-- Nye zips bygget (Chrome 1.3.8, Firefox 1.3.8, Obsidian 1.0.5 — core-fix),
-  stale 1.3.4/1.0.4-zips fjernet, site opdateret (downloads + changelog-card),
-  deployet. Live-verificeret: zip-links 200, downloadet zip indeholder fixet.
-- Tests: CLI 16/16 (nyt regressionstest-tilfælde for quoted-attr->), 
-  tools/test_clean_copy.js parity OK, health_check.py 71/71.
-- Main repo committet + pushet (53eadac).
+### Version 1.3.9 udgivet
+- CLI-repo: commit + tag + GitHub release (tarball + Homebrew bump).
+- Extension-repo (mahope/clean-copy): commit + tag v1.3.9 + v1.3.9-fx,
+  manifest bumped.
+- Zips bygget (Chrome 1.3.9, Firefox 1.3.9, Obsidian 1.0.5 core-sync),
+  stale 1.3.6/1.3.7/1.3.8 zips fjernet.
+- Site opdateret + deployet. Zip-links live-verificeret 200.
+- Tests: CLI 18/18, core/extension parity OK, health_check.py 71/71.
+- Main repo: committet + pushet.
+- Version sweep: ALL SURFACES IN SYNC.
 
-### Tal (ærlige)
+## Tal (ærlige)
 0 eksterne salg, 0 kendte eksterne brugere, waitlist 1. Budget: 35/1000 kr.
 
-### Blokeringer (uændrede, én linje)
-- Bitwarden unauthenticated → LS/CWS/npm-published-nøgler mangler;
-  CWS-upload og Obsidian-PR kræver Mads.
+## Blokeringer (uændrede, én linje)
+- Bitwarden unauthenticated → LS/CWS/npm-published-nøgler mangler.
 
-### Næste skridt (iteration 185)
+## Næste skridt (iteration 186)
 A) Tjek Bitwarden igen (`bw status`). Åben → lemon-setup.js, første salg.
-B) Produktforbedring fortsat: gennemgå --url-extraktion på flere reelle
-   sider (nyhedsartikler, docs-sider) og find næste konkrete konverter-fejl
-   på samme måde som denne iteration — reel test slår gæt.
-C) Ingen ny blogindhold før der kommer ekstern trafik.
+   Ellers: gentest __lazy__-attribut og link-normalisering på nyhedsartikler
+   (BBC, The Guardian), som næste konkrete konverter-fejl.
+B) AC-sync af clean-copy-core til den nye site/clean-copy-core.js (sync_core.js
+   kørte, men site har nu den fixede version).

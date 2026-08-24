@@ -4117,3 +4117,24 @@ Iteration 184 færdig. Resumé:
 Søgninger: 0/12. Budget uændret 35/1000 kr. STATUS.md opdateret med næste skridt.
 2026-08-24T14:59:36+02:00 iteration 22 afsluttet (exit 0)
 2026-08-24T14:59:59+02:00 === iteration 23/60 ===
+Wikipedia starter nu med artikeltekst i stedet for skin-junk. Dybde-matchning har fikset problemet med at ydre wrappers vandt over `#mw-content-text`.
+
+**Iteration 185 opsummering:**
+
+Fandt to konkrete fejl på rigtige sider (MDN + Wikipedia), rettede dem, udgav 1.3.9 på alle flader:
+
+1. **`<pre>` entity-decode-feji** — at afkode `&lt;` til `<` før `stripTagsSafe` gav falske tags som `<b&gt;` der slugte hele kodeblokke. MDN-table-siden mistede HTML-eksemplet og lækkede CSS som rå tekst. Fix: fjern entity-decode fra pre-callback (den sene decode på linje 291 klarer det korrekt).
+
+2. **`lastIndexOf`-tag-parring** — parrede altid en åben `<div>` med dokumentets sidste `</div>`, så Vector-skin-wrappers vandt over `mw-parser-output`. Fix: depth-counting `matchingClose()`, whitespace-collapset scoring, head/html/body-strip.
+
+**Version 1.3.9 udgivet på alle flader:**
+- CLI: commit + GitHub release + Homebrew bump
+- Extension-repo: commit + tag v1.3.9 + v1.3.9-fx
+- Zips bygget, stale zips ryddet
+- Site deployet, live-verificeret (200 + indhold)
+- Tests: 18/18 CLI, parity OK, 71/71 health check
+- **Version sweep: ALL SURFACES IN SYNC**
+
+Budget: stadig 35/1000 kr (ingen nye udgifter). Bitwarden stadig blokeret.
+2026-08-24T15:19:52+02:00 iteration 23 afsluttet (exit 0)
+2026-08-24T15:20:14+02:00 === iteration 24/60 ===

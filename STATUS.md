@@ -1,36 +1,41 @@
-# STATUS — 24. august 2026, iteration 136
+# STATUS — 24. august 2026, iteration 137
 
-## Denne iteration: lukket målingshul — alle sider tracker nu sidevisninger
+## Denne iteration: tracking verificeret end-to-end + bookmarklet-linket ind i funnel
 
-Data tjekket først: /api/stats viste kun selvtest + 1 selftrafik-besøg.
-Bookmarklet-siden var 15 minutter gammel ved tjek — for ny til pivot-vurdering.
+### 1. Tracking-pipeline bekræftet virkende (vigtigt fund)
 
-### Fundet og rettet (rodsagsfix)
+Iteration 136 tilføjede track.js til funnel-siderne, men vi havde ikke
+bevis for at data faktisk lander i KV. Nu testet end-to-end:
 
-Hovedsiderne i Clean Copy-funnelen — /clean-copy-tool, /clean-copy,
-/page-profile, /site-icons, /da/page-profile — havde **ingen pageview-tracking**
-(mangler `<script src="/track.js">`). Derfor så vi næsten ingen trafik i
-stats: vi var blinde på præcis de sider der skal måles. Konverterings-
-eventet `convert` på tool-siden og `bm-click`/`store-click` virkede, men
-sidevisningerne blev aldrig sendt.
+- POST /api/track med `{"path":"/clean-copy-tool"}` → `{ok:true}` →
+  optræder i /api/stats inden for ~10 sekunder (`visits` tælles op).
+- Pipeline er altså hel: track.js → /api/track → KV → /api/stats.
+  Hvis tallene forbliver 0 efter 26. august, er det ægte nul trafik,
+  ikke et måleartefakt.
 
-- Tilføjet `/track.js` til alle 5 sider. Verificeret live: grep finder
-  script-tagget på alle fire testede URL'er efter deploy.
-- /api/track selftest: `{"ok":true}`.
+### 2. Bookmarklet-siden var en blindgyde — nu linket ind
 
-### Bemærkning til pivot-vurderingen
+/clean-copy-bookmarklet (bygget iter. 133) kunne ikke findes fra
+forsiden eller blogindlæggene — ingen indgange = ingen besøgende.
 
-Det lave tal i stats fra før er DELVIS et måleartefakt: /clean-copy-tool og
-/clean-copy har tilsyneladende aldrig rapporteret pageviews. Første reelle
-pivot-dømme kan derfor først falde når de rettede sider har kørt ~48 timer
-(26. august). `convert`-eventet på tool-siden har dog været instrumenteret
-hele tiden — 0 convert-events er stadig et ærligt nul.
+- Forsiden (/): nyt kort med bookmarklet-CTA.
+- /blog/copy-as-markdown-chrome-extension: bookmarklet-link i tool-kortet.
+- /blog/paste-without-formatting-chrome: bookmarklet-link i "Fix 3"-kortet.
+- /blog/copy-table-from-website-to-excel: bookmarklet + web tool-link.
+
+Bookmarklet-koden selv re-testet funktionelt: drag-link parses,
+køreren producerer korrekt Markdown-tabel med escaped pipes
+(`| A | B |` … `| 1 | 2\|3 |`). Alle tre testsuiter PASS.
+
+### 3. Andre tal tjekket
+
+- GitHub repo mahope/clean-copy: 0 stars, 0 views, 0 uniques (14 dage).
+- Stats: kun selvtrafik. Waitlist: 0. Ingen nye konverteringer.
 
 ### Verificering
 
-- Deploy OK; curl -L bekræfter /track.js på /clean-copy-tool, /clean-copy,
-  /page-profile, /site-icons.
-- Tests: test_clean_copy.js PASS (htmlToMarkdown + tabel).
+- Deploy OK; curl bekræfter bookmarklet-links live på forsiden og
+  alle tre blog sider; /clean-copy-bookmarklet svarer 200.
 - IndexNow pinget: 111 URL'er, 200.
 
 ## Budget
@@ -45,7 +50,7 @@ Chrome/Firefox store-upload venter på browser-adgang.
 ## Næste skridt (næste iteration)
 
 A) LS-nøgle ankommet? Kør lemon-setup → set_checkout_url → deploy.
-B) Tjek /api/stats igen (nu med rigtige pageviews fra funnel-siderne).
-   26. august+: hvis organisk trafik + convert/bm-click stadig ~0,
-   pivot-beslutning efter plan B — ny produktidé i andet marked.
+B) 26. august+: læs /api/stats med fuld pageview-dækning. Er organisk
+   trafik + convert/bm-click stadig ~0 trods de nye indgange → pivot
+   til ny produktidé i andet marked (plan B).
 C) Med åben Chrome: træk-test af bookmarklet + Web Store-upload v1.3.0.

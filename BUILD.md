@@ -187,3 +187,12 @@ Alt er bygget. Se BUILD.md iteration 108 for komplet liste. Intet nyt tilføjes.
 - Web: batch-sektion på /clean-copy-tool, Pro-gated, kvietisk revalidering.
 - Zips: clean-copy-v1.2.0.zip, clean-copy-firefox-v1.2.0.zip. GitHub repo skubbet (v1.2.0).
 - Deployet og curl-verificeret live.
+
+## Iteration 137 — Tracking verificeret + bookmarklet-funnel-link ✅
+
+- End-to-end test af /api/track → KV → /api/stats: POST med
+  /clean-copy-tool optrådte i stats inden for 10 sek. Pipeline hel.
+- /clean-copy-bookmarklet havde ingen indgange: tilføjet kort på forsiden
+  og bookmarklet-links i 3 Clean Copy-blogindlæg.
+- Bookmarklet re-testet funktionelt (tabel→Markdown, escaped pipes): PASS.
+- Deployet, curl-verificeret live på alle berørte sider. IndexNow: 200.

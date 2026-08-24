@@ -2703,3 +2703,17 @@ STATUS.md er opdateret. Næste iterations vigtigste punkt: læs stats igen med k
 2026-08-24T03:51:22+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
 2026-08-24T03:55:17+02:00 === iteration 13/15 ===
 2026-08-24T03:56:40+02:00 === iteration 16/60 ===
+Iteration 119 færdig. Resumé:
+
+**Fund:** DECISION.md findes → byggede. Sitet var teknisk sundt: fuld link-tjek af alle 105 sider viste at samtlige interne links og downloads svarer 200 live (første runde gav falske 403'ere fra Cloudflare bot-blocking, verificeret med browser-UA).
+
+**Fixet:**
+- 63 sider manglede `og:image` + `twitter:card` → delinger på sociale medier viste intet billede. Tilføjet med idempotent script (`tools/fix_og_jsonld.py`).
+- /page-profile, /clean-copy og /site-icons havde ingen struktureret data → tilføjet SoftwareApplication/WebApplication JSON-LD.
+- Hele sitets JSON-LD valideret (alle @context korrekte).
+
+**Verificeret:** deployet, live-tjek på fire sider viser nye tags, self-check.sh exit 0, IndexNow pinget (105 URL'er, 200), committet.
+
+**Ærlig status:** tracking-fixen fra i nat er under en dag gammel — der er endnu ingen ekstern trafikdata at læse. Næste iteration (om nogle dage) er stats-tjekket; hvis blogs/guides stadig trækker ~0 eksterne besøg nu hvor de måles, er projektet reelt fuldstændig blokeret på Mads' konti (CWS, npm, KDP), og det skal konkluderes som sådan frem for at polske flere interne sider. 0 søgninger brugt, budget urørt (35/1000 kr).
+2026-08-24T03:59:26+02:00 iteration 13 afsluttet (exit 0)
+2026-08-24T04:00:07+02:00 === iteration 14/15 ===

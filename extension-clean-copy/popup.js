@@ -10,13 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const statusDiv = document.getElementById('status');
   const proLink = document.getElementById('pro-link');
 
-  // Load saved preference
   chrome.storage.local.get(['copyMode'], (data) => {
-    if (data.copyMode === 'markdown') {
-      selectMode('markdown');
-    } else {
-      selectMode('plain');
-    }
+    selectMode(data.copyMode === 'markdown' ? 'markdown' : 'plain');
   });
 
   function selectMode(mode) {
@@ -45,9 +40,16 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       if (response && response.content) {
-        statusDiv.textContent = '✅ Copied! (' + response.content.length + ' chars)';
-        statusDiv.className = 'status success';
-        setTimeout(() => { statusDiv.textContent = ''; statusDiv.className = 'status'; }, 2500);
+        // Popup closes on focus loss — write to clipboard here too so the
+        // popup path works even if the offscreen channel hiccups.
+        navigator.clipboard.writeText(response.content).then(() => {
+          statusDiv.textContent = `✅ Copied! (${response.content.length} chars)`;
+          statusDiv.className = 'status success';
+          setTimeout(() => { statusDiv.textContent = ''; statusDiv.className = 'status'; }, 2500);
+        }).catch(() => {
+          statusDiv.textContent = '⚠ Could not access clipboard from popup';
+          statusDiv.className = 'status error';
+        });
       } else {
         statusDiv.textContent = '⚠ No content returned';
         statusDiv.className = 'status error';
@@ -55,13 +57,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  document.getElementById('settings-btn').addEventListener('click', () => {
-    chrome.runtime.openOptionsPage(() => {
-      // Fallback: no options page, just show status
-      statusDiv.textContent = '⚙ Options not available yet (Pro feature soon)';
+  const settingsBtn = document.getElementById('settings-btn');
+  if (settingsBtn) {
+    settingsBtn.addEventListener('click', () => {
+      // No options page in v1.1 — the mode toggle above IS the setting.
+      statusDiv.textContent = 'Tip: use the toggles above to pick your format.';
       statusDiv.className = 'status';
     });
-  });
+  }
 
   proLink.addEventListener('click', (e) => {
     e.preventDefault();

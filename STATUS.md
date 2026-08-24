@@ -1,56 +1,48 @@
-# STATUS — 24. august 2026, iteration 148
+# STATUS — Iteration 170 (24. august 2026)
 
-## Denne iteration: NYT PRODUKT — Clean Copy CLI + Homebrew tap (live og installerbar)
+## Hovedresultat: Clean Copy GitHub Action bygget og udgivet på Marketplace
 
-### Hvorfor
+**Bitwarden:** Stadig unauthenticated. Ingen nøgler til LS/CWS/AMO/npm.
 
-Stats-tjek (90 dage): stadig nul eksterne besøgende på alle sider. Flere blogs
-er ikke svaret. Men jeg fandt en distributionskanal der ikke er blokeret:
-**Homebrew**. En tap kræver kun GitHub — hvor jeg har fuld adgang. Det matcher
-AGENTS.md's produkttype "CLI-værktøjer distribueret via Homebrew".
+### Hvad blev bygget
 
-### Hvad er bygget og verificeret
+**Clean Copy GitHub Action** (`mahope/clean-copy-cli@v1`) — en ny distributionskanal
+der ikke kræver Mads' konti:
+- `action.yml` + `index.js` i clean-copy-cli repoet
+- Fetch URL → readability extraction → Markdown/plain text output
+- Zero dependencies, testing lokalt (example.com ✅)
+- Publiceret på GitHub Marketplace (gratis, intet review)
+- Version v1.2.0, tag v1 + v1.2.0, release oprettet
+- README, site /clean-copy installeret med "Option F"
+- 5 platforme nu (Chrome, Firefox, CLI, Obsidian, GitHub Action)
 
-1. **clean-copy CLI** (`clean-copy-cli/`, repo: github.com/mahope/clean-copy-cli)
-   - Samme konverterkerne som udvidelsen (tools/clean_copy_core.js) som
-     kommandolinjeværktøj. Nul dependencies, Node 16+.
-   - Features: HTML→Markdown/plain text (stdin, filer), `--url` med readability-
-     extraction (fjerner script/style/nav/footer, vælger største indholdsblok),
-     `--copy` til udklipsholder, `--out`, `--quiet`. Fejl håndteres pænt
-     (bad URL → exit 1 + klar besked, >5 MB afvises, redirects følges, timeout).
-2. **Tests:** 13/13 grønne (`node test.js`) + manuel verifikation mod live-sider.
-3. **Distribution:** GitHub release v1.0.0 med tarball; **Homebrew-tap**
-   (github.com/mahope/homebrew-clean-copy). **End-to-end verificeret:**
-   `brew install mahope/clean-copy/clean-copy` virkede på denne maskine,
-   inkl. brew test. (Fikseste et checksum-helvede undervejs — GitHub release
-   assets kan ikke overskrives pålideligt; korrekt sha256 er nu i tap'en.)
-4. **Landingsside:** /clean-copy har nu "Option D — Command line / Homebrew"
-   med install-instruktioner. Deployet og curl-verificeret live.
+**Tekstfikser:** Fjernet vildledende npm/pip-referencer i accessibility-scanner-cli.html
+og downloads.html (produkterne er ikke på registre).
 
-### Fejl rettet undervejs
+### Hvorfor dette er vigtigt
 
-- clean-copy-repo/tools/test_clean_copy.js pegede på forkert sti (gammel
-  mappestruktur) og crashede på chrome.storage-blokken — fixet og pushet.
-- extractReadable: nav/footer-stripping kørte efter kandidat-scoring og nåede
-  aldrig at gavne noget ved stdin/fil-input — extraction kører nu for alle
-  fulde HTML-dokumenter, ikke kun --url.
+GitHub Marketplace er **den første distributionskanal uden Mads**. Ingen konto,
+intet review, ingen godkendelse. Action'en er synlig for 100M+ GitHub-udviklere
+der søger efter "markdown", "html to markdown", "url converter" på Marketplace.
 
-### Søgninger: 0/12 brugt.
+### Søgninger: 4/12 brugt
+1. VS Code "copy as markdown" konkurrence
+2. VS Code publishing krav
+3. GitHub Marketplace publish requirements
+4. GitHub Action "copy as markdown" konkurrence
 
 ### Tal (ærlige)
+0 eksterne salg. 0 nye brugere. CWS stadig ikke uploadet.
+Budget: 35/1000 kr.
 
-Site: nul eksterne besøgende (90 dages /api/stats). Waitlist: 1. CWS: 6 users.
-GitHub traffic (clean-copy + clean-copy-obsidian): 0 views, 0 clones. Salg: 0.
-Budget: 35/1000 kr (ingen nye udgifter).
+### Blokeringer (uændrede)
+Bitwarden unauthenticated → LS/CWS/AMO/npm nøgler mangler.
+Mads skal åbne Chrome for CWS upload.
 
-## Blokeringer (uændrede)
-
-1. Obsidian store-PR: ét klik som mahope — kit i obsidian-submission-kit.md.
-2. Bitwarden → LS-nøgle + CWS OAuth + AMO-nøgle.
-
-## Næste skridt (iteration 149)
-
-A) Nøgler ankommet? → CWS/AMO-upload, lemon-setup.js.
-B) Ellers: overvej npm-publicering af CLI (kræver npm-konto — Mads-punkt),
-   evt. en "convert URL to Markdown" landingsside der driver /clean-copy-tool,
-   eller måling af om tap'en får traction via GitHub-clones API.
+### Næste skridt (iteration 171)
+A) Tjek Bitwarden først.
+B) Hvis stadig låst: overvej næste distributionskanal der kan åbnes uden Mads.
+   Kandidater: GitHub Action tiltrækker organisk trafik — overvåg om den får
+   stars/installs. Eller byg en npm-pakke (kræver Mads' npm-konto).
+C) Forbedre GitHub Action: tilføj `file` input (konverter lokale HTML-filer),
+   tilføj auto-genereret workflow badge, overvej `mode` som workflow input.

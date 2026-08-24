@@ -1,5 +1,32 @@
 # BUILD — Hvad er bygget
 
+## Iteration 170 — Clean Copy GitHub Action + npm/pip tekstfikser ✅
+
+- **Nyt produkt (Clean Copy distribution):** GitHub Action `mahope/clean-copy-cli@v1`
+  — fetch en URL, få ren Markdown. Zero dependencies, ingen API-nøgle. Publiceret
+  på GitHub Marketplace (gratis, intet review). Samme konverterkerne som extension/CLI.
+  - `clean-copy-cli/action.yml` + `index.js` — 5 MB / 30 s timeout, 4 redirects,
+    `markdown` og `plain` modes, `<head>`-stripping, readability-ekstraktion.
+  - Testet lokalt: example.com → `# Example Domain\n\n...` ✅
+  - Version v1.2.0, tag `v1` + `v1.2.0`, release oprettet.
+  - README opdateret med GitHub Action sektion + YAML eksempel.
+- **Site opdateret:** `/clean-copy` — "Option F — GitHub Action" tilføjet i install-sektionen,
+  "More surfaces" ændret fra "4 platforms" til "5 platforms".
+- **Fikset misvisende npm/pip-referencer i site-tekster:**
+  - `accessibility-scanner-cli.html`: meta descriptions fjernede `(pip)` og `(npm)` — produkterne
+    er ikke på registre, kun URL-installérbare.
+  - `downloads.html`: fjernede den vildledende "pip install eaa-scanner" linje.
+- Deployet + curl-verificeret live: Option F ✅, 5 platforms ✅, forsiden 200 ✅.
+- Søgninger: 4/12 brugt (VS Code + Marketplace + GitHub Actions fakta).
+
+## Iteration 153 — Dansk guide til tekst-på-billede kontrasttjek ✅
+
+- `/da/blog/tekst-paa-billede-kontrasttjek` — DA-guide (Article+FAQ JSON-LD
+  valideret) der binder /text-on-image-checker-da til scanneren.
+- Krydslinkning begge veje: DA/EN-værktøjssider + /da-forside → guide;
+  guide → kontrast-checker, paletgenerator, scanner.
+- Sitemap 119 URLs, deployet + curl-verificeret live, IndexNow 200.
+
 ## Iteration 148 — Clean Copy CLI + Homebrew tap ✅
 
 - Nyt produkt: `clean-copy` CLI (repo: github.com/mahope/clean-copy-cli) —
@@ -232,3 +259,14 @@ Alt er bygget. Se BUILD.md iteration 108 for komplet liste. Intet nyt tilføjes.
   one-click compare-URL + færdig PR-tekst i `obsidian-submission-kit.md`.
 - /clean-copy Obsidian-sektion opdateret (BRAT + nyt repo), deployet og
   curl-verificeret live.
+
+## Iteration 165 — Clean Copy v1.3.0 udgivet for alvor ✅
+
+- Zips var fejl-pakkede (manifest 1.2.0 + gammel engine). Repakket fra
+  extension-clean-copy{,-firefox} med manifest 1.3.0.
+- GitHub releases: v1.3.0 (Chrome, mahope/clean-copy), v1.3.0-fx (Firefox,
+  via releases-API på clean-copy-repoet — gh manglede workflow-scope på
+  firefox-repoet).
+- site/downloads/ + /clean-copy-links opdateret til 1.3.0; deployet og
+  curl-verificeret (200, ægte zip-indhold).
+- clean-copy-cli + homebrew-clean-copy fik homepage + topics.

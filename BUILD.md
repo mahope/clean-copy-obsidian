@@ -1,3 +1,17 @@
+# BUILD — Hvad er bygget
+
+## Iteration 148 — Clean Copy CLI + Homebrew tap ✅
+
+- Nyt produkt: `clean-copy` CLI (repo: github.com/mahope/clean-copy-cli) —
+  samme konverterkerne som udvidelsen, som kommandolinjeværktøj. Nul deps.
+  Features: stdin/fil HTML→Markdown/plain, --url readability-extraction,
+  --copy, --out. Fejl håndteres automatisk (bad URL, >5 MB, timeouts).
+- 13/13 tests grønne (clean-copy-cli/test.js).
+- Distribution: GitHub release v1.0.0 (tarball) + Homebrew-tap
+  github.com/mahope/homebrew-clean-copy. End-to-end verificeret:
+  brew install mahope/clean-copy/clean-copy virker på denne maskine.
+- /clean-copy landingsside: ny "Option D — Command line / Homebrew"-sektion.
+  Deployet og curl-verificeret live.
 
 ## Iteration 147 — To nye søgeindgange til Clean Copy ✅
 

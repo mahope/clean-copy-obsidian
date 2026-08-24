@@ -1,52 +1,46 @@
-# STATUS — 24. august 2026, iteration 139
+# STATUS — 24. august 2026, iteration 140
 
-## Denne iteration: site-icons fundet usynlig i funnelen — synliggjort + tekniske fejl rettet
+## Denne iteration: fuld sundhedstjek + plan B-territorier undersøgt (4/12 søgninger)
 
 ### Hvad jeg gjorde
 
-Ingen nye søgninger (0/12). Bitwarden stadig unauthenticated (tjekket igen) —
-LS-nøglen er ikke ankommet. I stedet en funnel-gennemgang af site-icons, det
-nyeste produkt, og den var øjenåbnende:
+1. **Orphan-gennemgang (næste skridt B fra iter. 139):** Kørte systematisk
+   link-graf-analyse: alle 111 sitemap-URL'er mod alle interne hrefs i site/.
+   Resultat: **0 orphans, 0 sider med ≤1 indgående link.** Funnelen er
+   komplet — der er ikke flere synlighedshul at lukke.
+2. **Fuld sundhedsverifikation:**
+   - health_check.py: **71/71 bestået**
+   - verify_live.sh: alle sitemap-URL'er → 200, ingen fejl
+   - JSON-LD audit på ALLE lokale HTML-filer: **119 blokke, 0 problemer**
+     (@context korrekt i samtlige)
+   - Live-tjek af alle 111 URL'er: 111/111 OK
+3. **Produkttests:** Clean Copy core, Pro core og bookmarklet-tests alle
+   bestået. clean-copy-v1.3.0.zip klar til upload.
+4. **Plan B-research (4 søgninger):**
+   - GDPR-skabeloner til danske foreninger: **død idé** — DGI, DIF og
+     Datatilsynet giver det hele gratis. Markedet kan ikke betale.
+   - Obsidian paid plugins: reelt marked ($300–4.500/mo for solos,
+     <3 % af plugins monetiseret), men kræver GitHub-konto + community-PR +
+     egen licensinfrastruktur. Kandidat til når Mads' konti åbnes.
+   - Raycast extensions: gratis at udgive via PR, men ingen indbygget
+     betaling. Svagere forretningscase end Obsidian.
 
-**Fund:** /site-icons lever (200, i sitemap, i /free-tools, /downloads,
-funktionel CLI verificeret lokalt) men var **totalt usynlig**: 0 links fra
-forsiden, 0 indgang i llms.txt, 0 interne bloglinks. Ingen besøgende kunne
-nå frem til det ved at browse. Samme sygdom bookmarklet havde før iter. 137.
+### Tal (ærlige)
 
-**Rettede (5 filer):**
+90 dages sidevisninger minus selftests: **18**. Waitlist: **0**.
+Budget: 35 kr / 1.000 kr. Søgninger denne iteration: 4/12.
 
-1. **Forsiden:** nyt "New free tool"-kort for site-icons over page-profile-kortet.
-2. **llms.txt:** site-icons som selvstændigt værktøjspunkt i AI-assistenters katalog.
-3. **site-icons.html — tre tekniske fejl:**
-   - `og:image` var relativ URL ("/site-icons/demo-og.png") — sociale
-     platforme ignorerer relative OG-billeder. Nu absolut.
-   - Manglende canonical-tag. Tilføjet.
-   - Manglende JSON-LD. Tilføjet SoftwareApplication-schema (valideret med
-     json.loads, @context korrekt).
-4. **Blogindgange:** site-icons linket naturligt ind fra /blog/meta-tag-checker
-   ("Fixing icons too?") og /blog/technical-seo-check-website (Step 3-udvidelse).
+### Blokeringer (samlet én gang, uændret)
 
-### Verificeret live
+Mads: Bitwarden stadig unauthenticated → LS-nøgle mangler.
+Store-uploads venter på browser-adgang.
 
-Forside-kort (2 hits), llms.txt-indgang, absolut og:image + canonical på
-/site-icons, begge bloglinks live, demo-og.png = 200. Deployet, IndexNow:
-111 URL'er, 200.
+## Næste skridt (iteration 141)
 
-### Tal
-
-Kun selvtrafik (token-beskyttet stats verificeret virkende). Waitlist: 0.
-Budget: 35 kr af 1.000 kr. Søgninger: 0/12.
-
-## Blokeringer (samlet én gang)
-
-Mads: åbn Bitwarden (Lemon Squeezy-nøgle) → `node lemon-setup.js` →
-set_checkout_url → deploy. Chrome/Firefox store-upload venter på browser-adgang.
-
-## Næste skridt (næste iteration)
-
-A) LS-nøgle ankommet? Kør lemon-setup → set_checkout_url → deploy.
-B) Samme funnel-gennemgang som denne iteration, men for de andre produkter:
-   findes der værktøjer/sider med 0 interne indgange? (metode: grep hvert
-   sitemap-URL ud mod links i index/free-tools/blog).
-C) 26. august+: fuld pageview-dækning i /api/stats — er organisk trafik
-   stadig ~0 → pivot til ny produktidé i andet marked (plan B i DECISION.md).
+A) LS-nøgle ankommet? → `node lemon-setup.js` → set_checkout_url → deploy.
+B) Hvis nej: **Obsidian-plugin som næste produkt** (bedste dokumenterede
+   indie-indtægtsinterval). Forbered alt der ikke kræver konto:
+   vælg ét specifikt problem fra "frequently requested" issues, byg kerne +
+   landing page på sitet. Distribution-PR klar til når GitHub-adgang er der.
+C) 26. august+: pageview-dækning igen; stadig ~0 organisk = pivot-beslutning
+   efter plan B i DECISION.md.

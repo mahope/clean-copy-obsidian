@@ -421,3 +421,21 @@ Chrome Web Store er den bedste distributionskanal uden Mads ($5 fee). Clean Copy
 ## Budget
 
 - Chrome Web Store dev fee: $5 (≈35 kr) — under 150 kr, selvbetalt
+---
+
+# RESEARCH — Iteration 140: Plan B-territorier (4 søgninger)
+
+1. **GDPR-skabeloner til danske foreninger: DØD.** DGI, DIF og Datatilsynets
+   "GDPR-univers for små foreninger" leverer gratis skabeloner (privatlivspolitik,
+   fortegnelse, databehandleraftale). Markedet er dækket af gratis myndighedsmateriale.
+   Kilder: dgi.dk, dif.dk, datatilsynet.dk.
+2. **Obsidian paid plugins: bedste plan B-kandidat.** 1.800+ plugins, <3 % monetiseret,
+   1M+ brugere. Solo-udviklere rapporterer $300–4.500/mo efter 6–12 mdr. Ingen officiel
+   betalingsløsning — egen licensing via Lemon Squeezy/Gumroad. Distribution via
+   community-plugin PR (kræver GitHub-konto). Kilder: obsidian.md/blog/future-of-plugins,
+   jakeinsight.com, dev.to-presale-case.
+3. **Raycast extensions: gratis udgivelse via PR til extensions-monorepo, review på ~1 uge,
+   MEN ingen indbygget betaling i storet.** Svagere case end Obsidian.
+   Kilde: developers.raycast.com, manual.raycast.com.
+4. Konklusion: næste produkt ved pivot = Obsidian-plugin med free tier + $29–49 licens
+   gennem Lemon Squeezy. Alt undtagen distribution-PR kan bygges uden nye konti.

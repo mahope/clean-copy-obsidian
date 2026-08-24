@@ -1,54 +1,52 @@
-# STATUS — 24. august 2026, iteration 145
+# STATUS — 24. august 2026, iteration 146
 
-## Denne iteration: Døde download-links rettet (reelt fund via selvverifikation) + Obsidian-zip klar
+## Denne iteration: Obsidian community-store submission forberedt til ét klik — men PR kan IKKE oprettes via API
 
 ### Hvad jeg gjorde
 
-1. **Selv-verifikation fandt to rigtige brud** (ikke smoke-tests — live-tjek af
-   hver URL jeg selv har udgivet):
-   - `mahope.github.io/clean-copy` pegede på
-     `releases/latest/download/clean-copy-v1.2.0.zip` → **HTTP 404**. Enhver der
-     fulgte GitHub Pages-sidens downloadknap fik en fejlside. Rettet til v1.2.2,
-     commitet og skubbet; GitHub Pages verificeret live med v1.2.2-link, og
-     asset-URL nu HTTP 200.
-   - `/downloads/clean-copy-v1.2.2.zip` og Firefox-zip lå slet ikke i
-     `site/downloads/` — landingssidens links faldt igennem workerens 404-
-     fallback og returnerede **index.html som text/html** (200, men ikke en zip;
-     enhver unzip fejler). Alle tre zips lagt i `site/downloads/` og deployet:
-     Chrome v1.2.2 (13 filer), Firefox v1.2.2 (13 filer), Obsidian v1.0.1
-     (5 filer incl. main.js/styles.css/versions.json) — alle curl-verificeret
-     som `application/zip` med korrekt indhold.
-2. **Obsidian-installationsvej forbedret:** trin peger nu på direkte zip-
-   download fra eget site i stedet for "find filerne selv på releases".
-3. **llms.txt:** Obsidian-plugin føjet til værktøjslisten.
-4. JSON-LD re-valideret på clean-copy.html (1 blok, gyldig).
+1. **Plugin-repo offentliggjort:** https://github.com/mahope/clean-copy-obsidian
+   (main.js, manifest.json, styles.css, versions.json, core.js, test.js,
+   ny README med install/BRAT/commands, MIT-license, topics). Releases:
+   tags `v1.0.1` OG `1.0.1` — begge med main.js/manifest.json/styles.css som
+   assets (Obsidian kræver tag = manifest-version; nu dækker vi begge former).
+   Release-asset verificeret: HTTP 200.
+2. **Fork + indhold klar:** mahope/obsidian-releases forket, gren
+   `add-clean-copy-obsidian` skubbet med entry i community-plugins.json
+   (id `clean-copy-obsidian`, author Mahope, repo `mahope/clean-copy`).
+   Fork er 1 commit ahead af upstream/master (verificeret via compare-API).
+3. **Hård blokering fundet (7+ forsøg, REST + GraphQL + gh CLI):**
+   obsidianmd/obsidian-releases returnerer "mahope does not have the correct
+   permissions to execute CreatePullRequest" uanset metode. Bekræftet at det
+   IKKE er token-scopes (test-repo: egen PR virker fint) eller stale fork
+   (fork frisk, base = upstream HEAD). Konklusion: repoet har begrænset
+   PR-oprettelse til collaborators. Web-UI compare-URL svarer 200, så én
+   manuel klikhandling kan åbne den.
+4. **One-click-kit skrevet:** `obsidian-submission-kit.md` — compare-URL,
+   færdig titel + body til PR'en, og hvad der skal ske efter godkendelse.
+5. **Landingsside opdateret:** Obsidian-installationen peger nu på BRAT +
+   det nye repos releases i stedet for det gamle clean-copy-repo. Deployet,
+   curl-verificeret live ("BRAT" + release-link på /clean-copy), JSON-LD OK.
 
-### Markedsfakta tjekket denne iteration (2 søgninger/API-kald)
+### Markedsfakta tjekket denne iteration
 
-- Obsidian community-store: "clean-copy" id er **optaget** af en anden udvikler
-  (`rafaelmehdiyev/obsidian-clean-copy`, kopierer noter ud af Obsidian — anden
-  funktion). Vores plugin kan derfor ikke hedde id `clean-copy` i storen; det
-  hedder allerede `clean-copy-obsidian`, så ingen kodeændring, men submission-
-  teksten skal nævne navneforskellen.
-- GitHub traffic API: 0 views, 0 clones de seneste dage — repoet driver
-  ingen organisk trafik endnu.
+GitHub-begrænsningen ovenfor (2 søgninger: bekræftede at fejlen er en kendt
+repo-level restriktion, ikke vores opsætning). I alt 2/12 søgninger.
 
 ### Tal (ærlige)
 
-Site-trafik (KV /api/stats): 24/8: 4 besøg (alle mine egne tjeks + 1
-selftest). 23/8: 11 besøg / 8 uniques på forsiden (usikkert om eksterne).
-Waitlist: 1. CWS: 6 users. Salg: 0. Budget: 35/1000 kr.
-Søgninger denne iteration: ~3/12.
+Site-trafik: ingen nye eksterne signaler målt denne iteration. Waitlist: 1.
+CWS: 6 users. Salg: 0. Budget: 35/1000 kr.
 
-### Blokeringer (uændret)
+## Blokeringer
 
-Mads: Bitwarden → LS-nøgle + CWS OAuth + Firefox AMO-nøgle mangler.
-GitHub-bruger `mahope` kan bruges til Obsidian store-submission når vi vælger
-at sende den (plugin er færdigt, 14/14 tests).
+1. **Obsidian store-PR:** kræver ét klik som mahope i browseren — URL og
+   tekster ligger klar i `obsidian-submission-kit.md`. Kan ikke automatiseres
+   (API nægtet af GitHub repo-indstilling).
+2. Uændret: Bitwarden → LS-nøgle + CWS OAuth + Firefox AMO-nøgle.
 
-## Næste skridt (iteration 146)
+## Næste skridt (iteration 147)
 
 A) Nøgler ankommet? → CWS-upload v1.2.2, AMO-signering, lemon-setup.js.
-B) Ellers: Indsend Clean Copy til Obsidian community-plugins (PR-modellen,
-   kræver kun mahope-GitHub-kontoen — undersøg om det kan ske uden Mads) +
-   flere long-tail blogs omkring copy/paste-smerte.
+B) Ellers: flere long-tail blogs omkring paste/copy-smerte + tjek om
+   Obsidian-forummet tillader en "plugin announcement" uden store-optagelse,
+   og forbedr /clean-copy-tool (web-udgaven) konvertering.

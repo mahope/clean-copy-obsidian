@@ -3155,3 +3155,33 @@ Iteration 143 færdig. Resumé:
 0 søgninger brugt. Blokering uændret: Bitwarden unauthenticated → LS/CWS/AMO-nøgler mangler. STATUS.md er opdateret med næste skridt.
 2026-08-24T07:19:21+02:00 iteration 41 afsluttet (exit 0)
 2026-08-24T07:19:44+02:00 === iteration 42/60 ===
+Iteration 144 færdig. Resumé:
+
+**Vigtigst — faktisk brudt produkt fundet og rettet:**
+- `/clean-copy-tool` (web-værktøjet) var dødt live: siden kalder `CleanCopyCore.batchConvert`, men det deployede `clean-copy-core.js` eksporterede kun to funktioner, fordi `sync_core.js` skar kernen af. Site-core er nu den fulde kerne.
+- Undervejes fandt jeg endnu en divergens: den "fulde" kerne manglede tabel-konvertering og havde kun 5 basic entities (ikke v1.2.1's fulde dekoder). Alle tre overflader (extension/site/Obsidian) er nu byte-identiske på testcases med tabeller, entities og nestede lister.
+
+**Bygget:**
+- Obsidian community-forberedelse v1.0.1: `versions.json` + `styles.css` (krævet af retningslinjerne), fuld kerne. Tests 14/14 grønne.
+- Release **v1.2.2** live på GitHub med 5 assets; clean-copy-repo skubbet; landingsside-links opdateret.
+- Ny blogfunnel live: `/blog/paste-into-obsidian-clean-markdown` — Article+FAQPage JSON-LD valideret, i sitemap, linket fra forsiden.
+
+**Verificeret live:** /clean-copy viser v1.2.2, begge zips 200, deployed core indeholder batchConvert+ENTITIES, blogside 200 med indhold.
+
+Søgninger brugt: 0/12. Budget uændret: 35/1000 kr. STATUS.md er opdateret med næste skridt (nøgler fra Mads → CWS/AMO/LS, ellers Obsidian store-submission-materialer).
+2026-08-24T07:31:24+02:00 iteration 42 afsluttet (exit 0)
+2026-08-24T07:31:48+02:00 === iteration 43/60 ===
+Iteration 145 færdig. Det vigtigste: selv-verifikationen fandt to rigtige, bruger-rammende brud — ikke smoke-test-artefakter.
+
+**Fundet og rettet:**
+1. GitHub Pages-siden (`mahope.github.io/clean-copy`) linked til `clean-copy-v1.2.0.zip` via `releases/latest/download/` → HTTP 404. Rettet til v1.2.2, pushet, verificeret live (200).
+2. Landingssidens links til `/downloads/clean-copy-v1.2.2.zip` og Firefox-zip returnerede i hemmelighed **index.html som text/html** (workerens 404-fallback) — filerne fandtes slet ikke. Alle tre zips lagt i `site/downloads/`, deployet og curl-verificeret som ægte `application/zip` med korrekt filantal.
+3. Obsidian-installationstrin peger nu på en direkte 5-fils zip (main.js, manifest.json, styles.css, versions.json, README) fra eget site; llms.txt opdateret.
+
+**Nyt markedsfakta:** "clean-copy" er optaget som plugin-id i Obsidians community-store af en anden udvikler (anderledes funktion) — vores id `clean-copy-obsidian` undgår konflikten. GitHub traffic: 0 views/clones.
+
+**Tal (ærlige):** CWS 6 users, waitlist 1, salg 0, budget 35/1000 kr, ~3/12 søgninger.
+
+Blokering uændret: Bitwarden → LS/CWS/AMO-nøgler. Næste iteration: enten nøgle-upload eller Obsidian community-submission (kræver kun mahope-GitHub-kontoen) + flere long-tail blogs. STATUS.md commitet.
+2026-08-24T07:38:28+02:00 iteration 43 afsluttet (exit 0)
+2026-08-24T07:38:50+02:00 === iteration 44/60 ===

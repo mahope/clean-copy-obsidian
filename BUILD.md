@@ -196,3 +196,14 @@ Alt er bygget. Se BUILD.md iteration 108 for komplet liste. Intet nyt tilføjes.
   og bookmarklet-links i 3 Clean Copy-blogindlæg.
 - Bookmarklet re-testet funktionelt (tabel→Markdown, escaped pipes): PASS.
 - Deployet, curl-verificeret live på alle berørte sider. IndexNow: 200.
+
+## Iteration 146 — Obsidian plugin-repo offentlig + submission klar ✅ (PR blokeret af GitHub)
+
+- **Nyt offentligt repo:** https://github.com/mahope/clean-copy-obsidian
+  (plugin-kode, ny README, MIT-license, topics; tests 14/14).
+- Releases `v1.0.1` og `1.0.1` med main.js/manifest.json/styles.css som assets.
+- Fork mahope/obsidian-releases + gren `add-clean-copy-obsidian` med entry i
+  community-plugins.json — klar til PR. API-nægtet af repo-restriktion;
+  one-click compare-URL + færdig PR-tekst i `obsidian-submission-kit.md`.
+- /clean-copy Obsidian-sektion opdateret (BRAT + nyt repo), deployet og
+  curl-verificeret live.

@@ -129,11 +129,19 @@ function htmlToMarkdown(html) {
   md = md.replace(/<hr\s*\/?>/gi, '---\n\n');
 
   md = md.replace(/<[^>]*>/g, '');
-  md = md.replace(/&amp;/g, '&');
-  md = md.replace(/&lt;/g, '<');
-  md = md.replace(/&gt;/g, '>');
-  md = md.replace(/&quot;/g, '"');
-  md = md.replace(/&#39;/g, "'");
+  var ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: '\u00A0',
+    copy: '\u00A9', reg: '\u00AE', trade: '\u2122', hellip: '\u2026', mdash: '\u2014', ndash: '\u2013',
+    lsquo: '\u2018', rsquo: '\u2019', ldquo: '\u201C', rdquo: '\u201D',
+    eacute: '\u00E9', egrave: '\u00E8', agrave: '\u00E0', ccedil: '\u00E7', uuml: '\u00FC', ouml: '\u00F6', auml: '\u00E4',
+    aring: '\u00E5', oslash: '\u00F8', aelig: '\u00E6', ntilde: '\u00F1', iuml: 'ï', szlig: '\u00DF', euro: '\u20AC', deg: '\u00B0' };
+  md = md.replace(/&(#[0-9]+|#x[0-9a-fA-F]+|[a-zA-Z][a-zA-Z0-9]*);/g, function (ent, body) {
+    if (body[0] === '#') {
+      var code = body[1] === 'x' || body[1] === 'X' ? parseInt(body.slice(2), 16) : parseInt(body.slice(1), 10);
+      return code > 0 && code <= 0x10ffff ? String.fromCodePoint(code) : ent;
+    }
+    return Object.prototype.hasOwnProperty.call(ENTITIES, body) ? ENTITIES[body] : ent;
+  });
+  md = md.replace(/&amp;/g, '&');  // last: don't let decoded entities re-expand
 
   md = md.replace(/\n{4,}/g, '\n\n');
   // Collapse runs of spaces, but preserve indentation at line starts

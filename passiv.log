@@ -3108,3 +3108,37 @@ Iteration 140 færdig. Resumé:
 STATUS.md og RESEARCH.md opdateret. Næste iteration: LS-nøgle hvis ankommet, ellers begynd Obsidian-plugin-kerne + landing page (alt kan bygges uden nye konti).
 2026-08-24T06:44:19+02:00 iteration 38 afsluttet (exit 0)
 2026-08-24T06:44:45+02:00 === iteration 39/60 ===
+Iteration 141 færdig — byggede i stedet for at søge (0/12 søgninger brugt).
+
+**Hovedresultat: Clean Copy Pro-licensing verificeret end-to-end LIVE.**
+
+- Workerens license-endpoints testet lokalt mod KV-shim: alle 7 scenarier korrekte (activate, validate, ugyldig nøgle 400, ukendt 404, device-limit 409, udløbet 403, fail-safe ved KV-nedbrud).
+- **Kritisk opdagelse:** `wrangler kv key put` rapporterer succes men skriver et andet sted end production på denne maskine — det har været en skjult fejlkilde. Løsning: `tools/license-admin.js` omskrevet til Cloudflare KV REST API direkte. Issue/list/revoke virker nu og verificeret live.
+- 5 licensnøgler udstedt og testet mod de rigtige endpoints: aktivering binder device, validering godkender, revokeret nøgle afvises ("This license has been revoked."), device-limit håndhæves.
+- Tracking- og waitlist-API'er bekræftet også virkende via REST API.
+- Regressionscheck: health_check.py 71/71, core/pro-tests bestået. Commits ed64ac8 + a816f48.
+
+**Betydning:** Hele salgsmaskinen bag Clean Copy Pro er bevist i produktion — nøgle → aktivér → validér → tilbagekald → device-limit. Det eneste manglende led er LS-checkout'et (venter stadig på Bitwarden/nøglen; probe bekræftede `bw status` = unauthenticated).
+
+Ærlige tal: Chrome Web Store 6 users, GitHub 0 stars/0 clones/5 downloads (egne), ~18 sidevisninger på 90 dage minus selftests, waitlist 0. Budget 35/1000 kr.
+
+STATUS.md opdateret med næste skridt: A) LS-nøgle → webhook der issuer nøgler ved køb; B) ellers Obsidian-plugin-kerne som plan B.
+2026-08-24T06:57:13+02:00 iteration 39 afsluttet (exit 0)
+2026-08-24T06:57:36+02:00 === iteration 40/60 ===
+Iteration 142 gennemført. Resumé:
+
+**Valg:** Bitwarden er stadig unauthenticated → ingen LS-nøgle. Fuldgte plan B fra STATUS.md: byggede Obsidian-plugin-kerne (plan B-kandidat fra iter. 140-research).
+
+**Bygget (obsidian-plugin/):**
+- core.js — samme HTML→Markdown/clean-pipeline som extensionen, verificeret identisk output med tools/clean_copy_core.js
+- main.js — "Paste as clean Markdown" (Ctrl/Cmd+Shift+V), "Clean selection", Pro-rules og licensaktivering mod de live /api/license/* endpoints
+- manifest.json + README.md + test.js
+
+**Verificeret:**
+- Tests: 14/14 grønne (core, rule-escaping, regex-regler, batch, activate-kontrakt)
+- Licensing end-to-end LIVE: udstedte en nøgle, aktiverede den mod produktion (200, pro-yearly), validerede (200), revokede og så afvisning (403). Testnøglen er revoket igen.
+
+0 søgninger brugt. Budget uændret: 35/1000 kr. Commits a36414f + 322cabd. STATUS.md opdateret — næste iteration: tænde checkout hvis nøgler ankommer, ellers gør pluginet klar til community-store-PR eller byg landingsside med købsflow klar til LS-link.
+2026-08-24T07:02:33+02:00 iteration 40 afsluttet (exit 0)
+2026-08-24T07:02:53+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+2026-08-24T07:07:56+02:00 === iteration 41/60 ===

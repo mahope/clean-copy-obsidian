@@ -148,8 +148,10 @@ module.exports = (function () {
           editorCallback: function (editor) { _this.cleanSelection(editor); },
         });
 
-        if (_this.settings.proActive && _this.settings.rules.length) {
-          _this.registerProCommands();
+        if (_this.settings.proActive) {
+          // Quiet per-session re-validation: revoked/expired keys lose Pro
+          // immediately; network failure fails open for this session.
+          _this.validateLicensePeriodic();
         }
 
         _this.addSettingTab(new CleanCopySettingTab(_this.app, _this));
@@ -162,20 +164,9 @@ module.exports = (function () {
       await this.saveData(this.settings);
     };
 
-    Plugin_.prototype.compileRulesSafe = function () {
-      try {
-        return { compiled: CleanCopyCore.compileRules(this.settings.rules), error: null };
-      } catch (e) {
-        new obsidian.Notice(e.message);
-        return { compiled: [], error: e };
-      }
-    };
-
     Plugin_.prototype.convert = function (htmlOrText, modeOverride) {
       var mode = modeOverride || this.settings.defaultMode;
-      var _a = this.compileRulesSafe(), compiled = _a.compiled;
       var res = CleanCopyCore.batchConvert([htmlOrText], mode === 'markdown' ? 'markdown' : 'plain', this.settings.proActive ? this.settings.rules : [])[0];
-      void compiled;
       return res.ok ? res.content : null;
     };
 
@@ -197,7 +188,6 @@ module.exports = (function () {
         // Clipboard read can be denied on some platforms; fall back to
         // letting Obsidian's normal paste run, cleaned post-hoc is not
         // possible without DOM parsing, so tell the user honestly.
-        new obsidian.Notification || obsidian.Notice;
         new obsidian.Notice('Could not read clipboard (' + e.message + '). Use Paste, then Clean selection.');
       }
     };

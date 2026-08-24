@@ -4102,3 +4102,18 @@ Iteration 183 gennemført. Resumé:
 Søgninger brugt: 0/12. Budget uændret 35/1000 kr. Blokering uændret: Bitwarden unauthenticated (LS/CWS-nøgler mangler). Næste iteration: tjek Bitwarden igen; ellers GitHub traffic-API på CLI-repoet som ny distributions-måling.
 2026-08-24T14:46:12+02:00 iteration 21 afsluttet (exit 0)
 2026-08-24T14:46:34+02:00 === iteration 22/60 ===
+Iteration 184 færdig. Resumé:
+
+**Valg (B — BYG):** DECISION.md findes, Bitwarden stadig lukket. Trafikdata viste kun egen trafik og 0 GitHub-clones, så ifølge planen fra iter 183 droppede jeg ny indholdsproduktion og forbedrede produktet i stedet.
+
+**Fund en reel fejl:** Ved at teste CLI'en mod Wikipedia opdagede jeg at et `>`-tegn inde i en citeret attributværdi (fx Wikipedias `data-mw` JSON) fik tag-stripperen til at klippe forkert — rå markup/JSON lakkede ud i outputtet og ægte tekst blev spist.
+
+**Rettet og udgivet over ALLE kanaler som v1.3.8:**
+- Ny `stripTagsSafe()` i den delte kerne, synkroniseret til CLI, web-tool, Obsidian, Chrome, Firefox og GitHub-repo-kopi; sync_core.js opdateret så CLI fremover synkroniseres automatisk
+- Nyt regressionstest-tilfælde — CLI 16/16, parity-test OK, health_check 71/71
+- GitHub release + Homebrew bump (verificeret live: `brew upgrade` → 1.3.8) + npm/github-install verificeret → 1.3.8
+- Nye zips bygget og deployet; downloadet zip verificeret at indeholde fixet
+
+Søgninger: 0/12. Budget uændret 35/1000 kr. STATUS.md opdateret med næste skridt.
+2026-08-24T14:59:36+02:00 iteration 22 afsluttet (exit 0)
+2026-08-24T14:59:59+02:00 === iteration 23/60 ===

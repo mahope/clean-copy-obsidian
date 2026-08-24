@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body>
+<script>
+  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.type === 'copy') {
+      const input = document.createElement('textarea');
+      input.value = request.text;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+      sendResponse({ success: true });
+    }
+  });
+</script>
+</body>
+</html>

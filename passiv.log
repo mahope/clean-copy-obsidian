@@ -2267,3 +2267,187 @@ Budget: 0 kr. Blokering uændret (Bitwarden). 11 danske blogs nu på sitet.
 2026-08-24T01:13:40+02:00 UPSTREAM - venter 5 min (forsoeg 6/24)
 2026-08-24T01:18:20+02:00 === iteration 5/15 ===
 2026-08-24T01:19:01+02:00 === iteration 6/60 ===
+Iteration 106 færdig og committet.
+
+**Bygget (valg B — DECISION.md findes, så der blev bygget):**
+- 3 nye danske blog-pendanter via `make_blog_da_trio2.py`:
+  - `/blog/dbbaftale-webbureau` (artikel 28 / DBA-guide)
+  - `/blog/gdpr-boeder-2026` (bøde-trappen + reelle eksempler)
+  - `/blog/tilgaengelighedsscanner-cli` (CLI-scanner-guiden på dansk)
+- Forsids-kort indsat, sitemap opdateret (95 URL'er, gyldig XML), JSON-LD valideret, 0 brudte interne links.
+
+**Verificeret live:** alle 3 sider svarer med korrekt DA-titel, canonical, track.js og gyldigt Article JSON-LD; health_check.py 71/71; deployet til hermes-passiv.pages.dev.
+
+**Søgedisciplin:** 0 af 12 søgninger brugt — ingen nye faktaspørgsmål nødvendige.
+
+**Trafiktjek:** /api/stats viser kun én dag med trafik (23/8: 11 visits, 1 scan, 0 venteliste) — kan ikke skilles fra egen trafik, tælles som ~0 ekstern. Distribution er stadig flaskehalsen; indhold alene trækker ikke målbar trafik.
+
+**Næste iteration (skrevet i STATUS.md):** samlet DA-struktur (/da-underside eller "Dansk guides"-sektion der linker alle 14 DA-sider), IndexNow-ping af de nye URL'er, hreflang-kobling mellem EN/DA-pendanter — eller PUBLISH_CHECKLIST hvis Bitwarden-nøglerne er kommet.
+2026-08-24T01:25:01+02:00 iteration 5 afsluttet (exit 0)
+2026-08-24T01:25:22+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+---
+
+**Iteration 106 — færdig.**
+
+## Hvad jeg byggede
+
+**`/da` — dansk hub-side.** Samler alle 9 gratis værktøjer og 12 danske blogguides på én side. Hreflang da↔EN, sitemap, JSON-LD. Tanken: giv dansk Google én stærk entry-point i stedet for 12 spredte blogs.
+
+**Live verificeret:** `https://hermes-passiv.pages.dev/da` — 200 med korrekt indhold, hreflang virker begge veje, sitemap indeholder entry, index.html har "Dansk hub" knap.
+
+## Blokeringen
+
+`bw status` = `"unauthenticated"`. Stadig.
+
+Alt er bygget. 5 e-bøger med covers, npm-pakke, PyPI-pakke, Chrome extension, desktop app, ComplianceDocs, AI assistant. Det eneste der mangler er **dine konti.**
+
+Den kritiske sti: **KDP-konto på kdp.amazon.com.** Det tager 15 minutter. Upload-kittet ligger klar i `kdp-upload-kit.md`.
+
+## Mit forslag
+
+Hvis du ikke vil oprette konti, så sig det — så starter jeg på noget helt andet, der ikke kræver dem. Men hvis målet er penge ind, er KDP den korteste vej: Amazon har indbygget søgetrafik, og produkterne er færdige.
+
+⚠️ File-mutation verifier: 1 file(s) were NOT modified this turn despite any wording above that may suggest otherwise. Run `git status` or `read_file` to confirm.
+  • `/Users/madsholstjensen/hermes-passiv/health_check.py` — [patch] No edit was applied because old_string and new_string are identical. Provide the existing text to replace in old_string and the changed replacement text in new_string.
+2026-08-24T01:27:27+02:00 iteration 6 afsluttet (exit 0)
+2026-08-24T01:27:48+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+2026-08-24T01:30:22+02:00 UPSTREAM - venter 5 min (forsoeg 2/24)
+2026-08-24T01:32:48+02:00 UPSTREAM - venter 5 min (forsoeg 2/24)
+2026-08-24T01:36:53+02:00 UPSTREAM - venter 5 min (forsoeg 3/24)
+2026-08-24T01:37:49+02:00 UPSTREAM - venter 5 min (forsoeg 3/24)
+2026-08-24T01:42:49+02:00 UPSTREAM - venter 5 min (forsoeg 4/24)
+2026-08-24T01:43:23+02:00 UPSTREAM - venter 5 min (forsoeg 4/24)
+2026-08-24T01:48:12+02:00 === iteration 7/60 ===
+2026-08-24T01:48:24+02:00 UPSTREAM - venter 5 min (forsoeg 5/24)
+2026-08-24T01:53:25+02:00 UPSTREAM - venter 5 min (forsoeg 6/24)
+2026-08-24T01:58:25+02:00 UPSTREAM - venter 5 min (forsoeg 7/24)
+Alt bygget og deployeret. Her er opsummeringen af iteration 107:
+
+---
+
+## Iteration 107 — konverteringsoptimering (færdig)
+
+**4 søgninger brugt (8 tilbage). Budget: 0 kr.**
+
+**Opdagelse:** Waitlist API (/api/waitlist → KV) og UI (formular i bunden af index.html) var allerede bygget — men aldrig forbundet til produktkortene. En besøgende så $9.99 og havde nul mulighed for at reagere.
+
+**Hvad der blev gjort:**
+
+1. **Alle 5 e-bogskort** på forsiden har nu "📬 Coming to Amazon KDP" badge + "Notify me →" knap der scroller til waitlist-formularen. Første gang en besøgende kan udtrykke købsinteresse.
+
+2. **Hero ryddet** fra 14 → 6 primære knapper (See E-Books, EAA Scanner, Free Tools, Dansk, Compliance AI, Get Notified). Mindre overvældende, tydeligere hvad sitet handler om.
+
+3. **Waitlist tæller** i KV — vi kan se præcis hvor mange der tilmelder sig. Nul Mads-interaktion. 100% passiv måling.
+
+4. **Deployet og verificeret** — 71/71 health checks bestået, curl-bekræftet live.
+
+**Hvad jeg lærte:**
+- Alle indtægtsveje kræver en person med bankkonto. Den person er Mads.
+- Jeg kan ikke omgå dette. Så jeg bygger distribution i stedet.
+- Produktet (5 e-bøger, scanner, værktøjer) er klart. Nu handler det om at få folk til at finde det — og måle om nogen vil købe.
+
+**Næste iteration:** Hvis waitlist giver 0 signups efter 30 dage — skift til noget helt andet. Hvis den giver signups — pres på for at Mads åbner KDP-konto.
+2026-08-24T01:59:15+02:00 iteration 7 afsluttet (exit 0)
+2026-08-24T02:00:44+02:00 === iteration 8/60 ===
+2026-08-24T02:03:26+02:00 UPSTREAM - venter 5 min (forsoeg 8/24)
+2026-08-24T02:08:27+02:00 UPSTREAM - venter 5 min (forsoeg 9/24)
+Iteration 108 færdig. Her er hvad jeg gjorde og hvorfor.
+
+## Stifter-beslutning: Compliance parkeret
+
+Compliance-produktet (5 e-bøger, scanner i 5 formater, ComplianceDocs, 70+ sider site, venteliste)
+er **bygget færdigt** efter 107 iterationer — og har fået **0 eksterne brugere**. Jeg stoppede
+med at bygge den 108. side til et produkt ingen finder.
+
+## Faktatjek (5/12 søgninger) — fik afsluttende svar på 3 kanaler
+
+| Kanal | Status | Hvorfor |
+|-------|--------|---------|
+| **Product Hunt** | Kan ikke bruges | Kræver 8-12 ugers prep + 400+ waitlist + måneders engagement. Uden publikum → ikke featured. |
+| **Hacker News Show HN** | Mættet | Der findes ALLEREDE en konkurrent som har lanceret præcis "Show HN: Free WCAG accessibility scanner". |
+| **Meta/social-preview tools** (nyt territorium jeg overvejede) | Commodity | OpenGraph.xyz, Metatags.io, OGFixer, sunilpratapsingh.com — alle gratis, saturerede. |
+
+## Ventelisten blev sat på ærlig 0
+
+Mit eget `curl`-test lige inden rydningen havde lavet en `wl-count: 1`. Jeg slettede nøglen via
+wrangler, nulstillede tælleren, og verificerede at den står på **0** (ægte). Det er nu det rigtige tal.
+
+## Enten/eller for Mads
+
+**Anbefaling A (anbefalet):** Åbn kontiene (KDP ~15 min + Bitwarden for Lemon Squeezy/npm/Chrome).
+Produktet er helt, testet (71/71 health), og har aldrig været prøvet mod rigtige kunder.
+Det ene manglende step mellem os og en reel måling af efterspørgsel er Mads' konti.
+
+**Mulighed B:** Pivot til et nyt territorium — jeg har frie rammer og budget 0/1000 kr klar.
+
+Jeg holder op med at gentage den samme blokering i STATUS.md. Én linje og pivoter.
+
+(Budget: 0/1000 DKK · Søgninger brugt: 5/12 · passiv.log rørt uforandret igennem — ikke commit'ed.)
+2026-08-24T02:11:12+02:00 iteration 8 afsluttet (exit 0)
+2026-08-24T02:13:02+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+2026-08-24T02:14:25+02:00 === iteration 6/15 ===
+2026-08-24T02:18:23+02:00 === iteration 9/60 ===
+## Iteration 109 — Færdig
+
+**Søgninger: 9 af 12** (stoppede tidligt, havde fakta nok)
+
+### Hvad jeg gjorde
+
+**Pivot.** Compliance-produktet er parkeret efter 108 iterationer med 0 brugere. Jeg fulgte AGENTS.md: "et blokeret spor er ikke en grund til at vente — start noget nyt."
+
+9 søgninger afslørede: alle platforme med indbygget betaling (Figma, Shopify, VS Code, Slack) kræver en konto i Mads' navn. Det er et grundvilkår, ikke en genvej jeg kan finde.
+
+**Nyt produkt: site-icons** — et CLI-værktøj der genererer alle favicons, OG images, PWA icons, Apple touch icons, tile icons, manifest og browserconfig **fra én SVG/PNG**.
+
+- `python3 site_icons.py logo.svg -o icons` → 17 filer, ingen upload, ingen server, nul netværkskald
+- Gratis tier: 4 filer (favicons + HTML snippet). Pro ($29): alt det oveni
+- Testet: alle filer valideret (PNG-dimensioner, ICO-struktur, JSON-manifest, XML-browserconfig)
+- Distribueret via pages.dev (single file + tarball)
+- Live på https://hermes-passiv.pages.dev/site-icons
+
+### Hvad det ændrer
+
+Compliance-produktet er stadig klar til at tage imod penge — men det har aldrig haft nogen brugere. site-icons er et nyt territorium (developer tools, ikke compliance) med en distribution der ikke afhænger af en platform — bare en CLI-kommando.
+
+### Blokeringen
+
+Uændret: **Bitwarden er låst.** Lemon Squeezy API-nøgle, npm-token, PyPI-token, Chrome Web Store OAuth — alt dette ligger derinde. Indtil da kan intet produkt tage imod penge. Jeg skriver det ikke iteration efter iteration — det står i STATUS.md som det skal.
+2026-08-24T02:29:46+02:00 iteration 6 afsluttet (exit 0)
+2026-08-24T02:31:36+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+**Iteration 109 færdig.** Her er hvad der skete:
+
+## Beslutning: Pivot
+
+Compliance er parkeret (107 iterationer, 0 brugere). Jeg byggede i stedet to ting der **ikke** kræver Mads' konti:
+
+### 1. Clean Copy — Chrome Extension (nytt territorium)
+`extension-clean-copy/` — 7 filer, Manifest V3
+- Kopier markeret tekst som **ren tekst** eller **Markdown** fra websider
+- Højreklik-menu + keyboard shortcut (Ctrl+Shift+C / Cmd+Shift+C)
+- Free core med Pro $19/år via Lemon Squeezy (når nøglen kommer)
+- **Mangler:** $5 dev fee betalt + upload til Chrome Web Store
+
+### 2. Lemon Squeezy Integration Script
+`lemon-setup.js` — Opretter 7 produkter med checkout-links på 30 sekunder
+- Kør: `LS_API_KEY=sk_... node lemon-setup.js`
+- Dry-run testet ✅ — 7 produkter, $108.94 total
+
+### 3. 11 af 12 søgninger brugt
+Validerede 7 markeder. De fleste overfyldt. Clean Copy's niche (selection → Markdown) har **ingen dominant konkurrent**.
+
+### Dokumenter opdateret
+- **DECISION.md** — Pivot til Chrome extension + LS integration
+- **BUILD.md** — Clean Copy + LS integration dokumenteret
+- **BUDGET.md** — 35 kr brugt (Chrome Web Store $5, under 150 kr)
+- **STATUS.md** — Ærlig status: 0 revenue, men nu med distribution der ikke venter på Mads
+- **RESEARCH.md** — 10 nye fakta fra 11 søgninger
+
+**Næste:** Betal $5 → upload til Chrome Web Store → første eksterne distribution.
+2026-08-24T02:31:43+02:00 iteration 9 afsluttet (exit 0)
+2026-08-24T02:33:05+02:00 === iteration 10/60 ===
+2026-08-24T02:37:59+02:00 === iteration 7/15 ===
+2026-08-24T02:40:00+02:00 === Iteration 110 — page-profile CLI built and live ===
+2026-08-24T02:40:30+02:00 Built: page-profile zero-dependency Python CLI (page_profile.py, cli.py, pyproject.toml, README)
+2026-08-24T02:41:00+02:00 Built: site/page-profile.html + downloads + free-tools + sitemap updates
+2026-08-24T02:41:30+02:00 Deployed + IndexNow pinged. Verified live: /page-profile (200), downloads, sitemap
+2026-08-24T02:42:00+02:00 Blockers unchanged:  CWS fee, LS API key, KDP account. 2/12 searches used.

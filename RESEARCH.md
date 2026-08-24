@@ -336,3 +336,54 @@ Hvis han kun siger ja til én: vælg wp.org-plugin'et, da det har den bedste dis
 
 **Nice-to-know:**
 8. **WordPress 2026 markedsandel:** Stadig faldende? Hvilke CMS'er vinder?
+
+---
+
+# RESEARCH — Iteration 109: Pivot til nyt territorium (9 web-søgninger)
+
+**Dato:** 2026-08-24
+**Metode:** 9 målrettede web-søgninger for at faktatjekke platforme med indbygget betaling.
+**Resultat:** Alle platforme kræver en konto i Mads' navn. Valgte i stedet at bygge et produkt der distribueres uafhængigt af platforme. Se DECISION.md.
+
+## Nye fakta
+
+1. **Figma plugin monetization (2026):** Figma har Payments API, men kræver Stripe-account. Plugin skal være publiceret som "Individual creator". Kræver både Figma-konto + Stripe = Mads. Kilde: Figma forum (May 2026).
+2. **VS Code Marketplace (2026):** Ingen indbygget betaling — kun "Free" og "Trial" labels. Betaling kræver ekstern processor (Lemon Squeezy, Gumroad, Paddle, Dodo Payments). Publisher account er GRATIS (Microsoft account). Freemium + ekstern licens er standardmønsteret. Kilde: code.visualstudio.com, jakeinsight.com.
+3. **VS Code monetization (realistiske tal):** $300-4.000/md for produktivitetsværktøjer. 6-14 uger til første salg. 1-3% free-to-paid conversion. $9-19 one-time eller $4-8/md er standard. Kræver Lemon Squeezy (5% + $0,50/transaktion). Kilde: jakeinsight.com (2026).
+4. **Shopify App Store (2026):** 0% revenue share på første $1M (lifetime), 15% over. $19 engangs-partnergebyr. Indbygget betaling — behøver ikke Stripe. Men kræver Shopify Partner-konto (Mads). Kilde: shopify.dev.
+5. **Slack Marketplace (2026):** Tillader paid apps, men Slack håndterer IKKE betaling — "you should handle payments securely". Ingen fordel ift. direkte Lemon Squeezy. Kilde: docs.slack.dev.
+6. **Design tokens generator (2026):** Search interest +900% på 2 år. Tokens Studio (Figma plugin, paid), Style Dictionary (Amazon, gratis), OneMinuteBranding (gratis web). Markedet vokser men bliver konkurreret. Kilde: oneminutebranding.com.
+7. **Favicon/OG-image tools (2026):** RealFaviconGenerator.net ($7/usage web), favicon.io (gratis web), IconKit (macOS $19). **Ingen dominant CLI-værktøj.** Markedet er fragmenteret. Kilde: egen viden + søgning.
+
+## Konklusion
+
+Alle betalingsveje kræver en konto i Mads' navn — det er et grundvilkår. Jeg stopper med at lede efter en genvej og bygger i stedet et produkt der er så nyttigt at det distribuerer sig selv via mund-til-mund og CLI-installationer. Betaling kommer når Mads åbner Bitwarden/Lemon Squeezy.
+
+---
+
+# RESEARCH — Iteration 109: Territoriesjek for pivot (11 web-søgninger)
+
+**Dato:** 2026-08-24
+**Metode:** 11 målrettede web-søgninger for at validerer nye produktterritorier
+**Resultat:** Chrome extension "Clean Copy" valgt. Lemon Squeezy integration bygget. Se DECISION.md.
+
+## Nye fakta fra denne iteration
+
+1. **VS Code commit-message-generator (2026):** Massivt konkurreret. czg (47K weekly downloads, 3 år gammel), Commit Genius (free tier, GPT/Claude/Gemini), AI Commit, gac, aicommits. Zero room. Kilde: npmjs.com, marketplace.visualstudio.com.
+2. **Chrome Web Store dev fee (2026):** $5 one-time, ingen årlig fornyelse. Max 20 extensions per account. Ingen per-extension fee. Kilde: extensionbooster.net, extensionradar.com.
+3. **Chrome extension "Copy as Markdown":** "Copy Page as Markdown" (mdaoojo...) + "Copy as Markdown" (fheblkk...) — begge etablerede. Men fokuserer på fuld-side-kopi, ikke selection. Clean Copy differentierer sig med: selection-only, clean text mode, Pro-vej. Kilde: chromewebstore.google.com.
+4. **Chrome extension GitHub PR review:** Marked domineret af GitHub Copilot Code Review, Claude Code Review, CodeRabbit, OpenAI Codex. Ingen plads til en lille extension. Kilde: startearly.ai, docs.github.com.
+5. **Chrome extension GitHub Stars manager:** "Better GitHub Stars Manager" (150 users) + "StarDeck" (1 user) — lille men eksisterende marked. Ikke valgt pga. for lille målgruppe. Kilde: chromewebstore.google.com.
+6. **Chrome extension "Tab Snooze":** "Tab Snooze" + "Snoozz" + "Tuck" — 3 etablerede. Markedet er dækket. Kilde: chromewebstore.google.com.
+7. **Chrome extension indie revenue (2026):** $500-2.000 MRR inden for 6-12 måneder for indie-udviklere. $10K-50K+ MRR for extensions med 100K+ brugere. Freemium-model er standard. Kilde: chromegoldmine.com, righttail.co.
+8. **Indie developer tools revenue (2026):** Top indie tools på TrendingRepo: Conductor ($9.9K MRR), TornadoAPI ($5.6K), OpenAlternative ($5.4K), PDFBolt ($1.4K). Alle bruger Stripe/Lemon Squeezy. Kilde: trendingrepo.com.
+9. **Lemon Squeezy API (2026):** Fuld REST API: POST /v1/products, /v1/variants, /v1/prices, /v1/checkouts. Bearer auth. JSON:API format. Idempotent (tjekker eksisterende). Kilde: docs.lemonsqueezy.com.
+10. **Chrome extension "Copy selection as Markdown" (2026):** Ingen dominant extension til selection-only Markdown. De fleste kopierer hele siden. Clean Copy's USP: selection-only, clean text mode, keyboard shortcut. Kilde: egen analyse af CWS.
+
+## Konklusion
+
+Chrome Web Store er den bedste distributionskanal uden Mads ($5 fee). Clean Copy fylder et hul: selektion-til-Markdown findes ikke som dominant extension. Resten (PR review, commit messages, tab snooze) er overfyldt. KDP e-bøger og Lemon Squeezy integration er klar til når Mads åbner konti.
+
+## Budget
+
+- Chrome Web Store dev fee: $5 (≈35 kr) — under 150 kr, selvbetalt

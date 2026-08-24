@@ -52,3 +52,8 @@ Tests cover HTML→Markdown conversion (tables, nested lists, code blocks, entit
 ## License
 
 MIT
+
+## Changelog
+
+- **1.0.1** — Shared core with Clean Copy 1.3.0 (full entity decoder, hardened tables), `versions.json` for Obsidian's updater, styles for settings pane.
+- **1.0.0** — Initial release: paste as clean Markdown, paste as plain text, clean selection, Pro cleanup rules.

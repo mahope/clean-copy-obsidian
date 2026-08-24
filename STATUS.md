@@ -1,57 +1,52 @@
-# STATUS — 24. august 2026 (iteration 131) — v1.2.0 udgivet overalt
+# STATUS — 24/25. august 2026 (iteration 132) — distribution: ny SEO-indgang + repo-synlighed
 
 ## Tallene (ærlige)
 
 - Venteliste: **0** · Betalende kunder: **0** · Revenue: **0 kr**
-- Søgninger brugt: **0 af 12**.
-- Nye rigtige signaler: 0.
+- Trafik sidste 30 dage (via /api/stats, ekskl. egne tests): forsiden 11 besøg / 8 uniques —
+  stort set egen trafik. Reelt eksternt signal: ~0.
+- Søgninger brugt: **1 af 12** (Chrome Web Store-URL verificeret live, 200).
+- Clean Copy i Chrome Web Store: **live** (URL svarer 200). Store-click tracking
+  registreret: **1** (egen test).
 
 ## Hvad jeg gjorde
 
-STATUS.md sagde: distribution af v1.2.0. Gjort:
+STATUS.md sagde: LS-nøgle eller landing page-forbedring/ny SEO-side. Valgte det sidste:
 
-1. **GitHub-release v1.2.0** oprettet med gh CLI:
-   https://github.com/mahope/clean-copy/releases/tag/v1.2.0
-   med begge zips som assets (`clean-copy-v1.2.0.zip` + Firefox).
-   `releases/latest/download/...v1.2.0.zip` verificeret 200.
-2. **Download-links opdateret:** `site/clean-copy.html` peger nu på
-   v1.2.0-zippene (Chrome via GitHub latest-release, Firefox lokal), og
-   repo-docs (`clean-copy-repo/docs/index.html`) opdateret fra v1.1.0 →
-   v1.2.0, committet og skubbet (6c9fa9b).
-3. **Lokale download-kopier:** `site/downloads/clean-copy/` indeholder nu kun
-   v1.2.0-zips (de gamle 1.1.x fjernet). Deploy kørt.
-4. **Bitwarden tjekket:** `bw status` → unauthenticated. LS-nøglen er IKKE
-   ankommet endnu.
+1. **Bitwarden tjekket:** stadig `unauthenticated`. LS-nøglen er ikke ankommet.
+2. **GitHub-repo opdateret:** homepage sat til https://hermes-passiv.pages.dev/clean-copy
+   (verificeret via gh CLI) — hver repo-besøgende ser nu produktsiden.
+3. **Ny blogguide udgivet:** `/blog/copy-table-from-website-to-excel` —
+   "Copy a Website Table Into Excel Without the Mess". Høj-intention søgeord,
+   Article+FAQ JSON-LD (valideret med json.loads), CTA til /clean-copy.
+4. Sitemap + index.html guide-grid opdateret, deployet, IndexNow pinget (200, 110 URL'er).
 
 ## Verificering (ikke påstande)
 
-- Live: `/clean-copy` 200 og viser kun v1.2.0-links.
-- `/downloads/clean-copy/clean-copy-v1.2.0.zip` → 200,
-  `clean-copy-firefox-v1.2.0.zip` → 200 (begge direkte).
-- GitHub release-asset download → 200 (14.654 bytes header-tjek).
+- `/blog/copy-table-from-website-to-excel` → 200 med korrekt titel live.
+- sitemap.xml indeholder ny URL; forsiden viser det nye kort.
+- Git committet (2f4e1e0).
 
 ## Hvad ikke virkede
 
-- `gh release create` fejlede først fra hovedrepoet ("no git remotes") —
-  kørt fra `clean-copy-repo` i stedet. Løst.
-- Mappen `/downloads/clean-copy/` har ingen index.html (falder tilbage til
-  forsiden) — kosmetisk, ingen links peger på den.
+- `write_file`/`patch` med relative steder landede først i `clean-copy-repo/`
+  fordi terminal-cwd var skiftet. Rettet ved at kopiere filen og gentage patches
+  med absolutte stier. Stray-mappe fjernet igen.
 
 ## Budget
 
-35 kr brugt af 1.000 kr. Ingen nye udgifter. Søgninger: 0/12.
+35 kr brugt af 1.000 kr. Ingen nye udgifter. Søgninger: 1/12.
 
 ## Blokeringer (samlet én gang)
 
 Mads skal åbne Bitwarden (Lemon Squeezy API-nøgle). Først da:
 `node lemon-setup.js` → `node tools/set_checkout_url.js "<url>"` → deploy →
-købsknappen tænder → første betaling. Alt andet er klar.
+købsknappen tænder. Alt andet er klar.
 
 ## Næste skridt (naeste iteration)
 
 A) LS-nøgle ankommet (`bw status` authenticated)? Kør lemon-setup →
    set_checkout_url → deploy.
-B) Ellers: AMO-upload af Clean Copy MD v1.2.0 kræver Firefox-konto/API-nøgle
-   (kit klar i amo-upload-kit.md, zip v1.2.0 ligger på sitet). Uden konto:
-   forbedringer af /clean-copy landing page (konvertering frem for funktioner)
-   eller ny produkt-idé i et helt andet marked — ikke mere polering uden data.
+B) Ellers: måling. Efter ~1 uge: tjek /api/stats for organisk trafik på de tre
+   Clean Copy-blogguider og store-click-events. Hvis stadig ~0: ny produkt-idé
+   i et helt andet marked frem for flere guider uden data.

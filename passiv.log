@@ -2901,3 +2901,85 @@ Iteration 127 færdig. Opsummering:
 Næste iteration: læs de første rigtige tal fra /api/stats; hvis CWS-users står stille ved <10 om ~30 dage, pivot pr. DECISION.md-reglen.
 2026-08-24T05:09:38+02:00 iteration 25 afsluttet (exit 0)
 2026-08-24T05:10:05+02:00 === iteration 26/60 ===
+Iteration 128 færdig. DECISION.md findes, så jeg byggede — nærmere bestemt lukkede et distributionshul i stedet for at skrive ny kode:
+
+**Hvad der var galt:** Clean Copy Web (`/clean-copy-tool`, bygget i iteration 123) var ikke koblet på nogen af sidens trafik-sider. Folk kunne ikke finde den.
+
+**Hvad jeg gjorde (0/12 søgninger brugt):**
+1. `/free-tools` — nyt Clean Copy Web-kort + hasPart i CollectionPage JSON-LD (13 værktøjer, valideret)
+2. `llms.txt` — nye entries for Clean Copy Web, page-profile og selve extensionen (AI-assistenter kan nu finde dem)
+3. Blogartiklen "copy as markdown chrome extension" — CTA til web-versionen ("No Chrome? Try it in your browser")
+4. Deployet og curl-verificeret med indholdstjek (ikke kun HTTP 200) på alle tre sider. IndexNow pinget 109 URL'er (200). Committet.
+
+**Stats-tjek:** `/api/stats` viser stadig kun min egen selftest og ét store-click. 0 eksterne klik, 0 revenue. CWS-users kan ikke læses via curl (JS-renderet side).
+
+**Næste iteration:** al polering af Clean Copy uden data er nu spild — alle interne indgange er koblet. Enten ventes der på rigtige tal (CWS-users / store-click), eller også bygges noget nyt efter DECISION.md-reglen. De reelle veje videre (npm-konto, Edge Partner Center) kræver alle en konto fra Mads — det står samlet i STATUS.md.
+2026-08-24T05:14:24+02:00 iteration 26 afsluttet (exit 0)
+2026-08-24T05:14:47+02:00 === iteration 27/60 ===
+Iteration 129 færdig. BYG-spor (DECISION.md findes), 0 søgninger brugt.
+
+**Bygget: Clean Copy Pro licens-backend** — hele kæden fra betaling til fungerende licens er nu på plads, så den eneste resterende blokering er Lemon Squeezy-nøglen i Bitwarden:
+
+1. **`/api/license/activate` + `/api/license/validate`** i site/_worker.js — KV-baserede 32-hex nøgler, max 5 enheder, idempotent genaktivering, revoked/expired-håndtering, fail-safe fejlbeskeder (intet lækker internt).
+2. **Pro-sektion på /clean-copy-tool** ($19/år) med licensaktiveringsformular. Købsknappen vises kun når en ægte Lemon Squeezy-URL injiceres via `node tools/set_checkout_url.js "<url>"` — ingen døde købslinks.
+3. **`tools/license-admin.js`** — issue/revoke nøgler via wrangler: manuel leveringsvej ("nøgle → mail") virker fra dag ét, webhook kan automatisere senere.
+4. **lemon-setup.js** udvidet med Clean Copy Pro som produkt #8 og printer de præcise opfølgningstrin for licensproduktet.
+5. **site/wrangler.toml** ny — gør lokal Worker+KV-test mulig.
+
+**Verificeret, ikke påstået:** lokalt i wrangler dev — activate OK, genaktivering idempotent, 6. enhed → 409, validate ved grænse → valid:false, forkert format → 400, GET → 405. Live efter deploy: ukendt nøgle → 404 med pæn besked, GET → 405, Pro-sektion live, JSON-LD stadig gyldig. Deployet og committet; STATUS.md og BUILD.md opdateret.
+
+Budget uændret: 35/1000 kr. Næste iteration: enten LS-nøglen (lemon-setup → set_checkout_url → deploy = betaling live), eller byg Pro-funktionerne selv (batch + custom regler) — det er ikke blokeret.
+2026-08-24T05:23:44+02:00 iteration 27 afsluttet (exit 0)
+2026-08-24T05:24:10+02:00 === iteration 28/60 ===
+Iteration 130 færdig. BYG-dag, som STATUS.md foreskrev: Pro-funktionerne er nu rigtige kode, ikke bare tekst på en prisside.
+
+**Bygget — Clean Copy v1.2.0:**
+
+1. **Kernen** (`tools/clean_copy_core.js`): `compileRules`/`applyRules` (custom oprydningsregler, bogstavelige eller regex) og `batchConvert`, der aldrig kaster — én dårlig snippet giver en fejl-linje, resten konverterer.
+2. **Udvidelsen (Chrome + Firefox):** ny options-side med licensaktivering mod `/api/license/*` (re-valideres ved opstart; revoked/expired låser automatisk, offline forbliver aktiv) + regel-editor. Når Pro er aktiv, anvendes reglerne på alle kopier; fejlende regler springes stille over så copying aldrig går i stykker. Popup viser "✓ Pro active".
+3. **Web:** batch-sektion på /clean-copy-tool, Pro-gated med kvietisk server-revalidering af den gemte licens.
+4. **Udgivet:** zips rebuildet (`clean-copy-v1.2.0.zip`, `clean-copy-firefox-v1.2.0.zip`), GitHub-kildekode skubbet som v1.2.0, site deployet og curl-verificeret live (batch-UI + core-funktioner til stede, licens-API uændret 404/405).
+
+**Verificering:** 8 nye kerne-tests i `tools/test_pro_core.js` + baseline-tests PASS, inline-JS syntaktjekket, JSON-LD gyldig, IndexNow 200. To testfejl undervejs var mine egne tests forkerte, ikke kernen.
+
+**Blokering uændret (nævnt én gang):** Lemon Squeezy-nøglen i Bitwarden er det eneste der står mellem dette og første betaling.
+
+Søgninger brugt: 0/12. Budget: 35/1000 kr. STATUS.md opdateret med næste skridt: LS-nøgle → checkout, ellers Firefox AMO-distribution + GitHub-release af v1.2.0.
+
+⚠️ File-mutation verifier: 1 file(s) were NOT modified this turn despite any wording above that may suggest otherwise. Run `git status` or `read_file` to confirm.
+  • `/tmp/batch_sim.js` — [write_file] Write denied: '`/private/tmp/batch_sim.js`' is outside HERMES_WRITE_SAFE_ROOT (/Users/madsholstjensen/hermes-passiv). Unset the variable or add this path's directory prefix.
+2026-08-24T05:33:31+02:00 iteration 28 afsluttet (exit 0)
+2026-08-24T05:33:54+02:00 === iteration 29/60 ===
+Iteration 131 færdig. Kort rapport:
+
+**Gjort (distribution af v1.2.0, som STATUS pegede på):**
+- GitHub-release v1.2.0 oprettet: https://github.com/mahope/clean-copy/releases/tag/v1.2.0 — begge zips som assets, release-asset verificeret downloadbar (200).
+- Download-links opdateret: `site/clean-copy.html` (Chrome → GitHub latest-release, Firefox → lokal v1.2.0-zip) og repo-docs (v1.1.0 → v1.2.0), skubbet til GitHub.
+- Lokale zips i `site/downloads/clean-copy/` erstattet med v1.2.0; deploy kørt og verificeret live (alle tre URL-tjek 200, siden viser kun v1.2.0).
+- Bitwarden tjekket: stadig unauthenticated — LS-nøglen er ikke ankommet.
+
+**Søgedisciplin:** 0 af 12 søgninger brugt — ingen søgninger var nødvendige.
+
+**Ikke virkede først:** `gh release create` skulle køres fra `clean-copy-repo` (fjernrepo ligger der).
+
+**Næste iteration:** Hvis LS-nøglen er ankommet → lemon-setup + checkout-link + deploy. Ellers AMO-upload-kit venter på Firefox-konto; uden den: konverteringsfokuseret forbedring af landingssiden eller ny produktidé — ikke mere funktion-polering uden data.
+
+STATUS.md opdateret og alt committet (iteration 131).
+2026-08-24T05:36:20+02:00 iteration 29 afsluttet (exit 0)
+2026-08-24T05:37:09+02:00 === iteration 30/60 ===
+Iteration 132 færdig. Resumé:
+
+**Fundet:** Clean Copy er live i Chrome Web Store (URL svarer 200), men trafikken er ~0 — forsiden har haft 11 besøg/8 uniques på 30 dage, stort set egen testtrafik. Bitwarden er stadig lukket, så Lemon Squeezy-nøglen mangler.
+
+**Gjort (distribution, ikke polering):**
+1. GitHub-repoets homepage peger nu på produktsiden /clean-copy (verificeret via gh CLI).
+2. Ny SEO-blogguide udgivet: `/blog/copy-table-from-website-to-excel` — høj-intention søgeord ("copy table from website to excel"), Article + FAQ JSON-LD valideret, CTA direkte til Clean Copy. Sitemap og forsiden opdateret.
+3. Deployet og verificeret live: guide 200 med korrekt titel, sitemap indeholder URL'en, forsidekort synligt. IndexNow pinget (200). Committet som 2f4e1e0.
+
+**Søgnings-disciplin:** 1 af 12 brugt (kun verifikation af store-URL).
+
+**Fejl undervejs (rettet):** relative filstier landede først i forkert mappe, fordi terminal-cwd havde skiftet til clean-copy-repo. Gentaget med absolutte stier; stray-filer fjernet.
+
+STATUS.md er opdateret. Næste iteration: LS-nøgle hvis Bitwarden er åbnet — ellers vente ~en uge og måle organisk trafik på de tre Clean Copy-guider, før der bygges mere indhold.
+2026-08-24T05:47:09+02:00 iteration 30 afsluttet (exit 0)
+2026-08-24T05:47:47+02:00 === iteration 31/60 ===

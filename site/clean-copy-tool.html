@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clean Copy Web — Paste messy text, get clean Markdown. Free, in your browser</title>
+  <meta name="description" content="Free online tool: paste HTML or messy formatted text and copy it back as clean Markdown or plain text. Runs entirely in your browser — nothing is uploaded.">
+  <meta property="og:title" content="Clean Copy Web — Messy paste to clean Markdown, instantly">
+  <meta property="og:description" content="Paste any formatted text and get clean Markdown or plain text back. 100% in your browser, no upload, free.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://hermes-passiv.pages.dev/clean-copy-tool">
+  <link rel="canonical" href="https://hermes-passiv.pages.dev/clean-copy-tool">
+  <link rel="stylesheet" href="/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Clean Copy Web",
+    "url": "https://hermes-passiv.pages.dev/clean-copy-tool",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "description": "Paste messy formatted text and get clean Markdown or plain text back. Runs entirely client-side."
+  }
+  </script>
+  <style>
+    .tool-wrap { max-width: 1100px; margin: 0 auto; padding: 1rem; }
+    .tool-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    @media (max-width: 760px) { .tool-grid { grid-template-columns: 1fr; } }
+    .tool-pane textarea {
+      width: 100%;
+      min-height: 320px;
+      box-sizing: border-box;
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      background: var(--color-surface);
+      color: var(--color-text);
+      padding: 0.9rem;
+      font-family: 'SF Mono', 'Monaco', 'Fira Code', monospace;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      resize: vertical;
+    }
+    .tool-pane label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
+    .tool-hint { color: var(--color-text-muted); font-size: 0.8rem; margin-top: 0.4rem; }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      align-items: center;
+      margin: 1rem 0 1.5rem;
+    }
+    .btn-primary {
+      background: var(--color-accent, #2563eb);
+      border: none;
+      color: #fff;
+      padding: 0.65rem 1.3rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-secondary {
+      background: var(--color-surface-2, #f1f5f9);
+      border: 1px solid var(--color-border);
+      color: var(--color-text);
+      padding: 0.55rem 1.1rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .seg-group { display: inline-flex; border: 1px solid var(--color-border); border-radius: 8px; overflow: hidden; }
+    .seg-group button {
+      border: none;
+      background: transparent;
+      color: var(--color-text);
+      padding: 0.55rem 1rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .seg-group button[aria-pressed="true"] { background: var(--color-accent, #2563eb); color: #fff; font-weight: 600; }
+    #copy-status { font-size: 0.85rem; color: var(--color-text-muted); }
+    #copy-status.ok { color: #16a34a; }
+    #copy-status.err { color: #dc2626; }
+    .privacy-note {
+      display: flex;
+      gap: 0.6rem;
+      align-items: flex-start;
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      padding: 0.9rem 1.1rem;
+      margin: 1.5rem 0;
+      font-size: 0.88rem;
+      color: var(--color-text-muted);
+    }
+    details.faq { border-bottom: 1px solid var(--color-border); padding: 0.8rem 0; }
+    details.faq summary { cursor: pointer; font-weight: 600; }
+    details.faq p { color: var(--color-text-muted); font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <main class="tool-wrap">
+    <nav aria-label="Breadcrumb" style="font-size:0.8rem;margin-bottom:1rem;">
+      <a href="/">Passiv</a> · <a href="/clean-copy">Clean Copy extension</a> · <span aria-current="page">Web tool</span>
+    </nav>
+
+    <h1>Clean Copy Web</h1>
+    <p class="lead">Paste messy, over-formatted text — get clean Markdown or plain text back.
+    The same converter our browser extension uses, running entirely in your browser.</p>
+
+    <div class="privacy-note" role="note">
+      <span aria-hidden="true">🔒</span>
+      <span><strong>Nothing leaves your device.</strong> The conversion runs in JavaScript on this page.
+      No upload, no server, no cookies, no tracking of your text.</span>
+    </div>
+
+    <div class="toolbar" role="group" aria-label="Output options">
+      <div class="seg-group" role="group" aria-label="Output format">
+        <button type="button" id="mode-md" aria-pressed="true">Markdown</button>
+        <button type="button" id="mode-txt" aria-pressed="false">Plain text</button>
+      </div>
+      <label style="display:inline-flex;align-items:center;gap:.45rem;font-weight:400;font-size:.9rem;">
+        <input type="checkbox" id="opt-smart"> Replace smart quotes &amp; dashes
+      </label>
+      <button type="button" class="btn-secondary" id="btn-sample">Load sample</button>
+      <button type="button" class="btn-secondary" id="btn-clear">Clear</button>
+    </div>
+
+    <div class="tool-grid">
+      <div class="tool-pane">
+        <label for="input-box">Paste your text here</label>
+        <textarea id="input-box" placeholder="Paste richly formatted text (copied from a web page, Word, email…) or raw HTML…" aria-describedby="input-hint"></textarea>
+        <p class="tool-hint" id="input-hint">Tip: text copied from a web page keeps its formatting when pasted here.</p>
+      </div>
+      <div class="tool-pane">
+        <label for="output-box">Clean result</label>
+        <textarea id="output-box" readonly aria-live="polite"></textarea>
+        <p class="tool-hint" id="out-stats" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button type="button" class="btn-primary" id="btn-copy">Copy result</button>
+      <button type="button" class="btn-secondary" id="btn-download">Download as .md</button>
+      <span id="copy-status" role="status"></span>
+    </div>
+
+    <h2>Why clean copied text?</h2>
+    <p>Text you copy from the web arrives stuffed with invisible junk: smart quotes that break
+    code, non-breaking spaces that break search, nested spans and styles that break your CMS.
+    Clean Copy strips all of it and gives you predictable output:</p>
+    <ul>
+      <li><strong>Markdown mode</strong> keeps the structure that matters — headings, bold/italic,
+      links, lists (including nested ones), code blocks.</li>
+      <li><strong>Plain text mode</strong> removes everything but readable characters.</li>
+      <li><strong>Smart-quote cleanup</strong> converts “ ” ‘ ’ — – into safe ASCII equivalents
+      and removes zero-width and non-breaking spaces.</li>
+    </ul>
+
+    <h2>Frequently asked questions</h2>
+    <details class="faq">
+      <summary>Is my text uploaded anywhere?</summary>
+      <p>No. The conversion is pure JavaScript running on this page. Your text never touches a server.</p>
+    </details>
+    <details class="faq">
+      <summary>What's the difference between this and the browser extension?</summary>
+      <p>The extension copies directly from any web page with a right-click — no paste needed.
+      This web tool handles text you already have: email content, documents, anything. Same engine,
+      same results. <a href="/clean-copy">Get the extension →</a></p>
+    </details>
+    <details class="faq">
+      <summary>Does it work offline?</summary>
+      <p>Yes — once the page has loaded, you can disconnect and keep converting.</p>
+    </details>
+    <details class="faq">
+      <summary>Which HTML elements are converted?</summary>
+      <p>Headings h1–h6 (#…######), bold/strong (**), italic/em (*), links [text](url), images
+      ![alt](src), ordered and unordered lists including nesting, code blocks (```), inline code (`),
+      paragraphs, line breaks and horizontal rules. Everything else is stripped to plain text.</p>
+    </details>
+    <details class="faq">
+      <summary>Can I paste raw HTML?</summary>
+      <p>Yes. If your clipboard contains actual HTML markup (e.g. copied from an editor's code view),
+      use the source of this trick: paste it into the field — the tool detects raw tags starting with
+      "&lt;" and converts them directly.</p>
+    </details>
+
+    <footer style="text-align:center;padding:2rem 1rem;color:var(--color-text-muted);font-size:0.85rem;">
+      <p><a href="/clean-copy">Clean Copy browser extension</a> · <a href="/free-tools">More free tools</a> · by Passiv</p>
+    </footer>
+  </main>
+
+  <script src="/clean-copy-core.js"></script>
+  <script>
+  (function () {
+    'use strict';
+    var input = document.getElementById('input-box');
+    var output = document.getElementById('output-box');
+    var statusEl = document.getElementById('copy-status');
+    var statsEl = document.getElementById('out-stats');
+    var mode = 'markdown';
+    var smart = document.getElementById('opt-smart');
+
+    function esc(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    function convert() {
+      var raw = input.value;
+      if (!raw.trim()) { output.value = ''; statsEl.textContent = ''; setStatus(''); return; }
+      var looksLikeHtml = /<\/?(?:p|div|span|h[1-6]|ul|ol|li|a|b|strong|i|em|br|code|pre|table)\b/i.test(raw)
+                          || /&(?:amp|lt|gt|quot|nbsp);/.test(raw);
+      try {
+        var result;
+        if (looksLikeHtml) {
+          // Raw HTML pasted as text: unescape entities first so the converter sees real markup.
+          var doc = new DOMParser().parseFromString(raw, 'text/html');
+          result = CleanCopyCore.htmlToMarkdown(doc.body.innerHTML);
+        } else if (mode === 'markdown') {
+          // Plain-ish text: only apply character cleanup, no tag stripping needed.
+          result = smart.checked ? CleanCopyCore.cleanText(raw) : raw.replace(/\u00A0/g,' ').trim();
+        } else {
+          var doc2 = new DOMParser().parseFromString(raw, 'text/html');
+          result = CleanCopyCore.cleanText(doc2.body.textContent || '');
+        }
+        output.value = result;
+        var words = result.split(/\s+/).filter(Boolean).length;
+        statsEl.textContent = result.length + ' chars · ' + words + ' words';
+        setStatus('');
+      } catch (err) {
+        output.value = '';
+        setStatus('Conversion failed: ' + err.message, true);
+      }
+    }
+
+    function setStatus(msg, isErr) {
+      statusEl.textContent = msg;
+      statusEl.className = msg ? (isErr ? 'err' : 'ok') : '';
+    }
+
+    function setMode(m) {
+      mode = m;
+      document.getElementById('mode-md').setAttribute('aria-pressed', m === 'markdown');
+      document.getElementById('mode-txt').setAttribute('aria-pressed', m === 'plain');
+      convert();
+    }
+
+    document.getElementById('mode-md').addEventListener('click', function () { setMode('markdown'); });
+    document.getElementById('mode-txt').addEventListener('click', function () { setMode('plain'); });
+    smart.addEventListener('change', convert);
+    input.addEventListener('input', convert);
+
+    document.getElementById('btn-copy').addEventListener('click', function () {
+      if (!output.value) { setStatus('Nothing to copy yet.', true); return; }
+      var done = function () { setStatus('✓ Copied to clipboard'); };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(output.value).then(done, function () { fallbackCopy(); done(); });
+      } else { fallbackCopy(); done(); }
+    });
+    function fallbackCopy() {
+      output.removeAttribute('readonly');
+      output.select();
+      document.execCommand('copy');
+      output.setAttribute('readonly', '');
+      window.getSelection().removeAllRanges();
+    }
+
+    document.getElementById('btn-download').addEventListener('click', function () {
+      if (!output.value) { setStatus('Nothing to download yet.', true); return; }
+      var blob = new Blob([output.value], { type: 'text/markdown' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'clean-copy.md';
+      a.click();
+      URL.revokeObjectURL(a.href);
+      setStatus('✓ Downloaded');
+    });
+
+    document.getElementById('btn-clear').addEventListener('click', function () {
+      input.value = ''; output.value = ''; statsEl.textContent = ''; setStatus('');
+      input.focus();
+    });
+
+    document.getElementById('btn-sample').addEventListener('click', function () {
+      input.innerHTML = '';
+      input.value = '<h2>Quarterly Update</h2>\n<p>Revenue grew <strong>34%</strong> \u2014 driven by '
+        + 'the <em>EU launch</em>. Full report at <a href="https://example.com/report">example.com/report</a>.</p>'
+        + '<ul><li>Hired 6 engineers</li><li>Shipped v2<ul><li>New editor</li><li>Offline mode</li></ul></li></ul>'
+        + '<p>Contact: \u201Cteam\u201D <code>ops@example.com</code></p>';
+      convert();
+    });
+  })();
+  </script>
+</body>
+</html>

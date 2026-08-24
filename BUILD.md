@@ -1,3 +1,20 @@
+
+## Iteration 122 — Firefox-port + konverteringsfixes ✅
+
+- **Ny kodebase:** `extension-clean-copy-firefox/` — AMO-kompatibel MV3 manifest
+  (event page background, gecko ID `clean-copy@mahope.dk`, data_collection_permissions
+  `["none"]`, ingen offscreen), `navigator.clipboard` direkte fra background.
+- **Testet:** 25 logik-tests i Node (`tools/test_clean_copy.js`, vm-sandbox) — alle grønne.
+- **Bugfixes (også i Chrome-versionen):** `&gt;` dekodes nu; nested lists konverteres
+  rekursivt med korrekt indrykning; ordered lists får `1.`-markører;
+  whitespace-collapse bevarer linjeindrykning.
+- **Versioner:** Chrome v1.1.1 lokal / repo v1.1.2 (commit ff32168, GitHub release +
+  zip live); Firefox v1.1.0 zip klar (`clean-copy-firefox-v1.1.0.zip`).
+- **AMO-kit:** `amo-upload-kit.md` — komplet listing + reviewer-notes.
+- **Site:** /clean-copy har Firefox-installationssektion + zips på
+  /downloads/clean-copy/. Deployet og curl-verificeret live (200 + indhold),
+  IndexNow pinget.
+
 # BUILD — Hvad er bygget, hvad mangler
 
 **Dato:** 2026-08-24 (iteration 113 — dansk SEO-blog som søgeindgang til page-profile)

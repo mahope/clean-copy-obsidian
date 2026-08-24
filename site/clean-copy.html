@@ -237,6 +237,7 @@
             <li>✅ Zero-width char removal</li>
             <li>✅ No account required</li>
           </ul>
+          <span class="btn-secondary" style="display:block;text-align:center;margin-top:1rem;"><a href="/clean-copy-tool" style="color:inherit;text-decoration:none;">🧹 Try the web tool — no install needed</a></span>
           <span class="btn-secondary" style="display:block;text-align:center;margin-top:1rem;"><a href="https://github.com/mahope/clean-copy" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">★ Source on GitHub</a></span>
         </div>
         <div class="tier-card pro">
@@ -261,18 +262,23 @@
       <h2>Install</h2>
       <p class="section-intro">Clean Copy is a Chrome extension — Manifest V3, works in Chrome, Edge, Brave, and any Chromium-based browser.</p>
       <div class="install-steps">
-        <h3 style="margin-bottom:1rem;">Option A — Download &amp; install (available now, ~30 seconds, no coding)</h3>
+        <h3 style="margin-bottom:1rem;">Option A — Chrome, Edge &amp; Brave (available now, ~30 seconds, no coding)</h3>
         <ol>
-          <li><strong>Download the zip</strong> — <a href="https://github.com/mahope/clean-copy/releases/latest/download/clean-copy-v1.1.0.zip" rel="noopener">clean-copy-v1.1.0.zip</a> and unzip it.</li>
+          <li><strong>Download the zip</strong> — <a href="https://github.com/mahope/clean-copy/releases/latest/download/clean-copy-v1.1.2.zip" rel="noopener">clean-copy-v1.1.2.zip</a> and unzip it.</li>
           <li><strong>Open</strong> <code>chrome://extensions</code> and enable <strong>Developer mode</strong> (top right).</li>
-          <li><strong>Click "Load unpacked"</strong> and select the unzipped <code>clean-copy</code> folder.</li>
+          <li><strong>Click "Load unpacked"</strong> and select the unzipped folder.</li>
           <li><strong>Select text on any page</strong> — right-click and choose Clean Copy, or press <kbd>Ctrl+Shift+C</kbd> / <kbd>Cmd+Shift+C</kbd>.</li>
           <li><strong>Paste</strong> — clean Markdown ready to use.</li>
         </ol>
-        <h3 style="margin:1.5rem 0 1rem;">Option B — Chrome Web Store (coming)</h3>
+        <h3 style="margin:1.5rem 0 1rem;">Option B — Firefox (install from source)</h3>
+        <ol>
+          <li><strong>Download the Firefox zip</strong> — <a href="/downloads/clean-copy-firefox-v1.1.0.zip" rel="noopener">clean-copy-firefox-v1.1.0.zip</a> and unzip it.</li>
+          <li><strong>Open</strong> <code>about:debugging#/runtime/this-firefox</code>, click <strong>"Load Temporary Add-on…"</strong>, and pick <code>manifest.json</code>. (Temporary add-ons are removed when Firefox closes.)</li>
+          <li><strong>A signed, permanent install is coming to addons.mozilla.org</strong> — listing texts and reviewer notes are prepared; only account access is pending.</li>
+        </ol>
+        <h3 style="margin:1.5rem 0 1rem;">Option C — Chrome Web Store (coming)</h3>
         <ol>
           <li><strong>Visit the Chrome Web Store</strong> — search for "Clean Copy" (once published).</li>
-          <li><strong>Click "Add to Chrome"</strong> — no permissions beyond <code>activeTab</code>, <code>clipboardWrite</code>, and <code>contextMenus</code>.</li>
         </ol>
       </div>
       <p style="color:var(--color-text-muted);font-size:0.85rem;">Source code is MIT-licensed on GitHub. The Chrome Web Store listing is pending review.</p>
@@ -335,7 +341,7 @@
   </section>
 
   <footer style="text-align:center;padding:2rem 1rem;color:var(--color-text-muted);font-size:0.85rem;">
-    <p><a href="/" style="color:var(--color-accent);">← Back to EU Compliance Guides</a></p>
+    <p><a href="/" style="color:var(--color-accent);">← Back to EU Compliance Guides</a> &middot; <a href="/blog/copy-as-markdown-chrome-extension" style="color:var(--color-accent);">Guide: Copy as Markdown — best Chrome extensions</a></p>
     <p style="margin-top:8px;">Clean Copy is a product of Mahope. Free Chrome extension — no strings attached.</p>
   </footer>
 <script>

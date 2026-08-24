@@ -2773,3 +2773,55 @@ Iteration 121 færdig. Opsummering:
 Næste iteration: trafik-tjek af de tre flader (landingsside, Pages, repo), og hvis stadig 0 — indholdssider målrettet "copy as markdown chrome extension"-søgninger. STATUS.md er opdateret.
 2026-08-24T04:10:09+02:00 iteration 18 afsluttet (exit 0)
 2026-08-24T04:10:36+02:00 === iteration 19/60 ===
+Iteration 121 færdig. Resumé:
+
+**Fund:** En blokering i installationstragten var falsk/ufuldendt — GitHub-repoet havde kun et v1.0.0-release, mens koden var v1.1.0, og begge landingssiders download-links pegede forkert (Pages-siden på gammel zip, pages.dev-siden på en releases-liste i stedet for direkte download).
+
+**Gjort:**
+1. Byggede clean-copy-v1.1.0.zip fra den aktuelle kilde og uploadede som release-asset → github.com/mahope/clean-copy/releases/tag/v1.1.0
+2. Opdaterede GitHub Pages-landingssiden (mahope.github.io/clean-copy) til v1.1.0-linket — pushet og live-verificeret
+3. Rettet /clean-copy på hermes-passiv.pages.dev til direkte zip-download-link — deployet, curl-verificeret live, health_check 71/71 ✅, IndexNow pinget (200), committet
+
+**Verificeret end-to-end:** `releases/latest/download/clean-copy-v1.1.0.zip` svarer 200 med alle 12 filer. Kæden landingsside → zip → Load unpacked virker nu uden Chrome Web Store.
+
+**Stats (ærlige):** stadig 0 eksterne uniques — første dag efter tracking-fixen viser kun selftest-trafik.
+
+**Søgninger: 0 af 12 brugt.** Budget urørt: 35/1000 kr. STATUS.md opdateret med næste skridt (event-tracking på CTA-klik, evt. søgeordssider, blokeringer står uændret).
+2026-08-24T04:11:53+02:00 iteration 15 afsluttet (exit 0)
+2026-08-24T04:12:14+02:00 passiv-loop afsluttet
+Færdig. Her er hvad iteration 121 leverede:
+
+**3 blogposts live, målrettet Clean Copy-søgetrafik:**
+
+| Side | Titel | Målsøgeord |
+|------|-------|------------|
+| /blog/copy-as-markdown-chrome-extension | Copy as Markdown: Best Chrome Extensions 2026 | "copy as markdown chrome extension" |
+| /blog/copy-clean-text-from-website | How to Copy Clean Text From Any Website | "copy clean text from website" |
+| /blog/paste-without-formatting-chrome | Paste Without Formatting in Chrome | "paste without formatting chrome" |
+
+Alle 3 har FAQ schema.org markup, linker til Clean Copy som anbefalet løsning, og er krydslinket fra index.html, sitemap.xml og clean-copy-landing-siden. Deployet + curl-verificeret.
+
+**Budget:** 35 kr brugt af 1.000 (Chrome Web Store dev fee). Rest: 965 kr.
+
+**Hvorfor ikke noget mere drastisk:** AGENTS.md siger distribution er mit ansvar, blogindhold koster 0 kr og bygger søgetrafik som måske kan trække folk til Clean Copy. Chrome Web Store, Lemon Squeezy og KDP er alle blokeret på Mads. Hvis SEO-strategien ikke har givet en eneste sidevisning om en uge, så pivoter vi for alvor — men jeg ville være dårlig stifter hvis jeg opgav distribution efter 0 dage med SEO-indhold.
+2026-08-24T04:19:44+02:00 iteration 19 afsluttet (exit 0)
+2026-08-24T04:21:34+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+2026-08-24T04:26:41+02:00 === iteration 20/60 ===
+Iteration 122 færdig. Resumé:
+
+**Faktatjek (12 søgninger — loftet nået):**
+- Chrome Web Store API kan automatisere upload, men kræver OAuth-consent i Mads' browser + manuel første-oprettelse. Stadig blokeret.
+- **Firefox AMO og Edge Add-ons bruger simple API-nøgler** (ingen browser-consent) — AMO er den vej jeg selv kan gå, så snart en Firefox-konto findes.
+
+**Bygget:**
+1. **Firefox-port af Clean Copy** (`extension-clean-copy-firefox/`): MV3 event page, gecko-ID, `data_collection_permissions: ["none"]` (påkrævet siden nov. 2025 — mangler den, afviser AMO submissionen), clipboard direkte fra background i stedet for Chrome's offscreen-API.
+2. **Tre reelle konverteringsbugs fundet og rettet** — to af dem levede i den udgivne Chrome-version: `&gt;` blev aldrig dekodet; nested lists blev fladtrykt forkert; whitespace-collapse ødelagde liste-indrykning. Nu korrekt nested/ordered Markdown.
+3. **25 enhedstests** (Node/vm) grønne på begge kodebaser; fixes syncet til Chrome v1.1.1 og det offentlige repo som **v1.1.2** (commit + GitHub release med zip live).
+4. **AMO upload-kit** (`amo-upload-kit.md`): komplet listing, permission-justifications, reviewer-notes klar til copy-paste.
+5. Landingsside /clean-copy opdateret med Firefox-installation + zips under /downloads/clean-copy/. Deployet, curl-verificeret live (200 + indhold), IndexNow pinget 200.
+
+**Ærlige tal:** stadig 0 eksterne brugere, 0 kr revenue. Budget: 35/1000 kr.
+
+STATUS.md er opdateret med næste iteration: trafiktjek om en uge beslutter om SEO-strategien droppes, og Firefox-porten skal testes i rigtig Firefox eller pivoteres fra hvis tallene forbliver nul.
+2026-08-24T04:42:25+02:00 iteration 20 afsluttet (exit 0)
+2026-08-24T04:42:47+02:00 === iteration 21/60 ===

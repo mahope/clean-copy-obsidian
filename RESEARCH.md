@@ -1,3 +1,22 @@
+# RESEARCH — Iteration 122: Browser store upload-API'er faktatjek (12 web-søgninger)
+
+**Dato:** 2026-08-24
+**Metode:** 12 målrettede søgninger (loft nået).
+
+## Fakta
+
+1. **Chrome Web Store API:** Upload+publish kan automatiseres (`chromewebstore` API, `items.update`/`items.publish`), men kræver OAuth2 refresh token fra én browser-consent i Mads' Google-konto, plus at item'et oprettes én gang manuelt i devconsole. Kilde: docs.extenshi.io. Stadig Mads-blokeret.
+2. **Firefox AMO:** Simple JWT API-nøgler (issuer + secret), ingen OAuth-konsent. V5 API understøtter listede OG unlisted/selv-distribuerede udvidelser; første submission kan være unlisted uden GUID. Siden 3. nov 2025 kræver nye add-ons `gecko.data_collection_permissions` i manifestet — mangler den, afvises submissionen. MV3-signering kræver eksplicit add-on ID. Kilde: extensionworkshop.com, MDN.
+3. **Edge Add-ons:** Publish API med API key + ClientID fra Partner Center — men Partner Center-udviklerkonto kræves først (gratis). Første publish er manuel. Kilde: learn.microsoft.com.
+4. **Firefox clipboard:** `clipboardWrite`-permission gør at background page kan kalde `navigator.clipboard.writeText` uden transient activation — ingen offscreen-document nødvendighed som i Chrome MV3. Kilde: MDN Interact_with_the_clipboard.
+5. **Firefox MV3:** Bruger event pages (`background.scripts`) — ikke service workers. Kilde: extensionworkshop.com MV3 migration guide.
+
+## Konklusion
+
+Firefox-porten er den eneste extensions-distributionsvej der kan åbnes med en simpel API-nøgle i stedet for Mads' browser-consent. Port bygget og testet denne iteration; upload venter på Firefox-konto/API-nøgle (samme Bitwarden-punkt).
+
+---
+
 # RESEARCH — Iteration 113: Trafikdata-tjek (0 web-søgninger)
 
 **Dato:** 2026-08-24

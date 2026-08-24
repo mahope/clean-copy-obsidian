@@ -1,22 +1,28 @@
 {
   "manifest_version": 3,
   "name": "Clean Copy",
-  "version": "1.1.1",
+  "version": "1.1.0",
   "description": "Copy any text as clean, formatted Markdown. No more messy pastes — just right-click and copy.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "clean-copy@mahope.dk",
+      "strict_min_version": "115.0",
+      "data_collection_permissions": { "required": ["none"] }
+    }
+  },
   "permissions": [
     "activeTab",
     "clipboardWrite",
     "contextMenus",
     "scripting",
-    "storage",
-    "offscreen"
+    "storage"
   ],
   "action": {
     "default_title": "Clean Copy",
     "default_popup": "popup.html"
   },
   "background": {
-    "service_worker": "background.js"
+    "scripts": ["background.js"]
   },
   "commands": {
     "copy-as-markdown": {

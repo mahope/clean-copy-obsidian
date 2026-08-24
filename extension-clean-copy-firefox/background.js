@@ -1,7 +1,8 @@
 /**
- * Clean Copy — Background Service Worker
+ * Clean Copy — Background (Firefox port)
  * Context menu, keyboard shortcut, HTML→Markdown conversion,
- * clipboard via offscreen document, toast injected on demand.
+ * clipboard via navigator.clipboard (Firefox: clipboardWrite permission
+ * works from the background page without offscreen documents).
  * Permissions: activeTab only — no host_permissions, no static content scripts.
  */
 
@@ -98,10 +99,11 @@ function htmlToMarkdown(html) {
 
   return cleanText(md);
 }
+
 /** Extract selection text/html from a tab via scripting API */
 async function processSelection(tabId, mode) {
   try {
-    const results = await chrome.scripting.executeScript({
+    const results = await browser.scripting.executeScript({
       target: { tabId },
       func: (extractHtml) => {
         const sel = window.getSelection();
@@ -138,46 +140,38 @@ async function processSelection(tabId, mode) {
 }
 
 /**
- * Copy to clipboard via offscreen document.
- * Robust: reuses existing document, waits for it to be ready before sending.
+ * Copy to clipboard. In Firefox the clipboardWrite permission lets the
+ * background page call navigator.clipboard.writeText without transient
+ * user activation.
  */
 async function copyToClipboard(text) {
   try {
-    // Has contextIds check: createDocument throws if one already exists — handle that.
-    const hasOffscreen = await chrome.offscreen.hasDocument?.();
-    if (!hasOffscreen) {
-      await chrome.offscreen.createDocument({
-        url: chrome.runtime.getURL('offscreen.html'),
-        reasons: ['CLIPBOARD'],
-        justification: 'Copy cleaned text to clipboard'
-      });
-    }
-    // Wait until the offscreen page signals readiness (avoids lost messages).
-    await new Promise((resolve) => {
-      const timeout = setTimeout(resolve, 1500); // safety net
-      const listener = (msg) => {
-        if (msg.type === 'offscreen-ready') {
-          clearTimeout(timeout);
-          chrome.runtime.onMessage.removeListener(listener);
-          resolve();
-        }
-      };
-      chrome.runtime.onMessage.addListener(listener);
-      chrome.runtime.sendMessage({ type: 'ping-offscreen' }).catch(() => {});
-    });
-    const response = await chrome.runtime.sendMessage({ type: 'copy', text });
-    if (!response || !response.success) throw new Error('Offscreen copy failed');
+    await navigator.clipboard.writeText(text);
     return true;
   } catch (err) {
     console.error('Clipboard error:', err);
-    return false;
+    // Fallback: deprecated but still functional in a background page.
+    try {
+      const input = document.createElement('textarea');
+      input.value = text;
+      input.style.position = 'fixed';
+      input.style.opacity = '0';
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+      return true;
+    } catch (err2) {
+      console.error('Clipboard fallback failed:', err2);
+      return false;
+    }
   }
 }
 
 /** Inject a transient toast into the tab (requires activeTab access) */
 async function showToast(tabId, message, isError = false) {
   try {
-    await chrome.scripting.executeScript({
+    await browser.scripting.executeScript({
       target: { tabId },
       func: (msg, err) => {
         const existing = document.querySelector('.clean-copy-toast');
@@ -200,7 +194,7 @@ async function showToast(tabId, message, isError = false) {
       args: [message, isError]
     });
   } catch {
-    // Restricted pages (chrome://, Web Store) — silently skip the toast.
+    // Restricted pages (about:, addons.mozilla.org) — silently skip the toast.
   }
 }
 
@@ -219,40 +213,43 @@ async function doCopy(tabId, mode) {
   return ok;
 }
 
-// Context menu
-chrome.runtime.onInstalled.addListener(() => {
-  chrome.contextMenus.removeAll(() => {
-    chrome.contextMenus.create({
-      id: 'copy-plain',
-      title: 'Copy as Clean Text',
-      contexts: ['selection']
-    });
-    chrome.contextMenus.create({
-      id: 'copy-markdown',
-      title: 'Copy as Markdown',
-      contexts: ['selection']
-    });
-  });
-});
+// Context menus. Firefox event pages persist menus registered in
+// onInstalled; register unconditionally too so they survive on older
+// versions where event pages behave as persistent pages.
+function registerMenus() {
+  chrome.contextMenus.create({
+    id: 'copy-plain',
+    title: 'Copy as Clean Text',
+    contexts: ['selection']
+  }, () => void browser.runtime.lastError);
+  chrome.contextMenus.create({
+    id: 'copy-markdown',
+    title: 'Copy as Markdown',
+    contexts: ['selection']
+  }, () => void browser.runtime.lastError);
+}
 
-chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+browser.runtime.onInstalled.addListener(registerMenus);
+registerMenus();
+
+browser.contextMenus.onClicked.addListener(async (info, tab) => {
   if (!tab || !tab.id) return;
   const mode = info.menuItemId === 'copy-markdown' ? 'markdown' : 'plain';
   await doCopy(tab.id, mode);
 });
 
-chrome.commands.onCommand.addListener(async (command) => {
+browser.commands.onCommand.addListener(async (command) => {
   if (command === 'copy-as-markdown') {
-    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+    const tabs = await browser.tabs.query({ active: true, currentWindow: true });
     if (tabs.length === 0) return;
     await doCopy(tabs[0].id, 'markdown');
   }
 });
 
 // Messages from popup
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === 'process-selection') {
-    chrome.tabs.query({ active: true, currentWindow: true }).then(async (tabs) => {
+    browser.tabs.query({ active: true, currentWindow: true }).then(async (tabs) => {
       if (tabs.length === 0) {
         sendResponse({ error: 'No active tab.' });
         return;

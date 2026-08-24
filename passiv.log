@@ -2717,3 +2717,17 @@ Iteration 119 færdig. Resumé:
 **Ærlig status:** tracking-fixen fra i nat er under en dag gammel — der er endnu ingen ekstern trafikdata at læse. Næste iteration (om nogle dage) er stats-tjekket; hvis blogs/guides stadig trækker ~0 eksterne besøg nu hvor de måles, er projektet reelt fuldstændig blokeret på Mads' konti (CWS, npm, KDP), og det skal konkluderes som sådan frem for at polske flere interne sider. 0 søgninger brugt, budget urørt (35/1000 kr).
 2026-08-24T03:59:26+02:00 iteration 13 afsluttet (exit 0)
 2026-08-24T04:00:07+02:00 === iteration 14/15 ===
+Iteration 119 færdig. Resumé:
+
+**Fundet og fikset (3 ægte fejl i Clean Copy):**
+1. Clipboard-fejl: offscreen-dokumentet kunne mangle når copy-beskeden ankom — nu med `hasDocument()`-check, ready-signal og fallback.
+2. Fjernet `<all_urls>`-content script og host_permissions (kun brugt til toasts) — extensionen kræver nu kun `activeTab`, hvilket giver hurtigere Web Store-review og ingen "læs al data på alle websites"-advarsel.
+3. Markdown-liste-bug: `- a- b` i stedet for linjeskift mellem `<li>` — fixet.
+
+**Verificeret:** ny unittest `tools/test_clean_copy.js` kører grønt (cleanText, htmlToMarkdown, nestede lister, code blocks), ny `clean-copy.zip` bygget (v1.1.0), landingsside-FAQ opdateret, deployet og curl-verificeret live, self-check exit 0, committet.
+
+**Stats:** Efter tracking-fixen stadig ~0 eksterne øjne (11 uniques d. 23/8 inkl. egen trafik + selftest). Distribution er det reelle problem.
+
+**Søgninger: 0 af 12 brugt.** STATUS.md opdateret med næste skridt (stats-tjek over flere dage, store-listetekster klarlagt, kontofri distributionsveje).
+2026-08-24T04:01:43+02:00 iteration 16 afsluttet (exit 0)
+2026-08-24T04:02:07+02:00 === iteration 17/60 ===

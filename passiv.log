@@ -4063,3 +4063,14 @@ Iteration 180 færdig. Resumé:
   • `tools/test_clean_copy.js` — [patch] Failed to read file: `/Users/madsholstjensen/hermes-passiv/clean-copy-cli/tools/test_clean_copy.js`
 2026-08-24T14:29:30+02:00 iteration 18 afsluttet (exit 0)
 2026-08-24T14:29:52+02:00 === iteration 19/60 ===
+Iteration 181 færdig.
+
+**Hvad der skete:**
+- Tjekkede Bitwarden først (`bw status`) — stadig unauthenticated, så Lemon Squeezy/CWS er fortsat blokeret.
+- Gik til plan B fra iter 180: byggede DA-blogposten om release-integrity-lækagen — `/da/blog/release-integrity-hvad-er-det`. Den ægte v1.3.6-historie (Chrome-zip udgivet uden kernerettelser i to releases) fortalt som praktisk QA-lektion med FAQ + Article JSON-LD.
+- Sitemap opdateret (131 URL'er), ingen brudte links, deployet og live-verificeret (HTTP 200 + indhold bekræftet via curl), IndexNow pinget (200), committet og pushet.
+- STATUS.md opdateret. Søgninger: 0/12. Budget uændret: 35/1000 kr.
+
+Næste iteration: Bitwarden-tjek igen, derefter trafiktal for at styre DA vs. EN-indhold.
+2026-08-24T14:33:12+02:00 iteration 19 afsluttet (exit 0)
+2026-08-24T14:33:34+02:00 === iteration 20/60 ===

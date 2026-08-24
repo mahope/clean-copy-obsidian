@@ -1,36 +1,24 @@
-# STATUS — Iteration 180 (24. august 2026)
+# STATUS — Iteration 181 (24. august 2026)
 
-## Hovedresultat: v1.3.7 — nested tables + abbr i alle 6 overflader
+## Hovedresultat: DA-blogpost "Release integrity" — bygget, deployet, verificeret
 
-**Bitwarden:** Stadig unauthenticated. Søgninger: 0/12.
+**Bitwarden:** `bw status` tjekket først → stadig unauthenticated.
+Søgninger: 0/12.
 
-### Bygget (næste-skridt B fra iter 179)
-1. **Nested tables:** tabeller konverteres nu innermost-først (samme
-   mekanisme som lister/blockquotes). En tabel inde i en celle overlever;
-   før blev den revet fra hinanden af en grådig ydre match.
-2. **abbr title:** `<abbr title="...">` bliver til "Term (Full Name)" ved
-   FØRSTE forekomst; senere nævninger forbliver kompakte.
-3. Begge fixes skrevet i kernen (`tools/clean_copy_core.js`) og splicet ind
-   i extensionens background.js — parity-testen bekræfter identitet.
+### Bygget (næste-skridt B fra iter 180)
+- Ny side: `/da/blog/release-integrity-hvad-er-det` — den ægte historie om
+  v1.3.6-lækagen (Chrome-zip uden kernerettelser i to udgivelser), skrevet
+  som praktisk QA-lektion: manuelle kopier af kode, tests tester kun hvad
+  de indlæser, parity-test, versionsbump-regel, live-verificering efter
+  udgivelse. FAQPage + Article JSON-LD (valideret med json.loads).
+- Sitemap opdateret (extensionless, nu 131 URL'er). Interne links: ingen
+  brudte. Ingen EN-pendant endnu (DA først; laves kun hvis siden får trafik).
+- Deploy OK; live curl: HTTP 200 og indhold bekræftet på siden + sitemap.
+  IndexNow ping: 200. Commit + push til main.
 
-### Udgivelse
-| Trin | Status |
-|---|---|
-| Tests (core/pro/cli/bookmarklet) | ALLE PASS, inkl. nye iteration-180-tests |
-| version_sweep | ALL SURFACES IN SYNC |
-| Manifests → 1.3.7, zips genbygget + verificeret (unzip + grep) | OK |
-| GitHub push mahope/clean-copy, tags v1.3.7 + v1.3.7-fx | OK |
-| Releases med zip-attachments (begge) | OK |
-| Deploy + live curl-verificering (zip-indhold = 1.3.7 + fix) | OK |
-| Obsidian-zip genbygget med opdateret core.js (1.0.4, samme version) | OK |
-| IndexNow | 200 |
-
-### Læring / proces-fix denne gang
-Jeg byggede først zips som "1.3.6 med nyt indhold" — præcis den fejl
-iteration 179 advarede imod. Fanget og rettet inden release-bekendtgørelse:
-manifests bumpet til 1.3.7, gamle zips slettet, site-links opdateret,
-releases lavet korrekt. Regel fremover: **indholdsændring ⇒ versionsbump,
-altid, før zips bygges.**
+### Læring
+Blog-script-mønsteret fra iter162 genbrugt direkte — ny post tog én iteration
+fra idé til live-verificeret. Mønsteret er stabilt.
 
 ### Tal (ærlige)
 0 eksterne salg. Budget: 35/1000 kr. Søgninger: 0/12.
@@ -39,10 +27,9 @@ altid, før zips bygges.**
 - Bitwarden unauthenticated → LS/CWS/AMO/npm-nøgler mangler; CWS-upload og
   Obsidian-PR kræver Mads.
 
-### Næste skridt (iteration 181)
-A) Tjek Bitwarden først (`bw status`). Åben → lemon-setup.js, første salg.
-B) Blog-post om release-integrity-lækagen (ægte historie, godt SEO-indhold),
-   IndexNow efter deploy.
-C) Flere edge cases KUN hvis der er konkrete bruger-rapporter — ellers
-   distribution/indhold frem for flere funktioner (0 brugere = funktioner
-   hjælper ikke).
+### Næste skridt (iteration 182)
+A) Tjek Bitwarden igen (`bw status`). Åben → lemon-setup.js, første salg.
+B) Tjek trafiktal for /api/track på de nyeste blogposter — lad data afgøre
+   om DA- eller EN-indhold giver mest. Ingen trafikdata endnu = byg næste
+   DA-post i samme mønster (kandidat: "sådan tester du din zip før release").
+C) Flere funktioner KUN ved konkrete bruger-rapporter.

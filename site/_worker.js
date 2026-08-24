@@ -22,6 +22,9 @@ export default {
     // === Route: AI Compliance Assistant ===
     if (path === '/api/compliance-ai') return handleComplianceAI(request, env);
 
+    // === Route: page profiler ===
+    if (path === '/api/profile') return handleProfile(request, url);
+
     // === Route: waitlist signup ===
     if (path === '/api/waitlist') return handleWaitlist(request, env);
 
@@ -142,6 +145,269 @@ async function handleScanProxy(request, url) {
     );
   }
 }
+/**
+ * Handle the page-profile endpoint.
+ * GET /api/profile?url=... — fetches the page server-side and returns
+ * a structured profile (meta, OG, JSON-LD, headings, alt, security)
+ * with a 21-point weighted score and letter grade. Mirrors the CLI.
+ */
+async function handleProfile(request, url) {
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Content-Type': 'application/json',
+  };
+
+  if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers });
+
+  const targetUrlParam = url.searchParams.get('url');
+  if (!targetUrlParam) {
+    return new Response(JSON.stringify({ ok: false, error: 'Missing ?url= parameter' }), { status: 400, headers });
+  }
+
+  let targetUrl;
+  try {
+    targetUrl = new URL(targetUrlParam);
+    if (!['http:', 'https:'].includes(targetUrl.protocol)) throw new Error('bad protocol');
+  } catch {
+    return new Response(JSON.stringify({ ok: false, error: 'Invalid URL — must start with http:// or https://' }), { status: 400, headers });
+  }
+  // never profile ourselves — infinite loop risk
+  if (/(^|\.)hermes-passiv\.pages\.dev$/.test(targetUrl.hostname)) {
+    return new Response(JSON.stringify({ ok: false, error: 'Cannot profile this site itself.' }), { status: 400, headers });
+  }
+
+  let resp;
+  try {
+    resp = await fetch(targetUrl.toString(), {
+      method: 'GET',
+      headers: { 'User-Agent': 'HermesPassiv-PageProfile/1.0 (+https://hermes-passiv.pages.dev/page-profile)', Accept: 'text/html,application/xhtml+xml,*/*' },
+      redirect: 'follow',
+    });
+  } catch (err) {
+    return new Response(JSON.stringify({ ok: false, error: `Could not fetch the page: ${err.message || 'unknown error'}` }), { status: 502, headers });
+  }
+
+  const html = await resp.text();
+  const MAX_SIZE = 500 * 1024;
+  if (resp.status >= 400) {
+    return new Response(JSON.stringify({ ok: false, error: `The page returned HTTP ${resp.status}. Check that the URL is correct and publicly reachable.` }), { status: 200, headers });
+  }
+  if (html.length > MAX_SIZE) {
+    return new Response(JSON.stringify({ ok: false, error: `Page is too large (${(html.length / 1024).toFixed(0)} KB). Maximum is 500 KB.` }), { status: 413, headers });
+  }
+
+  const profile = analyzeHtml(html, {
+    finalUrl: resp.url,
+    status: resp.status,
+    hsts: resp.headers.has('strict-transport-security'),
+    csp: resp.headers.has('content-security-policy'),
+    xfo: resp.headers.has('x-frame-options'),
+    xcto: resp.headers.has('x-content-type-options'),
+  });
+  const scored = scoreProfile(profile);
+
+  return new Response(JSON.stringify({ ok: true, url: targetUrl.toString(), final_url: resp.url, status: resp.status, ...profile, ...scored }), { status: 200, headers });
+}
+
+const PP_WEIGHTS = {
+  title_present: 2, title_length_ok: 1,
+  meta_description_present: 2, meta_description_length_ok: 1,
+  canonical_present: 1.5,
+  og_title_present: 1, og_description_present: 1, og_image_present: 1,
+  twitter_card_present: 0.5,
+  json_ld_present: 1,
+  h1_count_ok: 1,
+  images_alt_ok: 2,
+  hsts_present: 1, csp_present: 1, xfo_present: 0.5, xcto_present: 0.5,
+  lang_present: 1, charset_present: 0.5,
+  https: 1,
+  no_hreflang_issues: 0.5,
+};
+const PP_MAX = Object.values(PP_WEIGHTS).reduce((a, b) => a + b, 0);
+
+function analyzeHtml(html, net) {
+  const getAttr = (attrs, name) => {
+    for (let i = 0; i < attrs.length; i++) if (attrs[i][0] === name || attrs[i][0].toLowerCase() === name) return attrs[i][1];
+    return null;
+  };
+  const meta = { title: null, description: null, canonical: null, language: null, charset: null, og: {}, twitter: {}, hreflang: [] };
+  const headings = { h1: [], h2: [], h3: [], h4: [], h5: [], h6: [] };
+  const images = { total: 0, with_alt: 0, without_alt: 0 };
+  let jsonLdBlocks = 0;
+  const jsonLdTypes = [];
+  let currentHeading = null;
+
+  // charset from early bytes/meta
+  const csMatch = html.slice(0, 2048).match(/<meta[^>]+charset\s*=\s*["']?([\w-]+)/i);
+  if (csMatch) meta.charset = csMatch[1].toLowerCase();
+
+  // JSON-LD blocks via regex over raw HTML (script content not needed beyond @type)
+  const ldRe = /<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  let m;
+  while ((m = ldRe.exec(html)) !== null) {
+    jsonLdBlocks++;
+    try {
+      const data = JSON.parse(m[1].trim());
+      const items = Array.isArray(data) ? data : [data];
+      for (const item of items) {
+        if (item && typeof item === 'object' && item['@type']) {
+          if (Array.isArray(item['@type'])) jsonLdTypes.push(...item['@type'].map(String));
+          else jsonLdTypes.push(String(item['@type']));
+        }
+      }
+    } catch { /* invalid JSON-LD counts as block but no type */ }
+  }
+
+  // tag-level parsing with a simple regex scanner (Workers have no DOMParser)
+  const tagRe = /<(\/?)(title|meta|link|h[1-6]|img|html)\b([^>]*)>/gi;
+  while ((m = tagRe.exec(html)) !== null) {
+    const closing = m[1] === '/';
+    const tag = m[2].toLowerCase();
+    const attrStr = m[3];
+    // parse attributes
+    const attrs = [];
+    const attrRe = /([:\w-]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/g;
+    let am;
+    while ((am = attrRe.exec(attrStr)) !== null) attrs.push([am[1].toLowerCase(), am[2] ?? am[3] ?? am[4] ?? '']);
+
+    if (closing) {
+      if (tag === 'title') meta.title = (meta.titleRaw || '').trim().slice(0, 300) || null;
+      if (currentHeading) { headings[currentHeading].push((headings[currentHeading + '_raw'] || '').trim()); delete headings[currentHeading + '_raw']; currentHeading = null; }
+      continue;
+    }
+
+    if (tag === 'title') { meta.titleRaw = ''; continue; }
+    if (tag === 'html') { const lang = getAttr(attrs, 'lang'); if (lang && !meta.language) meta.language = lang; continue; }
+
+    if (tag === 'meta') {
+      const name = (getAttr(attrs, 'name') || '').toLowerCase();
+      const prop = (getAttr(attrs, 'property') || '').toLowerCase();
+      const content = getAttr(attrs, 'content');
+      const httpEquiv = (getAttr(attrs, 'http-equiv') || '').toLowerCase();
+      if (name === 'description' && content && !meta.description) meta.description = content.trim();
+      else if (prop === 'og:title' && content) meta.og.title = content;
+      else if (prop === 'og:description' && content) meta.og.description = content;
+      else if (prop === 'og:image' && content) meta.og.image = content;
+      else if (name === 'twitter:card' && content) meta.twitter.card = content;
+      else if (httpEquiv === 'content-type' && content && !meta.charset) {
+        const c = content.match(/charset=([\w-]+)/i); if (c) meta.charset = c[1].toLowerCase();
+      }
+      continue;
+    }
+
+    if (tag === 'link') {
+      const rel = (getAttr(attrs, 'rel') || '').toLowerCase();
+      const href = getAttr(attrs, 'href');
+      if (rel === 'canonical' && href && !meta.canonical) meta.canonical = href;
+      else if (rel === 'alternate' && href && getAttr(attrs, 'hreflang')) meta.hreflang.push({ lang: getAttr(attrs, 'hreflang'), href });
+      continue;
+    }
+
+    if (/^h[1-6]$/.test(tag)) { currentHeading = tag; headings[tag + '_raw'] = ''; continue; }
+
+    if (tag === 'img') {
+      images.total++;
+      if (getAttr(attrs, 'alt') !== null && getAttr(attrs, 'alt').trim() !== '') images.with_alt++;
+      else images.without_alt++;
+      continue;
+    }
+  }
+
+  // capture text inside the currently-open title/heading tags between matches:
+  // simpler approach — extract title and heading texts with dedicated scans
+  if (!meta.title) {
+    const t = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+    if (t) meta.title = t[1].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim().slice(0, 300) || null;
+  }
+  delete meta.titleRaw;
+  for (const lvl of ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']) {
+    delete headings[lvl + '_raw'];
+    headings[lvl] = headings[lvl].filter(Boolean);
+    if (headings[lvl].length === 0) {
+      // fallback scan for this level
+      const re = new RegExp(`<${lvl}[^>]*>([\\s\\S]*?)</${lvl}>`, 'gi');
+      let hm; const texts = [];
+      while ((hm = re.exec(html)) !== null && texts.length < 50) {
+        const txt = hm[1].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+        if (txt) texts.push(txt);
+      }
+      headings[lvl] = texts;
+    } else {
+      headings[lvl] = headings[lvl].filter(Boolean);
+    }
+  }
+
+  return {
+    title: meta.title,
+    title_length: meta.title ? meta.title.length : 0,
+    meta_description: meta.description,
+    meta_description_length: meta.description ? meta.description.length : 0,
+    canonical: meta.canonical,
+    language: meta.language,
+    charset: meta.charset,
+    og: meta.og,
+    twitter: meta.twitter,
+    json_ld_count: jsonLdBlocks,
+    json_ld_types: [...new Set(jsonLdTypes)].slice(0, 20),
+    headings,
+    images,
+    hreflang_count: meta.hreflang.length,
+    security: { hsts: !!net.hsts, csp: !!net.csp, xfo: !!net.xfo, xcto: !!net.xcto },
+    https: net.finalUrl.startsWith('https://'),
+  };
+}
+
+function scoreProfile(r) {
+  let s = 0;
+  const penalties = [];
+  if (r.title) {
+    s += PP_WEIGHTS.title_present;
+    if (r.title_length >= 20 && r.title_length <= 70) s += PP_WEIGHTS.title_length_ok;
+    else penalties.push(`Title length (${r.title_length} chars) outside recommended 20-70`);
+  } else penalties.push('Missing <title>');
+
+  if (r.meta_description) {
+    s += PP_WEIGHTS.meta_description_present;
+    if (r.meta_description_length >= 50 && r.meta_description_length <= 165) s += PP_WEIGHTS.meta_description_length_ok;
+    else penalties.push(`Meta description length (${r.meta_description_length} chars) outside recommended 50-165`);
+  } else penalties.push('Missing meta description');
+
+  if (r.canonical) s += PP_WEIGHTS.canonical_present;
+  if (r.og.title) s += PP_WEIGHTS.og_title_present;
+  if (r.og.description) s += PP_WEIGHTS.og_description_present;
+  if (r.og.image) s += PP_WEIGHTS.og_image_present;
+  if (r.twitter.card) s += PP_WEIGHTS.twitter_card_present;
+  if (r.json_ld_count > 0) s += PP_WEIGHTS.json_ld_present;
+
+  const h1c = r.headings.h1.length;
+  if (h1c === 1) s += PP_WEIGHTS.h1_count_ok;
+  else if (h1c > 1) penalties.push(`Multiple H1 tags (${h1c}) — should be exactly 1`);
+  else penalties.push('Missing H1 tag');
+
+  if (r.images.total > 0) {
+    const ratio = r.images.with_alt / r.images.total;
+    if (ratio >= 0.9) s += PP_WEIGHTS.images_alt_ok;
+    else if (ratio >= 0.5) s += PP_WEIGHTS.images_alt_ok * 0.5;
+    else penalties.push(`Low alt-text coverage: ${r.images.with_alt}/${r.images.total} images have alt`);
+  } else s += PP_WEIGHTS.images_alt_ok;
+
+  if (r.security.hsts) s += PP_WEIGHTS.hsts_present;
+  if (r.security.csp) s += PP_WEIGHTS.csp_present;
+  if (r.security.xfo) s += PP_WEIGHTS.xfo_present;
+  if (r.security.xcto) s += PP_WEIGHTS.xcto_present;
+  if (r.language) s += PP_WEIGHTS.lang_present;
+  if (r.charset) s += PP_WEIGHTS.charset_present;
+  if (r.https) s += PP_WEIGHTS.https;
+  if (r.hreflang_count > 0) s += PP_WEIGHTS.no_hreflang_issues;
+
+  s = Math.round(s * 10) / 10;
+  const pct = (s / PP_MAX) * 100;
+  const grade = pct >= 90 ? 'A' : pct >= 75 ? 'B' : pct >= 55 ? 'C' : pct >= 35 ? 'D' : 'F';
+  return { score: s, max_score: PP_MAX, grade, penalties };
+}
+
 /**
  * Handle the AI Compliance Assistant endpoint.
  * Accepts a user question, calls OpenRouter (Ox Alpha / fallback),

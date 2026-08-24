@@ -10,6 +10,10 @@
   <meta property="og:image" content="https://hermes-passiv.pages.dev/cover.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="https://hermes-passiv.pages.dev/page-profile">
+  <link rel="alternate" hreflang="en" href="https://hermes-passiv.pages.dev/page-profile">
+  <link rel="alternate" hreflang="da" href="https://hermes-passiv.pages.dev/da/page-profile">
+  <link rel="alternate" hreflang="x-default" href="https://hermes-passiv.pages.dev/page-profile">
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
   <link rel="stylesheet" href="/style.css">
   <style>
     .cli-demo {
@@ -106,6 +110,21 @@
     </section>
 
     <!-- Quick start -->
+    <!-- Live profiler -->
+    <section id="try">
+      <h2>Try it now — no install</h2>
+      <p>Enter any URL and get the same report the CLI produces, right in your browser.</p>
+      <form id="profile-form" style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
+        <label for="profile-url" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">URL to profile</label>
+        <input type="url" id="profile-url" placeholder="https://your-site.com" required
+          style="flex:1;min-width:240px;padding:0.7rem 1rem;border-radius:8px;border:1px solid var(--color-border);background:var(--color-surface-2);color:var(--color-text);font-size:1rem;">
+        <button type="submit" class="btn btn-primary" style="text-decoration:none;">Profile →</button>
+      </form>
+      <div id="profile-status" role="status" aria-live="polite" style="min-height:1.5rem;color:#94a3b8;"></div>
+      <div id="profile-result" class="cli-demo" hidden></div>
+      <noscript><p>The live profiler needs JavaScript. Use the CLI instead — see quick start below.</p></noscript>
+    </section>
+
     <section id="quickstart">
       <h2>Quick start</h2>
       <p><strong>Zero dependencies</strong> — uses only the Python standard library. Python 3.8+ required.</p>
@@ -206,7 +225,110 @@
   </main>
 
   <footer class="site-footer">
-    <p>page-profile by <a href="https://hermes-passiv.pages.dev">Passiv</a> · MIT license · Pro license for commercial use</p>
+    <p>page-profile by <a href="https://hermes-passiv.pages.dev">Passiv</a> · MIT license · Pro license for commercial use · <a href="/da/page-profile">Dansk version</a></p>
   </footer>
+  <script>
+  (function () {
+    var form = document.getElementById('profile-form');
+    var input = document.getElementById('profile-url');
+    var status = document.getElementById('profile-status');
+    var result = document.getElementById('profile-result');
+
+    function esc(s) {
+      var d = document.createElement('div');
+      d.textContent = s == null ? '' : String(s);
+      return d.innerHTML;
+    }
+    function line(html) { return html + '\n'; }
+    function mark(ok, warn) { return ok ? '<span class="pass">✅</span>' : (warn ? '<span class="warn">⚠️</span>' : '<span class="fail">❌</span>'); }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var target = input.value.trim();
+      if (!target) return;
+      status.textContent = 'Fetching and analyzing ' + target + ' …';
+      result.hidden = true;
+      fetch('/api/profile?url=' + encodeURIComponent(target))
+        .then(function (r) { return r.json().then(function (j) { return { s: r.status, j: j }; }); })
+        .then(function (res) {
+          var j = res.j;
+          if (!j.ok) {
+            status.textContent = '';
+            result.hidden = false;
+            result.innerHTML = line('<span class="fail">Error: </span>' + esc(j.error || 'Request failed (' + res.s + ')'));
+            return;
+          }
+          var out = '';
+          out += line('<span class="highlight">page-profile web</span>  —  ' + esc(j.url));
+          out += line('  status: <span class="pass">HTTP ' + esc(j.status) + '</span>');
+          if (j.final_url && j.final_url !== j.url) out += line('  redirected to: ' + esc(j.final_url));
+          out += line('──────────────────────────────────────────────');
+          // Title
+          if (j.title) {
+            var tOk = j.title_length >= 20 && j.title_length <= 70;
+            out += line('  Title:        ' + mark(tOk, !tOk) + ' ' + esc(j.title).slice(0, 60));
+            out += line('                (' + j.title_length + ' chars)');
+          } else {
+            out += line('  Title:        <span class="fail">❌ Missing</span>');
+          }
+          // Description
+          if (j.meta_description) {
+            var dOk = j.meta_description_length >= 50 && j.meta_description_length <= 165;
+            out += line('  Description:  ' + mark(dOk, !dOk) + ' ' + esc(j.meta_description).slice(0, 50) + '…');
+            out += line('                (' + j.meta_description_length + ' chars)');
+          } else {
+            out += line('  Description:  <span class="fail">❌ Missing</span>');
+          }
+          out += line('  Canonical:    ' + (j.canonical ? '<span class="pass">✅</span>' : '<span class="fail">❌</span>') + ' ' + esc(j.canonical || '—').slice(0, 45));
+          out += line('  Language:     ' + (j.language ? '<span class="pass">✅</span>' : '<span class="fail">❌</span>') + ' ' + esc(j.language || '—'));
+          out += line('  Charset:      ' + (j.charset ? '<span class="pass">✅</span>' : '<span class="fail">❌</span>') + ' ' + esc(j.charset || '—'));
+          out += line('──────────────────────────────────────────────');
+          var ogAll = j.og && j.og.title && j.og.description && j.og.image;
+          var ogSome = j.og && (j.og.title || j.og.description || j.og.image);
+          out += line('  Open Graph:   ' + mark(ogAll, ogSome) + ' ' + (ogAll ? 'All three present' : (ogSome ? 'Partial' : 'All missing')));
+          out += line('  Twitter Card: ' + (j.twitter && j.twitter.card ? '<span class="pass">✅</span> ' + esc(j.twitter.card) : '<span class="fail">❌ Missing</span>'));
+          out += line('  JSON-LD:      — ' + j.json_ld_count + ' block(s)' + (j.json_ld_types && j.json_ld_types.length ? ' (' + esc(j.json_ld_types.join(', ')).slice(0, 40) + ')' : ''));
+          var h1c = j.headings && j.headings.h1 ? j.headings.h1.length : 0;
+          if (h1c === 1) out += line('  Headings:     <span class="pass">✅</span> 1 H1 — ' + esc(j.headings.h1[0]).slice(0, 40));
+          else if (h1c > 1) out += line('  Headings:     <span class="warn">⚠️</span> ' + h1c + ' H1 tags');
+          else out += line('  Headings:     <span class="fail">❌</span> No H1');
+          var imgs = j.images || { total: 0, with_alt: 0 };
+          if (imgs.total > 0) {
+            var iOk = imgs.with_alt / imgs.total >= 0.9;
+            out += line('  Images alt:   ' + mark(iOk, imgs.with_alt > 0) + ' ' + imgs.with_alt + '/' + imgs.total);
+          }
+          var secBits = [];
+          if (!j.security.hsts) secBits.push('no HSTS');
+          if (!j.security.csp) secBits.push('no CSP');
+          if (!j.security.xfo) secBits.push('no X-Frame-Options');
+          out += line('  Security:     ' + (secBits.length ? '<span class="warn">⚠️</span> ' + esc(secBits.join(', ')) : '<span class="pass">✅</span> headers present'));
+          out += line('──────────────────────────────────────────────');
+          var gClass = j.grade === 'F' || j.grade === 'D' ? 'fail' : (j.grade === 'C' ? 'warn' : 'pass');
+          out += line('  Score:        ' + j.score + '/' + j.max_score + '  Grade: <span class="' + gClass + '">' + esc(j.grade) + '</span>');
+          if (j.penalties && j.penalties.length) {
+            for (var p = 0; p < j.penalties.length; p++) {
+              out += line('  • <span class="warn">' + esc(j.penalties[p]) + '</span>');
+            }
+          }
+          status.textContent = '';
+          result.hidden = false;
+          result.innerHTML = out;
+          trackEvent();
+        })
+        .catch(function () {
+          status.textContent = '';
+          result.hidden = false;
+          result.innerHTML = line('<span class="fail">Error:</span> Could not reach the profiling service. Try the CLI instead.');
+        });
+    });
+
+    function trackEvent() {
+      try {
+        if (typeof window.__hpTrack === 'function') window.__hpTrack('profile');
+        else if (navigator.sendBeacon) navigator.sendBeacon('/api/track', new Blob([JSON.stringify({ path: '/page-profile', event: 'profile' })], { type: 'application/json' }));
+      } catch (e) { /* never break the tool over analytics */ }
+    }
+  })();
+  </script>
 </body>
 </html>

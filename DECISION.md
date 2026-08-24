@@ -66,8 +66,18 @@
 ## Næste skridt
 
 1. ✅ Clean Copy extension bygget + testet
-2. ✅ Lemon Squeezy integration bygget + dry-run testet
-3. ⬜ Betal Chrome Web Store $5 dev fee → opret developer account
-4. ⬜ Upload Clean Copy til Chrome Web Store
-5. ⬜ Når LS-nøgle kommer: kør `node lemon-setup.js` → produkter live
-6. ⬜ Når Mads åbner KDP: upload 5 e-bøger
+2. ✅ Clean Copy landing page → site/clean-copy.html (live)
+3. ✅ OG preview image → site/clean-copy/og-preview.png
+4. ✅ Sitemap updated med clean-copy entry
+5. ✅ Lemon Squeezy integration bygget + dry-run testet
+6. ⬜ Chrome Web Store $5 dev fee + upload (blokeret: cua-driver virker ikke, browser_exec kan ikke starte Chrome)
+7. ⬜ Når LS-nøgle kommer: kør `node lemon-setup.js` → produkter live
+8. ⬜ Når Mads åbner KDP: upload 5 e-bøger
+
+## Faktisk blokering
+
+Jeg kan ikke uploade til Chrome Web Store selv. cua-driver har macOS permissions-problemer, og browser_exec kan ikke starte headless Chrome. Mads skal enten:
+- Åbne Chrome og gå til chrome.google.com/webstore/devconsole
+- Eller give mig en anden måde at få adgang
+
+ZIP'en ligger klar: `clean-copy.zip` i repoets rod.

@@ -1,6 +1,6 @@
 # BUILD — Hvad er bygget, hvad mangler
 
-**Dato:** 2026-08-24 (iteration 110 — page-profile CLI)
+**Dato:** 2026-08-24 (iteration 112 — dansk page-profile live)
 
 ## Oversigt
 
@@ -8,9 +8,32 @@
 |---------|--------|---------|-------------|
 | Compliance-produkt (5 e-bøger, scanner, site, desktop, extension) | **Parkeret** — bygget færdigt, 0 eksterne brugere | 0 kr | Blokeret på Mads' konti (KDP, Bitwarden) |
 | **site-icons** | **Live** — CLI-værktøj til favicon/OG/PWA-icon-generering | 0 kr (gratis tier) | Download via pages.dev |
-| **Clean Copy** | **Bygget** — Chrome extension til ren tekst/Markdown kopiering | 0 kr (Free tier) | Klar til Chrome Web Store (mangler $5 fee) |
-| **page-profile** (ny i denne iteration) | **Bygget og live** — zero-dependency web page profiler CLI | 0 kr (gratis tier) | Download via pages.dev |
+| **Clean Copy** | **Bygget** — Chrome extension + landing page <br>Extension: `/extension-clean-copy/` (7 filer, MV3)<br>Landing page: `/site/clean-copy.html` (live) | 0 kr (Free tier) | Chrome Web Store (mangler $5 fee); Web-presence live |
+| **page-profile** | **Live** — CLI + **web-version (iteration 111)**: `/api/profile?url=` endpoint i Worker + interaktivt "Try it now"-felt på `/page-profile`. Samme 21-points score som CLI'en. | 0 kr (gratis tier) | Web UI på pages.dev · CLI download · offentligt JSON API |
 | **Lemon Squeezy integration** | **Bygget klar** — `lemon-setup.js` opretter 7 produkter med checkout-links | — | Venter på API-nøgle |
+
+### page-profile web-version (iteration 111) ✅
+
+- `site/_worker.js`: `handleProfile()` — JS-port af CLI-analysen (meta, OG,
+  Twitter, JSON-LD @types, headings, alt, security headers, hreflang, https)
+  + `scoreProfile()` med identiske vægte → samme score/karakter som CLI.
+- Fejlhåndtering: 400 (manglende/ugyldig URL, selv-profiling), 413 (>500 KB),
+  502 (netværk), HTTP ≥ 400 fra target → tydelig fejlbesked (ikke analyse af
+  fejlsider).
+- `site/page-profile.html`: "Try it now" formular → terminal-style rapport.
+  XSS-sikker output-escaping, aria-live status, noscript-fallback, tracking
+  via /api/track (event=profile).
+- Live-verificeret: example.com F, wikipedia.org C, nousresearch.com B;
+  alle fejlkasver testet. IndexNow pinget.
+
+### Dansk page-profile (iteration 112) ✅
+
+- `site/da/page-profile.html` — fuld dansk landingsside med samme interaktive
+  profiler ("Prøv det nu"), korrekt canonical + hreflang (en/da/x-default),
+  SoftwareApplication JSON-LD valideret.
+- Links fra `/da` hub og sitemap-indgange for både /page-profile og
+  /da/page-profile. Deployet og verificeret live (200 + korrekt titel på alle
+  tre sider; API'et svarer stadig korrekt).
 
 ---
 

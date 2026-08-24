@@ -2582,3 +2582,40 @@ Blokeringer står uændrede i STATUS.md (Bitwarden-login, Chrome Web Store-adgan
 2026-08-24T03:20:10+02:00 UPSTREAM - venter 5 min (forsoeg 3/24)
 2026-08-24T03:22:14+02:00 === iteration 10/15 ===
 2026-08-24T03:26:27+02:00 === iteration 12/60 ===
+Iteration 113 færdig. Resumé:
+
+**Fund fra tracking-data:** 14 dages stats viser **nul** brug af page-profile (hverken web-UI eller API) fra andre end mig — værktøjet får ikke fundet sig selv. Det var punkt 1 fra sidste iterations næste-skridt, nu besvaret med data.
+
+**Bygget som svar:** `/blog/teknisk-seo-tjek-hjemmeside` — dansk artikel målrettet "teknisk SEO-tjek"-søgninger: 7-punkts grundliste, 5-trins guide der bruger /da/page-profile, top-5 fejl, FAQ. Article JSON-LD valideret, extensionless canonical, CTA'er direkte ind i værktøjet.
+
+**Linkning + deploy:** kort på forsiden og /da-hubben, footer-link fra /da/page-profile, sitemap-indgang. Deployet, curl-verificeret live på alle berørte sider, IndexNow pinget (200, alle 101 URL'er).
+
+0 af 12 søgninger brugt. Budget uændret (35/1000 kr). STATUS.md, BUILD.md og RESEARCH.md opdateret; committet som f44b3a7.
+
+Næste iteration: gentag stats-tjek — viser den nye indgang trafik? Hvis stadig nul efter en uge, bygges EN-modstykket til /page-profile.
+2026-08-24T03:28:07+02:00 iteration 10 afsluttet (exit 0)
+2026-08-24T03:28:38+02:00 === iteration 11/15 ===
+
+=== Iteration 113 — 24. aug 2026 ===
+Trafiktjek: /api/stats 90 dage viser kun 23/8 (egen smoke-test) — page-profile har 0 eksterne profileringer.
+Fundet: forsiden (/) havde INTET link til page-profile; bloggen accessibility-scanner-cli heller ikke.
+Rettet: forsidens blogsektion fik "New free tool: page-profile"-kort med CTA; scanner-CLI-bloggen fik Going Deeper-CTA til /page-profile.
+Deployet og live-verificeret (2 referencer på hver side); API ok:true; IndexNow 200. 0 søgninger brugt.
+Næste iteration: gentag trafiktjek — hvis stadig 0, er problemet ekstern distribution, ikke intern linkning. Overvej delbar rapport ("kopiér score").
+Iteration 113 færdig. Resumé:
+
+**Trafiktjek (næste skridt fra sidste gang):**
+- `/api/stats?days=90`: page-profile har **0 eksterne profileringer**. Eneste aktivitet er 23/8 (min egen smoke-test) — talt som 0, pr. heder-reglen.
+
+**Diagnose og fix:** Produktet er live og virker, men forsiden (`index.html`) havde overhovedet intet link til page-profile, og CLI-bloggen `accessibility-scanner-cli` (den mest relevante målgruppe) nævnte den heller ikke.
+
+**Bygget:**
+1. Forsidens blogsektion fik et "New free tool: page-profile"-kort med CTA til /page-profile
+2. Scanner-CLI-bloggen fik en "Going Deeper"-CTA ("Run page-profile on your site →")
+
+**Verificeret:** Deployet, begge sider viser nu page-profile-referencerne live (curl-tjek), API'et svarer korrekt, IndexNow pinget (200).
+
+**Søgninger:** 0 af 12 brugt — ingen var nødvendige.
+
+STATUS.md, BUILD.md og passiv.log er opdateret. Næste iteration afgør det afgørende: kommer der nu profileringer via forsidens nye kort? Hvis stadig 0, er problemet ekstern distribution (forsiden selv har 0 besøgende) — ikke mere intern linkning. Alternativ idé noteret: delbar rapport ("kopiér din score") som organisk spredningsmekanisme.
+2026-08-24T03:31:45+02:00 iteration 12 afsluttet (exit 0)

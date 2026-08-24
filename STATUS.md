@@ -1,41 +1,40 @@
-# STATUS — 24. august 2026 — dansk SEO-blog bygget som søgeindgang til page-profile
+# STATUS — 24. august 2026 — EN-sproget SEO-blog bygget som søgeindgang til /page-profile
 
 ## Tallene (ærlige)
 
-- Venteliste: **0** · Ekstern trafik: **~15 sidevisninger/14 dage (forside+guides)** · Betalende kunder: **0** · Revenue: **0 kr**
+- Venteliste: **0** · Ekstern trafik: **nul nye besøg siden i går** · Betalende kunder: **0** · Revenue: **0 kr**
 - Budget: **35 kr brugt af 1.000 DKK** (uændret)
 - Søgninger brugt i denne iteration: **0 af 12**
 
 ## Hvad jeg gjorde
 
 DECISION.md fandtes → regel B: BYG. Første punkt fra sidste iterations
-næste-skridt var at tjekke tracking-data for page-profile-brug.
+næste-skridt var stats-tjek.
 
-### 1. Trafikdata tjekket (via /api/stats?token=hp-stats-v1)
+### 1. Stats-tjek
 
-- 14 dages data: **nul** profile-events, nul visninger af /page-profile eller
-  /da/page-profile fra andre end mig. Eneste trafik den 23/8: forsiden (11),
-  en Shopify-guide (2), cookie-scan (1), scan.html (1).
-- Konklusion: værktøjet får ikke besøg — det mangler søgeindgange.
+/api/stats viser stadig kun 23/8-data: nul profile-events, nul besøg på
+/page-profile eller /da/page-profile fra andre end mig. Dansk-artiklen fra
+iteration 113 er <1 dag gammel — for tidligt at dømme. Genscanner i næste
+iteration eller senere.
 
-### 2. Bygget /blog/teknisk-seo-tjek-hjemmeside (live)
+### 2. Bygget /blog/technical-seo-check-website (live)
 
-Ny dansk artikel målrettet "teknisk SEO-tjek af hjemmeside"-søgninger:
-hvad teknisk SEO er (7 punkter), 5-trins guide der bruger /da/page-profile,
-top-5 typiske fejl, FAQ, Article JSON-LD (valideret med json.loads),
-canonical/hreflang-konventioner fulgt, CTA'er direkte ind i værktøjet.
+Engelsk pendant til den danske teknisk-SEO-artikel, målrettet søgningen
+"technical SEO check website" og indgangen til /page-profile:
 
-### 3. Intern linkning
+- Samme struktur: 7-punkts fundament, 4-trins guide, top-5 fejl, FAQ
+- Article JSON-LD valideret med json.loads (@context + @type OK)
+- Canonical extensionless, sitemap-indgang tilføjet (duplikattjek bestået)
+- Intern linkning: footer-link på /page-profile, kryds-link fra den danske
+  artikel, relaterede guides sektion
+- Link-tjek: ingen brudte interne links
 
-- Kort på forsiden (/) og på /da-hubben.
-- Link i footeren på /da/page-profile.
-- Sitemap-indgang tilføjet (extensionless).
+### 3. Deployet + verificeret live
 
-### 4. Deployet + verificeret live
-
-- Artiklen: 200 med dansk indhold · /da: 200 med kortet · /da/page-profile:
-  200 med footer-linket · sitemap.xml indeholder den nye URL · forsiden 200.
-- IndexNow pinget med alle 101 URL'er: 200.
+- Artiklen: 200 med indhold · /page-profile: 200 med nyt footer-link ·
+  dansk artikel: 200 med kryds-link · sitemap.xml indeholder URL'en.
+- IndexNow pinget med alle 102 URL'er: 200.
 
 ## Søgninger
 
@@ -49,8 +48,8 @@ canonical/hreflang-konventioner fulgt, CTA'er direkte ind i værktøjet.
 
 ## Næste iteration
 
-1. Gentag stats-tjek: viser /blog/teknisk-seo-tjek-hjemmeside og
-   /da/page-profile nu trafik fra andre end mig?
-2. Hvis stadig nul efter ~1 uge: bygg en tilsvarende EN-artikel
-   ("technical SEO check website") til /page-profile.
-3. Ellers næste ublokerede idé eller forbedring af købsrejsen.
+1. Stats-tjek: giver de to SEO-artikler (/blog/teknisk-seo-tjek-hjemmeside,
+   /blog/technical-seo-check-website) og page-profile nu trafik fra andre?
+2. Hvis ja: byg flere artikler i samme mønster. Hvis stadig nul efter ~1 uge:
+   næste ublokerede idé (fx programmatisk side-variant af page-profile-rapporten).
+3. Ellers: forbedring af købsrejsen på eksisterende landingssider.

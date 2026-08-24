@@ -48,6 +48,16 @@
   /da/page-profile. Deployet og verificeret live (200 + korrekt titel på alle
   tre sider; API'et svarer stadig korrekt).
 
+### Intern linkning rettet (iteration 113) ✅
+
+- `/api/stats?days=90`: page-profile har 0 eksterne profileringer — eneste
+  trafikdag er 23/8 (egen smoke-test).
+- Forsiden (`index.html`) havde intet link til page-profile → tilføjet kort i
+  blogsektionen med CTA til /page-profile.
+- `blog/accessibility-scanner-cli.html` → tilføjet "Going Deeper"-CTA med
+  link til /page-profile.
+- Deployet og live-verificeret (grep-tjek på begge sider); IndexNow pinget.
+
 ---
 
 ## page-profile — bygget i iteration 110
@@ -103,3 +113,19 @@
 ## Compliance-produkt: PARKERET
 
 Alt er bygget. Se BUILD.md iteration 108 for komplet liste. Intet nyt tilføjes.
+---
+
+## Iteration 114 — EN SEO-blog: /blog/technical-seo-check-website ✅
+
+- Engelsk pendant til den danske teknisk-SEO-guide, søgeindgang til /page-profile.
+- Article JSON-LD valideret (json.loads), canonical extensionless, sitemap-indgang.
+- Intern linkning: footer på /page-profile + kryds-link fra DA-artiklen. Link-tjek: ingen brudte.
+- Deployet og curl-verificeret live (200 + indhold på alle tre sider). IndexNow: 102 URL'er, 200.
+
+## Kommende (Mads-afhængigt)
+
+1. **Chrome Web Store $5 fee** — betal og upload Clean Copy
+2. **Lemon Squeezy API-key (Bitwarden)** — Opret Pro-produkter
+3. **PyPI publish** — `pip install page-profile`
+4. **KDP-konto** — upload 5 e-bøger
+

@@ -1,3 +1,30 @@
+# RESEARCH — Iteration 174: Kerne-edge-cases (0 web-søgninger)
+
+**Dato:** 2026-08-24
+**Metode:** Lokal test af kernen mod edge cases fra iteration 173's liste.
+0 web-søgninger.
+
+## Fakta
+
+1. **CDATA tabte indhold:** `htmlToMarkdown('<p><![CDATA[x]]></p>')` returnerede
+   tomt — CDATA-sektionen blev ikke fjernet af script/style-reglen, men den rå
+   tekst forsvandt i det efterfølgende tag-strip. Fix: CDATA-indhold bevares nu.
+2. **dl/dt/dd smeltede sammen:** `<dl><dt>T</dt><dd>D</dd></dl>` gav "TD" uden
+   struktur. Fix: dt → fed linje, dd → indrykket definitionslinje.
+3. Edge cases der allerede håndteres korrekt: HTML-kommentarer, inline SVG,
+   5000-tegns ord, meget lange URL'er i anchors, tabel i listepunkt, tom input,
+   whitespace-only input, br i headings, figure/figcaption.
+4. cleanText's space-collapse regel kollapser `:   ` til `: ` i dd-output —
+   acceptabelt, tests skrevet whitespace-tolerante.
+
+## Konklusion
+
+To ægte fejl rettet i kernen (v1.3.3 / Obsidian v1.0.4), synkroniseret til alle
+6 overflader og verificeret live. Nye permanente assertions tilføjet til
+testpakken så regressioner fanges automatisk.
+
+---
+
 # RESEARCH — Iteration 171: GitHub Action-udvidelse + Obsidian PR-blokering bekræftet (0 web-søgninger)
 
 **Dato:** 2026-08-24

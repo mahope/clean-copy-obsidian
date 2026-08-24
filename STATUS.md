@@ -1,56 +1,52 @@
-# STATUS — 24. august 2026, iteration 137
+# STATUS — 24. august 2026, iteration 138
 
-## Denne iteration: tracking verificeret end-to-end + bookmarklet-linket ind i funnel
+## Denne iteration: fuld site-sundhedsgennemgang + 3 interne linkhul lukket
 
-### 1. Tracking-pipeline bekræftet virkende (vigtigt fund)
+### Hvad jeg gjorde
 
-Iteration 136 tilføjede track.js til funnel-siderne, men vi havde ikke
-bevis for at data faktisk lander i KV. Nu testet end-to-end:
+Ingen nye søgninger (0/12). Bitwarden er stadig unauthenticated — LS-nøglen
+er ikke ankommet, så betalingssporet er uændret blokeret. I stedet en
+systematisk gennemgang af alt der står mellem en besøgende og produktet:
 
-- POST /api/track med `{"path":"/clean-copy-tool"}` → `{ok:true}` →
-  optræder i /api/stats inden for ~10 sekunder (`visits` tælles op).
-- Pipeline er altså hel: track.js → /api/track → KV → /api/stats.
-  Hvis tallene forbliver 0 efter 26. august, er det ægte nul trafik,
-  ikke et måleartefakt.
+1. **Sitemap vs. disk:** alle 111 sitemap-URL'er matcher filer på disken
+   (ingen døde sitemap-indgange; /da/blog/open-graph-tjekker lever korrekt
+   under da/-mappen). Alle 111 URL'er returnerer HTTP 200 live.
+2. **Alle eksterne links tjekket:** Chrome Web Store-listing (200),
+   GitHub-repo (200), GitHub release-zip (200). Ingen 404'ere.
+3. **Extension-zips verificeret mod kilde:** clean-copy-v1.3.0.zip og
+   firefox-v1.3.0.zip indeholder byte-identisk kode med repo-kilden.
+   Bemærk: zip-filnavnene siger v1.3.0, men manifest.json i begge siger
+   korrekt 1.2.0 (filnavnene var misvisende, ikke koden).
+4. **Testsuite grøn:** test_clean_copy.js, test_bookmarklet.js,
+   test_pro_core.js — alle PASS.
 
-### 2. Bookmarklet-siden var en blindgyde — nu linket ind
+### Fejl fundet og rettet
 
-/clean-copy-bookmarklet (bygget iter. 133) kunne ikke findes fra
-forsiden eller blogindlæggene — ingen indgange = ingen besøgende.
+Bookmarklet-siden havde stadig tre manglende indgange:
 
-- Forsiden (/): nyt kort med bookmarklet-CTA.
-- /blog/copy-as-markdown-chrome-extension: bookmarklet-link i tool-kortet.
-- /blog/paste-without-formatting-chrome: bookmarklet-link i "Fix 3"-kortet.
-- /blog/copy-table-from-website-to-excel: bookmarklet + web tool-link.
+- /blog/copy-clean-text-from-website: bookmarklet-link tilføjet i "5️⃣ Clean
+  Copy Web"-kortet.
+- /free-tools: bookmarklet-linket i Clean Copy Web-kortet.
+- /llms.txt: bookmarklet som selvstændigt værktøjspunkt (AI-assistenters
+  værktøjskatalog).
 
-Bookmarklet-koden selv re-testet funktionelt: drag-link parses,
-køreren producerer korrekt Markdown-tabel med escaped pipes
-(`| A | B |` … `| 1 | 2\|3 |`). Alle tre testsuiter PASS.
+Deployet + curl-verificeret live på alle tre steder. IndexNow pinget:
+111 URL'er, 200.
 
-### 3. Andre tal tjekket
+### Tal
 
-- GitHub repo mahope/clean-copy: 0 stars, 0 views, 0 uniques (14 dage).
-- Stats: kun selvtrafik. Waitlist: 0. Ingen nye konverteringer.
-
-### Verificering
-
-- Deploy OK; curl bekræfter bookmarklet-links live på forsiden og
-  alle tre blog sider; /clean-copy-bookmarklet svarer 200.
-- IndexNow pinget: 111 URL'er, 200.
-
-## Budget
-
-35 kr brugt af 1.000 kr. Ingen nye udgifter. Søgninger: 0/12.
+Kun selvtrafik i stats (token-beskyttet /api/stats, verificeret virkende).
+Waitlist: 0. Budget: 35 kr brugt af 1.000 kr. Søgninger: 0/12.
 
 ## Blokeringer (samlet én gang)
 
-Mads: åbn Bitwarden (Lemon Squeezy-nøgle) → `node lemon-setup.js`.
-Chrome/Firefox store-upload venter på browser-adgang.
+Mads: åbn Bitwarden (Lemon Squeezy-nøgle) → `node lemon-setup.js` →
+set_checkout_url → deploy. Chrome/Firefox store-upload venter på browser-adgang.
 
 ## Næste skridt (næste iteration)
 
 A) LS-nøgle ankommet? Kør lemon-setup → set_checkout_url → deploy.
-B) 26. august+: læs /api/stats med fuld pageview-dækning. Er organisk
-   trafik + convert/bm-click stadig ~0 trods de nye indgange → pivot
-   til ny produktidé i andet marked (plan B).
-C) Med åben Chrome: træk-test af bookmarklet + Web Store-upload v1.3.0.
+B) 26. august+: læs /api/stats med fuld pageview-dækning (siden iter. 136).
+   Er organisk trafik + bm-click stadig ~0 trods de nye indgange → pivot til
+   ny produktidé i andet marked (plan B i DECISION.md).
+C) Med åben Chrome: træk-test af bookmarklet + Web Store-upload.

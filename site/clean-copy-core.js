@@ -51,6 +51,42 @@ function htmlToMarkdown(html) {
       return '';
     });
 
+  // Form controls that render as widgets, not text: keep only meaningful
+  // text, each on its own line so options don't glue together.
+  md = md.replace(/<select\b[^>]*>([\s\S]*?)<\/select>/gi, (_, body) => {
+    const opts = [];
+    const re = /<(?:option|optgroup)\b[^>]*>/gi;
+    let m;
+    while ((m = re.exec(body)) !== null) {
+      const labelM = /label="([^"]*)"/i.exec(m[0]);
+      // optgroup uses its label; option uses its text content
+      if (labelM) { opts.push(labelM[1].trim()); continue; }
+      const rest = body.slice(re.lastIndex);
+      const text = /^([^<]*)/.exec(rest)[1];
+      if (text.trim()) opts.push(text.trim());
+    }
+    return opts.length ? '\n' + opts.join('\n') + '\n' : '';
+  });
+  md = md.replace(/<(input|textarea)\b[^>]*>/gi, (m, tag) => {
+    if (tag.toLowerCase() === 'textarea') {
+      // textarea content is its value; handled below via paired match
+      return m;
+    }
+    const val = /value="([^"]*)"/i.exec(m);
+    return val && val[1] ? '\n' + val[1] + '\n' : '';
+  });
+
+  // iframe/object fallback content is kept as a separate block — without
+  // this the fallback text glues onto whatever block follows the tag.
+  md = md.replace(/<(iframe|object)\b[^>]*>([\s\S]*?)<\/\1>/gi,
+    (_, tag, body) => {
+      if (tag.toLowerCase() === 'object') {
+        // drop nested <param> tags, keep visible fallback text as a block
+        return '\n' + body.replace(/<param\b[^>]*>/gi, '') + '\n';
+      }
+      return '\n' + body + '\n';
+    });
+
   // <details>/<summary>: keep the content, summary becomes a bold line so
   // collapsible sections don't lose their heading.
   md = md.replace(/<details[^>]*>([\s\S]*?)<\/details>/gi, (_, body) => {

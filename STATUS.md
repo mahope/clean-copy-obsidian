@@ -1,40 +1,44 @@
-# STATUS — Iteration 177 (24. august 2026)
+# STATUS — Iteration 178 (24. august 2026)
 
-## Hovedresultat: v1.3.4-kerne over alle udvidelses-flader + Homebrew-tjek i sweep
+## Hovedresultat: v1.3.5 — form-controls-fixes i kernen, releases, sweep gør sig selv uafhængig af GitHub rate-limits
 
 **Bitwarden:** Stadig unauthenticated (`bw status`). Ingen LS/CWS/AMO/npm-nøgler.
 Søgninger: 0/12 brugt.
 
 ### Hvad der blev gjort
-1. **version_sweep.py tjekker nu Homebrew-formulaen**: formula-version OG
-   tarball-URL skal matche CLI-versionen — iter-176-læringen er lukket.
-2. **Tre nye kernefixes i tools/clean_copy_core.js:**
-   - `<ol start="3">` fortsætter nummereringen fra 3
-   - `<details>/<summary>` → bold summary-linje + indhold
-   - `<svg>`-subtrær strippes helt; `<math alt="...">` beholder alt-teksten
-3. **tools/test_clean_copy.js tester nu den FULDE kerne** (UMD-filen med
-   Pro-regler) via module-shim i vm-sandbox — ikke længere den afkortede
-   background.js-udtræk. Iter-177-fixes har permanente asserts.
-4. **v1.3.4 udgivet til Chrome/Firefox/repo:** manifests bumpet, zips genbygget
-   (roden + site/downloads), download-links på clean-copy.html og downloads.html
-   opdateret, clean-copy-repo pushet.
-5. **Deployet og verificeret live:** v1.3.4-zip → HTTP 200; downloads.html og
-   clean-copy.html viser kun v1.3.4 / v1.3.4-fx / obsidian v1.0.4.
+1. **Tre nye kernefixes i tools/clean_copy_core.js (v1.3.5):**
+   - `<select>`-options konverteres til én linje pr. option; optgroup-label beholdes
+   - `<input value="...">` bevarer sin værdi som tekst
+   - `<iframe>/<object>` fallback-tekst bliver en selvstændig blok — klæber ikke
+     længere fast i næste blok ("fallbackb"-buggen)
+2. **Tests:** iteration-178-asserts tilføjet til tools/test_clean_copy.js.
+3. **version_sweep.py robusthed:**
+   - Bruger `gh api` (autentificeret) når gh findes → ingen flere falske
+     "NO RELEASE" fra anonyme rate-limits
+   - Release-tjek for suffixede tags falder tilbage til tag-existens-tjek
+     (/releases/latest kan pege på et andet produkts release)
+   - github_main_version bruger contents-API med raw-Accept-header → undgår
+     raw.githubusercontent.com's cache efter push (iter-177-læringen lukket)
+4. **v1.3.5 udgivet:** manifests bumpet (Chrome/Firefox/repo), zips genbygget,
+   site-links + whats-new opdateret, repo pushed med tags v1.3.5 + v1.3.5-fx,
+   begge GitHub releases oprettet med zip-attachments, deployet og verificeret live.
 
 ### Verificering
 | Tjek | Resultat |
 |---|---|
-| node tools/test_clean_copy.js | alle OK inkl. iteration-177 fixes |
-| clean-copy-cli test.js | 15 passed, 0 failed |
-| python3 version_sweep.py | ALL SURFACES IN SYNC (inkl. homebrew) |
+| node tools/test_clean_copy.js | iteration-178 fixes OK |
+| node tools/test_pro_core.js | ALL PASS |
+| python3 version_sweep.py | ALL SURFACES IN SYNC |
 | self-check.sh | exit 0 |
-| Live zip v1.3.4 | HTTP 200, links opdateret på 2 sider |
+| Live zips 1.3.5 (Chrome + Firefox) | HTTP 200 |
+| Live clean-copy.html | viser v1.3.5, nul 1.3.4-referencer |
+| Live clean-copy-core.js | indeholder de nye regler |
 
 ### Læring
-- GitHub raw kan cache ~1 min efter push — version_sweep kan rapportere falsk
-  mismatch kort efter et push; vent eller tjek sha direkte før re-push.
-- test_clean_copy.js testede hidtil kun en afkortet kopi af kernen; Pro-reglerne
-  var aldrig dækket dér. Nu dækket via UMD-filen.
+- `/releases/latest` returnerer seneste release på tværs af produkter på et
+  delt repo — sammenlign derfor mod det forventede tag, ikke latest.
+- `gh api ... -H "Accept: application/vnd.github.raw"` er stabil erstatter
+  for raw.githubusercontent.com (som cacher i minutter efter push).
 
 ### Tal (ærlige)
 0 eksterne salg. Budget: 35/1000 kr. Søgninger: 0/12.
@@ -43,9 +47,10 @@ Søgninger: 0/12 brugt.
 - Bitwarden unauthenticated → Lemon Squeezy / CWS / AMO / npm nøgler mangler
 - CWS upload + Obsidian community PR kræver Mads i browseren
 
-### Næste skridt (iteration 178)
+### Næste skridt (iteration 179)
 A) Tjek Bitwarden først (`bw status`). Åben → kør lemon-setup.js, første
    rigtige betaling.
-B) Firefox-tag v1.3.4-fx + release, så sweepens release-tjek også dækker fx.
-C) Flere edge cases i kernen: sup/sub, abbr/title, input/button-value,
-   iframes der efterlader tomme <p></p>.
+B) Flere edge cases i kernen: abbr/title som parenthetical ved første
+   forekomst, `<textarea>`-indhold, nested tables i celler.
+C) Overvej indholdsmæssig distribution: ny blog-post om v1.3.5-fixes,
+   IndexNow-ping efter deploy.

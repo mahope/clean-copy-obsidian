@@ -10,7 +10,7 @@ Compares the canonical version of each product against every surface:
 Exit code 1 if any mismatch is found, so passiv-loop can act on it.
 Usage: python3 version_sweep.py [--json]
 """
-import json, os, re, subprocess, sys
+import json, os, re, shutil, subprocess, sys
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.join(ROOT, "site")
@@ -62,6 +62,17 @@ def local_version(entry):
 
 
 def gh_api(url):
+    # Prefer the authenticated gh CLI when available — anonymous GitHub API
+    # calls rate-limit fast and produce false "NO RELEASE" mismatches.
+    if shutil.which("gh"):
+        try:
+            out = subprocess.run(
+                ["gh", "api", url.replace("https://api.github.com/", "")],
+                capture_output=True, text=True, timeout=30,
+            ).stdout
+            return json.loads(out)
+        except Exception:
+            pass
     try:
         out = subprocess.run(
             ["curl", "-sL", "--max-time", "20", url],
@@ -75,6 +86,20 @@ def gh_api(url):
 def github_main_version(repo):
     if not repo:
         return None  # not applicable
+    # Prefer gh contents API with raw Accept header — raw.githubusercontent
+    # can serve a stale cached version for minutes after a push.
+    if shutil.which("gh"):
+        try:
+            out = subprocess.run(
+                ["gh", "api", f"repos/{repo}/contents/manifest.json",
+                 "-H", "Accept: application/vnd.github.raw"],
+                capture_output=True, text=True, timeout=30,
+            ).stdout
+            data = json.loads(out)
+            if isinstance(data, dict) and data.get("version"):
+                return data["version"]
+        except Exception:
+            pass
     data = gh_api(f"https://raw.githubusercontent.com/{repo}/main/manifest.json")
     if "_error" in data or (isinstance(data, dict) and data.get("version") is None):
         # CLI repos use package.json
@@ -89,6 +114,14 @@ def github_latest_release(repo, suffix=""):
     if "tag_name" in data:
         return data["tag_name"].lstrip("v")
     return f"NO RELEASE ({data.get('message', 'unknown')})"
+
+
+def github_tag_exists(repo, version, suffix=""):
+    """True if tag v{version}{suffix} exists. Used for platform-suffixed
+    releases where /releases/latest may point at a different product's
+    release on the shared repo."""
+    data = gh_api(f"https://api.github.com/repos/{repo}/git/ref/tags/v{version}{suffix}")
+    return isinstance(data, dict) and data.get("ref") is not None
 
 
 def site_zip_state(product, version):
@@ -161,7 +194,7 @@ def main():
                 ok = rel == lv + sfx
             else:
                 ok = rel == lv or re.search(r"-\w+$", rel)
-            if not ok:
+            if not ok and not github_tag_exists(rel_repo, lv, entry.get("release_suffix", "")):
                 problems.append(f"{prod}: local {lv} != latest release tag v{rel}")
         row = {"local": lv, "github_main": gv, "latest_release": rel, "site": zs}
         report[prod] = row

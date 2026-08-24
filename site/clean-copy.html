@@ -272,13 +272,13 @@
         </ol>
         <h3 style="margin:1.5rem 0 1rem;">Option B — Manual install (load unpacked)</h3>
         <ol>
-          <li><strong>Download the zip</strong> — <a href="/downloads/clean-copy-v1.3.4.zip" rel="noopener">clean-copy-v1.3.4.zip</a> and unzip it.</li>
+          <li><strong>Download the zip</strong> — <a href="/downloads/clean-copy-v1.3.5.zip" rel="noopener">clean-copy-v1.3.5.zip</a> and unzip it.</li>
           <li><strong>Open</strong> <code>chrome://extensions</code> and enable <strong>Developer mode</strong> (top right).</li>
           <li><strong>Click "Load unpacked"</strong> and select the unzipped folder.</li>
         </ol>
         <h3 style="margin:1.5rem 0 1rem;">Option C — Firefox (install from source)</h3>
         <ol>
-          <li><strong>Download the Firefox zip</strong> — <a href="/downloads/clean-copy-firefox-v1.3.4.zip" rel="noopener">clean-copy-firefox-v1.3.4.zip</a> and unzip it. (The Firefox build is named <strong>Clean Copy MD</strong> — the name “Clean Copy” is taken on addons.mozilla.org.)</li>
+          <li><strong>Download the Firefox zip</strong> — <a href="/downloads/clean-copy-firefox-v1.3.5.zip" rel="noopener">clean-copy-firefox-v1.3.5.zip</a> and unzip it. (The Firefox build is named <strong>Clean Copy MD</strong> — the name “Clean Copy” is taken on addons.mozilla.org.)</li>
           <li><strong>Open</strong> <code>about:debugging#/runtime/this-firefox</code>, click <strong>"Load Temporary Add-on…"</strong>, and pick <code>manifest.json</code>. (Temporary add-ons are removed when Firefox closes.)</li>
           <li><strong>A signed, permanent install is coming to addons.mozilla.org</strong> — listing texts are prepared; only account access is pending.</li>
         </ol>
@@ -310,8 +310,13 @@
       <h2>What's new</h2>
       <div class="feature-grid">
         <div class="feature-card">
-          <h3>v1.3.1 — current</h3>
-          <p>Full HTML entity decoder (named and numeric), hardened table conversion, and one shared conversion core across the Chrome extension, Firefox build, CLI and Obsidian plugin — so every surface produces identical Markdown. The GitHub Action now also accepts <code>file</code>, <code>html</code>, and <code>output_file</code> inputs for CI pipelines.</p>
+          <h3>v1.3.5 — current</h3>
+          <p>Form controls now convert cleanly: select options land on separate lines (optgroup labels kept), input values are preserved, and iframe/object fallback text becomes its own block instead of gluing onto the next paragraph. Builds on v1.3.4's fixes for <code>&lt;ol start&gt;</code>, details/summary and svg/math.</p>
+          <span class="tech-badge">Aug 2026</span>
+        </div>
+        <div class="feature-card">
+          <h3>v1.3.4</h3>
+          <p>Ordered lists respect <code>start</code>, details/summary sections keep their heading, and svg/math markup is stripped so it can't leak into your paste.</p>
           <span class="tech-badge">Aug 2026</span>
         </div>
         <div class="feature-card">

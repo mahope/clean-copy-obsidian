@@ -95,3 +95,19 @@ assert(/^A\s*\n+\s*B$/.test(svg), 'svg stripped: ' + JSON.stringify(svg));
 const math = sandbox.htmlToMarkdown('<p>Formula:</p><math alt="E=mc2"><mi>E</mi></math>');
 assert(/E=mc2/.test(math) && !/<mi>/.test(math), 'math alt kept: ' + JSON.stringify(math));
 console.log('iteration-177 fixes OK');
+
+// Iteration 178: iframe fallback becomes its own block, doesn't glue
+const ifr = sandbox.htmlToMarkdown('<iframe src="x">fallback</iframe><p>b</p>');
+assert(/^fallback\s*\n+\s*b$/.test(ifr), 'iframe fallback separated: ' + JSON.stringify(ifr));
+
+// Iteration 178: select options on separate lines, optgroup label kept
+const sel = sandbox.htmlToMarkdown('<select><option>Red</option><option>Blue</option></select><p>x</p>');
+assert(/Red/.test(sel) && /Red\s*\n+\s*Blue/.test(sel), 'select options: ' + JSON.stringify(sel));
+const og = sandbox.htmlToMarkdown('<select><optgroup label="Group A"><option>1</option></optgroup></select>');
+assert(/Group A/.test(og) && /\n1/.test(og), 'optgroup label: ' + JSON.stringify(og));
+
+// Iteration 178: input value kept as text
+const inp = sandbox.htmlToMarkdown('<p>a <input type="text" value="Navn"> b</p>');
+assert(/Navn/.test(inp), 'input value: ' + JSON.stringify(inp));
+
+console.log('iteration-178 fixes OK');

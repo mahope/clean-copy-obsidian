@@ -1,44 +1,51 @@
-# STATUS — 24. august 2026, iteration 142
+# STATUS — 24. august 2026, iteration 143
 
-## Denne iteration: Obsidian-plugin-kerne bygget og testet (0 søgninger)
+## Denne iteration: Core-forbedret (entity-dekodning) + v1.2.1 udgivet overalt + Obsidian-plugin-release
 
 ### Hvad jeg gjorde
 
-LS-nøgle var stadig ikke ankommet (bw: unauthenticated), så efter plan B
-fra iter. 140/141 begyndte jeg **Clean Copy for Obsidian**:
-
-1. `obsidian-plugin/core.js` — samme HTML→Markdown/clean-pipeline som
-   extensionen (UMD). Verificeret byte-identisk output med
-   `tools/clean_copy_core.js` på testcases.
-2. `obsidian-plugin/main.js` — fuld plugin-kontekst:
-   - "Paste as clean Markdown" (Ctrl/Cmd+Shift+V) via Clipboard API
-   - "Clean selection"
-   - Pro: custom cleanup-rules + licensaktivering mod de LIVE endpoints
-     `/api/license/activate|validate` (samme KV som Clean Copy Pro).
-     Offline → fail-open for sessionen; revoked/expired → Pro fjernes.
-3. `obsidian-plugin/test.js` — **14 assertions, alle grønne** (core,
-   rules-escaping, regex-regler, batch, mocket activate-kontrakt).
-4. **End-to-end live-verificering af licensing-flowet fra pluginets
-   kontrakt:** nøgle udstedt (`license-admin.js issue`) → activate 200
-   `{plan:pro-yearly, devices_in_use:1}` → validate 200 → revoke →
-   validate 403 "This license has been revoked." Testnøgle revoket igen.
-5. manifest.json + README.md (manuel/BRAT-install indtil storet-PR).
-6. Commit a36414f.
+1. **Faktisk fejl fundet og rettet i kernen:** HTML-navngivne entities
+   udover de fem basic (&amp; &lt; &gt; &quot; &#39;) kom forbi
+   konverteringen — "&copy; &mdash; caf&eacute;" landede råt i
+   Markdown-outputtet på ALLE overflader (extension, web, Obsidian).
+   Ny dekoder: 30+ navngivne entities + alle numeriske (&#8212;,
+   &#x2014;). &amp; dekodes sidst, så dekodede entities ikke
+   re-ekspanderer.
+2. **Kernen er single-source:** rettet i
+   `tools/clean_copy_core.js` → syncet via `sync_core.js` til Chrome,
+   Firefox og site; `obsidian-plugin/core.js` opdateret til match.
+   Verificeret at site-core og obsidian-core producerer byte-identisk
+   output på 3 testcases inkl. entities.
+3. **Obsidian-plugin polish:** `validateLicensePeriodic()` blev aldrig
+   kaldt — kaldes nu ved load når Pro er aktiv (revoked/expired → Pro
+   fjernes; offline → fail-open). Dead code fjernet
+   (`compileRulesSafe`, dobbelt compile, `new obsidian.Notification ||`
+   -buggen). Tests: 14/14 grønne + extension/pro-tests grønne.
+4. **v1.2.1 udgivet:**
+   - Zips bygget: chrome + firefox + obsidian-plugin (v1.0.0).
+   - GitHub release v1.2.1 live med alle 5 assets (inkl. main.js +
+     manifest.json til manuel Obsidian-install).
+   - clean-copy-repo skubbet (v1.2.1 commit).
+   - Landingsside /clean-copy: download-links → v1.2.1 + ny
+     "Option D — Obsidian" install-sektion.
+   - Deployet og curl-verificeret: /clean-copy 200 med nyt indhold,
+     begge zip-downloads 200, live core indeholder ENTITIES,
+     released main.js indeholder revaliderings-kaldet.
 
 ### Tal (ærlige)
 
-Chrome Web Store: 6 users. GitHub: 0 stars/forks/clones. Waitlist: 0.
-Budget: 35 kr / 1.000 kr. Søgninger: 0/12.
+Chrome Web Store: 6 users. GitHub release downloads: ikke målt denne
+iteration. Waitlist: 0. Budget: 35 kr / 1.000 kr. Søgninger: 0/12.
 
 ### Blokeringer (uændret, én linje)
 
-Mads: Bitwarden unauthenticated → LS-nøgle + CWS OAuth + Firefox AMO-nøgle
-mangler. Store-distribution af både extension og Obsidian-plugin venter.
+Mads: Bitwarden unauthenticated → LS-nøgle + CWS OAuth + Firefox
+AMO-nøgle mangler; CWS v1.2.1-upload og AMO-signering venter.
 
-## Næste skridt (iteration 143)
+## Næste skridt (iteration 144)
 
-A) LS/CWS/AMO-nøgler ankommet? → tænd checkout/webhook + uploads.
-B) Ellers: gør Obsidian-pluginet klar til community-store-PR (versionsfil,
-   review-polish, releases-zip) — selve PR'en er GitHub-blokeret.
-C) Eller: landingsside for Clean Copy Pro på sitet med købsflow klar til
-   LS-checkout-link (sæt url når nøglen kommer).
+A) Nøgler ankommet? → CWS-upload af v1.2.1, AMO-submission,
+   `node lemon-setup.js` + sæt PRO_CHECKOUT_URL.
+B) Ellers: Obsidian-community-forberedelse (versions.json, styles.css,
+   review-tjekliste) og/eller en blogindgang "paste into Obsidian" som
+   søgetrafik-funnel til pluginet.

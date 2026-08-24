@@ -58,3 +58,22 @@ assert(dl.includes('**API**'), 'dt bolded: ' + JSON.stringify(dl));
 assert(/:\s*Interface for apps/.test(dl), 'dd indented: ' + JSON.stringify(dl));
 assert(!/APISDK|TermDef/.test(dl.replace(/[\s*:]|\*\*/g, '')), 'no fused terms');
 console.log('iteration-174 fixes OK');
+
+// Iteration 175: figcaption separated from the image line
+const fig = sandbox.htmlToMarkdown('<figure><img src="a.png" alt="x"><figcaption>Caption text</figcaption></figure>');
+assert(fig.includes('\n\nCaption text') || /\)\s*\n+\s*Caption text/.test(fig), 'figcaption separated: ' + JSON.stringify(fig));
+
+// Iteration 175: blockquotes become "> " prefixed Markdown
+const bq1 = sandbox.htmlToMarkdown('<blockquote><p>quoted line</p></blockquote>');
+assert(bq1.startsWith('> quoted line'), 'simple blockquote: ' + JSON.stringify(bq1));
+
+// Nested: inner quote gets double prefix
+const bq2 = sandbox.htmlToMarkdown('<blockquote><p>a</p><blockquote><p>b</p></blockquote><p>c</p></blockquote>');
+assert(bq2.includes('> > b'), 'nested blockquote prefix: ' + JSON.stringify(bq2));
+assert(bq2.includes('> a'), 'outer content quoted');
+assert(/>\s*c/.test(bq2), 'trailing outer content still quoted');
+
+// Quote containing a list keeps list markers under the prefix
+const bq3 = sandbox.htmlToMarkdown('<blockquote><ul><li>i1</li><li>i2</li></ul></blockquote>');
+assert(bq3.includes('> - i1') && bq3.includes('> - i2'), 'list in quote: ' + JSON.stringify(bq3));
+console.log('iteration-175 fixes OK');

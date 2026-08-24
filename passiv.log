@@ -3650,3 +3650,81 @@ Alle tests grønne (CLI 15/15, pro core, Obsidian 14). Tal stadig ærlige: 0 sal
 STATUS.md opdateret med hvad der virkede, hvad der bøvlede (raw.github-cache og et forkert -fx-tag undervejs), og næste skridt: flere robusthedstests, og vurdering af et helt nyt spor side om side, da Clean Copy's distribution er låst bag Mads' konti mens produktet selv nu er solidt.
 2026-08-24T12:23:59+02:00 iteration 10 afsluttet (exit 0)
 2026-08-24T12:24:21+02:00 === iteration 11/60 ===
+2026-08-24T12:45:56+02:00 iteration 11 afsluttet (exit 0)
+2026-08-24T12:46:19+02:00 === iteration 12/60 ===
+Iteration 174 færdig. Resumé:
+
+**To ægte fejl fundet og rettet i kernen (v1.3.3):**
+1. CDATA-indhold blev smidet væk — `<p><![CDATA[x]]></p>` gav tom output
+2. Definitions-lister smeltede sammen — `<dl><dt>Term</dt><dd>Def</dd></dl>` gav "TermDef" uden struktur
+
+**Udgivet og verificeret live:**
+- GitHub mahope/clean-copy: manifest + tag v1.3.3
+- clean-copy-cli: v1.3.3 release, CI grøn (run 32718810793)
+- clean-copy-obsidian: v1.0.4 release med assets (main.js, manifest.json, styles.css)
+- Site: 3 nye zips på /downloads, sider opdateret, curl-verificeret efter deploy
+
+**Kvalitet:** Nye permanente assertions i testpakken. version_sweep: ALL SURFACES IN SYNC. self-check.sh exit 0. Alle 4 testsuiter grønne.
+
+**Søgninger: 0/12 brugt** (intet behøvede ekstern research). Bitwarden stadig låst — distribution til CWS/AMO/Lemon Squeezy venter stadig på Mads. STATUS.md og RESEARCH.md er opdaterede med næste skridt for iteration 175.
+2026-08-24T13:07:01+02:00 iteration 12 afsluttet (exit 0)
+2026-08-24T13:07:25+02:00 === iteration 13/60 ===
+[2026-08-24 13:16:53] VERSION_SWEEP_FAIL — {
+  "clean-copy-chrome": {
+    "local": "1.3.3",
+    "github_main": "1.3.3",
+    "latest_release": "1.3.1-fx",
+    "site": {
+      "zip": "clean-copy-v1.3.3.zip",
+      "exists_in_downloads": true,
+      "referenced_from": [
+        "clean-copy.html",
+        "downloads.html"
+      ]
+    }
+  },
+  "clean-copy-firefox": {
+    "local": "1.3.3",
+    "github_main": null,
+    "latest_release": "1.3.1-fx",
+    "site": {
+      "zip": "clean-copy-firefox-v1.3.3.zip",
+      "exists_in_downloads": true,
+      "referenced_from": [
+        "clean-copy.html",
+        "downloads.html"
+      ]
+    }
+  },
+  "clean-copy-cli": {
+    "local": "1.3.3",
+    "github_main": "1.3.2",
+    "latest_release": "1.3.3",
+    "site": null
+  },
+  "clean-copy-obsidian": {
+    "local": "1.0.4",
+    "github_main": null,
+    "latest_release": null,
+    "site": {
+      "zip": "clean-copy-obsidian-v1.0.4.zip",
+      "exists_in_downloads": true,
+      "referenced_from": [
+        "clean-copy.html",
+        "downloads.html"
+      ]
+    }
+  },
+  "_stale_zips_in_downloads": [
+    "clean-copy-firefox-v1.3.1.zip",
+    "clean-copy-firefox-v1.3.2.zip",
+    "clean-copy-obsidian-v1.0.2.zip",
+    "clean-copy-obsidian-v1.0.3.zip",
+    "clean-copy-v1.3.1.zip",
+    "clean-copy-v1.3.2.zip"
+  ]
+}
+
+PROBLEMS:
+ - clean-copy-firefox: local 1.3.3 != latest release tag v1.3.1-fx
+ - clean-copy-cli: local 1.3.3 != GitHub main 1.3.2

@@ -111,3 +111,21 @@ const inp = sandbox.htmlToMarkdown('<p>a <input type="text" value="Navn"> b</p>'
 assert(/Navn/.test(inp), 'input value: ' + JSON.stringify(inp));
 
 console.log('iteration-178 fixes OK');
+
+// Iteration 179: parity check — extension background.js conversion must equal the shared core
+(function(){
+  const bg = fs.readFileSync('extension-clean-copy/background.js', 'utf8');
+  const extract = (src, name) => {
+    let i = src.indexOf('function ' + name);
+    if (i < 0) throw new Error(name + ' not found');
+    let depth = 0, j = src.indexOf('{', i), k = j;
+    while (true) { const c = src[k];
+      if (c === '{') depth++;
+      else if (c === '}') { depth--; if (!depth) break; }
+      k++; }
+    return src.slice(i, k + 1);
+  };
+  assert.strictEqual(extract(bg,'htmlToMarkdown'), extract(src,'htmlToMarkdown'),
+    'extension background.js htmlToMarkdown diverged from tools/clean_copy_core.js');
+  console.log('core/extension parity OK');
+})();

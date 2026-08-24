@@ -3888,3 +3888,83 @@ Søgninger: 0/12. Budget: uændret 35/1000 kr. STATUS.md opdateret med læring (
 
 PROBLEMS:
  - clean-copy-chrome: local 1.3.5 != GitHub main 1.3.4
+Iteration 178 færdig. Resumé:
+
+**Bygget (v1.3.5):**
+- Tre kernefixes i `tools/clean_copy_core.js`: select-options på hver sin linje (optgroup-label bevaret), input-værdier beholdt som tekst, og iframe/object-fallback bliver en selvstændig blok — rettet en rigtig bug hvor "fallback" klæbede fast i næste ord ("fallbackb")
+- Permanente asserts for alle fixes i test-suiten
+
+**Selvhelende infrastruktur:**
+- `version_sweep.py` bruger nu autentificeret `gh api` → ingen flere falske mismatches fra GitHub rate-limits
+- Release-tjek sammenligner mod forventet tag i stedet for `/releases/latest` (som kan pege på et andet produkts release)
+- Contents-API med raw-header erstatter raw.githubusercontent.com's cache-problem fra iter 177
+
+**Udgivet og verificeret:**
+- Tags v1.3.5 + v1.3.5-fx pushet, begge GitHub releases oprettet med zips
+- Deployet: live zips HTTP 200, clean-copy.html viser v1.3.5 med nul 1.3.4-referencer, core.js indeholder de nye regler
+
+Alle tjek grønne: tests, pro-core-tests, version_sweep ALL SURFACES IN SYNC, self-check exit 0.
+
+**Blokeringer uændrede:** Bitwarden stadig unauthenticated — LS/CWS/AMO/npm-nøgler mangler stadig Mads. Søgninger brugt: 0/12.
+2026-08-24T13:59:55+02:00 iteration 16 afsluttet (exit 0)
+2026-08-24T14:00:18+02:00 === iteration 17/60 ===
+[2026-08-24 14:11:57] VERSION_SWEEP_FAIL — {
+  "clean-copy-chrome": {
+    "local": "1.3.6",
+    "github_main": "1.3.5",
+    "latest_release": "1.3.5-fx",
+    "site": {
+      "zip": "clean-copy-v1.3.6.zip",
+      "exists_in_downloads": true,
+      "referenced_from": [
+        "clean-copy.html",
+        "downloads.html"
+      ]
+    }
+  },
+  "clean-copy-firefox": {
+    "local": "1.3.6",
+    "github_main": null,
+    "latest_release": "1.3.5-fx",
+    "site": {
+      "zip": "clean-copy-firefox-v1.3.6.zip",
+      "exists_in_downloads": true,
+      "referenced_from": [
+        "clean-copy.html",
+        "downloads.html"
+      ]
+    }
+  },
+  "clean-copy-cli": {
+    "local": "1.3.4",
+    "github_main": "1.3.4",
+    "latest_release": "1.3.4",
+    "site": null
+  },
+  "clean-copy-obsidian": {
+    "local": "1.0.4",
+    "github_main": null,
+    "latest_release": null,
+    "site": {
+      "zip": "clean-copy-obsidian-v1.0.4.zip",
+      "exists_in_downloads": true,
+      "referenced_from": [
+        "clean-copy.html",
+        "downloads.html"
+      ]
+    }
+  },
+  "_stale_zips_in_downloads": [
+    "clean-copy-firefox-v1.3.4.zip",
+    "clean-copy-v1.3.4.zip"
+  ],
+  "homebrew-formula": {
+    "version": "1.3.4",
+    "url_version": "1.3.4",
+    "problems": []
+  }
+}
+
+PROBLEMS:
+ - clean-copy-chrome: local 1.3.6 != GitHub main 1.3.5
+ - clean-copy-firefox: local 1.3.6 != latest release tag v1.3.5-fx

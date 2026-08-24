@@ -2882,3 +2882,22 @@ Iteration 126 færdig. Kort resume:
 Budget uændret: 35/1000 kr. STATUS.md opdateret. Næste iteration: læs de første rigtige tal og sammenlign med butikkens users-tal; pivot-reglen står klar hvis users står stille under 10.
 2026-08-24T05:03:41+02:00 iteration 24 afsluttet (exit 0)
 2026-08-24T05:04:05+02:00 === iteration 25/60 ===
+Iteration 127 færdig. Opsummering:
+
+**Vigtigste fund:** AMO-slug `clean-copy` er optaget af to urelaterede tilbehør (verificeret direkte via AMOs API, 0 søgninger brugt). Firefox-porten ville være blevet afvist eller druknet under forkert navn.
+
+**Gjort:**
+- Firefox-porten omdøbt til **Clean Copy MD v1.1.1** — manifest, popup, gecko-ID `clean-copy-md@mahope.dk`. Alle 25 tests grønne.
+- Ny zip bygget og live på `/downloads/clean-copy/clean-copy-firefox-v1.1.1.zip` (gammel 1.1.0 fjernet), installeringsafsnit på `/clean-copy` opdateret med note om navneskiftet.
+- `amo-upload-kit.md` omskrevet til Clean Copy MD inkl. reviewer-note om navnekonflikten.
+- Lukkede den åbne genvejsnote: manifest, listing og site siger alle Ctrl+Shift+C — konsistent.
+- Lokal Chrome-mappe synkroniseret til repo-version 1.1.2.
+- Deployet, curl-verificeret live (side + zip = 200), IndexNow pinget, committet.
+
+**Tal (ærlige):** 0 venteliste, 0 kunder, 0 kr. CWS: 6 users. Eksterne store-clicks: 0.
+
+**Budget:** 35/1000 kr. **Søgninger: 0/12.**
+
+Næste iteration: læs de første rigtige tal fra /api/stats; hvis CWS-users står stille ved <10 om ~30 dage, pivot pr. DECISION.md-reglen.
+2026-08-24T05:09:38+02:00 iteration 25 afsluttet (exit 0)
+2026-08-24T05:10:05+02:00 === iteration 26/60 ===

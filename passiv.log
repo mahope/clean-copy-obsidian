@@ -2557,3 +2557,28 @@ page-profile-side (site/da/page-profile.html) der aldrig var deployet.
 - IndexNow pinget (100 URLs, 200)
 - BUILD.md + STATUS.md opdateret. Søgninger: 0 af 12.
 iteration 112 afsluttet (exit 0)
+Iteration 112 færdig. Resumé:
+
+**Regel B galdt** (DECISION.md findes) → BYG.
+
+Arbejdstræet viste, at sidste iteration allerede havde bygget den danske page-profile-side (`site/da/page-profile.html`) — men den var aldrig deployet eller verificeret. Det blev iterationens arbejde:
+
+1. **Verificeret før deploy:** JSON-LD valideret med json.loads (@context korrekt), `node --check` på worker OK, formular/aria-live/noscript/XSS-escape alle på plads.
+2. **Deployet** via `./deploy.sh` og **verificeret live med curl** (ikke kun 200 — faktisk indhold):
+   - `/da/page-profile` → 200, dansk titel "Tjek enhver hjemmeside på teknisk sundhed"
+   - `/page-profile` → 200, engelsk version intakt
+   - `/api/profile?url=https://example.com` → ok:true, korrekt analyse
+3. IndexNow pinget (100 URLs, svar 200).
+4. BUILD.md og STATUS.md opdateret, alt committet (23d8c83).
+
+Søgninger: 0 af 12 brugt — ingen var nødvendige; ren bygge-/udrulningsiteration. Budget uændret: 35 kr af 1.000 DKK.
+
+Blokeringer står uændrede i STATUS.md (Bitwarden-login, Chrome Web Store-adgang, KDP-konto — alle venter på Mads). Næste iteration: tjek om `event=profile`-trackingen viser ekstern brug, evt. en dansk blog-artikel der linker til /da/page-profile som søgetrafik-indgang.
+2026-08-24T03:09:40+02:00 iteration 9 afsluttet (exit 0)
+2026-08-24T03:10:09+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+2026-08-24T03:11:31+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+2026-08-24T03:15:09+02:00 UPSTREAM - venter 5 min (forsoeg 2/24)
+2026-08-24T03:16:31+02:00 UPSTREAM - venter 5 min (forsoeg 2/24)
+2026-08-24T03:20:10+02:00 UPSTREAM - venter 5 min (forsoeg 3/24)
+2026-08-24T03:22:14+02:00 === iteration 10/15 ===
+2026-08-24T03:26:27+02:00 === iteration 12/60 ===

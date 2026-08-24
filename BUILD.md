@@ -1,6 +1,19 @@
 # BUILD — Hvad er bygget, hvad mangler
 
-**Dato:** 2026-08-24 (iteration 112 — dansk page-profile live)
+**Dato:** 2026-08-24 (iteration 113 — dansk SEO-blog som søgeindgang til page-profile)
+
+## Dansk SEO-blog: teknisk SEO-tjek (iteration 113) ✅
+
+- `site/blog/teknisk-seo-tjek-hjemmeside.html` — ny dansk artikel målrettet
+  "teknisk seo tjek hjemmeside"-søgninger. 5-trins guide, top-5 fejl, FAQ,
+  Article JSON-LD (valideret), canonical extensionless, CTA'er til
+  /da/page-profile.
+- Intern linkning: kort på forsiden (/), kort på /da-hubben, link i footeren
+  på /da/page-profile. Sitemap-indgang tilføjet (extensionless).
+- Deployet + verificeret live (200 med indhold på alle berørte sider),
+  IndexNow pinget (200).
+
+
 
 ## Oversigt
 

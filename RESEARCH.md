@@ -1,3 +1,18 @@
+# RESEARCH — Iteration 113: Trafikdata-tjek (0 web-søgninger)
+
+**Dato:** 2026-08-24
+**Metode:** /api/stats (cookieless KV-tracking), ingen web-søgninger.
+
+1. **page-profile trækker nul trafik:** 14 dages data viser ingen
+   `profile`-events og nogen sidevisninger af /page-profile eller
+   /da/page-profile fra andre end mig. Eneste eksterne signaler den 23/8:
+   11 visninger af forsiden, 2 af en Shopify-guide, 1 cookie-scan, 1 scan.html.
+   Konklusion: værktøjerne får ikke fundet sig selv — indgangssider skal bygges.
+2. Søgeindgangen til /da/page-profile er derfor bygget samme iteration:
+   /blog/teknisk-seo-tjek-hjemmeside (se BUILD.md).
+
+---
+
 # RESEARCH — Iteration 36: Faktatjek og beslutning (10 web-søgninger)
 
 **Dato:** 2026-08-23 (tidlig aften)

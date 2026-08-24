@@ -145,7 +145,7 @@
       No more messy pastes — just right-click and copy.
     </p>
     <div class="hero-cta">
-      <span class="btn-primary"><a href="https://github.com/mahope/clean-copy" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">⬇ Install from GitHub — free & open source</a></span>
+      <span class="btn-primary"><a href="https://chromewebstore.google.com/detail/clean-copy/ckcepdoeofecoaadgjmconbdepohgbnj" rel="noopener" style="color:inherit;text-decoration:none;">⬇ Add to Chrome — free</a></span>
       <span class="hero-note">Free · No account needed · Works on any page</span>
     </div>
     <div class="hero-meta">
@@ -239,6 +239,7 @@
           </ul>
           <span class="btn-secondary" style="display:block;text-align:center;margin-top:1rem;"><a href="/clean-copy-tool" style="color:inherit;text-decoration:none;">🧹 Try the web tool — no install needed</a></span>
           <span class="btn-secondary" style="display:block;text-align:center;margin-top:1rem;"><a href="https://github.com/mahope/clean-copy" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">★ Source on GitHub</a></span>
+          <span class="btn-primary" style="display:block;text-align:center;margin-top:1rem;"><a href="https://chromewebstore.google.com/detail/clean-copy/ckcepdoeofecoaadgjmconbdepohgbnj" rel="noopener" style="color:inherit;text-decoration:none;">⬇ Add to Chrome — it's free</a></span>
         </div>
         <div class="tier-card pro">
           <h3>Pro <span style="font-size:0.75rem;color:var(--color-text-muted);font-weight:400;">(coming soon)</span></h3>
@@ -262,26 +263,26 @@
       <h2>Install</h2>
       <p class="section-intro">Clean Copy is a Chrome extension — Manifest V3, works in Chrome, Edge, Brave, and any Chromium-based browser.</p>
       <div class="install-steps">
-        <h3 style="margin-bottom:1rem;">Option A — Chrome, Edge &amp; Brave (available now, ~30 seconds, no coding)</h3>
+        <h3 style="margin-bottom:1rem;">Option A — Chrome, Edge &amp; Brave (one click from the Chrome Web Store)</h3>
+        <ol>
+          <li><strong><a href="https://chromewebstore.google.com/detail/clean-copy/ckcepdoeofecoaadgjmconbdepohgbnj" rel="noopener">Add Clean Copy from the Chrome Web Store →</a></strong></li>
+          <li><strong>Select text on any page</strong> — right-click and choose Clean Copy, or use your copy hotkey.</li>
+          <li><strong>Paste</strong> — clean text, rich text, or Markdown ready to use.</li>
+        </ol>
+        <h3 style="margin:1.5rem 0 1rem;">Option B — Manual install (load unpacked)</h3>
         <ol>
           <li><strong>Download the zip</strong> — <a href="https://github.com/mahope/clean-copy/releases/latest/download/clean-copy-v1.1.2.zip" rel="noopener">clean-copy-v1.1.2.zip</a> and unzip it.</li>
           <li><strong>Open</strong> <code>chrome://extensions</code> and enable <strong>Developer mode</strong> (top right).</li>
           <li><strong>Click "Load unpacked"</strong> and select the unzipped folder.</li>
-          <li><strong>Select text on any page</strong> — right-click and choose Clean Copy, or press <kbd>Ctrl+Shift+C</kbd> / <kbd>Cmd+Shift+C</kbd>.</li>
-          <li><strong>Paste</strong> — clean Markdown ready to use.</li>
         </ol>
-        <h3 style="margin:1.5rem 0 1rem;">Option B — Firefox (install from source)</h3>
+        <h3 style="margin:1.5rem 0 1rem;">Option C — Firefox (install from source)</h3>
         <ol>
-          <li><strong>Download the Firefox zip</strong> — <a href="/downloads/clean-copy-firefox-v1.1.0.zip" rel="noopener">clean-copy-firefox-v1.1.0.zip</a> and unzip it.</li>
+          <li><strong>Download the Firefox zip</strong> — <a href="/downloads/clean-copy-firefox-v1.1.1.zip" rel="noopener">clean-copy-firefox-v1.1.1.zip</a> and unzip it. (The Firefox build is named <strong>Clean Copy MD</strong> — the name “Clean Copy” is taken on addons.mozilla.org.)</li>
           <li><strong>Open</strong> <code>about:debugging#/runtime/this-firefox</code>, click <strong>"Load Temporary Add-on…"</strong>, and pick <code>manifest.json</code>. (Temporary add-ons are removed when Firefox closes.)</li>
-          <li><strong>A signed, permanent install is coming to addons.mozilla.org</strong> — listing texts and reviewer notes are prepared; only account access is pending.</li>
-        </ol>
-        <h3 style="margin:1.5rem 0 1rem;">Option C — Chrome Web Store (coming)</h3>
-        <ol>
-          <li><strong>Visit the Chrome Web Store</strong> — search for "Clean Copy" (once published).</li>
+          <li><strong>A signed, permanent install is coming to addons.mozilla.org</strong> — listing texts are prepared; only account access is pending.</li>
         </ol>
       </div>
-      <p style="color:var(--color-text-muted);font-size:0.85rem;">Source code is MIT-licensed on GitHub. The Chrome Web Store listing is pending review.</p>
+      <p style="color:var(--color-text-muted);font-size:0.85rem;">Source code is MIT-licensed on GitHub. Free forever — no account, nothing leaves your browser.</p>
     </div>
   </section>
 
@@ -345,7 +346,7 @@
     <p style="margin-top:8px;">Clean Copy is a product of Mahope. Free Chrome extension — no strings attached.</p>
   </footer>
 <script>
-(function(){try{if(navigator.doNotTrack==='1')return;var p=location.pathname.replace(/\.html$/,'')||'/';fetch('/api/track',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({path:p}),keepalive:true}).catch(function(){});}catch(e){}})();
+(function(){try{if(navigator.doNotTrack==='1')return;var p=location.pathname.replace(/\.html$/,'')||'/';fetch('/api/track',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({path:p}),keepalive:true}).catch(function(){});document.addEventListener('click',function(ev){var a=ev.target&&ev.target.closest?ev.target.closest('a[href]'):null;if(!a)return;var h=a.href;if(h&&h.indexOf('chromewebstore.google.com')>-1){try{navigator.sendBeacon('/api/track',new Blob([JSON.stringify({path:p,event:'store-click'})],{type:'application/json'}));}catch(e){}}},true);}catch(e){}})();
 </script>
 </body>
 </html>

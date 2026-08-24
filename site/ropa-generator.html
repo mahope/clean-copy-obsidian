@@ -331,7 +331,7 @@ Hetzner Online GmbH — hosting"></textarea>
       +   'table{border-collapse:collapse;width:100%}th,td{text-align:left;vertical-align:top;'
       +   'padding:8px 10px;border-bottom:1px solid #dde5ea}h2{color:#12283a}</style>\n'
       + '<body>\n' + $('agreement').innerHTML + '\n<script>
-(function(){try{if(navigator.doNotTrack==='1')return;var p=location.pathname.replace(/\.html$/,'')||'/';fetch('/api/track',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({path:p}),keepalive:true}).catch(function(){});}catch(e){}})();
+(function(){try{if(navigator.doNotTrack==='1')return;var p=location.pathname.replace(/\.html$/,'')||'/';fetch('/api/track',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({path:p}),keepalive:true}).catch(function(){});document.addEventListener('click',function(ev){var a=ev.target&&ev.target.closest?ev.target.closest('a[href]'):null;if(!a)return;var h=a.href;if(h&&h.indexOf('chromewebstore.google.com')>-1){try{navigator.sendBeacon('/api/track',new Blob([JSON.stringify({path:p,event:'store-click'})],{type:'application/json'}));}catch(e){}}},true);}catch(e){}})();
 </script>
 </body>\n</html>\n';
     var blob = new Blob([doc], { type: 'text/html' });

@@ -202,6 +202,18 @@
     'use strict';
     var input = document.getElementById('input-box');
     var output = document.getElementById('output-box');
+    // anonymous usage signal: one event when a real conversion produces output
+    function trackUse() {
+      try {
+        if (navigator.doNotTrack === '1') return;
+        fetch('/api/track', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ path: '/clean-copy-tool', event: 'convert' }),
+          keepalive: true
+        }).catch(function () {});
+      } catch (e) {}
+    }
     var statusEl = document.getElementById('copy-status');
     var statsEl = document.getElementById('out-stats');
     var mode = 'markdown';
@@ -233,6 +245,7 @@
         var words = result.split(/\s+/).filter(Boolean).length;
         statsEl.textContent = result.length + ' chars · ' + words + ' words';
         setStatus('');
+        if (!convert._tracked) { convert._tracked = true; trackUse(); }
       } catch (err) {
         output.value = '';
         setStatus('Conversion failed: ' + err.message, true);

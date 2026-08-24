@@ -60,7 +60,7 @@
       <div class="card">
         <h3>🧹 Clean Copy — free &amp; open source</h3>
         <p>Copies any selection as <strong>clean text</strong> or proper <strong>Markdown</strong> from the right-click menu. Headings become <code>#</code>, links become <code>[text](url)</code>, lists and bold survive. No account, no tracking, runs 100% locally. MIT licensed.</p>
-        <p><a href="https://github.com/mahope/clean-copy/releases/latest/download/clean-copy-v1.1.0.zip" style="color:var(--color-accent);">Download Clean Copy (.zip)</a> · <a href="/clean-copy" style="color:var(--color-accent);">install guide →</a></p>
+        <p><a href="https://chromewebstore.google.com/detail/clean-copy/ckcepdoeofecoaadgjmconbdepohgbnj" style="color:var(--color-accent);">Install Clean Copy from the Chrome Web Store</a> · <a href="/clean-copy" style="color:var(--color-accent);">install guide →</a></p>
       </div>
       <div class="card"><h3>📝 Markdown-paste converters</h3><p>Several extensions convert selections to Markdown with configurable rules (link style, image handling). Good if you need fine control over how tables or images are emitted; heavier than most people need for everyday research notes.</p></div>
       <div class="card"><h3>🧽 Plain-text clipboard tools</h3><p>"Copy as plain text" utilities strip everything, including structure. Great for emails, but you lose headings, links and lists — reach for these only when formatting must die completely.</p></div>
@@ -73,9 +73,7 @@
   <div class="container">
     <h2 id="install">How to install Clean Copy in 30 seconds</h2>
     <ol>
-      <li><a href="https://github.com/mahope/clean-copy/releases/latest/download/clean-copy-v1.1.0.zip" style="color:var(--color-accent);">Download the zip</a> and unzip it.</li>
-      <li>Open <code>chrome://extensions</code> and switch on <strong>Developer mode</strong> (top-right).</li>
-      <li>Click <strong>Load unpacked</strong> and pick the unzipped folder.</li>
+      <li><a href="https://chromewebstore.google.com/detail/clean-copy/ckcepdoeofecoaadgjmconbdepohgbnj" style="color:var(--color-accent);">Install Clean Copy from the Chrome Web Store</a> — one click, nothing to unzip.</li>
       <li>Select any text → right-click → <strong>Clean Copy</strong> → choose Markdown or clean text. Done.</li>
     </ol>
     <p>The full illustrated guide lives on the <a href="/clean-copy" style="color:var(--color-accent);">Clean Copy page</a>. The extension needs no special permissions beyond reading your selection at copy time, and nothing ever leaves your machine.</p>
@@ -101,7 +99,7 @@
   <p><a href="/">&larr; Home</a> &middot; <a href="/clean-copy">Clean Copy</a> &middot; <a href="/free-tools">Free tools</a> &middot; <a href="/#blog">Blog</a></p>
 </footer>
 <script>
-(function(){try{if(navigator.doNotTrack==='1')return;var p=location.pathname.replace(/\.html$/,'')||'/';fetch('/api/track',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({path:p}),keepalive:true}).catch(function(){});}catch(e){}})();
+(function(){try{if(navigator.doNotTrack==='1')return;var p=location.pathname.replace(/\.html$/,'')||'/';fetch('/api/track',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({path:p}),keepalive:true}).catch(function(){});document.addEventListener('click',function(ev){var a=ev.target&&ev.target.closest?ev.target.closest('a[href]'):null;if(!a)return;var h=a.href;if(h&&h.indexOf('chromewebstore.google.com')>-1){try{navigator.sendBeacon('/api/track',new Blob([JSON.stringify({path:p,event:'store-click'})],{type:'application/json'}));}catch(e){}}},true);}catch(e){}})();
 </script>
 </body>
 </html>

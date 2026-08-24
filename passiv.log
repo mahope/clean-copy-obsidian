@@ -2825,3 +2825,60 @@ Iteration 122 færdig. Resumé:
 STATUS.md er opdateret med næste iteration: trafiktjek om en uge beslutter om SEO-strategien droppes, og Firefox-porten skal testes i rigtig Firefox eller pivoteres fra hvis tallene forbliver nul.
 2026-08-24T04:42:25+02:00 iteration 20 afsluttet (exit 0)
 2026-08-24T04:42:47+02:00 === iteration 21/60 ===
+Iteration 123 færdig. Resumé:
+
+**Trafiktjek (dagsorden A):** /api/stats bekræfter stadig 0 eksterne brugere — kun egen smoke-test. Ny SEO-blog-produktion er derfor stoppet.
+
+**Bygget i stedet — Clean Copy Web, live på https://hermes-passiv.pages.dev/clean-copy-tool:**
+- Indsæt rodet formatteret tekst eller rå HTML → få ren Markdown eller ren tekst tilbage
+- 100 % klient-side: intet uploades, ingen cookies — et reelt salgsargument
+- Samme konverteringskerne som extensionen (trukket verbatim ud i delt UMD-modul), så de to aldrig divergerer
+- Features: mode-switch, smart-quote-cleanup, sample, copy-knap, .md-download, FAQ, valideret WebApplication JSON-LD
+
+**Verificering:** 25 eksisterende logiktests + nye roundtrip-tests grønne; inline-script syntax-check OK; deployet og curl-verificeret live på alle berørte sider (/clean-copy-tool 200, core.js 200, sitemap-indgang, forsids-kort, CTA på /clean-copy); IndexNow pinget 200. Browsertest i rigtig Chrome kunne ikke udføres (kendt blocker) — kompenseret med Node-tests.
+
+**Budget:** stadig 35/1000 kr. **Søgninger: 1 af 12.**
+
+Næste iteration beslutter ud fra om værktøjet får besøg/konverteringer — ellers pivot til helt ny territory pr. DECISION.md-kriteriet. STATUS.md er opdateret med det hele.
+2026-08-24T04:50:13+02:00 iteration 21 afsluttet (exit 0)
+2026-08-24T04:50:44+02:00 === iteration 22/60 ===
+Iteration 124 færdig.
+
+**Hvad jeg fandt:** /api/stats viser stadig kun mine egne smoke-tests — 0 eksterne besøg på /clean-copy-tool, 0 konverteringer. SEO-produktionen forbliver stoppet pr. dagsordenen.
+
+**Hvad jeg byggede (dagsorden A):** det manglende brugs-signal. Siden kunne kun måle sidevisninger, ikke om værktøjet faktisk blev brugt. Nu sender /clean-copy-tool ét anonymiseret `convert`-event via /api/track, første gang en reel konvertering giver output. Do Not Track respekteres, ingen cookies, ingen tekst sendes — events vises som `/clean-copy-tool@convert` i stats.
+
+**Verificeret:** node syntax-check OK, deployet via deploy.sh, curl bekræfter den nye kode er live på https://hermes-passiv.pages.dev/clean-copy-tool, self-check.sh exit 0.
+
+**Budget:** 35/1000 kr, ingen nye udgifter. Søgninger: 1/12.
+
+**Næste iteration:** trafiktjek igen. Besøg men ingen `@convert`-events → forbedr værktøjet. Stadig 0 eksterne besøg → Clean Copy Web er også død som kanal, og der pivotes til ny territory pr. DECISION.md-kriteriet. STATUS.md er opdateret.
+2026-08-24T04:53:28+02:00 iteration 22 afsluttet (exit 0)
+2026-08-24T04:53:57+02:00 === iteration 23/60 ===
+Iteration 125 færdig. Hovedfundet:
+
+**Clean Copy er allerede LIVE i Chrome Web Store med 6 rigtige brugere** — https://chromewebstore.google.com/detail/clean-copy/ckcepdoeofecoaadgjmconbdepohgbnj — men vores eget site sagde stadig "coming soon" og sendte folk til en GitHub-zip (endda gammel v1.1.0). Det var den reelle blokering, ikke butikken.
+
+Rettet og deployet:
+- site/clean-copy.html: hero-CTA og install-sektion fører nu med butiks-linket ("Add to Chrome"); GitHub-zip kun som manuel option
+- 3 blog-poster: zip-links → butiks-links med korrekt tekst, forældede unzip-trin fjernet
+- Verificeret live på prod på alle tre sider; self-check.sh exit 0
+
+Ærlige tal: /clean-copy-tool stadig 0 eksterne besøg; venteliste 0; revenue 0. Søgninger: 2/12. Budget: 35/1000 kr.
+
+Noteret til næste gang: manifest siger Ctrl+Shift+C men store-listingen viser Ctrl+Shift+Y som default — skal tjekkes ved næste extension-opdatering. STATUS.md er opdateret med dagsordenen (spor users-vækst, tilføj @store-click-sporing, byg Pro når LS-nøglen kommer).
+2026-08-24T05:00:59+02:00 iteration 23 afsluttet (exit 0)
+2026-08-24T05:01:25+02:00 === iteration 24/60 ===
+Iteration 126 færdig. Kort resume:
+
+**Hvad der blev bygget:** Konverteringssporing på alle Chrome Web Store-links — dagsorden B fra forrige iteration.
+
+- Den delte track-snippet (103 sider) har nu en capture-phase click-lytter: klik på et som helst link til chromewebstore.google.com sender `store-click` via `navigator.sendBeacon`, så det overlever at fanen navigerer væk.
+- Workeren krævede ingen ændring — dens event-validering accepterer allerede formatet, og stats viser events som `/clean-copy@store-click`.
+- Node --check godkendte snippet'en; deployet og verificeret end-to-end på prod: live HTML indeholder koden, test-POST gav `{"ok":true}`, og `/api/stats?token=hp-stats-v1` viser eventet (1 = min egen test → eksterne klik: 0).
+
+**Søgninger: 0/12** — ingen var nødvendige; alting var lokalt.
+
+Budget uændret: 35/1000 kr. STATUS.md opdateret. Næste iteration: læs de første rigtige tal og sammenlign med butikkens users-tal; pivot-reglen står klar hvis users står stille under 10.
+2026-08-24T05:03:41+02:00 iteration 24 afsluttet (exit 0)
+2026-08-24T05:04:05+02:00 === iteration 25/60 ===

@@ -2686,3 +2686,20 @@ Søgninger brugt: 0 af 12. Budget uændret: 35/1000 kr.
 2026-08-24T03:44:57+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
 2026-08-24T03:47:48+02:00 === iteration 15/60 ===
 2026-08-24T03:49:58+02:00 UPSTREAM - venter 5 min (forsoeg 2/24)
+Iteration 118 færdig — og den fandt noget vigtigt.
+
+**Fundet: vores målinger har været blind.** Kun 6 af 105 sider på sitet sendte pageviews til /api/stats. Alle blogs, guides, forsider og DA-sider trackede ingenting — så "nul ekstern trafik" har hele tiden været underrapportering, ikke en bekræftet konklusion.
+
+**Gjort:**
+- `tools/add_tracking.py` injicerede et lille cookieless beacon-script (respekterer Do Not Track) i alle 105 manglende sider
+- Deployet og verificeret live: tracker til stede på /, blog, guides, da/page-profile (200 + indholdstjek)
+- End-to-end selftest: POST til /api/track dukkede op i stats inden for sekunder
+- self-check.sh exit 0, IndexNow pinget (105 URL'er, 200), committet
+
+**Søgninger brugt: 0 af 12** — ingen var nødvendige.
+
+STATUS.md er opdateret. Næste iterations vigtigste punkt: læs stats igen med korrekt målning — første gang vi reelt kan se om blogs/guides trækker besøg. Hvis stadig nul, er problemet distribution udenfor sitet, ikke mere indhold.
+2026-08-24T03:51:01+02:00 iteration 15 afsluttet (exit 0)
+2026-08-24T03:51:22+02:00 UPSTREAM - venter 5 min (forsoeg 1/24)
+2026-08-24T03:55:17+02:00 === iteration 13/15 ===
+2026-08-24T03:56:40+02:00 === iteration 16/60 ===

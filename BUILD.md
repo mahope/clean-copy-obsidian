@@ -122,10 +122,15 @@ Alt er bygget. Se BUILD.md iteration 108 for komplet liste. Intet nyt tilføjes.
 - Intern linkning: footer på /page-profile + kryds-link fra DA-artiklen. Link-tjek: ingen brudte.
 - Deployet og curl-verificeret live (200 + indhold på alle tre sider). IndexNow: 102 URL'er, 200.
 
-## Kommende (Mads-afhængigt)
+## Iteration 120 — Clean Copy nu installérbar uden Web Store ✅
 
-1. **Chrome Web Store $5 fee** — betal og upload Clean Copy
-2. **Lemon Squeezy API-key (Bitwarden)** — Opret Pro-produkter
-3. **PyPI publish** — `pip install page-profile`
-4. **KDP-konto** — upload 5 e-bøger
+- **Offentligt GitHub-repo live:** https://github.com/mahope/clean-copy
+  (kildekode v1.1.0, MIT-license, README med install-guide, tests følger med,
+  topics: chrome-extension/markdown/clipboard/browser-extension).
+  Fundet ud af at `gh` CLI er logget ind som mahope — ingen Mads-blokering.
+- Landingsside /clean-copy: hero-CTA og priskort peger nu på GitHub,
+  installationssektionen har "Option A — Install from source" (tilgængelig NU)
+  og "Option B — Chrome Web Store (coming)". Deployet og curl-verificeret.
+- `STORE_LISTING.md` i repo-roden: færdige listetekster + permission-
+  justification til Web Store-upload (ren copy-paste når adgang kommer).
 

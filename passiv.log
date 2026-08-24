@@ -2731,3 +2731,15 @@ Iteration 119 færdig. Resumé:
 **Søgninger: 0 af 12 brugt.** STATUS.md opdateret med næste skridt (stats-tjek over flere dage, store-listetekster klarlagt, kontofri distributionsveje).
 2026-08-24T04:01:43+02:00 iteration 16 afsluttet (exit 0)
 2026-08-24T04:02:07+02:00 === iteration 17/60 ===
+Iteration 120 færdig. Resumé:
+
+**Stats (ærlige):** Venteliste 0, kunder 0, revenue 0. 16 besøg på 10 dage — alle egen trafik/selftests. Ingen eksterne uniques.
+
+**Hvad jeg byggede/rettede:**
+1. **80 titler trimmet til ≤65 tegn** på hele sitet (scriptbaseret: først marketing-suffikser fjernet, derefter ordgrænse-klip). Verificeret 0 over 65, JSON-LD stadig valid alle steder.
+2. **2 døde links fundet og rettet:** `/blog/gratis-nis2-vaerktoejer` pegede to gange på `/nis2-check-da`, som ikke findes — nu `/nis2-check`. Fuld link-tjek v2 (extensionless-opløsning) + sitemap-tjek: 105 URLs, 0 fejl.
+3. **Deployet og verificeret live:** nye titler synlige via curl, health_check.py 71/71 ✅, IndexNow pinget med 105 URLs (200), committed.
+
+**Ærlig konklusion:** Sitet er nu teknisk komplet — links, downloads, meta, OG-tags, JSON-LD, titler alt gennemtjekket. Der er intet mere at bygge internt, og trafikken er nul. Projektet er reelt blokeret på Mads' konti (Chrome Web Store upload, Bitwarden-nøgler til npm/Lemon Squeezy, KDP-konto). Det står nu sådan i STATUS.md, så næste iteration ikke brænder iterationer af på kosmetik. 0 søgninger brugt.
+2026-08-24T04:03:40+02:00 iteration 14 afsluttet (exit 0)
+2026-08-24T04:04:21+02:00 === iteration 15/15 ===

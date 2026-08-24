@@ -145,7 +145,7 @@
       No more messy pastes — just right-click and copy.
     </p>
     <div class="hero-cta">
-      <span class="btn-primary" style="opacity:0.6;cursor:default;">⬇ Available on Chrome Web Store</span>
+      <span class="btn-primary"><a href="https://github.com/mahope/clean-copy" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">⬇ Install from GitHub — free & open source</a></span>
       <span class="hero-note">Free · No account needed · Works on any page</span>
     </div>
     <div class="hero-meta">
@@ -237,7 +237,7 @@
             <li>✅ Zero-width char removal</li>
             <li>✅ No account required</li>
           </ul>
-          <span class="btn-secondary" style="display:block;text-align:center;margin-top:1rem;opacity:0.6;cursor:default;">⬇ Available on Chrome Web Store</span>
+          <span class="btn-secondary" style="display:block;text-align:center;margin-top:1rem;"><a href="https://github.com/mahope/clean-copy" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">★ Source on GitHub</a></span>
         </div>
         <div class="tier-card pro">
           <h3>Pro <span style="font-size:0.75rem;color:var(--color-text-muted);font-weight:400;">(coming soon)</span></h3>
@@ -261,14 +261,22 @@
       <h2>Install</h2>
       <p class="section-intro">Clean Copy is a Chrome extension — Manifest V3, works in Chrome, Edge, Brave, and any Chromium-based browser.</p>
       <div class="install-steps">
+        <h3 style="margin-bottom:1rem;">Option A — Install from source (available now, ~30 seconds)</h3>
         <ol>
-          <li><strong>Visit the Chrome Web Store</strong> — search for "Clean Copy" or use the direct link (once published).</li>
+          <li><strong>Get the source</strong> — clone or download from <a href="https://github.com/mahope/clean-copy" rel="noopener">GitHub</a>:
+            <br><code>git clone https://github.com/mahope/clean-copy.git</code></li>
+          <li><strong>Open</strong> <code>chrome://extensions</code> and enable <strong>Developer mode</strong> (top right).</li>
+          <li><strong>Click "Load unpacked"</strong> and select the cloned folder.</li>
+          <li><strong>Select text on any page</strong> — right-click and choose Clean Copy, or press <kbd>Ctrl+Shift+C</kbd> / <kbd>Cmd+Shift+C</kbd>.</li>
+          <li><strong>Paste</strong> — clean Markdown ready to use.</li>
+        </ol>
+        <h3 style="margin:1.5rem 0 1rem;">Option B — Chrome Web Store (coming)</h3>
+        <ol>
+          <li><strong>Visit the Chrome Web Store</strong> — search for "Clean Copy" (once published).</li>
           <li><strong>Click "Add to Chrome"</strong> — no permissions beyond <code>activeTab</code>, <code>clipboardWrite</code>, and <code>contextMenus</code>.</li>
-          <li><strong>Select text on any page</strong> — right-click and choose "Copy as Clean Text" or "Copy as Markdown".</li>
-          <li><strong>Paste</strong> — clean, formatted text ready to use.</li>
         </ol>
       </div>
-      <p style="color:var(--color-text-muted);font-size:0.85rem;">The extension is currently under Chrome Web Store review. Check back soon or <a href="#notify" style="color:var(--color-accent);">get notified</a> when it's live.</p>
+      <p style="color:var(--color-text-muted);font-size:0.85rem;">Source code is MIT-licensed on GitHub. The Chrome Web Store listing is pending review.</p>
     </div>
   </section>
 

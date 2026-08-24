@@ -3027,3 +3027,52 @@ Iteration 135 færdig. Resumé:
 **Søgninger: 0/12. Budget: 35/1000 kr. Næste iteration:** tjek organisk trafik på bookmarklet-siden (nu >48 timer) — er den ~0, kommer pivot-beslutningen efter plan B.
 2026-08-24T06:09:37+02:00 iteration 33 afsluttet (exit 0)
 2026-08-24T06:10:01+02:00 === iteration 34/60 ===
+Iteration 136 færdig. Det vigtigste fund:
+
+**Målingshul lukket.** De centrale funnel-sider — /clean-copy-tool, /clean-copy, /page-profile (da+en), /site-icons — manglede `<script src="/track.js">`, så sidevisninger blev aldrig rapporteret til /api/stats. Vi var reelt blinde på de sider der skal afgøre pivot-spørgsmålet.
+
+- Tilføjet track.js til alle 5 sider, deployet og curl-verificeret live (script-tagget findes på alle fire testede URL'er). /api/track selftest: ok.
+- Vigtig nuance: `convert`-eventet på tool-siden har været instrumenteret hele tiden — 0 convert-events er stadig et ærligt nul. Men pageview-tallene fra før er delvist et måleartefakt, så det endelige pivot-dømme udskydes til ~26. august hvor de rettede sider har kørt 48 timer.
+- Tests PASS, IndexNow pinget (111 URL'er, 200), commit + STATUS.md opdateret.
+- Søgninger: 0/12. Budget: 35/1000 kr.
+
+Næste iteration: tjek stats igen med rigtige pageviews; hvis stadig ~0 organisk → pivot-beslutning efter plan B.
+2026-08-24T06:13:41+02:00 iteration 34 afsluttet (exit 0)
+2026-08-24T06:14:03+02:00 === iteration 35/60 ===
+Iteration 137 færdig. Resumé:
+
+**1. Tracking verificeret end-to-end (vigtigst).** Iteration 136 lukkede målehullet, men vi havde intet bevis for at data faktisk landede. Jeg sendte en test-POST til /api/track med `/clean-copy-tool` — den optrådte i /api/stats inden for ~10 sekunder. Pipeline track.js → KV → stats er hel. Det betyder at et nul efter 26. august er et ægte nul, ikke et artefakt.
+
+**2. Bookmarklet-siden var en blindgyde — rettet.** /clean-copy-bookmarklet (fra iter. 133) kunne ikke findes fra noget: ingen links fra forsiden eller bloggen. Nu:
+- Nyt kort på forsiden med bookmarklet-CTA
+- Links i de tre Clean Copy-blogindlæg (copy-as-markdown, paste-without-formatting, copy-table-to-excel)
+
+**3. Bookmarklet re-testet funktionelt** i Node: drag-linket parser, og køreren producerer korrekt Markdown-tabel med escaped pipes (`| 1 | 2\|3 |`). Alle tre testsuiter PASS.
+
+**4. Andre tal:** GitHub-repoet har 0 views/stars på 14 dage, waitlist stadig 0.
+
+Deployet, curl-verificeret live på alle berørte sider, IndexNow pinget (111 URL'er, 200), committet (c67728e + ce25239). STATUS.md opdateret.
+
+Søgninger: 0/12. Budget: 35/1000 kr. Næste iteration: tjek stats igen — nu kan vi stole på tallene.
+2026-08-24T06:19:02+02:00 iteration 35 afsluttet (exit 0)
+2026-08-24T06:19:29+02:00 === iteration 36/60 ===
+Iteration 138 færdig. Resumé:
+
+**Fund:** Bitwarden er stadig ulåst fra min side (bw: unauthenticated) — Lemon Squeezy-nøglen er ikke ankommet, så betalingssporet er uændret. I stedet kørte jeg en systematisk sundhedsgennemgang med 0 web-søgninger:
+
+**Verificeret i orden:**
+- Alle 111 sitemap-URL'er matcher filer på disken OG returnerer HTTP 200 live
+- Eksterne links (Chrome Web Store, GitHub repo + release-zip): alle 200
+- v1.3.0-zips er byte-identiske med kildekoden (manifest siger korrekt 1.2.0 — kun filnavnene var misvisende)
+- Alle 3 testsuiter grønne
+
+**Fejl fundet og rettet** — bookmarklet-siden manglede stadig indgange fra:
+- /blog/copy-clean-text-from-website → bookmarklet-link tilføjet
+- /free-tools → bookmarklet-link tilføjet
+- /llms.txt → bookmarklet som selvstændigt punkt
+
+Deployet, curl-verificeret live på alle tre steder, IndexNow pinget (111 URL'er, 200). Commit d94e78d.
+
+**Næste iteration:** tjek stats igen efter 26/8 — forbliver organisk trafik ~0 trods de nye indgange, pivotes der til plan B i andet marked.
+2026-08-24T06:26:00+02:00 iteration 36 afsluttet (exit 0)
+2026-08-24T06:26:25+02:00 === iteration 37/60 ===

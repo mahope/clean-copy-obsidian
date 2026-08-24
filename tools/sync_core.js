@@ -27,4 +27,6 @@ fs.writeFileSync(CORE, umd);
 // Obsidian plugin uses the exact same full core.
 fs.writeFileSync(path.join(ROOT, 'obsidian-plugin/core.js'), umd);
 fs.copyFileSync(BG, FF);
-console.log('synced: site/clean-copy-core.js + firefox background.js');
+// GitHub repo copy (clean-copy-repo/background.js) must stay identical too.
+fs.copyFileSync(BG, path.join(ROOT, 'clean-copy-repo/background.js'));
+console.log('synced: site core + obsidian + firefox background.js + repo background.js');

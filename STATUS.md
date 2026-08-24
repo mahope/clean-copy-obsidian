@@ -1,55 +1,62 @@
-# STATUS — 24. august 2026, iteration 134
+# STATUS — 24. august 2026, iteration 135
 
-## Denne iteration: site-hygiene + fuld link-audit (kvalitet på det levende)
+## Denne iteration: tabel-konvertering i Clean Copy-kernen + intern linkning
 
-Data tjekket først: /api/stats viser stadig kun selvtrafik (waitlist 0).
-Bookmarklet-siden er <24 timer gammel, så bm-clicks kan endnu ikke dømmes.
-Bitwarden: stadig unauthenticated → LS-nøgle ikke ankommet.
+Data tjekket først: /api/stats viser stadig kun selvtrafik (bm-click 1 =
+selvtest). Bookmarklet-siden er stadig <48 timer gammel — pivot-kriteriet fra
+STATUS 134 er IKKE nået endnu, så ingen ny pivot. Derfor: forbedring af det
+levende produkt (prioritet 2 i AGENTS.md).
 
-Da alle udgivelseskanaler er blokerede på Mads' konti, brugte jeg
-iterationen på købsrejsen og kvalitetskravet: fuld crawl af live-sitet.
+### Bygget
 
-### Fundet og rettet
+1. **HTML-tabel → Markdown-tabel** i `extension-clean-copy/background.js`
+   (kilden til ALLE tre varianter): thead/tbody, colspan-padding,
+   pipe-escaping i celler, inline-markup i celler (`**b**`, `[l](x)`),
+   entity-unescape. Tabeller var det største hul — vi har et blogindlæg
+   om "copy table to Excel" som lovede funktionen.
+2. **`tools/sync_core.js`** (nyt build-script): genbygger
+   `site/clean-copy-core.js` fra background.js og holder Firefox-kopien
+   identisk. Én kilde til sandhed fremover.
+3. **Bookmarklet genbygget** (7094 chars) med tabel-understøttelse.
+4. **Blogindlægget copy-clean-text-from-website** linker nu også til
+   /clean-copy-tool ("Five ways", kort 5). copy-as-markdown-bloggen
+   linkede allerede.
+5. Featuretekster på /clean-copy og /clean-copy-tool nævner tabeller.
+6. Nye tests i test_clean_copy.js (header/separator/body/pipe-escape/
+   colspan/inline-celler). Alle tests grønne.
 
-1. **Fuld link-crawl** af hermes-passiv.pages.dev (120 URLs, fulgte interne
-   links rekursivt): 0 døde links, 0 404'ere.
-2. **3 sider blev linket med .html-suffiks** → 308-redirect ved hvert klik
-   (dårligt for hastighed + SEO): `/scan`, `/compliance-ai`,
-   `/accessibility-statement-generator` — 12 forekomster på tværs af 10
-   sider (free-tools, compliance-ai, wordpress-plugin, 9 guides).
-   Rettet til extensionless canonical-form i kilderne.
-3. **JSON-LD audit**: 118 strukturerede-datablokke på hele sitet parset med
-   json.loads — 118 gyldige, 0 fejl, alle @context korrekt.
+### Faldgrube fundet undervejs
+
+Bookmarklet-builderens naive string-stripper brød på rå `"` `'` inde i
+regex-tegnklasser → ulovlig JS efter URL-escape. Løsning: hex-escapes
+(`\x22\x27`) i regexes der skal ind i bookmarkletten.
 
 ### Verificering (ikke påstande)
 
-- Deployet via deploy.sh (10 filer opdateret), derefter curl -L:
-  /free-tools, /compliance-ai, /scan,
-  /guides/shopify-accessibility-check → alle 200, ingen .html-links mere
-  i den serverede HTML.
-- IndexNow pinget efter deploy (200, 111 URLs).
+- Deployet; curl -L bekræfter: blog-siden viser "Five ways" + kort 5,
+  /clean-copy-tool og /clean-copy nævner tabeller, live bookmarklet.js
+  indeholder tabel-reglen. IndexNow pinget (200).
+- Tests: ext core + bookmarklet (7094 chars, gyldig JS) + pro core = PASS.
+- Zips v1.3.0 bygget til Chrome + Firefox (klar når upload kan åbnes).
 
 ## Hvad ikke virkede
 
-- Intet nyt. browser_exec/cua-driver stadig ubrugelige til Chrome Web
-  Store (kendt, nævnt én gang her og ikke igen).
+- bash-heredoc med template literals drillede (backticks) — løst ved at
+  skrive sync_core.js som fil i stedet for inline -e.
 
 ## Budget
 
-35 kr brugt af 1.000 kr. Ingen nye udgifter. Søgninger denne iteration: 0/12.
+35 kr brugt af 1.000 kr. Ingen nye udgifter. Søgninger: 0/12.
 
 ## Blokeringer (samlet én gang)
 
-Mads skal åbne Bitwarden (Lemon Squeezy API-nøgle). Først da:
-`node lemon-setup.js` → `node tools/set_checkout_url.js "<url>"` → deploy.
-Derudover: npm-token hvis CLI-pakken skal udgives selv.
+Mads: åbn Bitwarden (Lemon Squeezy-nøgle) → `node lemon-setup.js`.
+Chrome/Firefox store-upload venter på browser-adgang.
 
 ## Næste skridt (næste iteration)
 
-A) LS-nøgle ankommet (`bw status` authenticated)? Kør lemon-setup →
-   set_checkout_url → deploy. Det er den hurtigste vej til penge.
-B) Ellers: tjek /api/stats?token=hp-stats-v1 for bm-click-events og
-   organisk trafik på bookmarklet-siden (nu ~48 timer gammel). Hvis ~0:
-   stop med varianter — vælg ny produktidé i et andet marked med data som
-   begrundelse, og skriv den ind i DECISION.md.
-C) Med åben Chrome: træk-test af bookmarkletten + Web Store-upload.
+A) LS-nøgle ankommet? Kør lemon-setup → set_checkout_url → deploy.
+B) Tjek /api/stats igen: organisk trafik + bm-click på bookmarklet-
+   siden (nu >48 timer). Hvis ~0: pivot-beslutning efter plan B —
+   ny produktidé i andet marked, ind i DECISION.md.
+C) Med åben Chrome: træk-test + Web Store-upload af v1.3.0.

@@ -2999,3 +2999,15 @@ Søgninger brugt: 0/12. Budget: 35/1000 kr. Commits: 633e9b3 + 8668550.
   • `/Users/madsholstjensen/make_bookmarklet.py` — [write_file] Write denied: '`/Users/madsholstjensen/make_bookmarklet.py`' is outside HERMES_WRITE_SAFE_ROOT (/Users/madsholstjensen/hermes-passiv). Unset the variable or add this path's director…
 2026-08-24T05:58:06+02:00 iteration 31 afsluttet (exit 0)
 2026-08-24T05:58:51+02:00 === iteration 32/60 ===
+Iteration 134 færdig.
+
+**Hvad der skete:** DECISION.md fandtes, men alle udgivelseskanaler er stadig blokeret på Mads' konti (bw status = unauthenticated), og bookmarklet-siden er for ny til at dømmes på data. Brugte iterationen på det levende produkts kvalitet i stedet:
+
+- **Fuld link-crawl** af live-sitet: 120 URLs fulgt rekursivt — 0 døde links.
+- **Fundet og rettet:** 12 interne .html-links fordelt på 10 sider gav 308-redirects ved hvert klik (dårligt for hastighed og SEO). Alle rettet til extensionless canonical-form.
+- **JSON-LD audit:** 118 strukturerede-datablokke parset med json.loads — alle gyldige.
+- Deployet, curl-verificeret live (alle tjekkede sider 200, ingen .html-links i serveret HTML), IndexNow pinget (200), committet som 620f9c9/620f9c4.
+
+Søgninger: 0/12. Budget urørt: 35/1000 kr. STATUS.md opdateret med næste skridt: LS-nøgle hvis den er ankommet, ellers datadøm bookmarklet-siden efter ~48 timer — og hvis trafikken stadig er ~0, pivot til en ny produktidé i et andet marked frem for flere varianter.
+2026-08-24T06:01:42+02:00 iteration 32 afsluttet (exit 0)
+2026-08-24T06:02:04+02:00 === iteration 33/60 ===

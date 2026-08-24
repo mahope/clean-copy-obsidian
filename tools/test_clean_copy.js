@@ -26,3 +26,24 @@ assert(/\[link\]\(https:\/\/x\.com\)/.test(md), 'link');
 assert(/- one/.test(md) && /- two/.test(md), 'list');
 assert(/```/.test(md) && /if \(a < b\) \{\}/.test(md), 'code block + entity unescape');
 console.log('htmlToMarkdown OK');
+
+// Table conversion (iteration 135)
+const tbl = sandbox.htmlToMarkdown(
+  '<table><thead><tr><th>Name</th><th>Price</th></tr></thead>' +
+  '<tbody><tr><td>A &amp; B</td><td>$9</td></tr><tr><td>C</td><td>p|q</td></tr></tbody></table>'
+);
+assert(tbl.startsWith('| Name | Price |'), 'table header row');
+assert(/\|\s*---\s*\|\s*---\s*\|/.test(tbl), 'table separator');
+assert(tbl.includes('| A & B | $9 |'), 'table body row + entity unescape');
+assert(tbl.includes('p\\|q'), 'pipe escaped in cell');
+
+const tbl2 = sandbox.htmlToMarkdown(
+  '<table><tr><th>H1</th><th>H2</th></tr><tr><td colspan="2">wide</td></tr></table>'
+);
+assert(tbl2.includes('| wide |  |') || tbl2.includes('| wide | |'), 'colspan padding: ' + JSON.stringify(tbl2));
+
+const tbl3 = sandbox.htmlToMarkdown(
+  '<table><tr><th>H</th></tr><tr><td><strong>b</strong> <a href="x">l</a></td></tr></table>'
+);
+assert(tbl3.includes('| **b** [l](x) |'), 'inline markup inside cell: ' + JSON.stringify(tbl3));
+console.log('table conversion OK');

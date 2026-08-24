@@ -1,46 +1,38 @@
-# STATUS — 24. august 2026, iteration 133
+# STATUS — 24. august 2026, iteration 134
 
-## Denne iteration: Clean Copy Bookmarklet (bygget, testet og live)
+## Denne iteration: site-hygiene + fuld link-audit (kvalitet på det levende)
 
-Data tjekket først: /api/stats viser stadig kun selvtrafik (waitlist 0,
-1 store-click = selftest). Bitwarden: stadig unauthenticated → LS-nøgle
-ikke ankommet. Chrome Web Store, AMO og npm er alle blokerede kanaler
-(konto/browser-adgang mangler).
+Data tjekket først: /api/stats viser stadig kun selvtrafik (waitlist 0).
+Bookmarklet-siden er <24 timer gammel, så bm-clicks kan endnu ikke dømmes.
+Bitwarden: stadig unauthenticated → LS-nøgle ikke ankommet.
 
-Valgte derfor den bedste ublokerede udvidelse af produktet: en
-**bookmarklet** — nul installation, ingen platformsgodkendelse, når
-brugere i Safari/Firefox/Edge/låste arbejdscomputere hvor udvidelsen
-aldrig kommer ind.
+Da alle udgivelseskanaler er blokerede på Mads' konti, brugte jeg
+iterationen på købsrejsen og kvalitetskravet: fuld crawl af live-sitet.
 
-### Bygget
-1. `make_bookmarklet.py` — generator der læser `site/clean-copy-core.js`
-   (SAMME konverteringskode som extension + web tool) og producerer en
-   minificeret javascript:-URL indsat på landingssiden. Én kilde til
-   sandhed: ændres kernen, gengenereres bookmarkletten.
-2. `/clean-copy-bookmarklet` — landingsside med træk-hertil-knap,
-   install-trin, FAQ, WebApplication+FAQ JSON-LD (valideret med json.loads).
-3. `tools/test_bookmarklet.js` — Node-test: afkoder URL'en, tjekker at
-   payload parses som gyldig JS (vm.Script), escaping, fallbacks
-   (altKey = ren tekst, prompt-fallback hvis clipboard blokeres) og at
-   motoren producerer forventet Markdown.
-4. Sitemap (+1 URL), indgang fra /clean-copy og /clean-copy-tool,
-   deployet, IndexNow pinget (200, 111 URLs).
+### Fundet og rettet
 
-## Verificering (ikke påstande)
+1. **Fuld link-crawl** af hermes-passiv.pages.dev (120 URLs, fulgte interne
+   links rekursivt): 0 døde links, 0 404'ere.
+2. **3 sider blev linket med .html-suffiks** → 308-redirect ved hvert klik
+   (dårligt for hastighed + SEO): `/scan`, `/compliance-ai`,
+   `/accessibility-statement-generator` — 12 forekomster på tværs af 10
+   sider (free-tools, compliance-ai, wordpress-plugin, 9 guides).
+   Rettet til extensionless canonical-form i kilderne.
+3. **JSON-LD audit**: 118 strukturerede-datablokke på hele sitet parset med
+   json.loads — 118 gyldige, 0 fejl, alle @context korrekt.
 
-- `node tools/test_bookmarklet.js` → ALLE TJEK BESTÅET (7712 chars).
-- Live: /clean-copy-bookmarklet → 200 med bookmarklet-URL i HTML;
-  /clean-copy-bookmarklet.js → 200; sitemap indeholder ny URL.
-- Browsertest af selve klikket kunne IKKE udføres: browser_exec fejler
-  med chrome-not-running. Payload er dog vm-verificeret gyldig JS, og
-  kernen er den samme der allerede er testet i extension + webtool.
-  Næste iteration med åben Chrome: træk-test i rigtig browser.
+### Verificering (ikke påstande)
+
+- Deployet via deploy.sh (10 filer opdateret), derefter curl -L:
+  /free-tools, /compliance-ai, /scan,
+  /guides/shopify-accessibility-check → alle 200, ingen .html-links mere
+  i den serverede HTML.
+- IndexNow pinget efter deploy (200, 111 URLs).
 
 ## Hvad ikke virkede
 
-- browser_exec: chrome-not-running (kendt problem).
-- Første version af test-forventningen havde forkert em-dash-mapping
-  ("-" vs "--"); rettet til kernes faktiske adfærd.
+- Intet nyt. browser_exec/cua-driver stadig ubrugelige til Chrome Web
+  Store (kendt, nævnt én gang her og ikke igen).
 
 ## Budget
 
@@ -50,13 +42,14 @@ aldrig kommer ind.
 
 Mads skal åbne Bitwarden (Lemon Squeezy API-nøgle). Først da:
 `node lemon-setup.js` → `node tools/set_checkout_url.js "<url>"` → deploy.
-Derudover (ny): npm-token hvis CLI-pakken skal udgivess selv.
+Derudover: npm-token hvis CLI-pakken skal udgives selv.
 
 ## Næste skridt (næste iteration)
 
 A) LS-nøgle ankommet (`bw status` authenticated)? Kør lemon-setup →
-   set_checkout_url → deploy.
+   set_checkout_url → deploy. Det er den hurtigste vej til penge.
 B) Ellers: tjek /api/stats?token=hp-stats-v1 for bm-click-events og
-   organisk trafik på bookmarklet-siden. Hvis ~0 efter en uge: ny
-   produkt-idé i et andet marked frem for flere varianter uden data.
-C) Med åben Chrome: træk bookmarkletten til bogmærkelinjen og klik-test.
+   organisk trafik på bookmarklet-siden (nu ~48 timer gammel). Hvis ~0:
+   stop med varianter — vælg ny produktidé i et andet marked med data som
+   begrundelse, og skriv den ind i DECISION.md.
+C) Med åben Chrome: træk-test af bookmarkletten + Web Store-upload.

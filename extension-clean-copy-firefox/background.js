@@ -52,7 +52,40 @@ function htmlToMarkdown(html) {
 
   md = md.replace(/<code[^>]*>(.*?)<\/code>/gi, '`$1`');
 
-  // Lists: convert innermost lists repeatedly until none remain,
+  // Tables: convert before <p>/<br> rules mangle cell structure.
+  // Handles optional caption, thead/tbody and colspan by repeating the
+  // header row so every body row has the right number of pipes.
+  md = md.replace(/<table[^>]*>([\s\S]*?)<\/table>/gi, (_, tableHtml) => {
+    const cellText = (cellHtml) => {
+      let t = htmlToMarkdown(cellHtml);
+      return t.replace(/\s*\n+\s*/g, ' ').replace(/\|/g, '\\|').trim();
+    };
+    const rows = [];
+    const trRe = /<tr[^>]*>([\s\S]*?)<\/tr>/gi;
+    let trm;
+    while ((trm = trRe.exec(tableHtml)) !== null) {
+      const cells = [];
+      const cellRe = /<(th|td)[^>]*(?:colspan\s*=\s*[\x22\x27]?(\d+)[\x22\x27]?)?[^>]*>([\s\S]*?)<\/\1>/gi;
+      let cm;
+      while ((cm = cellRe.exec(trm[1])) !== null) {
+        cells.push(cellText(cm[3]));
+        const span = Math.max(1, parseInt(cm[2] || '1', 10) || 1);
+        for (let s = 1; s < span; s++) cells.push('');
+      }
+      rows.push(cells);
+    }
+    if (rows.length === 0) return '';
+    const cols = Math.max(...rows.map(r => r.length));
+    rows.forEach(r => { while (r.length < cols) r.push(''); });
+    const out = ['| ' + rows[0].join(' | ') + ' |',
+                 '|' + Array(cols).fill(' --- ').join('|') + '|'];
+    for (let i = 1; i < rows.length; i++) {
+      out.push('| ' + rows[i].join(' | ') + ' |');
+    }
+    return '\n' + out.join('\n') + '\n\n';
+  });
+
+// Lists: convert innermost lists repeatedly until none remain,
   // so arbitrarily deep nesting produces one "- " per item.
   const convertList = (_, openTag, body) => {
     const ordered = /^<ol/i.test(openTag);

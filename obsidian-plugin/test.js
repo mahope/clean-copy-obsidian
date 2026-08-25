@@ -24,6 +24,27 @@ assert.throws(() => Core.compileRules([{ find: '[', replace: 'x', regex: true }]
 const rr = [{ find: '\\d+', replace: '#', regex: true }];
 assert.strictEqual(Core.batchConvert(['<p>abc 123</p>'], 'markdown', rr)[0].content, 'abc #');
 
+// wikilinks mode: internal links -> [[WikiLink]], external stay Markdown,
+// images and fenced code are untouched
+const wl = Core.batchConvert(
+  ['<p>See <a href="/other">Other</a> and <a href="https://x.example/y">Ext</a> <img src="a.png" alt="im"></p><pre><code>[z](w)</code></pre>'],
+  'wikilinks', [])[0].content;
+assert.ok(wl.includes('[[Other]]'), wl);
+assert.ok(wl.includes('[Ext](https://x.example/y)'), wl);
+assert.ok(wl.includes('![im](a.png)'), wl);
+assert.ok(wl.includes('[z](w)'), wl);
+// scheme-less relative + root-relative both convert
+const wl2 = Core.batchConvert(['<a href="sub/page">Sub</a>'], 'wikilinks', [])[0].content;
+assert.strictEqual(wl2, '[[Sub]]');
+
+// csv mode: tables -> RFC 4180 rows, prose dropped, fallback to plain text
+const csv = Core.batchConvert(
+  ['<p>intro</p><table><tr><th>Name</th><th>Note</th></tr><tr><td>A</td><td>has, comma and "q"</td></tr></table>'],
+  'csv', [])[0].content;
+assert.ok(csv.startsWith('Name,Note'), csv);
+assert.ok(csv.includes('"has, comma and ""q"""'), csv);
+assert.strictEqual(Core.batchConvert(['<p>no table</p>'], 'csv', [])[0].content.trim(), 'no table');
+
 // batch never throws
 const batch = Core.batchConvert([null, '<p>ok</p>'], 'markdown', []);
 assert.deepStrictEqual(batch.map(b => b.ok), [true, true]);
@@ -46,5 +67,5 @@ assert.deepStrictEqual(batch.map(b => b.ok), [true, true]);
   });
   assert.strictEqual(captured.url.endsWith('/activate'), true);
   assert.strictEqual(captured.body.device_id.length, 16);
-  console.log('All Clean Copy Obsidian tests passed (' + 14 + ' assertions).');
+  console.log('All Clean Copy Obsidian tests passed.');
 })().catch(e => { console.error(e); process.exit(1); });

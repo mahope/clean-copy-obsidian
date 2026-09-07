@@ -23,6 +23,24 @@ Paste and clean text as proper Markdown inside [Obsidian](https://obsidian.md).
 
 Submission is pending. When approved: Settings → Community plugins → Browse → search **Clean Copy**.
 
+## Releasing (maintainers)
+
+A GitHub Release with `main.js`, `manifest.json` and `styles.css` as individual
+assets is all Obsidian and BRAT need. It is created automatically by
+[`.github/workflows/release.yml`](.github/workflows/release.yml) when a tag is
+pushed. Obsidian convention: the tag is the bare version **without a `v`
+prefix** and must equal `version` in `manifest.json` (and have an entry in
+`versions.json`).
+
+```bash
+# bump manifest.json + versions.json, commit, then:
+git tag 1.0.10 && git push origin main 1.0.10
+```
+
+No secrets are needed. The community plugin listing itself requires one
+pull request to `obsidianmd/obsidian-releases` - the ready-made text is in
+[docs/obsidian-releases-pr.md](docs/obsidian-releases-pr.md).
+
 ## Commands
 
 | Command | Default hotkey | What it does |

@@ -1,0 +1,57 @@
+name: Release
+
+# Obsidian convention: push a bare version tag (e.g. 1.0.10, no "v") that
+# equals manifest.json "version". Creates a GitHub Release with main.js,
+# manifest.json and styles.css as individual assets - everything Obsidian
+# and BRAT need. No secrets required.
+
+on:
+  push:
+    tags: ["[0-9]+.[0-9]+.[0-9]+"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run tests
+        run: node test.js
+
+      - name: Version sanity check (manifest == tag, versions.json has entry)
+        run: |
+          VER="$(node -p "require('./manifest.json').version")"
+          if [ "${GITHUB_EVENT_NAME}" = "push" ] && [ "${GITHUB_REF_NAME}" != "${VER}" ]; then
+            echo "::error::tag ${GITHUB_REF_NAME} does not match manifest.json version ${VER} (Obsidian tags have no 'v' prefix)"
+            exit 1
+          fi
+          node -e "
+            const v = require('./versions.json');
+            if (!v['${VER}']) throw new Error('versions.json has no entry for ${VER}');
+          "
+          for f in main.js manifest.json styles.css; do
+            [ -f "$f" ] || { echo "::error::$f missing"; exit 1; }
+          done
+          echo "VERSION=${VER}" >> "$GITHUB_ENV"
+
+      - name: Create or update GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${VERSION}"
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" main.js manifest.json styles.css --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            gh release create "$TAG" main.js manifest.json styles.css \
+              --repo "$GITHUB_REPOSITORY" \
+              --title "Clean Copy for Obsidian ${VERSION}" \
+              --generate-notes
+          fi

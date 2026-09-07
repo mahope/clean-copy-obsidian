@@ -1,2 +1,0 @@
-[console_scripts]
-eaa-scan = eaa_scanner.cli:main

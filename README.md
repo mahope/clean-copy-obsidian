@@ -51,7 +51,9 @@ Tests cover HTML→Markdown conversion (tables, nested lists, code blocks, entit
 
 ## Author
 
-Mads Holst Jensen — [mahoje.dk](https://mahoje.dk) · [github.com/mahope/clean-copy-obsidian](https://github.com/mahope/clean-copy-obsidian)
+Built by Mads Holst Jensen — developer and technical partner for small businesses, Odense, Denmark. https://mahoje.dk
+
+Other Clean Copy builds: [browser extension](https://cleancopy.tools/), [CLI](https://github.com/mahope/clean-copy-cli).
 
 ## License
 

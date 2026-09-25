@@ -3,7 +3,7 @@
 Paste and clean text as proper Markdown inside [Obsidian](https://obsidian.md).
 
 - **Free:** "Paste as clean Markdown" (Ctrl/Cmd+Shift+V) converts clipboard HTML — headings, bold, italic, links, lists, tables, code, entities — to proper Markdown using the same engine as [Clean Copy for Chrome/Firefox](https://github.com/mahope/clean-copy). "Clean selection" tidies the current selection (strips pasted HTML junk, smart quotes, zero-width characters).
-- **Pro ($19/yr):** custom find/replace cleanup rules applied after every conversion, with regex support. Activated with a license key in settings.
+- **Pro ($19/yr, 5 devices):** custom find/replace cleanup rules applied after every conversion, with regex support. [Buy Clean Copy Pro](https://buy.stripe.com/6oU4gy76PgvgdBIdAXbMQ00); the license key arrives by email right after payment. Paste it under Settings → Clean Copy and click **Activate**. **Deactivate** frees the device slot so the license can move to another device.
 
 ## Install
 
@@ -53,7 +53,9 @@ All behavior is configurable in settings (default paste format, Pro rules).
 
 ## Privacy
 
-No network access. No telemetry. The plugin reads your clipboard only when you run a paste command.
+No telemetry. The plugin reads your clipboard only when you run a paste command.
+
+The only network access is the Pro license check: when you activate, deactivate or have an active Pro license (on startup and about once a day), the plugin sends the license key, a random per-installation device ID and the product name to `https://mahope.tools/api/license/`. Nothing is sent without a Pro license. If the server cannot be reached, Pro keeps working for up to 7 days after the last successful check.
 
 ## Note on naming
 
@@ -65,7 +67,7 @@ The community plugin id is `clean-copy-obsidian`; another developer uses the id 
 node test.js
 ```
 
-Tests cover HTML→Markdown conversion (tables, nested lists, code blocks, entities), cleanup rules and edge cases. `core.js` is the shared engine, identical to the browser extensions' core.
+Tests cover HTML→Markdown conversion (tables, nested lists, code blocks, entities), cleanup rules, edge cases and the Pro license flow (against a fake API). `core.js` is the shared engine, identical to the browser extensions' core.
 
 ## Author
 

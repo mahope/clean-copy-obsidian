@@ -49,23 +49,121 @@ assert.strictEqual(Core.batchConvert(['<p>no table</p>'], 'csv', [])[0].content.
 const batch = Core.batchConvert([null, '<p>ok</p>'], 'markdown', []);
 assert.deepStrictEqual(batch.map(b => b.ok), [true, true]);
 
-// ── main.js: settings merge + license payload shape (mocked fetch) ──
-// Simulate activateLicense against a fake API to lock the request contract.
+// ── main.js: license flow against a scripted fake API ──
+// Loads the real main.js with a stubbed `obsidian` module, so the shipped
+// license code is what gets tested (payload, 7-day grace, re-activation).
 (async () => {
-  let captured;
-  global.fetch = async (url, opts) => {
-    captured = { url, body: JSON.parse(opts.body) };
-    return { ok: true, status: 200, json: async () => ({ ok: true, activated: true, plan: 'pro-yearly', expires_at: '2027-08-24T00:00:00Z', devices_in_use: 1 }) };
+  const Module = require('module');
+  const notices = [];
+  let responses = [];
+  const calls = [];
+  const obsidianStub = {
+    Plugin: function () {},
+    PluginSettingTab: function () {},
+    Setting: function () {},
+    Notice: function (msg) { notices.push(msg); },
+    requestUrl: async (opts) => {
+      calls.push({ url: opts.url, body: JSON.parse(opts.body), method: opts.method });
+      const r = responses.shift();
+      if (!r) throw new Error('unexpected request ' + opts.url);
+      if (r === 'network') throw new Error('net::ERR_INTERNET_DISCONNECTED');
+      return { status: r[0], json: r[1] };
+    },
   };
-  // minimal stub of plugin surface
-  const settings = { licenseKey: 'A'.repeat(32).toLowerCase(), deviceId: 'd'.repeat(16), proActive: false };
-  const key = settings.licenseKey.toLowerCase().trim();
-  assert.ok(/^[a-f0-9]{32}$/.test(key));
-  await fetch('https://hermes-passiv.pages.dev/api/license/activate', {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ license_key: key, device_id: settings.deviceId }),
-  });
-  assert.strictEqual(captured.url.endsWith('/activate'), true);
-  assert.strictEqual(captured.body.device_id.length, 16);
+  const origLoad = Module._load;
+  Module._load = function (req, ...rest) { return req === 'obsidian' ? obsidianStub : origLoad.call(this, req, ...rest); };
+  const PluginClass = require('./main.js');
+  Module._load = origLoad;
+  const L = PluginClass.License;
+
+  const KEY = '0123456789abcdef0123456789abcdef';
+  const DAY = 24 * 60 * 60 * 1000;
+  function newPlugin(settings) {
+    const p = new PluginClass({}, {});
+    p.settings = Object.assign({ licenseKey: '', proActive: false, validatedAt: null, expiresAt: null, rules: [{ find: 'foo', replace: 'bar' }], defaultMode: 'markdown', deviceId: 'dev-1' }, settings);
+    p.saveData = async () => {};
+    return p;
+  }
+  function reset(r) { responses = r; calls.length = 0; notices.length = 0; }
+
+  // pure helpers
+  assert.strictEqual(L.normalizeKey('  ' + KEY.toUpperCase() + '\n'), KEY);
+  assert.ok(L.isValidKey(KEY) && !L.isValidKey(KEY.slice(1)) && !L.isValidKey('z'.repeat(32)));
+  assert.strictEqual(L.BUY_URL, 'https://buy.stripe.com/6oU4gy76PgvgdBIdAXbMQ00');
+  assert.ok(L.isValidDeviceId(L.newDeviceId()));
+
+  // activate: normalised key, product and mahope.tools in the payload
+  let p = newPlugin();
+  reset([[200, { ok: true, activated: true, plan: 'clean-copy-pro', expires_at: '2027-09-24T00:00:00Z', devices_in_use: 1 }]]);
+  let res = await p.activateLicense('  ' + KEY.toUpperCase() + ' ');
+  assert.deepStrictEqual(res, { ok: true });
+  assert.strictEqual(calls[0].url, 'https://mahope.tools/api/license/activate');
+  assert.deepStrictEqual(calls[0].body, { license_key: KEY, device_id: 'dev-1', product: 'clean-copy-pro' });
+  assert.ok(p.isPro());
+  assert.strictEqual(p.settings.licenseKey, KEY);
+  assert.strictEqual(p.convert('<p>foo</p>'), 'bar', 'Pro rules apply once activated');
+
+  // activate: bad format never hits the network; 404/403/409 give clear messages
+  p = newPlugin();
+  reset([]);
+  res = await p.activateLicense('not-a-key');
+  assert.strictEqual(res.ok, false);
+  assert.strictEqual(calls.length, 0);
+  for (const [resp, re] of [[[404, { ok: false }], /not found/i], [[403, { ok: false, error: 'This license key is for another product.' }], /another product/],
+    [[409, { ok: false }], /device limit/i], ['network', /could not be reached/]]) {
+    reset([resp]);
+    res = await newPlugin().activateLicense(KEY);
+    assert.strictEqual(res.ok, false);
+    assert.match(res.message, re);
+  }
+
+  // validate: not_activated -> activate again instead of dropping the key
+  p = newPlugin({ licenseKey: KEY, proActive: true, validatedAt: Date.now() - 2 * DAY });
+  reset([[200, { ok: true, valid: false, reason: 'not_activated' }], [200, { ok: true, activated: true, expires_at: null }]]);
+  await p.validateLicensePeriodic();
+  assert.deepStrictEqual(calls.map((c) => c.url.split('/').pop()), ['validate', 'activate']);
+  assert.ok(calls.every((c) => c.body.product === 'clean-copy-pro'));
+  assert.ok(p.settings.proActive && p.isPro());
+  assert.ok(Date.now() - p.settings.validatedAt < 1000, 'validatedAt refreshed');
+
+  // validate: not due yet -> no request
+  reset([]);
+  await p.validateLicensePeriodic();
+  assert.strictEqual(calls.length, 0);
+
+  // validate: offline keeps Pro inside the 7-day grace, locks it after
+  p = newPlugin({ licenseKey: KEY, proActive: true, validatedAt: Date.now() - 6 * DAY });
+  reset(['network']);
+  await p.validateLicensePeriodic();
+  assert.ok(p.isPro(), 'offline within grace keeps Pro');
+  p = newPlugin({ licenseKey: KEY, proActive: true, validatedAt: Date.now() - 8 * DAY });
+  reset([[503, { ok: false, error: 'Service temporarily unavailable.' }]]);
+  await p.validateLicensePeriodic();
+  assert.ok(p.settings.proActive, 'temporary errors never drop the key');
+  assert.ok(!p.isPro(), 'but Pro is locked after 7 days without a successful check');
+  assert.strictEqual(p.convert('<p>foo</p>'), 'foo', 'rules off while locked');
+  reset([[200, { ok: true, valid: true, expires_at: '2027-09-24T00:00:00Z' }]]);
+  await p.validateLicensePeriodic();
+  assert.ok(p.isPro(), 'a successful check unlocks Pro again');
+
+  // validate: expired/revoked (403) turns Pro off with a notice
+  p = newPlugin({ licenseKey: KEY, proActive: true, validatedAt: Date.now() - 2 * DAY });
+  reset([[403, { ok: false, error: 'License expired. Renew at https://cleancopy.tools/' }]]);
+  await p.validateLicensePeriodic();
+  assert.ok(!p.settings.proActive && !p.isPro());
+  assert.match(notices[0], /expired/);
+
+  // deactivate calls the API, and turns Pro off even when offline
+  p = newPlugin({ licenseKey: KEY, proActive: true, validatedAt: Date.now() });
+  reset([[200, { ok: true, deactivated: true, devices_in_use: 0 }]]);
+  assert.strictEqual(await p.deactivateLicense(), true);
+  assert.strictEqual(calls[0].url, 'https://mahope.tools/api/license/deactivate');
+  assert.deepStrictEqual(calls[0].body, { license_key: KEY, device_id: 'dev-1', product: 'clean-copy-pro' });
+  assert.ok(!p.settings.proActive && !p.isPro());
+  p = newPlugin({ licenseKey: KEY, proActive: true, validatedAt: Date.now() });
+  reset(['network']);
+  assert.strictEqual(await p.deactivateLicense(), false);
+  assert.ok(!p.settings.proActive);
+
   console.log('All Clean Copy Obsidian tests passed.');
 })().catch(e => { console.error(e); process.exit(1); });

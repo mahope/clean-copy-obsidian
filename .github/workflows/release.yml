@@ -52,6 +52,6 @@ jobs:
           else
             gh release create "$TAG" main.js manifest.json styles.css \
               --repo "$GITHUB_REPOSITORY" \
-              --title "Clean Copy for Obsidian ${VERSION}" \
+              --title "Clean Copy Markdown ${VERSION}" \
               --generate-notes
           fi

@@ -598,7 +598,7 @@ var CleanCopySettingTab = /** @class */ (function () {
     }
 
     var rulesEl = containerEl.createDiv();
-    rulesEl.createEl('h3', { text: 'Custom cleanup rules (Pro)' });
+    new obsidian.Setting(rulesEl).setName('Custom cleanup rules (Pro)').setHeading();
     if (!_this.plugin.settings.proActive) {
       rulesEl.createEl('p', { text: 'Requires an active Pro license.' });
       return;

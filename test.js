@@ -1,6 +1,6 @@
 /**
  * tests for the Obsidian plugin core + license flow (Node, no framework).
- * Run: node obsidian-plugin/test.js
+ * Run: node test.js
  */
 const assert = require('assert');
 const Core = require('./core.js');
@@ -49,23 +49,134 @@ assert.strictEqual(Core.batchConvert(['<p>no table</p>'], 'csv', [])[0].content.
 const batch = Core.batchConvert([null, '<p>ok</p>'], 'markdown', []);
 assert.deepStrictEqual(batch.map(b => b.ok), [true, true]);
 
-// ── main.js: settings merge + license payload shape (mocked fetch) ──
-// Simulate activateLicense against a fake API to lock the request contract.
+// ── main.js: the real plugin class against a fake Obsidian API ──
+// Locks the license contract: endpoint, request shape, and the seven-day
+// offline rule. `requestUrl` is the only thing the plugin calls.
+const Module = require('module');
+const MAIN_JS = require('fs').readFileSync(require('path').join(__dirname, 'main.js'), 'utf8');
+assert.ok(!MAIN_JS.includes('hermes-passiv.pages.dev'), 'main.js must not use the old license host');
+
+const notices = [];
+const requests = [];
+let respond = null;
+const fakeObsidian = {
+  Plugin: function () {},
+  PluginSettingTab: function () {},
+  Notice: function (msg) { notices.push(msg); },
+  Setting: function () {},
+  requestUrl: async (opts) => { requests.push(opts); return respond(opts); },
+};
+fakeObsidian.Plugin.prototype = {};
+fakeObsidian.PluginSettingTab.prototype = {};
+const realLoad = Module._load;
+Module._load = function (request, ...rest) {
+  return request === 'obsidian' ? fakeObsidian : realLoad.call(this, request, ...rest);
+};
+const PluginClass = require('./main.js');
+Module._load = realLoad;
+
+const KEY = 'a1'.repeat(16);
+const DAY = 24 * 60 * 60 * 1000;
+function makePlugin(over) {
+  const plugin = new PluginClass({}, {});
+  plugin.settings = Object.assign({
+    licenseKey: KEY.toUpperCase(), deviceId: 'd'.repeat(32), proActive: false,
+    licenseCheckedAt: 0, expiresAt: null, rules: [], defaultMode: 'markdown',
+  }, over || {});
+  plugin.saveData = async () => {};
+  return plugin;
+}
+const answer = (status, data) => async () => ({ status, json: data });
+
 (async () => {
-  let captured;
-  global.fetch = async (url, opts) => {
-    captured = { url, body: JSON.parse(opts.body) };
-    return { ok: true, status: 200, json: async () => ({ ok: true, activated: true, plan: 'pro-yearly', expires_at: '2027-08-24T00:00:00Z', devices_in_use: 1 }) };
+  // activate: right endpoint, right payload, Pro on, timestamp stored
+  let plugin = makePlugin();
+  respond = answer(200, { ok: true, activated: true, plan: 'pro-yearly', expires_at: '2027-08-24T00:00:00Z' });
+  assert.strictEqual(await plugin.activateLicense(), true);
+  assert.strictEqual(requests[0].url, 'https://mahope.tools/api/license/activate');
+  assert.strictEqual(requests[0].method, 'POST');
+  assert.deepStrictEqual(JSON.parse(requests[0].body),
+    { license_key: KEY, device_id: 'd'.repeat(32), product: 'clean-copy-pro' });
+  assert.strictEqual(plugin.settings.proActive, true);
+  assert.ok(plugin.settings.licenseCheckedAt > 0);
+  assert.strictEqual(plugin.settings.expiresAt, '2027-08-24T00:00:00Z');
+
+  // activate: unknown key answers 404 -> Pro stays off, the server's message is shown
+  const before = requests.length;
+  plugin = makePlugin();
+  respond = answer(404, { ok: false, error: 'License key not found. Check for typos or contact support.' });
+  assert.strictEqual(await plugin.activateLicense(), false);
+  assert.strictEqual(plugin.settings.proActive, false);
+  assert.ok(notices.includes('License key not found. Check for typos or contact support.'), JSON.stringify(notices));
+
+  // activate: malformed key never touches the network
+  const count = requests.length;
+  plugin = makePlugin({ licenseKey: 'not-a-key' });
+  assert.strictEqual(await plugin.activateLicense(), false);
+  assert.strictEqual(requests.length, count);
+  assert.ok(before < requests.length);
+
+  // validate: a revoked key (403) loses Pro at once
+  plugin = makePlugin({ proActive: true, licenseCheckedAt: Date.now() - DAY });
+  respond = answer(403, { ok: false, error: 'revoked' });
+  await plugin.validateLicensePeriodic();
+  assert.strictEqual(plugin.settings.proActive, false);
+  assert.strictEqual(requests[requests.length - 1].url, 'https://mahope.tools/api/license/validate');
+
+  // validate: a server outage keeps Pro up to seven days after the last good check
+  plugin = makePlugin({ proActive: true, licenseCheckedAt: Date.now() - 6 * DAY });
+  respond = answer(503, {});
+  await plugin.validateLicensePeriodic();
+  assert.strictEqual(plugin.settings.proActive, true);
+  // ...but not longer
+  plugin = makePlugin({ proActive: true, licenseCheckedAt: Date.now() - 8 * DAY });
+  await plugin.validateLicensePeriodic();
+  assert.strictEqual(plugin.settings.proActive, false);
+  // a request that never gets an answer counts as an outage, not as a lost license
+  plugin = makePlugin({ proActive: true, licenseCheckedAt: Date.now() - DAY });
+  respond = async () => { throw new Error('offline'); };
+  await plugin.validateLicensePeriodic();
+  assert.strictEqual(plugin.settings.proActive, true);
+
+  // launch: settings saved by 1.0.11 have no check time; an offline first start must keep Pro
+  const launch = async (saved) => {
+    const pl = new PluginClass({}, {});
+    pl.loadData = async () => JSON.parse(JSON.stringify(saved));
+    pl.saveData = async (d) => { Object.assign(saved, JSON.parse(JSON.stringify(d))); };
+    pl.addCommand = () => {};
+    pl.addSettingTab = () => {};
+    pl.onload();
+    await new Promise((r) => setTimeout(r, 30));
+    return { pl, saved };
   };
-  // minimal stub of plugin surface
-  const settings = { licenseKey: 'A'.repeat(32).toLowerCase(), deviceId: 'd'.repeat(16), proActive: false };
-  const key = settings.licenseKey.toLowerCase().trim();
-  assert.ok(/^[a-f0-9]{32}$/.test(key));
-  await fetch('https://hermes-passiv.pages.dev/api/license/activate', {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ license_key: key, device_id: settings.deviceId }),
-  });
-  assert.strictEqual(captured.url.endsWith('/activate'), true);
-  assert.strictEqual(captured.body.device_id.length, 16);
+  let stored = { licenseKey: KEY, deviceId: 'd'.repeat(32), proActive: true };
+  respond = answer(503, {});
+  let run = await launch(stored);
+  assert.strictEqual(run.pl.settings.proActive, true, 'upgrade from 1.0.11, offline: Pro stays on');
+  assert.ok(Math.abs(run.pl.settings.licenseCheckedAt - Date.now()) < 60 * 1000);
+
+  // an outage that outlasts the seven days switches Pro off, and the next launch tries again by itself
+  stored = { licenseKey: KEY, deviceId: 'd'.repeat(32), proActive: true, licenseCheckedAt: Date.now() - 8 * DAY };
+  respond = answer(503, {});
+  run = await launch(stored);
+  assert.strictEqual(run.pl.settings.proActive, false);
+  assert.strictEqual(stored.licenseRecheck, true);
+  respond = answer(200, { ok: true, valid: true, expires_at: '2027-08-24T00:00:00Z' });
+  const n = requests.length;
+  run = await launch(stored);
+  assert.strictEqual(requests.length, n + 1, 'the lapse is re-checked at launch');
+  assert.strictEqual(run.pl.settings.proActive, true, 'Pro comes back on its own when the server answers');
+  assert.strictEqual(stored.licenseRecheck, false);
+
+  // a lapse caused by an answer (revoked key) is not retried at every launch
+  stored = { licenseKey: KEY, deviceId: 'd'.repeat(32), proActive: true, licenseCheckedAt: Date.now() - DAY };
+  respond = answer(403, { ok: false, error: 'revoked' });
+  run = await launch(stored);
+  assert.strictEqual(run.pl.settings.proActive, false);
+  assert.strictEqual(stored.licenseRecheck, false);
+  const m = requests.length;
+  await launch(stored);
+  assert.strictEqual(requests.length, m, 'no request when nothing is active and nothing is pending');
+
   console.log('All Clean Copy Obsidian tests passed.');
 })().catch(e => { console.error(e); process.exit(1); });

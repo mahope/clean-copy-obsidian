@@ -80,7 +80,7 @@ Versions up to 1.0.9 used the plugin id `clean-copy-obsidian` and the name "Clea
 
 - **Free features use no network.** Pasting and cleaning happen on your machine. No account is needed, and there is no telemetry or analytics.
 - **Payment:** Pro is a paid upgrade for custom cleanup rules. Everything else is free.
-- **Network use (Pro license check only):** when you select Activate, and once at each launch while Pro is active, the plugin sends an HTTPS POST to `https://hermes-passiv.pages.dev/api/license/` (`activate` or `validate`). The request contains your license key and a random device id that the plugin generates locally and stores in its own settings. It is used only to check that the key is valid and to enforce the license's device limit. The clipboard, your notes and your vault are never sent. If you are offline, Pro stays active for that session.
+- **Network use (Pro license check only):** when you select Activate, and once at each launch while Pro is active (or has switched off only because the license server could not be reached), the plugin sends an HTTPS POST to `https://mahope.tools/api/license/` (`activate` or `validate`). The request contains your license key, the product name (`clean-copy-pro`) and a random device id that the plugin generates locally and stores in its own settings. It is used only to check that the key is valid and to enforce the license's device limit. The clipboard, your notes and your vault are never sent. If the license server cannot be reached, for example because you are offline, Pro stays active for up to seven days after the last successful check, so a hiccup never locks out a paying customer. After that, Pro switches off and the plugin tries again at the next launch. A revoked or expired key switches Pro off at the next check and is not retried.
 - **Clipboard:** the plugin reads the clipboard only at the moment you run a paste command.
 - **Files:** the plugin does not access any files outside your vault.
 
@@ -94,7 +94,7 @@ in `manifest.json`, and `versions.json` needs an entry for it.
 
 ```bash
 # bump manifest.json + versions.json, commit, then:
-git tag 1.0.11 && git push origin main 1.0.11
+git tag 1.0.12 && git push origin main 1.0.12
 ```
 
 Listing in the Obsidian Community directory is done once at

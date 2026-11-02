@@ -24,7 +24,8 @@ https://docs.obsidian.md/Plugins/Releasing/Submit+your+plugin
 1. Sign in at community.obsidian.md with the Obsidian account.
 2. Profile: connect the GitHub account `mahope`.
 3. Plugins: **New plugin**. Repository URL `https://github.com/mahope/clean-copy-obsidian`,
-   owner "Myself".
+   owner the organization "Mahoje" (create it under Organizations first), so the
+   listing is not tied to a personal profile.
 4. Payment type: **Optional payment** (Pro features are paid, the rest is free).
 5. Read and accept the Developer policies, then Submit.
 
